@@ -28,3 +28,18 @@ export const DeleteUserByEmail = `
     }
   }
 `;
+
+export const VerifyTokenAndUpdate = `
+  mutation VerifyTokenAndUpdate($token: String!, $updatedToken: String, $isVerified: Boolean!) {
+    update_users(where: {token: {_eq: $token}}, _set: {token: $updatedToken, isVerified: $isVerified}) {
+      returning {
+        email
+        id
+        isVerified
+        name
+        password
+        token
+      }
+    }
+  }
+`;

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
-import getData from "../utils/getData";
-import { DeleteUserByEmail, InsertUserMutation } from "../gql/mutations";
-import generateEmail from "../utils/generateMail";
-import transporter from "../utils/nodeMailer";
+import getData from "../../utils/getData";
+import { DeleteUserByEmail, InsertUserMutation } from "../../gql/mutations";
+import generateEmail from "../../utils/generateMail";
+import transporter from "../../utils/nodeMailer";
 
-export const signup = async (req: Request, res: Response) => {
+const signup = async (req: Request, res: Response) => {
   const mutation = InsertUserMutation
   const encryptPass = CryptoJS.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '')
 
@@ -23,7 +23,7 @@ export const signup = async (req: Request, res: Response) => {
     to: req.body.email,
     subject: 'Verification of TLC Email',
     text: '',
-    html: generateEmail('http://localhost:3000/', req.body.name)
+    html: generateEmail(`http://localhost:8080/user/verify/${variables.token}`, req.body.name)
   };
 
   transporter.sendMail(mailOptions, async (err)=>{
@@ -45,3 +45,5 @@ export const signup = async (req: Request, res: Response) => {
 
   })  
 }
+
+export default signup
