@@ -1,4 +1,5 @@
-export const getUserByEmail = `query MyQuery($email: String!) {
+export const getUserByEmail = `
+  query MyQuery($email: String!) {
     users(where: { email: { _eq: $email } }) {
       id
       name
@@ -7,10 +8,11 @@ export const getUserByEmail = `query MyQuery($email: String!) {
       isAdminVerified
     }
   }
-  `;
+`;
+
 export const verifyResetQuery = `
-  query VerifyResetQuery($token: String = "") {
-    users(where: {token: {_eq: $token}}, limit: 1) {
+  query VerifyResetQuery($token: String!, $_eq: Boolean = true) {
+    users(where: {token: {_eq: $token}, isPassToBeReset: {_eq: $_eq}}, limit: 1) {
       email
       id
       isAdminVerified

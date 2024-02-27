@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyResetQuery = exports.getUserByEmail = void 0;
-exports.getUserByEmail = `query MyQuery($email: String!) {
+exports.getUserByEmail = `
+  query MyQuery($email: String!) {
     users(where: { email: { _eq: $email } }) {
       id
       name
@@ -10,10 +11,10 @@ exports.getUserByEmail = `query MyQuery($email: String!) {
       isAdminVerified
     }
   }
-  `;
+`;
 exports.verifyResetQuery = `
-  query VerifyResetQuery($token: String = "") {
-    users(where: {token: {_eq: $token}}, limit: 1) {
+  query VerifyResetQuery($token: String!, $_eq: Boolean = true) {
+    users(where: {token: {_eq: $token}, isPassToBeReset: {_eq: $_eq}}, limit: 1) {
       email
       id
       isAdminVerified
