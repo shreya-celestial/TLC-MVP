@@ -19,31 +19,39 @@ const mutations_1 = require("../../gql/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const mutation = mutations_1.InsertUserMutation;
     const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
     const variables = Object.assign(Object.assign({}, req.body), { password: encryptPass.toString(), isVerified: false, token: jsonwebtoken_1.default.sign({ tempKey: encryptPass.toString() }, process.env.JWT_SECRET_KEY || '') });
-    yield (0, getData_1.default)(mutation, variables);
-    const mailOptions = {
-        from: 'infotech@thelastcentre.com',
-        to: req.body.email,
-        subject: 'Verification of TLC Email',
-        text: '',
-        html: (0, generateMail_1.default)(`http://localhost:8080/user/verify/${variables.token}`, req.body.name),
-    };
-    nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!err) {
-            return res.json({
-                status: 'success',
-                message: 'Mail sent successfully!',
+    const data = yield (0, getData_1.default)(mutation, variables);
+    if (!data.errors) {
+        const mailOptions = {
+            from: 'infotech@thelastcentre.com',
+            to: req.body.email,
+            subject: 'Verification of TLC Email',
+            text: '',
+            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name),
+        };
+        nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!err) {
+                return res.json({
+                    status: 'success',
+                    message: 'Mail sent successfully!',
+                });
+            }
+            yield (0, getData_1.default)(mutations_1.DeleteUserByEmail, {
+                email: req.body.email,
             });
-        }
-        yield (0, getData_1.default)(mutations_1.DeleteUserByEmail, {
-            email: req.body.email,
-        });
-        return res.json({
-            status: 'error',
-            message: 'Something went wrong, Please try again!',
-        });
-    }));
+            return res.json({
+                status: 'error',
+                message: 'Something went wrong, Please try again!',
+            });
+        }));
+        return;
+    }
+    return res.json({
+        status: 'error',
+        message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message,
+    });
 });
 exports.default = signup;
