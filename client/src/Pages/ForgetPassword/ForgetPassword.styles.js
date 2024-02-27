@@ -1,10 +1,11 @@
 import { makeStyles } from "@mui/styles";
+
 export const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   mainWrapper: {
     display: "flex",
@@ -15,8 +16,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     boxShadow: "0px 4px 10px rgba(109, 109, 109, 0.25)",
+
     [theme.breakpoints.between("sm", "md")]: {
-      width: "80%",
+      width: "90%",
     },
     [theme.breakpoints.down("sm")]: {
       padding: "50px 8px",
@@ -25,6 +27,7 @@ export const useStyles = makeStyles((theme) => ({
       justifyContent: "flex-start",
     },
   },
+
   logo: {
     width: "115px",
     objectFit: "contain",
@@ -32,24 +35,25 @@ export const useStyles = makeStyles((theme) => ({
   header: {
     fontSize: "14px !important",
     fontWeight: "500 !important",
-
-    "& span": {
-      color: "#259311",
-      fontWeight: "600",
-    },
   },
-  formWrapper: {
+  form: {
     display: "flex",
     flexDirection: "column",
     gap: "20px",
     width: "100%",
   },
-
-  form: {
+  FormElementInBox: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    gap: "15px",
+    gap: "10px",
+    "& .backToLogin": {
+      fontSize: "12px",
+      color: "#4E73BE",
+      fontWeight: "500",
+      textDecoration: "none",
+      textAlign: "center",
+    },
+    "& .emailNotFound": { fontSize: "12px", fontWeight: "500", color: "#C1423F" },
   },
   formControl: {
     [theme.breakpoints.down("md")]: { width: "100%" },
@@ -74,55 +78,17 @@ export const useStyles = makeStyles((theme) => ({
       "& fieldset": {
         display: "none",
       },
-
-      "& .MuiInputAdornment-root button": {
-        padding: "0px",
-        "& svg": {
-          width: "20px",
-          height: "20px",
-          color: "#2F2F2F",
-        },
-      },
     },
   },
-
-  FormElementInBox: {
-    display: "flex",
-    flexDirection: "column",
-    [theme.breakpoints.down("md")]: { width: "100%" },
-    width: "359px",
-    gap: "10px",
-    "& .forgotPassword , p": {
-      fontSize: "12px",
-      color: "#4E73BE",
-      fontWeight: "500",
-      textDecoration: "none",
-    },
-    "& p": { color: "#2F2F2F" },
-    "& .signup": {
-      textDecoration: "none",
-      color: "#4E73BE",
-    },
-  },
-  signInBtn: {
+  verifyBtn: {
     height: "40px",
-    width: "100%",
     borderRadius: "5px !important",
     textTransform: "capitalize !important",
     backgroundColor: "#259311 !important",
     color: "#ffffff !important",
     fontWeight: "400 !important",
-    "&.googleBtn": {
-      color: "#4E73BE !important",
-      backgroundColor: "#ffffff !important",
-      border: "1.5px solid  #4E73BE !important",
-      "&:hover": {
-        [theme.breakpoints.up("md")]: {
-          backgroundColor: "#4E73BE10 !important",
-        },
-      },
-    },
-    "&.continueBtn:hover": {
+
+    "&:hover": {
       [theme.breakpoints.up("md")]: {
         opacity: ".9",
       },
