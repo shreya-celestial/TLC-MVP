@@ -30,28 +30,28 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             to: req.body.email,
             subject: 'Verification of TLC Email',
             text: '',
-            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name)
+            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name),
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {
                 return res.json({
                     status: 'success',
-                    message: 'Mail sent successfully!'
+                    message: 'Mail sent successfully!',
                 });
             }
             yield (0, getData_1.default)(mutations_1.DeleteUserByEmail, {
-                email: req.body.email
+                email: req.body.email,
             });
             return res.json({
                 status: 'error',
-                message: 'Something went wrong, Please try again!'
+                message: 'Something went wrong, Please try again!',
             });
         }));
         return;
     }
     return res.json({
         status: 'error',
-        message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message
+        message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message,
     });
 });
 exports.default = signup;
