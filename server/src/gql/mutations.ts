@@ -15,7 +15,7 @@ export const InsertUserMutation = `
 `;
 
 export const DeleteUserByEmail = `
-  mutation MyMutation($email: String!) {
+  mutation DeleteUser($email: String!) {
     delete_users(where: {email: {_eq: $email}}) {
       returning {
         email
@@ -40,6 +40,17 @@ export const VerifyTokenAndUpdate = `
         password
         token
       }
+    }
+  }
+`;
+
+export const CheckAndUpdateToken =  `
+  mutation CheckAndUpdateToken($email: String!, $isVerified: Boolean!, $token: String!, $isPassToBeReset: Boolean!, $isAdminVerified: Boolean!) {
+    update_users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}, isAdminVerified: {_eq: $isAdminVerified}}, _set: {token: $token, isPassToBeReset: $isPassToBeReset}) {
+      returning {
+        name
+      }
+      affected_rows
     }
   }
 `;

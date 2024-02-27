@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
+exports.CheckAndUpdateToken = exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
 exports.InsertUserMutation = `
   mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!) {
     insert_users(objects: { name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token}) {
@@ -17,7 +17,7 @@ exports.InsertUserMutation = `
   }
 `;
 exports.DeleteUserByEmail = `
-  mutation MyMutation($email: String!) {
+  mutation DeleteUser($email: String!) {
     delete_users(where: {email: {_eq: $email}}) {
       returning {
         email
@@ -41,6 +41,16 @@ exports.VerifyTokenAndUpdate = `
         password
         token
       }
+    }
+  }
+`;
+exports.CheckAndUpdateToken = `
+  mutation CheckAndUpdateToken($email: String!, $isVerified: Boolean!, $token: String!, $isPassToBeReset: Boolean!, $isAdminVerified: Boolean!) {
+    update_users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}, isAdminVerified: {_eq: $isAdminVerified}}, _set: {token: $token, isPassToBeReset: $isPassToBeReset}) {
+      returning {
+        name
+      }
+      affected_rows
     }
   }
 `;

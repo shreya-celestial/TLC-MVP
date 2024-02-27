@@ -10,17 +10,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData = (query, variables) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch(process.env.HASURA_DB_URL || '', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET || '',
-        },
-        body: JSON.stringify({
-            query,
-            variables
-        })
-    });
-    return yield response.json();
+    try {
+        const response = yield fetch(process.env.HASURA_DB_URL || '', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET || '',
+            },
+            body: JSON.stringify({
+                query,
+                variables
+            })
+        });
+        return yield response.json();
+    }
+    catch (err) {
+        return {
+            errors: [
+                {
+                    message: err
+                }
+            ]
+        };
+    }
 });
 exports.default = getData;
