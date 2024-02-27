@@ -54,3 +54,11 @@ export const CheckAndUpdateToken =  `
     }
   }
 `;
+
+export const VerifyAndUpdatePass = `
+  mutation ResetPassword($token: String!, $_eq: Boolean = true, $password: String!, $tokenUpdated: String, $isPassToBeReset: Boolean!) {
+    update_users(where: {token: {_eq: $token}, isPassToBeReset: {_eq: $_eq}}, _set: {password: $password, token: $tokenUpdated, isPassToBeReset: $isPassToBeReset}) {
+      affected_rows
+    }
+  }
+`;
