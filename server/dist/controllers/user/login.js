@@ -53,6 +53,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: 'Your account is not verified yet. Please contact your admin for more details.',
         });
     }
-    return res.status(200).json({ status: 'success', user });
+    const userToSend = {};
+    for (let keys in user) {
+        if (keys !== 'password')
+            userToSend[keys] = user[keys];
+    }
+    return res.status(200).json({ status: 'success', user: userToSend });
 });
 exports.default = login;

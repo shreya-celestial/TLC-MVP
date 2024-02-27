@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useStyles } from "./Login.styles";
 import {
   Box,
@@ -8,20 +9,28 @@ import {
   FormLabel,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
 import { ReactComponent as GoogleIcon } from "../../assets/Icons/google.svg";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { login } from "../../apis/user";
 
 function Login() {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
-  const handleSignInSubmit = () => {
-    alert("login");
+
+  const handleSignInSubmit = async (e) => {
+    e.preventDefault();
+    const body = {
+      email: e.target.elements.email.value,
+      password: e.target.elements.password.value
+    }
+    const data = await login(body)
+    console.log(data)
   };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.mainWrapper}>
@@ -33,7 +42,7 @@ function Login() {
           <form className={classes.form} onSubmit={handleSignInSubmit}>
             <FormControl required className={classes.formControl}>
               <FormLabel htmlFor="emailField">Email Address</FormLabel>
-              <TextField type="email" id="emailField" placeholder="Enter Your Email Address" />
+              <TextField type="email" id="emailField" placeholder="Enter Your Email Address" name="email" />
             </FormControl>
             <Box className={classes.FormElementInBox}>
               <FormControl required className={classes.formControl}>
@@ -42,6 +51,7 @@ function Login() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter Your Password"
                   id="passwordField"
+                  name="password"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -53,7 +63,7 @@ function Login() {
                   }}
                 />
               </FormControl>
-              <Link href="#" className="forgotPassword">
+              <Link to={'/forgotPass'} className="forgotPassword">
                 Forgot Password?
               </Link>
             </Box>
@@ -63,7 +73,7 @@ function Login() {
               </Button>
               <Typography>
                 Don't have an account?{" "}
-                <Link href="#" className="signup">
+                <Link to={'/signup'} className="signup">
                   Sign up
                 </Link>
               </Typography>
