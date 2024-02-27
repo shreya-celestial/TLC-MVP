@@ -30,18 +30,18 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     };
     const data = yield (0, getData_1.default)(mutations_1.VerifyAndUpdatePass, variables);
     if (data === null || data === void 0 ? void 0 : data.errors) {
-        return res.clearCookie('token').json({
+        return res.clearCookie('token').status(400).json({
             status: 'error',
             message: (_b = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _b === void 0 ? void 0 : _b.message,
         });
     }
     if (!((_d = (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.update_users) === null || _d === void 0 ? void 0 : _d.affected_rows)) {
-        return res.clearCookie('token').json({
+        return res.clearCookie('token').status(400).json({
             status: 'error',
             message: 'User not found!',
         });
     }
-    return res.clearCookie('token').json({
+    return res.clearCookie('token').status(200).json({
         status: 'success',
         message: 'Password reset successful!'
     });

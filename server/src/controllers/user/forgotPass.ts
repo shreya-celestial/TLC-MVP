@@ -32,13 +32,13 @@ const forgotPass = async (req: Request, res: Response) => {
     transporter.sendMail(mailOptions, (err) => {
       if(!err)
       {
-        return res.json({
+        return res.status(200).json({
           status: 'success',
           message: 'Mail sent successfully!'
         }) 
       }
       
-      return res.json({
+      return res.status(400).json({
         status: 'error',
         message: 'Something went wrong, Please try again!'
       })
@@ -49,13 +49,13 @@ const forgotPass = async (req: Request, res: Response) => {
 
   if(data?.errors)
   {
-    return res.json({
+    return res.status(400).json({
       status: 'error',
       message: data?.errors[0]?.message
     })
   }
 
-  return res.json({
+  return res.status(404).json({
     status: 'error',
     message: 'User does not exists!'
   })

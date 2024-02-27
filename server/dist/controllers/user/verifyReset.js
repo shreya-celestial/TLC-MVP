@@ -23,8 +23,8 @@ const verifyReset = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if ((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.users) === null || _b === void 0 ? void 0 : _b.length) {
             return res.cookie('token', (_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.token).redirect(303, 'http://localhost:3000/');
         }
-        return res.clearCookie('token').send('Error! Something went wrong. Please try again later.');
+        return res.clearCookie('token').status(400).send('Error! Something went wrong. Please try again later.');
     }
-    return res.clearCookie('token').send('Error! Page not found.');
+    return res.clearCookie('token').status(404).send('Error! Page not found.');
 });
 exports.default = verifyReset;

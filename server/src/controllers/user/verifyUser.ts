@@ -12,15 +12,15 @@ const verifyUser = async (req: Request, res: Response) => {
     
     if(data?.errors)
     {
-      return res.send('Error! Please try again later.')
+      return res.status(400).send('Error! Please try again later.')
     }
     if(data?.data?.update_users?.returning?.length === 0)
     {
-      return res.send('It seems that your link has been used. Please login and continue.')
+      return res.status(100).send('It seems that your link has been used. Please login and continue.')
     }
     return res.redirect(303,'http://localhost:3000/')
   }
-  return res.send('Error! Page not found.')
+  return res.status(404).send('Error! Page not found.')
 }
 
 export default verifyUser

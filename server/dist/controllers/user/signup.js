@@ -34,7 +34,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {
-                return res.json({
+                return res.status(200).json({
                     status: 'success',
                     message: 'Mail sent successfully!',
                 });
@@ -42,14 +42,14 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield (0, getData_1.default)(mutations_1.DeleteUserByEmail, {
                 email: req.body.email,
             });
-            return res.json({
+            return res.status(400).json({
                 status: 'error',
                 message: 'Something went wrong, Please try again!',
             });
         }));
         return;
     }
-    return res.json({
+    return res.status(400).json({
         status: 'error',
         message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message,
     });

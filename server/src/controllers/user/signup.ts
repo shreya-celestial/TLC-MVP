@@ -38,7 +38,7 @@ const signup = async (req: Request, res: Response) => {
 
     transporter.sendMail(mailOptions, async (err) => {
       if (!err) {
-        return res.json({
+        return res.status(200).json({
           status: 'success',
           message: 'Mail sent successfully!',
         });
@@ -47,14 +47,14 @@ const signup = async (req: Request, res: Response) => {
       await getData(DeleteUserByEmail, {
         email: req.body.email,
       });
-      return res.json({
+      return res.status(400).json({
         status: 'error',
         message: 'Something went wrong, Please try again!',
       });
     });
     return;
   }
-  return res.json({
+  return res.status(400).json({
     status: 'error',
     message: data?.errors[0]?.message,
   });

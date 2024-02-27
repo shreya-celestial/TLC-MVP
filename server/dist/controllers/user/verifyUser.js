@@ -23,13 +23,13 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             isVerified: true
         });
         if (data === null || data === void 0 ? void 0 : data.errors) {
-            return res.send('Error! Please try again later.');
+            return res.status(400).send('Error! Please try again later.');
         }
         if (((_c = (_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.returning) === null || _c === void 0 ? void 0 : _c.length) === 0) {
-            return res.send('It seems that your link has been used. Please login and continue.');
+            return res.status(100).send('It seems that your link has been used. Please login and continue.');
         }
         return res.redirect(303, 'http://localhost:3000/');
     }
-    return res.send('Error! Page not found.');
+    return res.status(404).send('Error! Page not found.');
 });
 exports.default = verifyUser;

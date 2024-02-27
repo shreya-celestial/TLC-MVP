@@ -40,12 +40,12 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => {
             if (!err) {
-                return res.json({
+                return res.status(200).json({
                     status: 'success',
                     message: 'Mail sent successfully!'
                 });
             }
-            return res.json({
+            return res.status(400).json({
                 status: 'error',
                 message: 'Something went wrong, Please try again!'
             });
@@ -53,12 +53,12 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return;
     }
     if (data === null || data === void 0 ? void 0 : data.errors) {
-        return res.json({
+        return res.status(400).json({
             status: 'error',
             message: (_f = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _f === void 0 ? void 0 : _f.message
         });
     }
-    return res.json({
+    return res.status(404).json({
         status: 'error',
         message: 'User does not exists!'
     });

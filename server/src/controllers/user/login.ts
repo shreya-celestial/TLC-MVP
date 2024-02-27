@@ -54,8 +54,13 @@ const login = async (req: Request, res: Response) => {
         'Your account is not verified yet. Please contact your admin for more details.',
     });
   }
-
-  return res.status(200).json({ status: 'success', user });
+  const userToSend: any = {}
+  for(let keys in user)
+  {
+    if(keys !== 'password')
+      userToSend[keys] = user[keys]
+  }
+  return res.status(200).json({ status: 'success', user: userToSend });
 };
 
 export default login;

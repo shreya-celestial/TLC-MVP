@@ -21,19 +21,19 @@ const resetPass = async (req: Request, res: Response) => {
 
   if(data?.errors)
   {
-    return res.clearCookie('token').json({
+    return res.clearCookie('token').status(400).json({
       status: 'error',
       message: data?.errors[0]?.message,
     });
   }
   if(!data?.data?.update_users?.affected_rows)
   {
-    return res.clearCookie('token').json({
+    return res.clearCookie('token').status(400).json({
       status: 'error',
       message: 'User not found!',
     });
   }
-  return res.clearCookie('token').json({
+  return res.clearCookie('token').status(200).json({
     status: 'success',
     message: 'Password reset successful!'
   })
