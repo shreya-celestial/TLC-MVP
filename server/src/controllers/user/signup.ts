@@ -1,56 +1,63 @@
-import { Request, Response } from "express";
-import CryptoJS from "crypto-js";
-import jwt from "jsonwebtoken";
-import getData from "../../utils/getData";
-import { DeleteUserByEmail, InsertUserMutation } from "../../gql/mutations";
-import generateEmail from "../../utils/generateMail";
-import transporter from "../../utils/nodeMailer";
+import { Request, Response } from 'express';
+import CryptoJS from 'crypto-js';
+import jwt from 'jsonwebtoken';
+import getData from '../../utils/getData';
+import { DeleteUserByEmail, InsertUserMutation } from '../../gql/mutations';
+import generateEmail from '../../utils/generateMail';
+import transporter from '../../utils/nodeMailer';
 
 const signup = async (req: Request, res: Response) => {
-  const mutation = InsertUserMutation
-  const encryptPass = CryptoJS.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '')
+  const mutation = InsertUserMutation;
+  const encryptPass = CryptoJS.AES.encrypt(
+    req.body.password,
+    process.env.CRYPTO_HASH_KEY || ''
+  );
 
   const variables = {
     ...req.body,
     password: encryptPass.toString(),
     isVerified: false,
-    token: jwt.sign({tempKey:encryptPass.toString()}, process.env.JWT_SECRET_KEY || '')
-  }
-  
+    token: jwt.sign(
+      { tempKey: encryptPass.toString() },
+      process.env.JWT_SECRET_KEY || ''
+    ),
+  };
+
   const data = await getData(mutation, variables);
-  if(!data.errors){
+  if (!data.errors) {
     const mailOptions = {
       from: 'infotech@thelastcentre.com',
       to: req.body.email,
       subject: 'Verification of TLC Email',
       text: '',
-      html: generateEmail(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name)
+      html: generateEmail(
+        `http://localhost:8080/user/verifyUser/${variables.token}`,
+        req.body.name
+      ),
     };
-  
-    transporter.sendMail(mailOptions, async (err)=>{
-      if(!err)
-      {
+
+    transporter.sendMail(mailOptions, async (err) => {
+      if (!err) {
         return res.json({
           status: 'success',
-          message: 'Mail sent successfully!'
-        })  
+          message: 'Mail sent successfully!',
+        });
       }
-  
+
       await getData(DeleteUserByEmail, {
-        email: req.body.email
-      })
+        email: req.body.email,
+      });
       return res.json({
         status: 'error',
-        message: 'Something went wrong, Please try again!'
-      })
-  
-    })  
-    return
+        message: 'Something went wrong, Please try again!',
+      });
+    });
+    return;
   }
   return res.json({
     status: 'error',
-    message: data?.errors[0]?.message
-  })
-}
+    message: data?.errors[0]?.message,
+  });
+};
 
-export default signup
+export default signup;
