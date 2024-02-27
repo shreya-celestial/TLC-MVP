@@ -5,8 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const signup_1 = __importDefault(require("../controllers/user/signup"));
-const verify_1 = __importDefault(require("../controllers/user/verify"));
+const verifyUser_1 = __importDefault(require("../controllers/user/verifyUser"));
+const forgotPass_1 = __importDefault(require("../controllers/user/forgotPass"));
+const verifyReset_1 = __importDefault(require("../controllers/user/verifyReset"));
 const router = express_1.default.Router();
 router.post('/signup', signup_1.default);
-router.get('/verify/:token', verify_1.default);
+router.get('/verifyUser/:token', verifyUser_1.default);
+router.post('/forgotPass', forgotPass_1.default);
+router.get('/verifyReset/:token', verifyReset_1.default);
 exports.default = router;

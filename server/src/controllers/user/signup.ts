@@ -17,33 +17,40 @@ const signup = async (req: Request, res: Response) => {
     token: jwt.sign({tempKey:encryptPass.toString()}, process.env.JWT_SECRET_KEY || '')
   }
   
-  await getData(mutation, variables);
-  const mailOptions = {
-    from: 'infotech@thelastcentre.com',
-    to: req.body.email,
-    subject: 'Verification of TLC Email',
-    text: '',
-    html: generateEmail(`http://localhost:8080/user/verify/${variables.token}`, req.body.name)
-  };
-
-  transporter.sendMail(mailOptions, async (err)=>{
-    if(!err)
-    {
+  const data = await getData(mutation, variables);
+  if(!data.errors){
+    const mailOptions = {
+      from: 'infotech@thelastcentre.com',
+      to: req.body.email,
+      subject: 'Verification of TLC Email',
+      text: '',
+      html: generateEmail(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name)
+    };
+  
+    transporter.sendMail(mailOptions, async (err)=>{
+      if(!err)
+      {
+        return res.json({
+          status: 'success',
+          message: 'Mail sent successfully!'
+        })  
+      }
+  
+      await getData(DeleteUserByEmail, {
+        email: req.body.email
+      })
       return res.json({
-        status: 'success',
-        message: 'Mail sent successfully!'
-      })  
-    }
-
-    await getData(DeleteUserByEmail, {
-      email: req.body.email
-    })
-    return res.json({
-      status: 'error',
-      message: 'Something went wrong, Please try again!'
-    })
-
-  })  
+        status: 'error',
+        message: 'Something went wrong, Please try again!'
+      })
+  
+    })  
+    return
+  }
+  return res.json({
+    status: 'error',
+    message: data?.errors[0]?.message
+  })
 }
 
 export default signup

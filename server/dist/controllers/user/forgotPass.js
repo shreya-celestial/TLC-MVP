@@ -12,46 +12,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const crypto_js_1 = __importDefault(require("crypto-js"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
-const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const mutation = mutations_1.InsertUserMutation;
-    const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
-    const variables = Object.assign(Object.assign({}, req.body), { password: encryptPass.toString(), isVerified: false, token: jsonwebtoken_1.default.sign({ tempKey: encryptPass.toString() }, process.env.JWT_SECRET_KEY || '') });
-    const data = yield (0, getData_1.default)(mutation, variables);
-    if (!data.errors) {
+const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e, _f;
+    const { email } = req.body;
+    const token = jsonwebtoken_1.default.sign({ tempKey: email }, process.env.JWT_SECRET_KEY || '');
+    const data = yield (0, getData_1.default)(mutations_1.CheckAndUpdateToken, {
+        email: email,
+        isVerified: true,
+        token: token,
+        isPassToBeReset: true,
+        isAdminVerified: true
+    });
+    if ((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.affected_rows) {
+        const name = (_e = (_d = (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.update_users) === null || _d === void 0 ? void 0 : _d.returning[0]) === null || _e === void 0 ? void 0 : _e.name;
+        const body = "Please click on this link below to reset your password.";
         const mailOptions = {
             from: 'infotech@thelastcentre.com',
-            to: req.body.email,
-            subject: 'Verification of TLC Email',
+            to: email,
+            subject: 'Reset Password Link',
             text: '',
-            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name)
+            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyReset/${token}`, name, 'Reset Password', body)
         };
-        nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
+        nodeMailer_1.default.sendMail(mailOptions, (err) => {
             if (!err) {
                 return res.json({
                     status: 'success',
                     message: 'Mail sent successfully!'
                 });
             }
-            yield (0, getData_1.default)(mutations_1.DeleteUserByEmail, {
-                email: req.body.email
-            });
             return res.json({
                 status: 'error',
                 message: 'Something went wrong, Please try again!'
             });
-        }));
+        });
         return;
+    }
+    if (data === null || data === void 0 ? void 0 : data.errors) {
+        return res.json({
+            status: 'error',
+            message: (_f = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _f === void 0 ? void 0 : _f.message
+        });
     }
     return res.json({
         status: 'error',
-        message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message
+        message: 'User does not exists!'
     });
 });
-exports.default = signup;
+exports.default = forgotPass;
