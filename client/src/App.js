@@ -1,7 +1,7 @@
-import React from "react";
-import Main from "./Components/Main/Main";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Theme } from "./Theme";
+import React from 'react';
+import Main from './Components/Main/Main';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { Theme } from './Theme';
 
 function App() {
   return (
