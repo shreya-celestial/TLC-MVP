@@ -8,7 +8,7 @@ const verifyReset = async (req: Request, res: Response) => {
       token: req.params.token
     })
     if(data?.data?.users?.length){
-      return res.cookie('token', req?.params?.token).redirect(303, 'http://localhost:3000/')
+      return res.cookie('token', req?.params?.token).redirect(303, 'http://localhost:3000/resetPass')
     }
     return res.clearCookie('token').status(400).send('Error! Something went wrong. Please try again later.')
   }

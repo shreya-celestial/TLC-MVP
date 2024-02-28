@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -9,6 +9,7 @@ import {
   Select,
   TextField,
   Typography,
+  Button
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,17 +20,57 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import { useStyles } from "./VolunteerForm.styles";
+import { getLocationData } from "../../apis/global";
 
-function VolunteerForm() {
+function VolunteerForm({ submit, isRole = false }) {
+  const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
+  const [cities, setCities] = useState(null);
+  const [city, setCity] = useState(null)
+  const [state, setState] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [yearOfJoining, setYearOfJoining] = useState(currentYear);
+  const [gender, setGender] = useState('male');
+  const [role, setRole] = useState('volunteer');
+
   const classes = useStyles();
   const years = [];
-  const currentYear = new Date().getFullYear();
-  for (let year = "2000"; year <= currentYear; year++) {
+  for (let year = "2012"; year <= currentYear; year++) {
     years.push(year);
   }
+
+  useEffect(() => {
+    let timer;
+    timer = setTimeout(async () => {
+      if (pincode) {
+        const data = await getLocationData(pincode)
+        if (data?.results[pincode]?.length) {
+          setCity(data?.results[pincode][0].city)
+          setCities(data?.results[pincode])
+        }
+      }
+      else {
+        setCities(null)
+        setCity(null)
+        setState('')
+      }
+    }, 500)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [pincode])
+
+  useEffect(() => {
+    if (cities) {
+      const data = cities.find((pincodeCity) => pincodeCity.city === city)
+      setState(data.state)
+    }
+  }, [city])
+
+
   return (
-    <form className={classes.form}>
+    <form className={classes.form} onSubmit={submit}>
       {/*------personal information section------ */}
       <Box className={classes.formHeaderSection}>
         <Box className="formIconAndHeader">
@@ -40,11 +81,11 @@ function VolunteerForm() {
         <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="fullNameField">Name</FormLabel>
-            <TextField id="fullNameField" placeholder="Enter Your Full Name" />
+            <TextField id="fullNameField" placeholder="Enter Your Full Name" required name="name" />
           </FormControl>
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
-            <TextField type="email" id="emailField" placeholder="Enter Your Email Address" />
+            <TextField type="email" id="emailField" placeholder="Enter Your Email Address" required name="email" />
           </FormControl>
         </Box>
 
@@ -57,6 +98,8 @@ function VolunteerForm() {
               type={showPassword ? "text" : "password"}
               placeholder="Enter Your Password"
               id="passwordField"
+              name="password"
+              required
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -70,7 +113,7 @@ function VolunteerForm() {
           </FormControl>
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
-            <TextField id="phoneNumberField" placeholder="Enter Your Phone Number" />
+            <TextField id="phoneNumberField" placeholder="Enter Your Phone Number" required name="phone" />
           </FormControl>
         </Box>
         {/* date picker-DOB and Gender */}
@@ -78,14 +121,17 @@ function VolunteerForm() {
           <FormControl className={classes.formControl}>
             <FormLabel>Date of Birth</FormLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs} className={classes.datepicker}>
-              <DatePicker format="DD-MM-YY" />
+              <DatePicker format="DD-MM-YY" name="dob" required />
             </LocalizationProvider>
           </FormControl>
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
             <Select
               id="genderSelectBox"
-              value="male"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              name="gender"
+              required
               IconComponent={ExpandMoreOutlinedIcon}
               className={classes.selectBox}
               MenuProps={{
@@ -102,11 +148,14 @@ function VolunteerForm() {
 
         {/* role and year of joining */}
         <Box className={classes.formElementBox}>
-          <FormControl className={classes.formControl}>
+          {isRole && <FormControl className={classes.formControl}>
             <FormLabel htmlFor="roleSelectBox">Role</FormLabel>
             <Select
               id="roleSelectBox"
-              value="volunteer"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              name="role"
+              required
               IconComponent={ExpandMoreOutlinedIcon}
               className={classes.selectBox}
               MenuProps={{
@@ -118,12 +167,15 @@ function VolunteerForm() {
               <MenuItem value="volunteer">Volunteer</MenuItem>
               <MenuItem value="admin">Admin</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl>}
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="yearSelectBox">Year Of Joining TLC</FormLabel>
             <Select
               id="yearSelectBox"
-              value="2024"
+              name="yearOfJoining"
+              value={yearOfJoining}
+              onChange={(e) => setYearOfJoining(e.target.value)}
+              required
               IconComponent={ExpandMoreOutlinedIcon}
               className={classes.selectBox}
               MenuProps={{
@@ -147,37 +199,75 @@ function VolunteerForm() {
           <HomeOutlinedIcon />
           <Typography>Address Information</Typography>
         </Box>
-        {/* city */}
+        {/* location */}
         <FormControl className={classes.formControl}>
-          <FormLabel htmlFor="citySelectBox">City</FormLabel>
-          <Select
-            id="citySelectBox"
-            value="bangalore"
-            IconComponent={ExpandMoreOutlinedIcon}
-            className={classes.selectBox}
-            MenuProps={{
-              classes: {
-                paper: classes.selectDropdownMenu,
-              },
-            }}
-          >
-            <MenuItem value="bangalore">Bangalore</MenuItem>
-            <MenuItem value="mumbai">Mumbai</MenuItem>
-            <MenuItem value="haridwar">Haridwar</MenuItem>
-            <MenuItem value="pune">Pune</MenuItem>
-          </Select>
+          <FormLabel htmlFor="locationField">Address</FormLabel>
+          <TextField
+            id="locationField"
+            placeholder="Enter Your Address"
+            name="address"
+            required
+          />
         </FormControl>
-        {/* state and postal code */}
+        {/* postal code */}
+        <FormControl className={classes.formControl}>
+          <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
+          <TextField
+            id="postalCodeField"
+            placeholder="Enter Your Postal Code"
+            name="pincode"
+            type="number"
+            required
+            value={pincode}
+            onChange={(e) => setPincode(e.target.value)}
+          />
+        </FormControl>
+        {/* city and state */}
         <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl}>
-            <FormLabel htmlFor="stateField">State</FormLabel>
-            <TextField id="stateField" placeholder="Enter Your State" />
+            <FormLabel htmlFor="citySelectBox">City</FormLabel>
+            {!cities && <TextField
+              id="citySelectBox"
+              placeholder="Enter Your City"
+              name="city"
+              required
+            />}
+            {cities && <Select
+              id="citySelectBox"
+              value={city}
+              onChange={(e) => { setCity(e.target.value) }}
+              name="city"
+              required
+              IconComponent={ExpandMoreOutlinedIcon}
+              className={classes.selectBox}
+              MenuProps={{
+                classes: {
+                  paper: classes.selectDropdownMenu,
+                },
+              }}
+            >
+              {cities.map((city) => (
+                <MenuItem value={city?.city} key={city?.city}>{city?.city}</MenuItem>
+              ))}
+            </Select>}
           </FormControl>
           <FormControl className={classes.formControl}>
-            <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
-            <TextField id="postalCodeField" placeholder="Enter Your Postal Code" />
+            <FormLabel htmlFor="stateField">State</FormLabel>
+            <TextField
+              id="stateField"
+              placeholder="Enter Your State"
+              name="state"
+              value={state}
+              onChange={(e) => { setState(e.target.value) }}
+              required
+            />
           </FormControl>
         </Box>
+      </Box>
+      <Box className={classes.signUpBtn_loginLink}>
+        <Button disableRipple className={classes.signUpBtn} type="submit">
+          Sign up
+        </Button>
       </Box>
     </form>
   );

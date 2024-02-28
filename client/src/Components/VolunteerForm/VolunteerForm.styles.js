@@ -103,8 +103,27 @@ export const useStyles = makeStyles((theme) => ({
         },
       },
     },
-    datepicker:{
-      display:"none !important"
+    datepicker: {
+      display: "none !important"
     }
+  },
+  signUpBtn: {
+    height: "40px",
+    borderRadius: "5px !important",
+    textTransform: "capitalize !important",
+    backgroundColor: "#259311 !important",
+    color: "#ffffff !important",
+    fontWeight: "400 !important",
+
+    "&:hover": {
+      [theme.breakpoints.up("md")]: {
+        opacity: ".9",
+      },
+    },
+  },
+  signUpBtn_loginLink: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
   },
 }));

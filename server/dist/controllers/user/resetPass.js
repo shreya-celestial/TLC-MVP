@@ -17,7 +17,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/mutations");
 const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
-    const cookieStr = (_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.cookie;
+    const cookieStr = (_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.cookies;
     const cookies = cookieStr === null || cookieStr === void 0 ? void 0 : cookieStr.split('; ');
     let tokenCookie = cookies === null || cookies === void 0 ? void 0 : cookies.find((cookie) => (cookie.split('token=').length > 1));
     tokenCookie = tokenCookie === null || tokenCookie === void 0 ? void 0 : tokenCookie.split('token=')[1];
