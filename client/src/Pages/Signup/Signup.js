@@ -27,7 +27,11 @@ function Signup() {
       pincode: +(e.target.elements.pincode.value)
     }
     const data = await signup(body);
-    console.log(data)
+    if (data?.status === 'success') {
+      alert('Please check your email for verification');
+      return
+    }
+    alert(data?.message)
   }
 
   return (

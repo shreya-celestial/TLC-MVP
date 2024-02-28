@@ -25,8 +25,6 @@ const signup = async (req: Request, res: Response) => {
   };
 
   const data = await getData(mutation, variables);
-
-  console.log(data);
   if (!data.errors) {
     const mailOptions = {
       from: 'infotech@thelastcentre.com',
