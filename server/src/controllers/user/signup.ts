@@ -15,6 +15,7 @@ const signup = async (req: Request, res: Response) => {
 
   const variables = {
     ...req.body,
+    dob: new Date().toISOString().split('T')[0],
     password: encryptPass.toString(),
     isVerified: false,
     token: jwt.sign(
@@ -24,6 +25,8 @@ const signup = async (req: Request, res: Response) => {
   };
 
   const data = await getData(mutation, variables);
+
+  console.log(data);
   if (!data.errors) {
     const mailOptions = {
       from: 'infotech@thelastcentre.com',
@@ -47,6 +50,7 @@ const signup = async (req: Request, res: Response) => {
       await getData(DeleteUserByEmail, {
         email: req.body.email,
       });
+
       return res.status(400).json({
         status: 'error',
         message: 'Something went wrong, Please try again!',

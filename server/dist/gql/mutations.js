@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifyAndUpdatePass = exports.CheckAndUpdateToken = exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
 exports.InsertUserMutation = `
-  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!) {
-    insert_users(objects: { name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token}) {
+  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!,
+    $phoneNumber: String!,  $yearOfJoining: Int!, 
+    $location: String!, $city: String!, $state: String!, $pincode: Int!, 
+    $isAdmin: Boolean) {
+    insert_users(objects: { name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token, dob: $dob, gender: $gender, phoneNumber: $phoneNumber, yearOfJoining: $yearOfJoining, location: $location, city: $city, state: $state, pincode: $pincode}) {
       affected_rows
       returning {
         id
@@ -12,6 +15,14 @@ exports.InsertUserMutation = `
         password
         isVerified
         token
+        dob
+        gender
+        phoneNumber
+        yearOfJoining
+        location
+        city
+        state
+        pincode
       }
     }
   }

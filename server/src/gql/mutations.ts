@@ -1,6 +1,9 @@
 export const InsertUserMutation = `
-  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!) {
-    insert_users(objects: { name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token}) {
+  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!,
+    $phoneNumber: String!,  $yearOfJoining: Int!, 
+    $location: String!, $city: String!, $state: String!, $pincode: Int!, 
+    $isAdmin: Boolean) {
+    insert_users(objects: { name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token, dob: $dob, gender: $gender, phoneNumber: $phoneNumber, yearOfJoining: $yearOfJoining, location: $location, city: $city, state: $state, pincode: $pincode}) {
       affected_rows
       returning {
         id
@@ -9,6 +12,14 @@ export const InsertUserMutation = `
         password
         isVerified
         token
+        dob
+        gender
+        phoneNumber
+        yearOfJoining
+        location
+        city
+        state
+        pincode
       }
     }
   }
@@ -44,7 +55,7 @@ export const VerifyTokenAndUpdate = `
   }
 `;
 
-export const CheckAndUpdateToken =  `
+export const CheckAndUpdateToken = `
   mutation CheckAndUpdateToken($email: String!, $isVerified: Boolean!, $token: String!, $isPassToBeReset: Boolean!, $isAdminVerified: Boolean!) {
     update_users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}, isAdminVerified: {_eq: $isAdminVerified}}, _set: {token: $token, isPassToBeReset: $isPassToBeReset}) {
       returning {
