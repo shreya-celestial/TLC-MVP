@@ -24,7 +24,6 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
     const variables = Object.assign(Object.assign({}, req.body), { dob: new Date().toISOString().split('T')[0], password: encryptPass.toString(), isVerified: false, token: jsonwebtoken_1.default.sign({ tempKey: encryptPass.toString() }, process.env.JWT_SECRET_KEY || '') });
     const data = yield (0, getData_1.default)(mutation, variables);
-    console.log(data);
     if (!data.errors) {
         const mailOptions = {
             from: 'infotech@thelastcentre.com',
