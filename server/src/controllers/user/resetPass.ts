@@ -1,12 +1,12 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 import CryptoJS from "crypto-js";
 import getData from "../../utils/getData";
 import { VerifyAndUpdatePass } from "../../gql/mutations";
 
-const resetPass = async (req: Request, res: Response) => {
-  const cookieStr = req?.headers?.cookie;
+const resetPass = async (req: any, res: Response) => {
+  const cookieStr = req?.headers?.cookies;
   const cookies = cookieStr?.split('; ');
-  let tokenCookie = cookies?.find((cookie)=> (cookie.split('token=').length>1))
+  let tokenCookie = cookies?.find((cookie: string)=> (cookie.split('token=').length>1))
   tokenCookie = tokenCookie?.split('token=')[1]
 
   const password = CryptoJS.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '')
