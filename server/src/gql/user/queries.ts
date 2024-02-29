@@ -8,6 +8,7 @@ export const getUserByEmail = `
       isAdminVerified
       gender
       phoneNumber
+      email
       yearOfJoining
       location
       city
