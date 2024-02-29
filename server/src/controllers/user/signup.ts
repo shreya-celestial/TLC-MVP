@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
 import getData from '../../utils/getData';
-import { DeleteUserByEmail, InsertUserMutation } from '../../gql/mutations';
+import { DeleteUserByEmail, InsertUserMutation } from '../../gql/user/mutations';
 import generateEmail from '../../utils/generateMail';
 import transporter from '../../utils/nodeMailer';
+import { capitaliseStr, formatDate } from '../../utils/global';
 
 const signup = async (req: Request, res: Response) => {
   const mutation = InsertUserMutation;
@@ -15,7 +16,12 @@ const signup = async (req: Request, res: Response) => {
 
   const variables = {
     ...req.body,
-    dob: new Date().toISOString().split('T')[0],
+    name: capitaliseStr(req.body.name),
+    state: capitaliseStr(req.body.state),
+    location: capitaliseStr(req.body.location),
+    city: capitaliseStr(req.body.city),
+    email: (req.body.email).toLowerCase(),
+    dob: formatDate(req.body.dob),
     password: encryptPass.toString(),
     isVerified: false,
     token: jwt.sign(
@@ -33,7 +39,7 @@ const signup = async (req: Request, res: Response) => {
       text: '',
       html: generateEmail(
         `http://localhost:8080/user/verifyUser/${variables.token}`,
-        req.body.name
+        capitaliseStr(req.body.name)
       ),
     };
 

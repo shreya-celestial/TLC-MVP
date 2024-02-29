@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken"
 import getData from "../../utils/getData";
-import { CheckAndUpdateToken } from "../../gql/mutations";
+import { CheckAndUpdateToken } from "../../gql/user/mutations";
 import generateEmail from "../../utils/generateMail";
 import transporter from "../../utils/nodeMailer";
 

@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getData_1 = __importDefault(require("../../utils/getData"));
-const mutations_1 = require("../../gql/mutations");
+const mutations_1 = require("../../gql/user/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
+const global_1 = require("../../utils/global");
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const mutation = mutations_1.InsertUserMutation;
     const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
-    const variables = Object.assign(Object.assign({}, req.body), { dob: new Date().toISOString().split('T')[0], password: encryptPass.toString(), isVerified: false, token: jsonwebtoken_1.default.sign({ tempKey: encryptPass.toString() }, process.env.JWT_SECRET_KEY || '') });
+    const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isVerified: false, token: jsonwebtoken_1.default.sign({ tempKey: encryptPass.toString() }, process.env.JWT_SECRET_KEY || '') });
     const data = yield (0, getData_1.default)(mutation, variables);
     if (!data.errors) {
         const mailOptions = {
@@ -30,7 +31,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             to: req.body.email,
             subject: 'Verification of TLC Email',
             text: '',
-            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyUser/${variables.token}`, req.body.name),
+            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyUser/${variables.token}`, (0, global_1.capitaliseStr)(req.body.name)),
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {

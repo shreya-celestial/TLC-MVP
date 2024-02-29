@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import getData from "../../utils/getData"
-import { VerifyTokenAndUpdate } from "../../gql/mutations"
+import { VerifyTokenAndUpdate } from "../../gql/user/mutations"
 
 const verifyUser = async (req: Request, res: Response) => {
   if(req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL'){

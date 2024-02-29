@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import getData from "../../utils/getData"
-import { verifyResetQuery } from "../../gql/queries"
+import { verifyResetQuery } from "../../gql/user/queries"
 
 const verifyReset = async (req: Request, res: Response) => {
   if(req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL'){
