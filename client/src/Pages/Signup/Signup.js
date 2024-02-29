@@ -13,6 +13,7 @@ function Signup() {
     if (!e.target.elements.dob.value) {
       alert('Please enter your Date of birth')
     }
+
     const body = {
       email: e.target.elements.email.value,
       password: e.target.elements.password.value,

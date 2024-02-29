@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
-const queries_1 = require("../../gql/queries");
+const queries_1 = require("../../gql/user/queries");
 const verifyReset = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     if (req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL') {

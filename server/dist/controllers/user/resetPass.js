@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const getData_1 = __importDefault(require("../../utils/getData"));
-const mutations_1 = require("../../gql/mutations");
+const mutations_1 = require("../../gql/user/mutations");
 const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     const cookieStr = (_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.cookies;

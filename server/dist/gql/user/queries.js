@@ -9,6 +9,15 @@ exports.getUserByEmail = `
       password
       isVerified
       isAdminVerified
+      gender
+      phoneNumber
+      yearOfJoining
+      location
+      city
+      state
+      pincode
+      isAdmin
+      dob
     }
   }
 `;

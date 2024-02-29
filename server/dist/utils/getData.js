@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const getData = (query, variables) => __awaiter(void 0, void 0, void 0, function* () {
+const getData = (query, variables = {}) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield fetch(process.env.HASURA_DB_URL || '', {
             method: 'POST',

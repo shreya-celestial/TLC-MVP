@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getData_1 = __importDefault(require("../../utils/getData"));
-const mutations_1 = require("../../gql/mutations");
+const mutations_1 = require("../../gql/user/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
 const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const getData_1 = __importDefault(require("../../utils/getData"));
-const queries_1 = require("../../gql/queries");
+const queries_1 = require("../../gql/user/queries");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     // 1) Check if email and password exist

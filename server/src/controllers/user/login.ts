@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
 import getData from '../../utils/getData';
-import { getUserByEmail } from '../../gql/queries';
+import { getUserByEmail } from '../../gql/user/queries';
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
