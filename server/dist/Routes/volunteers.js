@@ -8,10 +8,14 @@ const getAllVolunteers_1 = __importDefault(require("../controllers/volunteers/ge
 const updateRole_1 = __importDefault(require("../controllers/volunteers/updateRole"));
 const deleteVolunteer_1 = __importDefault(require("../controllers/volunteers/deleteVolunteer"));
 const searchAndFilterVolunteer_1 = __importDefault(require("../controllers/volunteers/searchAndFilterVolunteer"));
+const inviteVolunteer_1 = __importDefault(require("../controllers/volunteers/inviteVolunteer"));
+const adminVerified_1 = __importDefault(require("../controllers/volunteers/adminVerified"));
 const router = express_1.default.Router();
 router.get('/', getAllVolunteers_1.default);
 // router.get('/filters', getFilteredVolunteers)
 router.put('/updateRole', updateRole_1.default);
 router.delete('/', deleteVolunteer_1.default);
 router.get('/searchAndFilter', searchAndFilterVolunteer_1.default);
+router.post('/invite', inviteVolunteer_1.default);
+router.put('/adminVerified', adminVerified_1.default);
 exports.default = router;

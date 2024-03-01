@@ -23,7 +23,7 @@ export const getVolunteers = `
 `;
 
 export const filterVolunteersQuery = `
-  query MyQuery($where: users_bool_exp = {}, $offset: Int!, $limit: Int!, $order_by: [users_order_by!]) {
+  query filterVolunteersQuery($where: users_bool_exp = {}, $offset: Int!, $limit: Int!, $order_by: [users_order_by!]) {
     users(where: $where, offset: $offset, limit: $limit, order_by: $order_by){
       gender
       email

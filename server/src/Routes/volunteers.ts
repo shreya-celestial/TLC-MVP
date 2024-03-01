@@ -4,6 +4,8 @@ import getFilteredVolunteers from "../controllers/volunteers/filteredVolunteers"
 import updateRole from "../controllers/volunteers/updateRole";
 import deleteVolunteer from "../controllers/volunteers/deleteVolunteer";
 import searchAndFilterVolunteer from "../controllers/volunteers/searchAndFilterVolunteer";
+import inviteVolunteer from "../controllers/volunteers/inviteVolunteer";
+import adminVerified from "../controllers/volunteers/adminVerified";
 
 const router = express.Router();
 
@@ -12,6 +14,7 @@ router.get('/', getAllVolunteers)
 router.put('/updateRole', updateRole)
 router.delete('/', deleteVolunteer)
 router.get('/searchAndFilter', searchAndFilterVolunteer)
-
+router.post('/invite', inviteVolunteer)
+router.put('/adminVerified', adminVerified)
 
 export default router
