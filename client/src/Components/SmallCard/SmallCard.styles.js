@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     height: '100px',
     borderRadius: '5px',
-    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 1px 8px',
+    boxShadow: '#d8d9d9 0px 4px 10px',
     padding: '10px',
     display: 'flex',
     justifyContent: 'center',
@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   iconContainer: {
     padding: '5px 20px',
-    borderRight: '1px solid',
+    borderRight: '2px solid #b5b5b5',
   },
   flex: {
     display: 'flex',
@@ -36,5 +36,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   meetings: {
     color: '#9580c5',
+  },
+  count: {
+    fontSize: '20px !important',
+    fontWeight: '600 !important',
   },
 }));

@@ -6,8 +6,6 @@ import classNames from 'classnames';
 const SmallCard = ({ data }) => {
   const classes = useStyles();
 
-  console.log(classes[data.type]);
-
   return (
     <Box className={classes.smallCard}>
       <Box className={classes.iconContainer}>
@@ -16,7 +14,9 @@ const SmallCard = ({ data }) => {
         />
       </Box>
       <Box className={classes.flex}>
-        <Typography>{data.count}</Typography>
+        <Typography className={classNames(classes.count, classes[data.type])}>
+          {data.count}
+        </Typography>
         <Typography>{data.title}</Typography>
       </Box>
     </Box>
