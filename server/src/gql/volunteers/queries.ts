@@ -45,3 +45,27 @@ export const filterVolunteersQuery = `
     }
   }
 `;
+
+export const searchAndFilterVolunteers = `
+  query SearchAndFilter($where: users_bool_exp = {}, $offset: Int!, $limit: Int!, $order_by: [users_order_by!]) {
+    users(where: $where, offset: $offset, limit: $limit, order_by: $order_by) {
+      gender
+      email
+      dob
+      city
+      isAdmin
+      isAdminVerified
+      location
+      name
+      phoneNumber
+      pincode
+      state
+      yearOfJoining
+    }
+    users_aggregate(where: $where) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
