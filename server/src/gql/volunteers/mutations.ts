@@ -6,9 +6,9 @@ export const UpdateVolunteerRoleByEmail = `
   }
 `;
 
-export const DeleteVolunteerByEmail = `
-  mutation DeleteByEmail($email: String!) {
-    delete_users(where: {email: {_eq: $email}, isVerified: {_eq: true}}) {
+export const DeleteVolunteersByEmail = `
+  mutation DeleteMultipleVolunteers($where: users_bool_exp!) {
+    delete_users(where: $where) {
       affected_rows
     }
   }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAdminVerification = exports.DeleteVolunteerByEmail = exports.UpdateVolunteerRoleByEmail = void 0;
+exports.updateAdminVerification = exports.DeleteVolunteersByEmail = exports.UpdateVolunteerRoleByEmail = void 0;
 exports.UpdateVolunteerRoleByEmail = `
   mutation UpdateByEmail($email: String!, $isAdmin: Boolean!) {
     update_users(where: {email: {_eq: $email}, isAdminVerified: {_eq: true}, isVerified: {_eq: true}}, _set: {isAdmin: $isAdmin}) {
@@ -8,9 +8,9 @@ exports.UpdateVolunteerRoleByEmail = `
     }
   }
 `;
-exports.DeleteVolunteerByEmail = `
-  mutation DeleteByEmail($email: String!) {
-    delete_users(where: {email: {_eq: $email}, isVerified: {_eq: true}}) {
+exports.DeleteVolunteersByEmail = `
+  mutation DeleteMultipleVolunteers($where: users_bool_exp!) {
+    delete_users(where: $where) {
       affected_rows
     }
   }
