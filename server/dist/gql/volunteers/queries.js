@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchAndFilterVolunteers = exports.filterVolunteersQuery = exports.getVolunteers = void 0;
+exports.VolunteerByEmail = exports.searchAndFilterVolunteers = exports.filterVolunteersQuery = exports.getVolunteers = void 0;
 exports.getVolunteers = `
   query Volunteers($offset: Int!, $limit: Int!) {
     users(offset: $offset, limit: $limit, where: {isVerified: {_eq: true}}, order_by: {id: desc}) {
@@ -67,6 +67,24 @@ exports.searchAndFilterVolunteers = `
       aggregate {
         count
       }
+    }
+  }
+`;
+exports.VolunteerByEmail = `
+  query SingleVolunteer($email: String!, $isVerified: Boolean = true) {
+    users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}}) {
+      gender
+      email
+      dob
+      city
+      isAdmin
+      isAdminVerified
+      location
+      name
+      phoneNumber
+      pincode
+      state
+      yearOfJoining
     }
   }
 `;

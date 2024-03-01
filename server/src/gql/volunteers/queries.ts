@@ -69,3 +69,22 @@ export const searchAndFilterVolunteers = `
     }
   }
 `;
+
+export const VolunteerByEmail = `
+  query SingleVolunteer($email: String!, $isVerified: Boolean = true) {
+    users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}}) {
+      gender
+      email
+      dob
+      city
+      isAdmin
+      isAdminVerified
+      location
+      name
+      phoneNumber
+      pincode
+      state
+      yearOfJoining
+    }
+  }
+`;

@@ -6,10 +6,12 @@ import deleteVolunteer from "../controllers/volunteers/deleteVolunteer";
 import searchAndFilterVolunteer from "../controllers/volunteers/searchAndFilterVolunteer";
 import inviteVolunteer from "../controllers/volunteers/inviteVolunteer";
 import adminVerified from "../controllers/volunteers/adminVerified";
+import getSingleVolunteer from "../controllers/volunteers/getSingleVolunteer";
 
 const router = express.Router();
 
 router.get('/', getAllVolunteers)
+router.get('/:email', getSingleVolunteer)
 // router.get('/filters', getFilteredVolunteers)
 router.put('/updateRole', updateRole)
 router.delete('/', deleteVolunteer)
