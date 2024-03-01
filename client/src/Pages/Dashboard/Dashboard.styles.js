@@ -7,24 +7,12 @@ export const useStyles = makeStyles((theme) => ({
       padding: '0px',
     },
   },
-  nav: {
-    backgroundColor: 'white',
-    color: 'green',
-    height: '70px',
-    boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-    zIndex: '100',
-    // borderBottom: '1px solid gray',
-  },
+
   body: {
     display: 'flex',
-    height: 'calc(100vh - 70px)',
+    height: 'calc(100vh - 71px)',
   },
-  sidebar: {
-    backgroundColor: 'white',
-    width: '250px',
-    // zIndex: '-1',
-    boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-  },
+
   main: {
     width: '100%',
   },

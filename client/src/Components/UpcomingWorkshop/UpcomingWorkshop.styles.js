@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     color: 'black',
     marginBottom: '20px',
   },
+
   date: {
     backgroundColor: '#7eaa55',
     width: '70px',
