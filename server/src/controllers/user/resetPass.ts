@@ -1,7 +1,7 @@
 import { Response } from "express"
 import CryptoJS from "crypto-js";
 import getData from "../../utils/getData";
-import { VerifyAndUpdatePass } from "../../gql/mutations";
+import { VerifyAndUpdatePass } from "../../gql/user/mutations";
 
 const resetPass = async (req: any, res: Response) => {
   const cookieStr = req?.headers?.cookies;

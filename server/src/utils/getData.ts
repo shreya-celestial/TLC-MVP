@@ -1,4 +1,4 @@
-const getData = async (query: string, variables: any) => {
+const getData = async (query: string, variables: any = {}) => {
   try{
     const response = await fetch(process.env.HASURA_DB_URL || '', {
       method: 'POST',
