@@ -88,3 +88,28 @@ export const VolunteerByEmail = `
     }
   }
 `;
+
+export const checkEmailAvailability = `
+  query checkEmailAvailability($email: String!) {
+    users(where: {email: {_eq: $email}}) {
+      email
+      name
+    }
+    Invitations(where: {email: {_eq: $email}}) {
+      name
+      email
+      isAccepted
+      created_at
+    }
+  }
+`;
+
+export const verifyVolunteerInvite = `
+  query VerifyInvite($token: String!, $isAccepted: Boolean = false) {
+    Invitations(where: {token: {_eq: $token}, isAccepted: {_eq: $isAccepted}}) {
+      created_at
+      email
+      isAdmin
+    }
+  }
+`;
