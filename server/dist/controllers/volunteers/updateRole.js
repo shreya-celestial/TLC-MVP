@@ -18,7 +18,7 @@ const updateRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     var _a, _b, _c;
     const { email, isAdmin } = req.body;
     const variables = { email, isAdmin };
-    const data = yield (0, getData_1.default)(mutations_1.UpdateVolunteerByEmail, variables);
+    const data = yield (0, getData_1.default)(mutations_1.UpdateVolunteerRoleByEmail, variables);
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
