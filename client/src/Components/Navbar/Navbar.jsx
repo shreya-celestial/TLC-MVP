@@ -1,16 +1,57 @@
-import { Box, Divider } from '@mui/material';
-import React from 'react';
-
+import {
+  AppBar,
+  Avatar,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import React, { useState } from 'react';
 import { useStyles } from './Navbar.styles';
-
-const Navbar = () => {
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+const Navbar = ({ handleSidebarOpen }) => {
+  const isLargerScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const [isSidebarOpen, setIsSideBarOpen] = useState(false);
   const classes = useStyles();
+  const handleSidebar = () => {
+    handleSidebarOpen();
+    setIsSideBarOpen(!isSidebarOpen);
+  };
 
   return (
-    <>
-      <Box className={classes.nav}>hello there</Box>
-      <Divider className={classes.divider} />
-    </>
+    <AppBar className={classes.root}>
+      <Toolbar className="toolbar">
+        <Box className={classes.logoAndHamburger}>
+          {!isLargerScreen && (
+            <IconButton
+              className="hamIconBtn"
+              disableRipple
+              onClick={handleSidebar}
+            >
+              {!isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
+            </IconButton>
+          )}
+          <img src="./images/tlc_logo.png" alt="The Last Center" />
+        </Box>
+        <Box className={classes.profile}>
+          <Avatar>J D</Avatar>
+          <Box className={classes.userNameAndUserRole}>
+            <Typography className="userName" sx={{ color: 'black' }}>
+              John Doe
+            </Typography>
+            <Typography className="userRole" sx={{ color: 'black' }}>
+              Admin
+            </Typography>
+          </Box>
+          <IconButton className={classes.arrowProfileIcon}>
+            <ExpandMoreIcon />
+          </IconButton>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 

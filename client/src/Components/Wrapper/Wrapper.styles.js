@@ -1,19 +1,18 @@
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme) => ({
-  root: {
-    minHeight: '100vh',
-    [theme.breakpoints.down('sm')]: {
-      padding: '0px',
-    },
-  },
-
-  body: {
-    display: 'flex',
-    height: 'calc(100vh - 72px)',
-  },
-
+  root: {},
   main: {
-    width: '100%',
+    marginTop: '64px',
+    width: 'calc(100% - 16%)',
+    height: 'calc(100vh - 64px)',
+    marginLeft: 'auto',
+    overflowY: 'scroll',
+    [theme.breakpoints.between('xs', 'md')]: {
+      width: '100%',
+    },
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
   },
 }));
