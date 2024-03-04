@@ -9,6 +9,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = __importDefault(require("./Routes/user"));
 const volunteers_1 = __importDefault(require("./Routes/volunteers"));
+const workshops_1 = __importDefault(require("./Routes/workshops"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -16,6 +17,7 @@ app.use((0, cors_1.default)());
 app.use((0, cookie_parser_1.default)());
 app.use('/user', user_1.default);
 app.use('/volunteers', volunteers_1.default);
+app.use('/workshops', workshops_1.default);
 app.listen(8080, () => {
     console.log('Listening on http://localhost:8080/');
 });
