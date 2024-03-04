@@ -4,15 +4,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { useStyles } from './PaginationComp.styles';
-import {
-  Box,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from '@mui/material';
+import { Box, IconButton, MenuItem, Select, Typography } from '@mui/material';
 
 const PaginationComp = ({
   updateCurrentPage,
@@ -22,7 +14,7 @@ const PaginationComp = ({
 }) => {
   const classes = useStyles();
 
-  const [selectedOption, setSelectedOption] = useState('option1');
+  const [selectedOption, setSelectedOption] = useState('10');
 
   const handleChangeRows = (e) => {
     setSelectedOption(Number(e.target.value));

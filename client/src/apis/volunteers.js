@@ -1,9 +1,6 @@
-export const volunteers = async function ({
-  signal,
-  page,
-  noOfRecords,
-  filters,
-}) {
+export const volunteers = async function ({ signal, queryKey }) {
+  const [page, noOfRecords, filters] = queryKey;
+
   let pageParam = page ? `?page=${page}` : `?page=${1}`;
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
@@ -15,19 +12,32 @@ export const volunteers = async function ({
     ? `&isAdminVerified=${filters.status === 'verified' ? 'true' : 'false'}`
     : '';
 
-  // let filterStr;
-  // if (filters) {
-  //   filterStr = `&value=${filters.search}&gender=${filters.gender}&isAdmin=${
-  //     filters.role === 'admin' ? 'true' : 'false'
-  //   }&isAdminVerified=${filters.status === 'verified' ? 'true' : 'false'}`;
-  // } else {
-  //   filterStr = '';
-  // }
-
   const res = await fetch(
     `http://localhost:8080/volunteers/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}`,
     signal
   );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+export const inviteVolunteer = async function (data) {
+  console.log(data);
+
+  const res = await fetch(`http://localhost:8080/volunteers/invite`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');

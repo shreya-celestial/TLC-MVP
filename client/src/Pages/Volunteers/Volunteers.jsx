@@ -16,8 +16,12 @@ import { useState } from 'react';
 import { volunteers } from '../../apis/volunteers';
 import PaginationComp from '../../Components/Table/PaginationComp';
 
+import TempModal from './TempModal';
+
 const Volunteers = () => {
   const classes = useStyles();
+
+  const [showModal, setShowModal] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -52,7 +56,6 @@ const Volunteers = () => {
     };
 
     for (const key in filtersObj) {
-      console.log(key);
       if (filtersObj[key] === 'all' || filtersObj[key] === '') {
         delete filtersObj[key];
       }
@@ -68,6 +71,14 @@ const Volunteers = () => {
     <Box className={classes.tableContainer}>
       <Box>
         <Typography component="h1">Volunteers</Typography>
+        <Button
+          onClick={() => {
+            setShowModal((prev) => !prev);
+          }}
+        >
+          Invite Volunteer
+        </Button>
+        {showModal && <TempModal />}
         <Box>
           <form onSubmit={handleSubmit}>
             <TextField
