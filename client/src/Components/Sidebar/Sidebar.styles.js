@@ -1,33 +1,47 @@
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme) => ({
-  firstLink: {
-    marginTop: '15px !important',
+  root: {
+    '& .MuiDrawer-paper': {
+      border: 'none',
+      boxShadow: '0px 4px 5px 0px rgba(0, 0, 0, 0.25)',
+      width: '16%',
+      padding: '20px 10px',
+      gap: '5px',
+      [theme.breakpoints.down('sm')]: {
+        width: '60%',
+      },
+      [theme.breakpoints.between('sm', 'md')]: {
+        width: '40%',
+      },
+    },
   },
-
-  sidebar: {
-    backgroundColor: 'white',
-    width: '270px',
-    boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-    display: 'block !important',
+  sideBarLinks: {
+    padding: '0px !important',
+    alignItems: 'flex-start !important',
 
     '& a': {
-      fontSize: '14px',
-      color: '#464846',
-      fontWeight: '500',
-      textDecoration: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      margin: '0px 20px 5px 13px',
-      padding: '8px 10px',
-      width: '195px',
-      // backgroundColor: 'green',
+      padding: '10px',
+      gap: '15px',
+      height: '35px',
+      borderRadius: '5px',
+      '&:hover': {
+        backgroundColor: 'rgba(37,147,17,10%)',
+      },
     },
-    '& .active': {
-      backgroundColor: '#e9f4e7 ',
-      // padding: '8px 20px 8px 5px',
-      borderRadius: '8px',
+    '& .sidebarIcon': {
+      minWidth: 'max-content',
+    },
+    '& .sidebarText': {
+      '& span': {
+        fontSize: '14px',
+        fontWeight: '500',
+      },
+    },
+  },
+  navlink: {
+    '&.active': {
+      backgroundColor: 'rgba(37,147,17,10%)',
     },
   },
 }));

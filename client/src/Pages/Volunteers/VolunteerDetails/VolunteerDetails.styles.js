@@ -1,31 +1,78 @@
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme) => ({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '40px',
+  root: {
+    height: '100%',
+    position: 'relative',
   },
-  formHeaderSection: {
+
+  HeaderMainContent: {
+    padding: '20px',
+    height: 'calc(100% - 45px )',
+    overflowY: 'scroll',
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
-    '& .formIconAndHeader': {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '5px',
-      '& p': {
-        fontWeight: '500',
-        fontSize: '16px',
-        lineHeight: 'normal',
-      },
-      '& svg': {
-        width: '20px',
-        height: '20px',
-        color: '#2F2F2F',
-      },
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '10px',
     },
   },
+  actionBar: {
+    background: '#FFFFFF',
+    position: 'absolute',
+    bottom: '0',
+    height: '45px',
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 25px',
+    gap: '15px',
+    boxShadow: '-4px 0px 5px 0px rgba(0, 0, 0, 0.25)',
+    '& button': {
+      height: '30px',
+      minWidth: '75px',
+      padding: '0 10px',
+      borderRadius: '5px',
+      textTransform: 'capitalize',
+      fontSize: '12px',
+    },
+    '& .cancelBtn': {
+      background: `${theme.palette.primaryGray} !important`,
+      color: theme.palette.text.primary,
+    },
+    '& .saveBtn': {
+      background: `${theme.palette.primaryGreen} !important`,
+      color: '#FFFFFF',
+    },
+    '& .editBtn': {
+      background: `${theme.palette.primaryBlue} !important`,
+      color: '#FFFFFF',
+    },
+  },
+  // main content
+  mainContent: {
+    width: '70%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '30px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    '& p.heading': {
+      fontSize: '14px',
+      fontWeight: '600',
+    },
+  },
+  HeadingAndElementBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+
   formElementBox: {
     display: 'flex',
     gap: '20px',
@@ -69,6 +116,15 @@ export const useStyles = makeStyles((theme) => ({
           color: '#2F2F2F',
         },
       },
+      '&.Mui-disabled': {
+        background: '#E0E0E0 !important',
+        '& input.Mui-disabled': {
+          '-webkit-text-fill-color': '#696969',
+        },
+        '& .MuiInputAdornment-root button svg': {
+          color: '#696969',
+        },
+      },
     },
   },
   selectBox: {
@@ -107,27 +163,12 @@ export const useStyles = makeStyles((theme) => ({
       display: 'none !important',
     },
   },
-  signUpBtn: {
-    height: '40px',
-    borderRadius: '5px !important',
-    textTransform: 'capitalize !important',
-    backgroundColor: '#259311 !important',
-    color: '#ffffff !important',
-    fontWeight: '400 !important',
-
-    '&:hover': {
-      [theme.breakpoints.up('md')]: {
-        opacity: '.9',
-      },
+  // history
+  VolunteerHistory: {
+    '& .historyHeading': {
+      fontSize: '14px',
+      fontWeight: '600',
+      marginBottom: '20px',
     },
-  },
-  signUpBtn_loginLink: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-  },
-  disabled: {
-    // backgroundColor: 'gray',
-    // color: 'black',
   },
 }));
