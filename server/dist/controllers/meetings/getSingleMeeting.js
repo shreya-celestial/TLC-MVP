@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
-const queries_1 = require("../../gql/enrollments/queries");
-const singleEnrollment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const queries_1 = require("../../gql/meetings/queries");
+const getSingleMeeting = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { id } = req === null || req === void 0 ? void 0 : req.params;
-    const data = yield (0, getData_1.default)(queries_1.enrollmentByPK, { id });
+    const data = yield (0, getData_1.default)(queries_1.getMeetingByPk, { id });
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
@@ -27,7 +27,7 @@ const singleEnrollment = (req, res) => __awaiter(void 0, void 0, void 0, functio
     return res.status(200).json({
         status: 'success',
         message: 'Data fetched successfully!',
-        data: (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.enrollments_by_pk
+        data: (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.meetings_by_pk
     });
 });
-exports.default = singleEnrollment;
+exports.default = getSingleMeeting;
