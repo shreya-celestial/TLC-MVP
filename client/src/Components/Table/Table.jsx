@@ -1,35 +1,58 @@
-import { AgGridReact } from 'ag-grid-react'; // AG Grid Component
-import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the grid
-import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the grid
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { useState } from 'react';
+import colDefs from './coldefs';
+import { useStyles } from './Table.styles';
+import { Box } from '@mui/material';
 
-const Table = () => {
-  const CustomButtonComponent = (props) => {
-    return <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />;
+const Table = ({ data, isPending }) => {
+  let rowData;
+  if (data) rowData = data.data.users;
+
+  const classes = useStyles();
+
+  const rowHeight = 35;
+
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const onSelectionChanged = () => {
+    const selectedNodes = gridApi.getSelectedNodes();
+    const selectedData = selectedNodes.map((node) => node.data);
+    setSelectedRows(selectedData);
   };
 
-  // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([
-    { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-    { make: 'Ford', model: 'F-Series', price: 33850, electric: false },
-    { make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
-  ]);
+  const gridOptions = {
+    rowSelection: 'multiple', // Enable multiple row selection
+    onSelectionChanged: onSelectionChanged,
+  };
 
-  // Column Definitions: Defines the columns to be displayed.
-  const [colDefs, setColDefs] = useState([
-    { field: 'make', cellRenderer: CustomButtonComponent },
-    { field: 'model', filter: false, editable: true },
-    { field: 'price', filter: false, editable: true },
-    { field: 'electric', filter: false, editable: true },
-  ]);
+  // console.log(selectedRows);
+
+  let gridApi;
 
   return (
-    // wrapping container with theme & size
     <div
       className="ag-theme-quartz" // applying the grid theme
-      style={{ height: 500 }} // the grid will fill the size of the parent container
+      style={{ height: 405 }} // the grid will fill the size of the parent container
     >
-      <AgGridReact rowData={rowData} columnDefs={colDefs} />
+      {isPending && <Box className={classes.tableSkeleton}>loading</Box>}
+      {data && (
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={colDefs}
+          gridOptions={gridOptions}
+          getRowClass={() => classes.row}
+          getRowHeight={() => rowHeight}
+          headerHeight={35}
+          onGridReady={(params) => (gridApi = params.api)}
+
+          // rowStyle={{ background: 'black' }}
+          // pagination={true}
+          // paginationPageSize={10}
+          // onPaginationChanged={onPageClicked}
+        ></AgGridReact>
+      )}
     </div>
   );
 

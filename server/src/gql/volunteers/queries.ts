@@ -23,7 +23,7 @@ export const getVolunteers = `
 `;
 
 export const filterVolunteersQuery = `
-  query MyQuery($where: users_bool_exp = {}, $offset: Int!, $limit: Int!, $order_by: [users_order_by!]) {
+  query filterVolunteersQuery($where: users_bool_exp = {}, $offset: Int!, $limit: Int!, $order_by: [users_order_by!]) {
     users(where: $where, offset: $offset, limit: $limit, order_by: $order_by){
       gender
       email
@@ -66,6 +66,50 @@ export const searchAndFilterVolunteers = `
       aggregate {
         count
       }
+    }
+  }
+`;
+
+export const VolunteerByEmail = `
+  query SingleVolunteer($email: String!, $isVerified: Boolean = true) {
+    users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}}) {
+      gender
+      email
+      dob
+      city
+      isAdmin
+      isAdminVerified
+      location
+      name
+      phoneNumber
+      pincode
+      state
+      yearOfJoining
+    }
+  }
+`;
+
+export const checkEmailAvailability = `
+  query checkEmailAvailability($email: String!) {
+    users(where: {email: {_eq: $email}}) {
+      email
+      name
+    }
+    Invitations(where: {email: {_eq: $email}}) {
+      name
+      email
+      isAccepted
+      created_at
+    }
+  }
+`;
+
+export const verifyVolunteerInvite = `
+  query VerifyInvite($token: String!, $isAccepted: Boolean = false) {
+    Invitations(where: {token: {_eq: $token}, isAccepted: {_eq: $isAccepted}}) {
+      created_at
+      email
+      isAdmin
     }
   }
 `;

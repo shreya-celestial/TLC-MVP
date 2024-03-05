@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
 import getData from "../../utils/getData"
-import { UpdateVolunteerByEmail } from "../../gql/volunteers/mutations"
+import { UpdateVolunteerRoleByEmail } from "../../gql/volunteers/mutations"
 
 const updateRole = async (req: Request, res: Response) => {
   const { email, isAdmin } = req.body
   const variables = {email,isAdmin}
-  const data = await getData(UpdateVolunteerByEmail, variables)
+  const data = await getData(UpdateVolunteerRoleByEmail, variables)
 
   if(data?.errors)
   {

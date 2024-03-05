@@ -1,10 +1,28 @@
 import { Request, Response } from "express"
 import getData from "../../utils/getData"
-import { DeleteVolunteerByEmail } from "../../gql/volunteers/mutations"
+import { DeleteVolunteersByEmail } from "../../gql/volunteers/mutations"
 
 const deleteVolunteer = async (req: Request, res: Response) => {
-  const { email } = req.body
-  const data = await getData(DeleteVolunteerByEmail, {email})
+  const { emails } = req.body
+
+  const volunteers = emails.map((email: string)=>{
+    return {
+      email: {
+        _eq: email
+      }
+    }
+  })
+
+  const variables = {
+    where: {
+      _or: [...volunteers], 
+      isVerified: {
+        _eq: true
+      }
+    }
+  }
+
+  const data = await getData(DeleteVolunteersByEmail, variables)
 
   if(data?.errors)
   {
@@ -18,13 +36,13 @@ const deleteVolunteer = async (req: Request, res: Response) => {
   {
     return res.status(200).json({
       status: 'error',
-      message: "User deleted successfully!"
+      message: "Users deleted successfully!"
     })
   }
 
   return res.status(400).json({
     status: 'error',
-    message: "User you are deleting is not found at the moment. Please try again later!"
+    message: "Users you are deleting is not found at the moment. Please try again later!"
   })
 
 }
