@@ -11,6 +11,9 @@ import VolunteerDetails from '../../Pages/Volunteers/VolunteerDetails/VolunteerD
 import DeletePopup from '../DeletePopup/DeletePopup';
 import InvitePopup from '../../Pages/Volunteers/InvitePopup/InvitePopup';
 import VerifyPopup from '../../Pages/Volunteers/VerifyPopup/VerifyPopup';
+import WorkshopsDetails from '../../Pages/Workshops/WorkshopsDetails/WorkshopsDetails';
+import AutocompletePopup from '../AutocompletePopup/AutocompletePopup';
+import InfoTable from '../InfoTable/InfoTable';
 
 function Main() {
   return (
@@ -27,6 +30,9 @@ function Main() {
           <Route exact path="/delete" element={<DeletePopup />} />
           <Route exact path="/invite" element={<InvitePopup />} />
           <Route exact path="/verify" element={<VerifyPopup />} />
+          <Route exact path="/worskhopdetail" element={<WorkshopsDetails />} />
+          <Route exact path="/autocomplete" element={<AutocompletePopup />} />
+          <Route exact path="/infotable" element={<InfoTable />} />
         </Routes>
       </Wrapper>
     </BrowserRouter>

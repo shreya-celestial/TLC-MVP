@@ -43,7 +43,7 @@ const dummyData = {
 };
 
 function VolunteerDetails() {
-  const isView = false;
+  const isView = true;
   const isAdmin = true;
   const isValidUser = false; //for password field only show to valid user while edit profile
 
