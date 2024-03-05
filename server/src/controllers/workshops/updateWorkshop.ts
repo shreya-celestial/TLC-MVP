@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { capitaliseStr, formatDate } from "../../utils/global"
 import getData from "../../utils/getData"
-import { updateWorkshopById } from "../../gql/workshops/mutations"
+import { updateWorkshopById, updateWorkshopMeetings } from "../../gql/workshops/mutations"
 
 const updateWorkshop = async (req: Request, res: Response) => {
   const vols = req.body.vols.map((vol: string)=>{
@@ -16,8 +16,13 @@ const updateWorkshop = async (req: Request, res: Response) => {
       workshop_id: req?.params?.id
     }
   })
+  const participants = req?.body?.participants?.map((part: any)=>{
+    return {
+      enrollment_id: part, 
+      workshop_id: req?.params?.id
+    }
+  })
   const variables = {
-    ...req.body,
     id: req.params.id,
     concluding_date: formatDate(req.body.concluding_date),
     end_date: formatDate(req.body.end_date),
@@ -26,7 +31,9 @@ const updateWorkshop = async (req: Request, res: Response) => {
     types: capitaliseStr(req.body.types),
     venue_city: capitaliseStr(req.body.venue_city),
     vols,
-    leads
+    leads, 
+    participants,
+    workshop_id: null
   }
   const data = await getData(updateWorkshopById, variables)
   if(data?.errors)
@@ -36,9 +43,34 @@ const updateWorkshop = async (req: Request, res: Response) => {
       message: data?.errors[0]?.message
     })
   }
-  return res.status(200).json({
-    status: 'success',
-    message: 'Workshop updated successfully!'
+  const meeting = req?.body?.meetings?.map((meeting: any)=>{
+    return {
+      id: {
+        _eq: meeting
+      }
+    }
+  })
+  const meetingData = await getData(updateWorkshopMeetings, {
+    meeting, 
+    id: req?.params?.id
+  })
+  if(meetingData?.errors)
+  {
+    return res.status(400).json({
+      status: 'error',
+      message: meetingData?.errors[0]?.message
+    })
+  }
+  if(meetingData?.data?.update_meetings?.affected_rows)
+  {
+    return res.status(200).json({
+      status: 'success',
+      message: 'Workshop updated successfully!'
+    })
+  }
+  return res.status(400).json({
+    status: 'error',
+    message: 'Something went wrong. Please try again later!'
   })
 }
 

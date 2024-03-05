@@ -17,7 +17,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/meetings/queries");
 const allPageMeetings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
-    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, start_date, end_date, value } = req === null || req === void 0 ? void 0 : req.query;
+    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, start_date, end_date, value, isNull } = req === null || req === void 0 ? void 0 : req.query;
     let order = {
         id: "desc"
     };
@@ -132,6 +132,11 @@ const allPageMeetings = (req, res) => __awaiter(void 0, void 0, void 0, function
                     }
                 }
             ] });
+    }
+    if (isNull) {
+        filters = Object.assign(Object.assign({}, filters), { workshop_id: {
+                _is_null: true
+            } });
     }
     const variables = {
         offset: (page - 1) * no_of_records,

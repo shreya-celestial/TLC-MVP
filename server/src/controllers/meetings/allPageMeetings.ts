@@ -11,7 +11,8 @@ const allPageMeetings = async (req: Request, res: Response) => {
     order_of_sort,
     start_date,
     end_date,
-    value 
+    value,
+    isNull 
   } = req?.query
 
   let order: any = {
@@ -150,6 +151,15 @@ const allPageMeetings = async (req: Request, res: Response) => {
           }
         }
       ]
+    }
+  }
+  if(isNull)
+  {
+    filters = {
+      ...filters,
+      workshop_id: {
+        _is_null: true
+      }
     }
   }
 
