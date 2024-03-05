@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPageWorkshops = void 0;
+exports.workshopDetails = exports.getPageWorkshops = void 0;
 exports.getPageWorkshops = `
   query AllWorkshops($offset: Int!, $limit: Int!) {
     workshops(offset: $offset, limit: $limit) {
@@ -25,6 +25,49 @@ exports.getPageWorkshops = `
     workshops_aggregate {
       aggregate {
         count
+      }
+    }
+  }
+`;
+exports.workshopDetails = `
+  query SingleWorkshop($id: Int!) {
+    workshops(where: {id: {_eq: $id}}) {
+      concluding_date
+      end_date
+      id
+      start_date
+      types
+      venue
+      venue_city
+      workshop_lead_volunteers {
+        user {
+          city
+          dob
+          email
+          gender
+          isAdmin
+          isAdminVerified
+          location
+          name
+          phoneNumber
+          pincode
+          state
+        }
+      }
+      workshop_volunteers {
+        user {
+          city
+          dob
+          email
+          gender
+          isAdmin
+          isAdminVerified
+          location
+          name
+          phoneNumber
+          pincode
+          state
+        }
       }
     }
   }

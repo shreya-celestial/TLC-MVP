@@ -26,3 +26,48 @@ export const getPageWorkshops = `
     }
   }
 `;
+
+export const workshopDetails = `
+  query SingleWorkshop($id: Int!) {
+    workshops(where: {id: {_eq: $id}}) {
+      concluding_date
+      end_date
+      id
+      start_date
+      types
+      venue
+      venue_city
+      workshop_lead_volunteers {
+        user {
+          city
+          dob
+          email
+          gender
+          isAdmin
+          isAdminVerified
+          location
+          name
+          phoneNumber
+          pincode
+          state
+        }
+      }
+      workshop_volunteers {
+        user {
+          city
+          dob
+          email
+          gender
+          isAdmin
+          isAdminVerified
+          location
+          name
+          phoneNumber
+          pincode
+          state
+        }
+      }
+    }
+  }
+`;
+
