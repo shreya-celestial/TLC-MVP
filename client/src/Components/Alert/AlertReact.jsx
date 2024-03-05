@@ -8,22 +8,19 @@ const useStyles = makeStyles((theme) => ({
   },
   alert: {
     position: 'fixed',
-    top: '0px',
-    zIndex: '11',
+    top: '80px',
+    zIndex: '999',
   },
 }));
 
 const AlertReact = ({ type, message, removeAlertType }) => {
   const [isVisible, setIsVisible] = useState(true);
-  console.log('alerting');
-  console.log(isVisible);
-
   const classes = useStyles();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      removeAlertType();
+      if (removeAlertType) removeAlertType();
     }, 5000);
 
     return () => {
@@ -34,9 +31,11 @@ const AlertReact = ({ type, message, removeAlertType }) => {
   return (
     <>
       {isVisible && (
-        <Alert className={classes.alert} severity={type}>
-          {message}
-        </Alert>
+        <>
+          <Alert className={classes.alert} severity={type}>
+            {message}
+          </Alert>
+        </>
       )}
     </>
   );

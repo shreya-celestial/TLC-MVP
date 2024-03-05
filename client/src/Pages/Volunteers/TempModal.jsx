@@ -18,12 +18,9 @@ const TempModal = () => {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: inviteVolunteer,
     onSuccess: (data) => {
-      // Access the mutated response here
-      console.log('Mutated response:', data);
       alert(data.message);
     },
     onError: (error) => {
-      console.log(error.info.message);
       alert(error.info.message);
     },
   });
