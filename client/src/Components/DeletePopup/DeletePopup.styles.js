@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   TitleAndClose: {
-    height: '40px',
+    height: '45px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -30,9 +30,9 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   DialogActions: {
-    height: '40px',
+    height: '45px',
     borderTop: '1px solid #C6C6C6',
-    padding: '0 20px !important',
+    padding: '0px 20px !important',
     gap: '15px',
     '& button': {
       height: '30px',
@@ -40,7 +40,7 @@ export const useStyles = makeStyles((theme) => ({
       borderRadius: '5px',
       textTransform: 'capitalize',
       fontSize: '12px !important',
-      minWidth: '75px !important',
+      minWidth: 'auto !important',
       marginLeft: '0px !important',
       fontWeight: '500 !important',
     },

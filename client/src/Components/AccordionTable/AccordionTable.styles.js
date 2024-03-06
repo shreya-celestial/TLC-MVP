@@ -5,6 +5,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: '#EFEFEF',
     borderRadius: '5px !important',
     boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, .15) !important',
+    '&::before': {
+      background: 'transparent !important',
+    },
 
     '& .MuiCollapse-vertical': {
       maxHeight: '300px',
@@ -77,12 +80,10 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '12px',
       color: '#6C6C6C',
       fontWeight: '500',
+      textTransform: 'capitalize',
     },
     '& .ag-cell-focus': {
-      borderColor: 'transparent !important',
-    },
-    '& .ag-theme-material .ag-cell-focus ': {
-      backgroundColor: 'red !important',
+      borderColor: 'transparent',
     },
 
     '& .ag-overlay-wrapper': {

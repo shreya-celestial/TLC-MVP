@@ -40,8 +40,8 @@ import AlertReact from '../../../Components/Alert/AlertReact';
 
 function VolunteerDetails() {
   const classes = useStyles();
-
   let isView;
+
   const isAdmin = true;
   const isValidUser = false; // for password field only show to valid user while edit profile
 

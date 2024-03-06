@@ -1,13 +1,17 @@
+
 import React, { useState } from 'react';
+
 import { useStyles } from './Signup.styles';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import VolunteerForm from '../../Components/VolunteerForm/VolunteerForm';
+
 import { signup, signupInvite } from '../../apis/user';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { getCookie, deleteCookie } from '../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import validator from 'validator';
+
 
 function Signup() {
   const classes = useStyles();
@@ -40,10 +44,12 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!e.target.elements.dob.value) {
+
       setAlertType({
         type: 'error',
         message: 'Please enter your Date of birth',
       });
+
     }
 
     if (!validator.isMobilePhone(e.target.elements.phone.value)) {
@@ -94,6 +100,7 @@ function Signup() {
       pincode: +e.target.elements.pincode.value,
     };
 
+
     if (token) {
       setSignupType('invite');
       mutate({ ...body, token, isAdmin, email });
@@ -101,6 +108,7 @@ function Signup() {
       setSignupType('normal');
       mutate({ body });
     }
+
   };
 
   return (
@@ -123,7 +131,7 @@ function Signup() {
           <VolunteerForm submit={handleSubmit} isPending={isPending} />
           <Box className={classes.signUpBtn_loginLink}>
             <Typography className={classes.loginLink}>
-              Already have an account?
+              Already have an account?{' '}
               <Link to={'/'} className="login">
                 Log in
               </Link>

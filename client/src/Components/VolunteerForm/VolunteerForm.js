@@ -21,11 +21,15 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerForm.styles';
 import { getLocationData } from '../../apis/global';
+
 import { getCookie } from '../../utils/utils';
 
+
 function VolunteerForm({ submit, isRole = false, isPending }) {
+
   const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [cities, setCities] = useState(null);
   const [city, setCity] = useState(null);
   const [state, setState] = useState('');
@@ -61,7 +65,9 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
     };
   }, [pincode]);
 
+
   const email = getCookie('email')?.replace('%40', '@');
+
 
   useEffect(() => {
     if (cities) {
@@ -92,19 +98,18 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
             <TextField
-              // disabled={email ? true : false}
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
-              // value={email ? email : ''}
               className={email ? classes.disabled : false}
+
             />
           </FormControl>
         </Box>
 
-        {/*password and  phone number */}
+        {/*password and  confirm password */}
 
         <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl} required>
@@ -134,7 +139,42 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
             />
           </FormControl>
 
+          <FormControl className={classes.formControl} required>
+            <FormLabel htmlFor="confirmPasswordField">
+              Confirm Password
+            </FormLabel>
+            <TextField
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Enter Your Confirm Password"
+              id="confirmPasswordField"
+              name="confirmPassword"
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      disableRipple
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <VisibilityOutlinedIcon />
+                      ) : (
+                        <VisibilityOffOutlinedIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+
+            />
+          </FormControl>
+        </Box>
+        {/* phone number and  date picker-DOB */}
+        <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl}>
+
             <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
             <TextField
               id="phoneNumberField"
@@ -142,10 +182,8 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
               required
               name="phone"
             />
+
           </FormControl>
-        </Box>
-        {/* date picker-DOB and Gender */}
-        <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl}>
             <FormLabel>Date of Birth</FormLabel>
             <LocalizationProvider
@@ -154,26 +192,6 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
             >
               <DatePicker name="dob" required />
             </LocalizationProvider>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
-            <Select
-              id="genderSelectBox"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              name="gender"
-              required
-              IconComponent={ExpandMoreOutlinedIcon}
-              className={classes.selectBox}
-              MenuProps={{
-                classes: {
-                  paper: classes.selectDropdownMenu,
-                },
-              }}
-            >
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
-            </Select>
           </FormControl>
         </Box>
 
@@ -201,6 +219,7 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
               </Select>
             </FormControl>
           )}
+
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="yearSelectBox">Year Of Joining TLC</FormLabel>
             <Select
@@ -222,6 +241,27 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
                   {item}
                 </MenuItem>
               ))}
+            </Select>
+          </FormControl>
+
+          <FormControl className={classes.formControl}>
+            <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
+            <Select
+              id="genderSelectBox"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              name="gender"
+              required
+              IconComponent={ExpandMoreOutlinedIcon}
+              className={classes.selectBox}
+              MenuProps={{
+                classes: {
+                  paper: classes.selectDropdownMenu,
+                },
+              }}
+            >
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
             </Select>
           </FormControl>
         </Box>
