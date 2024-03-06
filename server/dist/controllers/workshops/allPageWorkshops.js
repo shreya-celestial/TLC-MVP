@@ -17,7 +17,7 @@ const queries_1 = require("../../gql/workshops/queries");
 const global_1 = require("../../utils/global");
 const allPageWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e;
-    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, pastOrUpcoming, value } = req.query;
+    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, pastOrUpcoming, start, end, value } = req.query;
     let page = 1;
     let no_of_records = 20;
     let filters = {};
@@ -38,6 +38,38 @@ const allPageWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, functio
             }
         };
     }
+    if (start && end) {
+        let strtDte = start;
+        let starting = (0, global_1.formatDate)(strtDte);
+        let endDte = end;
+        let ending = (0, global_1.formatDate)(endDte);
+        filters = {
+            start_date: {
+                _gte: starting
+            },
+            end_date: {
+                _lte: ending
+            }
+        };
+    }
+    else if (start) {
+        let strtDte = start;
+        let starting = (0, global_1.formatDate)(strtDte);
+        filters = {
+            start_date: {
+                _gte: starting
+            }
+        };
+    }
+    else if (end) {
+        let endDte = end;
+        let ending = (0, global_1.formatDate)(endDte);
+        filters = {
+            end_date: {
+                _lte: ending
+            }
+        };
+    }
     if (value) {
         let val = value;
         val = (0, global_1.capitaliseStr)(val);
@@ -51,7 +83,12 @@ const allPageWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     venue_city: {
                         _like: `${val}%`
                     }
-                }
+                },
+                {
+                    venue: {
+                        _like: `${val}%`
+                    }
+                },
             ] });
     }
     if (sort_by && order_of_sort) {
