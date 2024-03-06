@@ -5,16 +5,6 @@ const IsAdminComp = (params) => {
   return `${params.value ? 'Admin' : 'Volunteer'}`;
 };
 
-const IsAdminVerifiedComp = (params) => {
-  const classes = useStyles();
-
-  return (
-    <p className={params.value ? classes.verified : classes.pending}>
-      {params.value ? 'Verified' : 'Pending'}
-    </p>
-  );
-};
-
 const LocationComp = (params) => {
   return (
     <p>
@@ -56,7 +46,6 @@ const colDefs = [
     field: 'isAdminVerified',
     filter: false,
     editable: false,
-    cellRenderer: IsAdminVerifiedComp,
     headerName: 'Status',
     cellStyle: {
       display: 'flex',

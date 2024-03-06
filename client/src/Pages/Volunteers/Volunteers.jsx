@@ -16,19 +16,50 @@ import { useState } from 'react';
 import { volunteers } from '../../apis/volunteers';
 import PaginationComp from '../../Components/Table/PaginationComp';
 
-import TempModal from './TempModal';
+import InvitePopup from './InvitePopup/InvitePopup';
+import DeletePopup from './../../Components/DeletePopup/DeletePopup';
+import VerifyPopup from './VerifyPopup/VerifyPopup';
+
+import { useNavigate } from 'react-router-dom';
+import AlertReact from '../../Components/Alert/AlertReact';
+import { useAlerts } from '../../hooks/useAlerts';
 
 const Volunteers = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
+  // const [showInviteModal, setShowInviteModal] = useState(false);
+  // const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [showVerifyStatusModal, setShowVerifyStatusModal] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filters, setFilters] = useState({});
 
+  const [selectedRows, setSelectedRows] = useState([]);
+  // const [rowChanged, setRowChanged] = useState(true);
+
+  const {
+    removeAlertType,
+    hideInviteModal,
+    hideDeleteModal,
+    hideVerifyStatus,
+    showVerifyStatus,
+    hideInviteModalAndShowSuccess,
+    hideDeleteModalAndShowSuccess,
+    hideVerifyModalAndShowSuccess,
+    showInviteModal,
+    showDeleteModal,
+    showVerifyStatusModal,
+    alertType,
+    rowChanged,
+    selectedUser,
+    setShowInviteModal,
+    setShowDeleteModal,
+  } = useAlerts();
+
   const { data, isPending, isError, error } = useReactQuery(
-    [currentPage, rowsPerPage, filters],
+    [currentPage, rowsPerPage, filters, rowChanged],
     volunteers
   );
 
@@ -65,18 +96,126 @@ const Volunteers = () => {
     setCurrentPage(1);
   };
 
+  const updateSelectedRows = function (data) {
+    setSelectedRows(data);
+  };
+
+  // const hideInviteModal = function () {
+  //   setShowInviteModal(false);
+  // };
+  // const hideDeleteModal = function () {
+  //   setShowDeleteModal(false);
+  // };
+
+  // const [selectedUser, setSelectedUser] = useState();
+
+  // const showVerifyStatus = function (email) {
+  //   setShowVerifyStatusModal(true);
+  //   setSelectedUser(email);
+  // };
+
+  // const hideVerifyStatus = function () {
+  //   setShowVerifyStatusModal(false);
+  // };
+
+  // const [alertType, setAlertType] = useState();
+
+  // const removeAlertType = function () {
+  //   setAlertType(undefined);
+  // };
+
+  // const hideInviteModalAndShowSuccess = function () {
+  //   setShowInviteModal(false);
+  //   setAlertType({
+  //     type: 'success',
+  //     message: 'Invitation Sent Successfully',
+  //   });
+  // };
+
+  // const hideDeleteModalAndShowSuccess = function () {
+  //   setShowDeleteModal(false);
+  //   setAlertType({
+  //     type: 'success',
+  //     message: 'User deleted Successfully',
+  //   });
+  // };
+
+  // const hideVerifyModalAndShowSuccess = function () {
+  //   setShowVerifyStatusModal(false);
+  //   setAlertType({
+  //     type: 'success',
+  //     message: 'User Verified Successfully',
+  //   });
+  //   setRowChanged((prev) => !prev);
+  // };
+
   return (
     <Box className={classes.tableContainer}>
       <Box>
         <Typography component="h1">Volunteers</Typography>
         <Button
           onClick={() => {
-            setShowModal((prev) => !prev);
+            setShowInviteModal(true);
           }}
         >
           Invite Volunteer
         </Button>
-        {showModal && <TempModal />}
+        <Box>
+          {selectedRows.length >= 1 && (
+            <Button
+              onClick={() => {
+                setShowDeleteModal(true);
+              }}
+            >
+              Delete
+            </Button>
+          )}
+          {selectedRows.length === 1 && (
+            <>
+              <Button
+                onClick={() => {
+                  navigate(`/volunteerdetail/${selectedRows[0].email}/edit`);
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate(`/volunteerdetail/${selectedRows[0].email}/view`);
+                }}
+              >
+                View
+              </Button>
+            </>
+          )}
+        </Box>
+        {showInviteModal && (
+          <InvitePopup
+            hideInviteModalAndShowSuccess={hideInviteModalAndShowSuccess}
+            hideInviteModal={hideInviteModal}
+          />
+        )}
+        {showVerifyStatusModal && (
+          <VerifyPopup
+            selectedUser={selectedUser}
+            hideVerifyStatus={hideVerifyStatus}
+            hideVerifyModalAndShowSuccess={hideVerifyModalAndShowSuccess}
+          />
+        )}
+        {showDeleteModal && (
+          <DeletePopup
+            selectedRows={selectedRows}
+            hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+            hideDeleteModal={hideDeleteModal}
+          />
+        )}
+        {alertType && (
+          <AlertReact
+            removeAlertType={removeAlertType}
+            type={alertType.type}
+            message={alertType.message}
+          />
+        )}
         <Box>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -164,7 +303,13 @@ const Volunteers = () => {
         </Box>
       </Box>
       {data && <></>}
-      <Table data={data} isPending={isPending} />
+      <Table
+        key={rowChanged}
+        updateSelectedRows={updateSelectedRows}
+        data={data}
+        isPending={isPending}
+        showVerifyStatus={showVerifyStatus}
+      />
       <PaginationComp
         updateCurrentPage={updateCurrentPage}
         totalPages={data?.data?.total_pages}
