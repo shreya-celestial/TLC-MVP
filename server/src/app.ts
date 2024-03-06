@@ -5,6 +5,7 @@ import cors from "cors";
 import user from "./Routes/user"
 import volunteers from "./Routes/volunteers"
 import workshops from "./Routes/workshops"
+import enrollments from "./Routes/enrollment"
 dotenv.config()
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use('/user', user)
 app.use('/volunteers', volunteers)
 app.use('/workshops', workshops)
+app.use('/enrollments', enrollments)
 
 app.listen(8080,()=>{
   console.log('Listening on http://localhost:8080/')
