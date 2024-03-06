@@ -6,13 +6,14 @@ export const useStyles = makeStyles((theme) => ({
       boxShadow: 'none',
       borderRadius: '5px',
       width: '640px !important',
+      maxWidth: '640px',
       [theme.breakpoints.down('sm')]: {
         margin: '0px 8px !important',
       },
     },
   },
   TitleAndClose: {
-    height: '40px',
+    height: '45px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -30,7 +31,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   DialogActions: {
-    height: '40px',
+    height: '45px',
     borderTop: '1px solid #C6C6C6',
     padding: '0 20px !important',
     gap: '15px',
