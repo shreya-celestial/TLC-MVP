@@ -23,6 +23,8 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    textTransform: 'capitalize',
+    cursor: 'pointer',
   },
   tableSkeleton: {
     height: '400px',

@@ -28,7 +28,11 @@ function Main() {
           <Route exact path="/resetPass" element={<ResetPassword />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/volunteers" element={<Volunteers />} />
-          <Route exact path="/volunteerdetail" element={<VolunteerDetails />} />
+          <Route
+            exact
+            path="/volunteerdetail/:email/:type"
+            element={<VolunteerDetails />}
+          />
           <Route exact path="/delete" element={<DeletePopup />} />
           <Route exact path="/invite" element={<InvitePopup />} />
           <Route exact path="/verify" element={<VerifyPopup />} />

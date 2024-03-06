@@ -171,4 +171,10 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: '20px',
     },
   },
+  flex: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));

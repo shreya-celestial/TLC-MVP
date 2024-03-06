@@ -1,12 +1,11 @@
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { useState } from 'react';
 import colDefs from './coldefs';
 import { useStyles } from './Table.styles';
 import { Box } from '@mui/material';
 
-const Table = ({ data, isPending }) => {
+const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
   let rowData;
   if (data) rowData = data.data.users;
 
@@ -14,12 +13,10 @@ const Table = ({ data, isPending }) => {
 
   const rowHeight = 35;
 
-  const [selectedRows, setSelectedRows] = useState([]);
-
   const onSelectionChanged = () => {
     const selectedNodes = gridApi.getSelectedNodes();
     const selectedData = selectedNodes.map((node) => node.data);
-    setSelectedRows(selectedData);
+    updateSelectedRows(selectedData);
   };
 
   const gridOptions = {
@@ -28,6 +25,35 @@ const Table = ({ data, isPending }) => {
   };
 
   let gridApi;
+
+  const handleClickInColumn = function (params) {
+    showVerifyStatus(params.data.email);
+  };
+
+  const IsAdminVerifiedComp = (params) => {
+    const classes = useStyles();
+    return (
+      <>
+        {params.value ? (
+          <p className={classes.verified}>Verified</p>
+        ) : (
+          <p
+            className={classes.pending}
+            onClick={() => handleClickInColumn(params)}
+          >
+            Pending
+          </p>
+        )}
+      </>
+    );
+  };
+
+  const modifiedColumnDefs = colDefs.map((colDef) => {
+    if (colDef.headerName === 'Status') {
+      colDef.cellRenderer = IsAdminVerifiedComp;
+    }
+    return colDef;
+  });
 
   return (
     <div
@@ -38,23 +64,16 @@ const Table = ({ data, isPending }) => {
       {data && (
         <AgGridReact
           rowData={rowData}
-          columnDefs={colDefs}
+          columnDefs={modifiedColumnDefs}
           gridOptions={gridOptions}
           getRowClass={() => classes.row}
           getRowHeight={() => rowHeight}
           headerHeight={35}
           onGridReady={(params) => (gridApi = params.api)}
-
-          // rowStyle={{ background: 'black' }}
-          // pagination={true}
-          // paginationPageSize={10}
-          // onPaginationChanged={onPageClicked}
         ></AgGridReact>
       )}
     </div>
   );
-
-  // ...
 };
 
 export default Table;
