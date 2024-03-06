@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import getData from "../../utils/getData";
 import { getPageWorkshops } from "../../gql/workshops/queries";
-import { capitaliseStr } from "../../utils/global";
+import { capitaliseStr, formatDate } from "../../utils/global";
 
 const allPageWorkshops = async (req: Request, res: Response) => {
   const { 
@@ -10,6 +10,8 @@ const allPageWorkshops = async (req: Request, res: Response) => {
     sort_by,
     order_of_sort,
     pastOrUpcoming,
+    start,
+    end,
     value
   } = req.query
   let page: number = 1; 
@@ -36,6 +38,42 @@ const allPageWorkshops = async (req: Request, res: Response) => {
     }
   }
 
+  if(start && end)
+  {
+    let strtDte: any = start
+    let starting = formatDate(strtDte)
+    let endDte: any = end
+    let ending = formatDate(endDte)
+    filters = {
+      start_date: {
+        _gte: starting
+      },
+      end_date: {
+        _lte: ending
+      }
+    }
+  }
+  else if(start)
+  {
+    let strtDte: any = start
+    let starting = formatDate(strtDte)
+    filters = {
+      start_date: {
+        _gte: starting
+      }
+    }
+  }
+  else if(end)
+  {
+    let endDte: any = end
+    let ending = formatDate(endDte)
+    filters = {
+      end_date: {
+        _lte: ending
+      }
+    }
+  }
+
   if(value)
   {
     let val: any = value;
@@ -52,7 +90,12 @@ const allPageWorkshops = async (req: Request, res: Response) => {
           venue_city: {
             _like: `${val}%`
           }
-        }
+        },
+        {
+          venue: {
+            _like: `${val}%`
+          }
+        },
       ]
     }
   }
