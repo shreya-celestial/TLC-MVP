@@ -35,7 +35,7 @@ const deleteVolunteer = async (req: Request, res: Response) => {
   if(data?.data?.delete_users?.affected_rows)
   {
     return res.status(200).json({
-      status: 'error',
+      status: 'success',
       message: "Users deleted successfully!"
     })
   }

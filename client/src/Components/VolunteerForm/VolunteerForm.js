@@ -25,7 +25,8 @@ import { getLocationData } from '../../apis/global';
 import { getCookie } from '../../utils/utils';
 
 
-function VolunteerForm({ submit, isRole = false }) {
+function VolunteerForm({ submit, isRole = false, isPending }) {
+
   const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -98,14 +99,12 @@ function VolunteerForm({ submit, isRole = false }) {
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
             <TextField
 
-//               disabled={email ? true : false}
-
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
-//               value={email ? email : ''}
+
               className={email ? classes.disabled : false}
 
             />
@@ -354,7 +353,7 @@ function VolunteerForm({ submit, isRole = false }) {
       </Box>
       <Box className={classes.signUpBtn_loginLink}>
         <Button disableRipple className={classes.signUpBtn} type="submit">
-          Sign up
+          {isPending ? 'loading...' : 'Sign up'}
         </Button>
       </Box>
     </form>
