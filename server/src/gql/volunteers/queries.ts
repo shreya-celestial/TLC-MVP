@@ -71,7 +71,7 @@ export const searchAndFilterVolunteers = `
 `;
 
 export const VolunteerByEmail = `
-  query SingleVolunteer($email: String!, $isVerified: Boolean = true) {
+  query MyQuery($email: String!, $isVerified: Boolean = true) {
     users(where: {email: {_eq: $email}, isVerified: {_eq: $isVerified}}) {
       gender
       email
@@ -85,6 +85,37 @@ export const VolunteerByEmail = `
       pincode
       state
       yearOfJoining
+      workshop_volunteers {
+        workshop {
+          concluding_date
+          end_date
+          id
+          start_date
+          types
+          venue
+          venue_city
+        }
+      }
+      workshop_lead_volunteers {
+        workshop {
+          concluding_date
+          end_date
+          id
+          start_date
+          types
+          venue
+          venue_city
+        }
+      }
+      meetings_volunteers {
+        meeting {
+          date
+          id
+          type
+          venue
+          venue_city
+        }
+      }
     }
   }
 `;

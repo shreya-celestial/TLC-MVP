@@ -13,16 +13,16 @@ const singleWorkshop = async (req: Request, res: Response) => {
       message: data?.errors[0]?.message
     })
   }
-  if(data?.data?.workshops?.length)
+  if(data?.data?.workshops_by_pk)
   {
     return res.status(200).json({
       status: 'success',
       message: "Data fetched successfully!",
       data: {
         workshop: {
-          ...data?.data?.workshops[0],
-          lead_volunteers_count: data?.data?.workshops[0]?.workshop_lead_volunteers?.length,
-          volunteers_count: data?.data?.workshops[0]?.workshop_volunteers?.length
+          ...data?.data?.workshops_by_pk,
+          lead_volunteers_count: data?.data?.workshops_by_pk?.workshop_lead_volunteers?.length,
+          volunteers_count: data?.data?.workshops_by_pk?.workshop_volunteers?.length
         }
       }
     })

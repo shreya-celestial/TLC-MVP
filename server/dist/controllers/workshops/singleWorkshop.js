@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/workshops/queries");
 const singleWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const { id } = req.params;
     const data = yield (0, getData_1.default)(queries_1.workshopDetails, { id });
     if (data === null || data === void 0 ? void 0 : data.errors) {
@@ -24,12 +24,12 @@ const singleWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function*
             message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message
         });
     }
-    if ((_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.workshops) === null || _c === void 0 ? void 0 : _c.length) {
+    if ((_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.workshops_by_pk) {
         return res.status(200).json({
             status: 'success',
             message: "Data fetched successfully!",
             data: {
-                workshop: Object.assign(Object.assign({}, (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.workshops[0]), { lead_volunteers_count: (_g = (_f = (_e = data === null || data === void 0 ? void 0 : data.data) === null || _e === void 0 ? void 0 : _e.workshops[0]) === null || _f === void 0 ? void 0 : _f.workshop_lead_volunteers) === null || _g === void 0 ? void 0 : _g.length, volunteers_count: (_k = (_j = (_h = data === null || data === void 0 ? void 0 : data.data) === null || _h === void 0 ? void 0 : _h.workshops[0]) === null || _j === void 0 ? void 0 : _j.workshop_volunteers) === null || _k === void 0 ? void 0 : _k.length })
+                workshop: Object.assign(Object.assign({}, (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.workshops_by_pk), { lead_volunteers_count: (_f = (_e = (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.workshops_by_pk) === null || _e === void 0 ? void 0 : _e.workshop_lead_volunteers) === null || _f === void 0 ? void 0 : _f.length, volunteers_count: (_j = (_h = (_g = data === null || data === void 0 ? void 0 : data.data) === null || _g === void 0 ? void 0 : _g.workshops_by_pk) === null || _h === void 0 ? void 0 : _h.workshop_volunteers) === null || _j === void 0 ? void 0 : _j.length })
             }
         });
     }
