@@ -31,8 +31,6 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 25px',
     gap: '15px',
-    zIndex: '1250',
-
     boxShadow: '-4px 0px 5px 0px rgba(0, 0, 0, 0.25)',
     '& button': {
       height: '30px',
@@ -41,6 +39,7 @@ export const useStyles = makeStyles((theme) => ({
       borderRadius: '5px',
       textTransform: 'capitalize',
       fontSize: '12px',
+      color: '#FFFFFF',
     },
     '& button.cancelBtn': {
       background: `${theme.palette.primaryGray}`,
@@ -48,14 +47,12 @@ export const useStyles = makeStyles((theme) => ({
     },
     '& button.saveBtn': {
       background: `${theme.palette.primaryGreen}`,
-      color: '#FFFFFF',
     },
     '& button.editBtn': {
       background: `${theme.palette.primaryBlue}`,
-      color: '#FFFFFF',
     },
   },
-  // main content
+
   mainContent: {
     width: '70%',
     display: 'flex',
@@ -64,6 +61,15 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
+    '& p.heading': {
+      fontSize: '14px',
+      fontWeight: '600',
+    },
+  },
+  HeadingAndElementBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
   },
 
   formElementBox: {
@@ -75,9 +81,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     width: '100%',
+    display: 'flex',
     gap: '5px',
 
-    '& label': {
+    '& label.MuiFormLabel-root': {
       fontWeight: '500',
       fontSize: '14px',
       color: '#2F2F2F',
@@ -119,6 +126,44 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  selectBox: {
+    '&.MuiInputBase-root': {
+      fontSize: '14px',
+      '& .MuiSelect-select': {
+        paddingLeft: '10px',
+      },
+    },
+    '& svg': {
+      color: '#2F2F2F',
+      width: '20px',
+      height: '20px',
+      top: '25%',
+    },
+  },
+  selectDropdownMenu: {
+    '&.MuiPaper-root': {
+      maxHeight: '200px ',
+      borderRadius: '5px',
+      boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      transform: 'translateX(-8px) !important',
+    },
+
+    '& ul': {
+      padding: '5px 0px',
+      '& li': {
+        padding: '5px 10px',
+        fontSize: '14px',
+        '&.MuiMenuItem-root.Mui-selected': {
+          background: '#F2F3F4',
+        },
+        '& span': {
+          display: 'none',
+        },
+      },
+    },
+  },
 
   HeaderAndAccordionBox: {
     display: 'flex',
@@ -152,4 +197,12 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '10px',
   },
+  workshopHistory: {
+    '& .historyHeading': {
+      fontSize: '14px',
+      fontWeight: '600',
+      marginBottom: '20px',
+    },
+  },
+
 }));

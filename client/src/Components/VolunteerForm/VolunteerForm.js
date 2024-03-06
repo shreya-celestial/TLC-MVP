@@ -98,13 +98,11 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
             <TextField
-
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
-
               className={email ? classes.disabled : false}
 
             />
@@ -170,8 +168,6 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
                 ),
               }}
 
-
-          
             />
           </FormControl>
         </Box>
