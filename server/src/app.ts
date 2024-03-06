@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import user from "./Routes/user"
 import volunteers from "./Routes/volunteers"
+import workshops from "./Routes/workshops"
 dotenv.config()
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cookieParser());
 
 app.use('/user', user)
 app.use('/volunteers', volunteers)
+app.use('/workshops', workshops)
 
 app.listen(8080,()=>{
   console.log('Listening on http://localhost:8080/')
