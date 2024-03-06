@@ -9,6 +9,10 @@ export const Theme = createTheme({
       styleOverrides: {
         body: {
           background: '#F2F3F4',
+          overflow: 'hidden',
+          '& .MuiPickersPopper-paper': {
+            boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+          },
         },
       },
     },

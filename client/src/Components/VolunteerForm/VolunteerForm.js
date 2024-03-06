@@ -21,6 +21,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerForm.styles';
 import { getLocationData } from '../../apis/global';
+import { getCookie } from '../../utils/utils';
 
 function VolunteerForm({ submit, isRole = false }) {
   const currentYear = new Date().getFullYear();
@@ -61,6 +62,8 @@ function VolunteerForm({ submit, isRole = false }) {
     };
   }, [pincode]);
 
+  const email = getCookie('email')?.replace('%40', '@');
+
   useEffect(() => {
     if (cities) {
       const data = cities.find((pincodeCity) => pincodeCity.city === city);
@@ -90,11 +93,14 @@ function VolunteerForm({ submit, isRole = false }) {
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
             <TextField
+              // disabled={email ? true : false}
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
+              // value={email ? email : ''}
+              className={email ? classes.disabled : false}
             />
           </FormControl>
         </Box>

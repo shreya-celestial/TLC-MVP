@@ -80,6 +80,7 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '12px',
       color: '#6C6C6C',
       fontWeight: '500',
+      textTransform: 'capitalize',
     },
     '& .ag-cell-focus': {
       borderColor: 'transparent',
