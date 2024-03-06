@@ -1,7 +1,6 @@
 import { useStyles } from './Table.styles';
 
 const IsAdminComp = (params) => {
-  // console.log(params.data.isAdminVerified);
   if (!params.data.isAdminVerified) return `-`;
   return `${params.value ? 'Admin' : 'Volunteer'}`;
 };

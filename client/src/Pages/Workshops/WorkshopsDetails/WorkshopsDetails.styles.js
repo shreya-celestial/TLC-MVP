@@ -32,6 +32,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: '0 25px',
     gap: '15px',
     zIndex: '1250',
+
     boxShadow: '-4px 0px 5px 0px rgba(0, 0, 0, 0.25)',
     '& button': {
       height: '30px',

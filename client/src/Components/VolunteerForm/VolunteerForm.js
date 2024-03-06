@@ -21,9 +21,12 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerForm.styles';
 import { getLocationData } from '../../apis/global';
+
 import { getCookie } from '../../utils/utils';
 
-function VolunteerForm({ submit, isRole = false }) {
+
+function VolunteerForm({ submit, isRole = false, isPending }) {
+
   const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -62,7 +65,9 @@ function VolunteerForm({ submit, isRole = false }) {
     };
   }, [pincode]);
 
+
   const email = getCookie('email')?.replace('%40', '@');
+
 
   useEffect(() => {
     if (cities) {
@@ -93,14 +98,13 @@ function VolunteerForm({ submit, isRole = false }) {
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
             <TextField
-              // disabled={email ? true : false}
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
-              // value={email ? email : ''}
               className={email ? classes.disabled : false}
+
             />
           </FormControl>
         </Box>
@@ -134,6 +138,7 @@ function VolunteerForm({ submit, isRole = false }) {
               }}
             />
           </FormControl>
+
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="confirmPasswordField">
               Confirm Password
@@ -162,12 +167,14 @@ function VolunteerForm({ submit, isRole = false }) {
                   </InputAdornment>
                 ),
               }}
+
             />
           </FormControl>
         </Box>
         {/* phone number and  date picker-DOB */}
         <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl}>
+
             <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
             <TextField
               id="phoneNumberField"
@@ -175,6 +182,7 @@ function VolunteerForm({ submit, isRole = false }) {
               required
               name="phone"
             />
+
           </FormControl>
           <FormControl className={classes.formControl}>
             <FormLabel>Date of Birth</FormLabel>
@@ -211,6 +219,7 @@ function VolunteerForm({ submit, isRole = false }) {
               </Select>
             </FormControl>
           )}
+
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="yearSelectBox">Year Of Joining TLC</FormLabel>
             <Select
@@ -234,6 +243,7 @@ function VolunteerForm({ submit, isRole = false }) {
               ))}
             </Select>
           </FormControl>
+
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
             <Select
@@ -339,7 +349,7 @@ function VolunteerForm({ submit, isRole = false }) {
       </Box>
       <Box className={classes.signUpBtn_loginLink}>
         <Button disableRipple className={classes.signUpBtn} type="submit">
-          Sign up
+          {isPending ? 'loading...' : 'Sign up'}
         </Button>
       </Box>
     </form>

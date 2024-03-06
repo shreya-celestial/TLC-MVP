@@ -65,8 +65,6 @@ const Volunteers = () => {
     setCurrentPage(1);
   };
 
-  console.log(filters);
-
   return (
     <Box className={classes.tableContainer}>
       <Box>

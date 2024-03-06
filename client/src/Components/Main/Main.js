@@ -16,6 +16,7 @@ import AutocompletePopup from '../AutocompletePopup/AutocompletePopup';
 import InfoTable from '../InfoTable/InfoTable';
 import EnrollmentsDetails from '../../Pages/Enrollments/EnrollmentsDetails/EnrollmentsDetails';
 
+
 function Main() {
   return (
     <BrowserRouter>
@@ -39,6 +40,7 @@ function Main() {
             path="/enrollmentdetails"
             element={<EnrollmentsDetails />}
           />
+
         </Routes>
       </Wrapper>
     </BrowserRouter>
