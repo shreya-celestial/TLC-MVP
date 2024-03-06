@@ -130,6 +130,11 @@ const allPageMeetings = (req, res) => __awaiter(void 0, void 0, void 0, function
                     venue_city: {
                         _like: `${val}%`
                     }
+                },
+                {
+                    type: {
+                        _like: `${val}%`
+                    }
                 }
             ] });
     }

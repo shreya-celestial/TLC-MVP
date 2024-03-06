@@ -17,13 +17,27 @@ const queries_1 = require("../../gql/workshops/queries");
 const global_1 = require("../../utils/global");
 const allPageWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e;
-    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, value } = req.query;
+    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, pastOrUpcoming, value } = req.query;
     let page = 1;
     let no_of_records = 20;
     let filters = {};
     let order = {
         start_date: "desc"
     };
+    if (pastOrUpcoming === 'upcoming') {
+        filters = {
+            start_date: {
+                _gte: "now()"
+            }
+        };
+    }
+    else if (pastOrUpcoming === 'past') {
+        filters = {
+            start_date: {
+                _lte: "now()"
+            }
+        };
+    }
     if (value) {
         let val = value;
         val = (0, global_1.capitaliseStr)(val);

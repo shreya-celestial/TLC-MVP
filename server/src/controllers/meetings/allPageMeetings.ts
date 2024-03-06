@@ -149,6 +149,11 @@ const allPageMeetings = async (req: Request, res: Response) => {
           venue_city: {
             _like: `${val}%`
           }
+        },
+        {
+          type: {
+            _like: `${val}%`
+          }
         }
       ]
     }

@@ -9,6 +9,7 @@ const allPageWorkshops = async (req: Request, res: Response) => {
     no_of_records: reqRecords,
     sort_by,
     order_of_sort,
+    pastOrUpcoming,
     value
   } = req.query
   let page: number = 1; 
@@ -16,6 +17,23 @@ const allPageWorkshops = async (req: Request, res: Response) => {
   let filters = {}
   let order: any = {
     start_date: "desc"
+  }
+
+  if(pastOrUpcoming === 'upcoming')
+  {
+    filters = {
+      start_date: {
+        _gte: "now()"
+      }
+    }
+  }
+  else if(pastOrUpcoming === 'past')
+  {
+    filters = {
+      start_date: {
+        _lte: "now()"
+      }
+    }
   }
 
   if(value)
