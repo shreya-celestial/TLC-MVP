@@ -11,6 +11,7 @@ const user_1 = __importDefault(require("./Routes/user"));
 const volunteers_1 = __importDefault(require("./Routes/volunteers"));
 const workshops_1 = __importDefault(require("./Routes/workshops"));
 const enrollment_1 = __importDefault(require("./Routes/enrollment"));
+const meetings_1 = __importDefault(require("./Routes/meetings"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -20,6 +21,7 @@ app.use('/user', user_1.default);
 app.use('/volunteers', volunteers_1.default);
 app.use('/workshops', workshops_1.default);
 app.use('/enrollments', enrollment_1.default);
+app.use('/meetings', meetings_1.default);
 app.listen(8080, () => {
     console.log('Listening on http://localhost:8080/');
 });

@@ -18,7 +18,7 @@ const updateRole = async (req: Request, res: Response) => {
   if(data?.data?.update_users?.affected_rows)
   {
     return res.status(200).json({
-      status: 'error',
+      status: 'success',
       message: "User updated successfully!"
     })
   }

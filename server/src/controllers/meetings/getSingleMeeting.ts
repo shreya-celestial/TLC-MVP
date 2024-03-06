@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import getData from "../../utils/getData";
-import { enrollmentByPK } from "../../gql/enrollments/queries";
+import { getMeetingByPk } from "../../gql/meetings/queries";
 
-const singleEnrollment = async (req: Request, res: Response) => {
+const getSingleMeeting = async (req: Request, res: Response) => {
   const { id } = req?.params;
-  const data = await getData(enrollmentByPK, {id})
+  const data = await getData(getMeetingByPk, {id})
   if(data?.errors)
   {
     return res.status(400).json({
@@ -15,9 +15,8 @@ const singleEnrollment = async (req: Request, res: Response) => {
   return res.status(200).json({
     status: 'success',
     message: 'Data fetched successfully!',
-    data: data?.data?.enrollments_by_pk
+    data: data?.data?.meetings_by_pk
   })
-  
 }
 
-export default singleEnrollment
+export default getSingleMeeting

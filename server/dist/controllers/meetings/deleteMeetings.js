@@ -13,21 +13,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
-const queries_1 = require("../../gql/enrollments/queries");
-const singleEnrollment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
-    const { id } = req === null || req === void 0 ? void 0 : req.params;
-    const data = yield (0, getData_1.default)(queries_1.enrollmentByPK, { id });
+const mutations_1 = require("../../gql/meetings/mutations");
+const deleteMeetings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e;
+    const ids = (_b = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.ids) === null || _b === void 0 ? void 0 : _b.map((id) => {
+        return {
+            id: {
+                _eq: id
+            }
+        };
+    });
+    const data = yield (0, getData_1.default)(mutations_1.deleteMeetingsByPKs, { ids });
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message
+            message: (_c = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _c === void 0 ? void 0 : _c.message
+        });
+    }
+    if (!((_e = (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.delete_meetings) === null || _e === void 0 ? void 0 : _e.affected_rows)) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Meetings not found at this moment. Please try again later.'
         });
     }
     return res.status(200).json({
         status: 'success',
-        message: 'Data fetched successfully!',
-        data: (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.enrollments_by_pk
+        message: 'Meetings deleted successfully!'
     });
 });
-exports.default = singleEnrollment;
+exports.default = deleteMeetings;
