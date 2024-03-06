@@ -23,7 +23,7 @@ import { useStyles } from './VolunteerForm.styles';
 import { getLocationData } from '../../apis/global';
 import { getCookie } from '../../utils/utils';
 
-function VolunteerForm({ submit, isRole = false }) {
+function VolunteerForm({ submit, isRole = false, isPending }) {
   const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
   const [cities, setCities] = useState(null);
@@ -92,13 +92,13 @@ function VolunteerForm({ submit, isRole = false }) {
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
             <TextField
-              disabled={email ? true : false}
+              // disabled={email ? true : false}
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
-              value={email ? email : ''}
+              // value={email ? email : ''}
               className={email ? classes.disabled : false}
             />
           </FormControl>
@@ -309,7 +309,7 @@ function VolunteerForm({ submit, isRole = false }) {
       </Box>
       <Box className={classes.signUpBtn_loginLink}>
         <Button disableRipple className={classes.signUpBtn} type="submit">
-          Sign up
+          {isPending ? 'loading...' : 'Sign up'}
         </Button>
       </Box>
     </form>

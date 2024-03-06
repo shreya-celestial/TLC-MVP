@@ -27,8 +27,6 @@ const Table = ({ data, isPending }) => {
     onSelectionChanged: onSelectionChanged,
   };
 
-  // console.log(selectedRows);
-
   let gridApi;
 
   return (

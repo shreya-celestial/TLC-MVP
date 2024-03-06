@@ -29,8 +29,6 @@ export const volunteers = async function ({ signal, queryKey }) {
 };
 
 export const inviteVolunteer = async function (data) {
-  console.log(data);
-
   const res = await fetch(`http://localhost:8080/volunteers/invite`, {
     method: 'POST',
     body: JSON.stringify(data),

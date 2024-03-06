@@ -1,6 +1,6 @@
 const BASE_URL = 'http://localhost:8080/user';
 
-export const signup = async (body) => {
+export const signup = async ({ body }) => {
   const url = `${BASE_URL}/signup`;
   const response = await fetch(url, {
     method: 'POST',
