@@ -36,7 +36,7 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             to: email,
             subject: 'Reset Password Link',
             text: '',
-            html: (0, generateMail_1.default)(`http://localhost:8080/user/verifyReset/${token}`, name, 'Reset Password', body)
+            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/user/verifyReset/${token}`, name, 'Reset Password', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => {
             if (!err) {

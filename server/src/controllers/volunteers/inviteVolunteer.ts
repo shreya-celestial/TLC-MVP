@@ -55,7 +55,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
         to: email,
         subject: 'TLC Invitation',
         text: '',
-        html: generateEmail(`http://localhost:8080/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
+        html: generateEmail(`https://tlc-two.vercel.app/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
       };
 
       transporter.sendMail(mailOptions, async (err)=> {
@@ -111,7 +111,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
       to: email,
       subject: 'TLC Invitation',
       text: '',
-      html: generateEmail(`http://localhost:8080/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
+      html: generateEmail(`https://tlc-two.vercel.app/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
     };
 
     transporter.sendMail(mailOptions, async (err)=> {
