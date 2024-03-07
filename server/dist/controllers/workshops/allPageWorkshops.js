@@ -17,7 +17,7 @@ const queries_1 = require("../../gql/workshops/queries");
 const global_1 = require("../../utils/global");
 const allPageWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e;
-    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, pastOrUpcoming, start, end, value } = req.query;
+    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, pastOrUpcoming, start, end, type, venue, city, value } = req.query;
     let page = 1;
     let no_of_records = 20;
     let filters = {};
@@ -90,6 +90,27 @@ const allPageWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     }
                 },
             ] });
+    }
+    if (type) {
+        let types = type;
+        types = (0, global_1.capitaliseStr)(types);
+        filters = Object.assign(Object.assign({}, filters), { types: {
+                _like: `${types}%`
+            } });
+    }
+    if (venue) {
+        let venues = venue;
+        venues = (0, global_1.capitaliseStr)(venues);
+        filters = Object.assign(Object.assign({}, filters), { venue: {
+                _like: `${venues}%`
+            } });
+    }
+    if (city) {
+        let venue_city = city;
+        venue_city = (0, global_1.capitaliseStr)(venue_city);
+        filters = Object.assign(Object.assign({}, filters), { venue_city: {
+                _like: `${venue_city}%`
+            } });
     }
     if (sort_by && order_of_sort) {
         const sort = `${sort_by}`;
