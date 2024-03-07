@@ -26,7 +26,7 @@ const forgotPass = async (req: Request, res: Response) => {
       to: email,
       subject: 'Reset Password Link',
       text: '',
-      html: generateEmail(`http://localhost:8080/user/verifyReset/${token}`, name, 'Reset Password', body)
+      html: generateEmail(`https://tlc-two.vercel.app/user/verifyReset/${token}`, name, 'Reset Password', body)
     };
 
     transporter.sendMail(mailOptions, (err) => {
