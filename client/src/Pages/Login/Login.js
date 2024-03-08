@@ -18,7 +18,7 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import { login } from '../../apis/user';
 import { useMutation } from '@tanstack/react-query';
 import AlertReact from '../../Components/Alert/AlertReact';
-
+import logo from '../../assets/Icons/tlcLogo.png';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -70,11 +70,7 @@ function Login() {
         />
       )}
       <Box className={classes.mainWrapper}>
-        <img
-          className={classes.logo}
-          src="images/tlc_logo.png"
-          alt="The Last Center Logo"
-        />
+        <img className={classes.logo} src={logo} alt="The Last Center Logo" />
         <Typography className={classes.header}>
           Login into <span>The Last Center</span> to continue
         </Typography>

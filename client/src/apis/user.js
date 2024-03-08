@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080/user';
+const BASE_URL = 'https://tlc-two.vercel.app/user';
 
 export const signup = async ({ body }) => {
   const url = `${BASE_URL}/signup`;

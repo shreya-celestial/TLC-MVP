@@ -1,16 +1,23 @@
-import { Box, Icon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './PageHeader.styles';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-function PageHeader({ currentPage , prevPage}) {
+function PageHeader({ currentPage, prevPage, path }) {
+  console.log(path);
+  const navigate = useNavigate();
   const classes = useStyles();
+  const handleNavigate = () => {
+    navigate(`/${path}`);
+  };
   return (
     <Box className={classes.root}>
       <Typography className="pageHeading">{currentPage}</Typography>
       <Box className={classes.breadCrumbs}>
-        <Link className="navigationLink">{prevPage}</Link>
+        <Typography className="navigationLink" onClick={handleNavigate}>
+          {prevPage}
+        </Typography>
 
         <KeyboardArrowRightOutlinedIcon />
         <Typography className="currentPage">{currentPage}</Typography>

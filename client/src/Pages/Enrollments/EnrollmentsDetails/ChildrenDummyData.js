@@ -25,22 +25,22 @@ export const enrollPageWorkshopColDEf = [
   { field: 'endDate', headerName: 'End Date' },
 ];
 export const enrollPageWorkshopRowData = [
-  {
-    workshop: 'Confidence, Power and Excellence',
-    role: 'Lead Volunteer',
-    startDate: '21-02-2024',
-    endDate: '24-02-2024',
-  },
-  {
-    workshop: 'Freedom',
-    role: 'Volunteer',
-    startDate: '21-02-2024',
-    endDate: '24-02-2024',
-  },
-  {
-    workshop: 'Bhagwad Gita',
-    role: 'Lead Volunteer',
-    startDate: '21-02-2024',
-    endDate: '24-02-2024',
-  },
+  // {
+  //   workshop: 'Confidence, Power and Excellence',
+  //   role: 'Lead Volunteer',
+  //   startDate: '21-02-2024',
+  //   endDate: '24-02-2024',
+  // },
+  // {
+  //   workshop: 'Freedom',
+  //   role: 'Volunteer',
+  //   startDate: '21-02-2024',
+  //   endDate: '24-02-2024',
+  // },
+  // {
+  //   workshop: 'Bhagwad Gita',
+  //   role: 'Lead Volunteer',
+  //   startDate: '21-02-2024',
+  //   endDate: '24-02-2024',
+  // },
 ];

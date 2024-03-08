@@ -15,9 +15,11 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: '12px',
     fontWeight: '500',
     '& .navigationLink': {
-      textDecoration: 'none',
       color: '#005C8E',
       textTransform: 'capitalize',
+      cursor: 'pointer',
+      fontSize: '12px',
+      fontWeight: '500',
     },
     '& svg': { fontSize: '20px', color: '#005C8E' },
     '& .currentPage': {
