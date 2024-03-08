@@ -41,7 +41,7 @@ function Main() {
           <Route exact path="/infotable" element={<InfoTable />} />
           <Route
             exact
-            path="/enrollmentdetails"
+            path="/enrollmentdetails/:type"
             element={<EnrollmentsDetails />}
           />
 
