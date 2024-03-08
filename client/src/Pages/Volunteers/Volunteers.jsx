@@ -14,7 +14,6 @@ import { useStyles } from './Volunteers.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { useEffect, useState } from 'react';
-import { useEffect, useState } from 'react';
 
 import { volunteers } from '../../apis/volunteers';
 import PaginationComp from '../../Components/Table/PaginationComp';
