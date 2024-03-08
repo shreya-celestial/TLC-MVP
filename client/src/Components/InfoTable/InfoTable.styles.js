@@ -74,6 +74,7 @@ export const useStyles = makeStyles((theme) => ({
       '& .ag-header-cell-text': {
         fontSize: '12px',
         color: '#2F2F2F',
+        fontFamily: '"Inter", sans-serif',
       },
     },
     '& .ag-header-cell-resize': {
@@ -91,6 +92,7 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '12px',
       color: '#6C6C6C',
       fontWeight: '500',
+      fontFamily: '"Inter", sans-serif',
     },
     '& .ag-cell-focus': {
       borderColor: 'transparent',

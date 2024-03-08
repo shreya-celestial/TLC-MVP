@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 import { useStyles } from './Signup.styles';
@@ -11,7 +10,7 @@ import AlertReact from '../../Components/Alert/AlertReact';
 import { getCookie, deleteCookie } from '../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import validator from 'validator';
-
+import logo from '../../assets/Icons/tlcLogo.png';
 
 function Signup() {
   const classes = useStyles();
@@ -44,12 +43,10 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!e.target.elements.dob.value) {
-
       setAlertType({
         type: 'error',
         message: 'Please enter your Date of birth',
       });
-
     }
 
     if (!validator.isMobilePhone(e.target.elements.phone.value)) {
@@ -100,7 +97,6 @@ function Signup() {
       pincode: +e.target.elements.pincode.value,
     };
 
-
     if (token) {
       setSignupType('invite');
       mutate({ ...body, token, isAdmin, email });
@@ -108,7 +104,6 @@ function Signup() {
       setSignupType('normal');
       mutate({ body });
     }
-
   };
 
   return (
@@ -121,11 +116,7 @@ function Signup() {
         />
       )}
       <Box className={classes.mainWrapper}>
-        <img
-          className={classes.logo}
-          src="images/tlc_logo.png"
-          alt="The Last Center Logo"
-        />
+        <img className={classes.logo} src={logo} alt="The Last Center Logo" />
         <Typography className={classes.header}>Create an account</Typography>
         <Box className={classes.signupWrapper}>
           <VolunteerForm submit={handleSubmit} isPending={isPending} />
