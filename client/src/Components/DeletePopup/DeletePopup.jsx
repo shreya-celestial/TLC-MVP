@@ -14,19 +14,21 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { ReactComponent as DeleteIcon } from '../.././assets/Icons/DeleteIcon.svg';
 import { useMutation } from '@tanstack/react-query';
 import { deleteVolunteers } from '../../apis/volunteers';
+import { deleteWorkshops } from '../../apis/workshops';
 import AlertReact from '../Alert/AlertReact';
 
 function DeletePopup({
   selectedRows,
   hideDeleteModal,
   hideDeleteModalAndShowSuccess,
+  type,
 }) {
   const classes = useStyles();
   const [open, SetOpen] = useState(true);
   const [alertType, setAlertType] = useState();
 
   const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: deleteVolunteers,
+    mutationFn: type === 'workshops' ? deleteWorkshops : deleteVolunteers,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -34,7 +36,6 @@ function DeletePopup({
           message: data.message,
         });
       } else {
-        console.log('not hiding delete and not showing succss');
         hideDeleteModalAndShowSuccess();
       }
     },
@@ -46,11 +47,19 @@ function DeletePopup({
     },
   });
 
-  const deleteVolunteer = function () {
+  const deleteVolunteersHandler = function () {
     const emailsOfDeleteVolunteers = selectedRows.map(
       (selectedRow) => selectedRow.email
     );
     mutate(emailsOfDeleteVolunteers);
+  };
+
+  const deleteWorkshopsHandler = function () {
+    const idsOfDeleteWorkshops = selectedRows.map(
+      (selectedRow) => selectedRow.id
+    );
+    console.log(idsOfDeleteWorkshops);
+    mutate(idsOfDeleteWorkshops);
   };
 
   const removeAlertType = function () {
@@ -86,7 +95,10 @@ function DeletePopup({
         <DialogContentText className="DialogText">
           Are you sure you want to delete
           {selectedRows.map((item, index) => (
-            <span key={index}> '{item.name}', </span>
+            <span key={index}>
+              {' '}
+              '{type === 'workshops' ? item.types : item.name}',{' '}
+            </span>
           ))}
           ?
         </DialogContentText>
@@ -99,7 +111,15 @@ function DeletePopup({
         >
           Cancel
         </Button>
-        <Button className="deleteBtn" disableRipple onClick={deleteVolunteer}>
+        <Button
+          className="deleteBtn"
+          disableRipple
+          onClick={
+            type === 'workshops'
+              ? deleteWorkshopsHandler
+              : deleteVolunteersHandler
+          }
+        >
           {isPending ? 'Loading...' : 'Delete'}
         </Button>
       </DialogActions>

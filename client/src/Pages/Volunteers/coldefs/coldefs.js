@@ -1,4 +1,4 @@
-import { useStyles } from './Table.styles';
+import { useStyles } from '../../../Components/Table/Table.styles';
 
 const IsAdminComp = (params) => {
   if (!params.data.isAdminVerified) return `-`;

@@ -11,7 +11,7 @@ import {
 import { useStyles } from './Volunteers.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { volunteers } from '../../apis/volunteers';
 import PaginationComp from '../../Components/Table/PaginationComp';
@@ -24,20 +24,16 @@ import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
 
+import colDefs from './coldefs/coldefs';
+
 const Volunteers = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  // const [showInviteModal, setShowInviteModal] = useState(false);
-  // const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // const [showVerifyStatusModal, setShowVerifyStatusModal] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filters, setFilters] = useState({});
-
   const [selectedRows, setSelectedRows] = useState([]);
-  // const [rowChanged, setRowChanged] = useState(true);
 
   const {
     removeAlertType,
@@ -58,11 +54,6 @@ const Volunteers = () => {
     setShowDeleteModal,
   } = useAlerts();
 
-  const { data, isPending, isError, error } = useReactQuery(
-    [currentPage, rowsPerPage, filters, rowChanged],
-    volunteers
-  );
-
   const updateCurrentPage = (val) => {
     setCurrentPage(val);
   };
@@ -72,82 +63,60 @@ const Volunteers = () => {
   };
 
   const [searchValue, setSearchValue] = useState('');
+  const [debouncedSearch, setDebouncedValue] = useState('');
+
   const [statusDropdown, setStatusDropdown] = useState('all');
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
 
-  const handleSubmit = function (e) {
-    e.preventDefault();
+  const { data, isPending, isError, error } = useReactQuery(
+    [
+      currentPage,
+      rowsPerPage,
+      {
+        search: debouncedSearch,
+        status: statusDropdown,
+        role: roleDropdown,
+        gender: genderDropdown,
+      },
+      rowChanged,
+    ],
+    volunteers
+  );
 
-    const filtersObj = {
-      search: searchValue,
-      status: statusDropdown,
-      role: roleDropdown,
-      gender: genderDropdown,
+  useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setDebouncedValue(searchValue);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
     };
+  }, [searchValue]);
 
-    for (const key in filtersObj) {
-      if (filtersObj[key] === 'all' || filtersObj[key] === '') {
-        delete filtersObj[key];
-      }
-    }
+  // const handleSubmit = function (e) {
+  //   e.preventDefault();
 
-    setFilters(filtersObj);
-    setCurrentPage(1);
-  };
+  //   const filtersObj = {
+  //     search: searchValue,
+  //     status: statusDropdown,
+  //     role: roleDropdown,
+  //     gender: genderDropdown,
+  //   };
+
+  //   for (const key in filtersObj) {
+  //     if (filtersObj[key] === 'all' || filtersObj[key] === '') {
+  //       delete filtersObj[key];
+  //     }
+  //   }
+
+  //   setFilters(filtersObj);
+  //   setCurrentPage(1);
+  // };
 
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
-
-  // const hideInviteModal = function () {
-  //   setShowInviteModal(false);
-  // };
-  // const hideDeleteModal = function () {
-  //   setShowDeleteModal(false);
-  // };
-
-  // const [selectedUser, setSelectedUser] = useState();
-
-  // const showVerifyStatus = function (email) {
-  //   setShowVerifyStatusModal(true);
-  //   setSelectedUser(email);
-  // };
-
-  // const hideVerifyStatus = function () {
-  //   setShowVerifyStatusModal(false);
-  // };
-
-  // const [alertType, setAlertType] = useState();
-
-  // const removeAlertType = function () {
-  //   setAlertType(undefined);
-  // };
-
-  // const hideInviteModalAndShowSuccess = function () {
-  //   setShowInviteModal(false);
-  //   setAlertType({
-  //     type: 'success',
-  //     message: 'Invitation Sent Successfully',
-  //   });
-  // };
-
-  // const hideDeleteModalAndShowSuccess = function () {
-  //   setShowDeleteModal(false);
-  //   setAlertType({
-  //     type: 'success',
-  //     message: 'User deleted Successfully',
-  //   });
-  // };
-
-  // const hideVerifyModalAndShowSuccess = function () {
-  //   setShowVerifyStatusModal(false);
-  //   setAlertType({
-  //     type: 'success',
-  //     message: 'User Verified Successfully',
-  //   });
-  //   setRowChanged((prev) => !prev);
-  // };
 
   return (
     <Box className={classes.tableContainer}>
@@ -217,7 +186,7 @@ const Volunteers = () => {
           />
         )}
         <Box>
-          <form onSubmit={handleSubmit}>
+          <form>
             <TextField
               label="Search"
               variant="outlined"
@@ -302,11 +271,11 @@ const Volunteers = () => {
           </form>
         </Box>
       </Box>
-      {data && <></>}
       <Table
+        colDefs={colDefs}
         key={rowChanged}
         updateSelectedRows={updateSelectedRows}
-        data={data}
+        data={data?.data?.users}
         isPending={isPending}
         showVerifyStatus={showVerifyStatus}
       />

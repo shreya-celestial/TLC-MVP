@@ -1,13 +1,18 @@
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import colDefs from './coldefs';
 import { useStyles } from './Table.styles';
 import { Box } from '@mui/material';
 
-const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
+const Table = ({
+  data,
+  isPending,
+  updateSelectedRows,
+  showVerifyStatus,
+  colDefs,
+}) => {
   let rowData;
-  if (data) rowData = data.data.users;
+  if (data) rowData = data;
 
   const classes = useStyles();
 
@@ -49,7 +54,7 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
   };
 
   const modifiedColumnDefs = colDefs.map((colDef) => {
-    if (colDef.headerName === 'Status') {
+    if (colDef.headerName === 'Status' && true) {
       colDef.cellRenderer = IsAdminVerifiedComp;
     }
     return colDef;
@@ -60,7 +65,7 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
       className="ag-theme-quartz" // applying the grid theme
       style={{ height: 405 }} // the grid will fill the size of the parent container
     >
-      {isPending && <Box className={classes.tableSkeleton}>loading</Box>}
+      {isPending && <Box className={classes.tableSkeleton}>Loading...</Box>}
       {data && (
         <AgGridReact
           rowData={rowData}
