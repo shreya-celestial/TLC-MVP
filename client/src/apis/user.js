@@ -13,7 +13,7 @@ export const signup = async ({ body }) => {
 };
 
 export const signupInvite = async (body) => {
-  const url = `http://localhost:8080/volunteers/inviteSignup`;
+  const url = `https://tlc-two.vercel.app/volunteers/inviteSignup`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -48,13 +48,12 @@ export const forgotPass = async (body) => {
   return await response.json();
 };
 
-export const resetPass = async (body, cookies) => {
+export const resetPass = async (body) => {
   const url = `${BASE_URL}/resetPass`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      cookies,
     },
     body: JSON.stringify(body),
   });

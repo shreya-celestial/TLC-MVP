@@ -9,11 +9,11 @@ const verifyInvite = async (req: Request, res: Response) => {
 
     if(data?.errors)
     {
-      return res.clearCookie('token').clearCookie('email').clearCookie('isAdmin').status(404).send(data?.errors[0]?.message)
+      return res.status(404).send(data?.errors[0]?.message)
     }
     if(!data?.data?.Invitations?.length)
     {
-      return res.clearCookie('token').clearCookie('email').clearCookie('isAdmin').status(404).send('Something went wrong! Please try again!')
+      return res.status(404).send('Something went wrong! Please try again!')
     }
 
     const created = new Date(data?.data?.Invitations[0]?.created_at)
@@ -23,11 +23,11 @@ const verifyInvite = async (req: Request, res: Response) => {
 
     if(diffDays>=5)
     {
-      return res.clearCookie('token').clearCookie('email').clearCookie('isAdmin').status(404).send('Invitation expired!')
+      return res.status(404).send('Invitation expired!')
     }
-    return res.cookie('token', token).cookie('email', data?.data?.Invitations[0]?.email).cookie('isAdmin', data?.data?.Invitations[0]?.isAdmin).redirect(303, 'http://localhost:3000/signup')
+    return res.redirect(303, `http://localhost:3000/signup?token=${token}&for=${data?.data?.Invitations[0]?.email}`)
   }
-  return res.clearCookie('token').clearCookie('email').clearCookie('isAdmin').status(404).send('Error! Page not found.')
+  return res.status(404).send('Error! Page not found.')
 }
 
 export default verifyInvite

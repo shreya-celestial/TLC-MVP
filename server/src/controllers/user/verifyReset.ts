@@ -8,11 +8,11 @@ const verifyReset = async (req: Request, res: Response) => {
       token: req.params.token
     })
     if(data?.data?.users?.length){
-      return res.cookie('token', req?.params?.token).redirect(303, 'http://localhost:3000/resetPass')
+      return res.redirect(303, `http://localhost:3000/resetPass?reset=${req?.params?.token}`)
     }
-    return res.clearCookie('token').status(400).send('Error! Something went wrong. Please try again later.')
+    return res.status(400).send('Error! Something went wrong. Please try again later.')
   }
-  return res.clearCookie('token').status(404).send('Error! Page not found.')
+  return res.status(404).send('Error! Page not found.')
 }
 
 export default verifyReset
