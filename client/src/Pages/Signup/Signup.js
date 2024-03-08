@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useStyles } from './Signup.styles';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import VolunteerForm from '../../Components/VolunteerForm/VolunteerForm';
 
@@ -13,6 +13,8 @@ import validator from 'validator';
 import logo from '../../assets/Icons/tlcLogo.png';
 
 function Signup() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
   const classes = useStyles();
   const [alertType, setAlertType] = useState();
   const [signupType, setSignupType] = useState('normal');
@@ -24,9 +26,8 @@ function Signup() {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: signupType === 'normal' ? signup : signupInvite,
     onSuccess: (data) => {
-      deleteCookie('email');
-      deleteCookie('isAdmin');
-      deleteCookie('token');
+      // deleteCookie('email');
+      // deleteCookie('token');
       setAlertType({
         type: data.status,
         message: data.message,
@@ -79,9 +80,11 @@ function Signup() {
       });
     }
 
-    const token = getCookie('token');
-    const isAdmin = getCookie('isAdmin');
-    const email = getCookie('email');
+    const token = queryParams.get('token');
+    const email = queryParams.get('for');
+    console.log(queryParams)
+    // const token = getCookie('token');
+    // const email = getCookie('email');
 
     const body = {
       email: e.target.elements.email.value,
@@ -99,7 +102,7 @@ function Signup() {
 
     if (token) {
       setSignupType('invite');
-      mutate({ ...body, token, isAdmin, email });
+      mutate({ ...body, token, email });
     } else {
       setSignupType('normal');
       mutate({ body });

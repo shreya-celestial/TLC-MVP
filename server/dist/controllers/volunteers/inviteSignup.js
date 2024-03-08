@@ -18,7 +18,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/volunteers/queries");
 const mutations_1 = require("../../gql/volunteers/mutations");
 const inviteSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
     if (req.body.token && req.body.token !== 'null' && req.body.token !== 'NULL') {
         const verifyEmail = yield (0, getData_1.default)(queries_1.verifyVolunteerInvite, { token: req.body.token });
         if (verifyEmail === null || verifyEmail === void 0 ? void 0 : verifyEmail.errors) {
@@ -40,18 +40,18 @@ const inviteSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
-        const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email.replace('%40', '@')).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isAdminVerified: true, isVerified: true, token: null, isAccepted: true });
+        const variables = Object.assign(Object.assign({}, req.body), { isAdmin: (_g = (_f = verifyEmail === null || verifyEmail === void 0 ? void 0 : verifyEmail.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.isAdmin, name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email.replace('%40', '@')).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isAdminVerified: true, isVerified: true, token: null, isAccepted: true });
         const data = yield (0, getData_1.default)(mutations_1.signupInvitation, variables);
         if (data === null || data === void 0 ? void 0 : data.errors) {
             return res.status(400).json({
                 status: 'error',
-                message: (_f = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _f === void 0 ? void 0 : _f.message
+                message: (_h = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _h === void 0 ? void 0 : _h.message
             });
         }
-        if (((_h = (_g = data === null || data === void 0 ? void 0 : data.data) === null || _g === void 0 ? void 0 : _g.update_Invitations) === null || _h === void 0 ? void 0 : _h.affected_rows) && ((_k = (_j = data === null || data === void 0 ? void 0 : data.data) === null || _j === void 0 ? void 0 : _j.insert_users) === null || _k === void 0 ? void 0 : _k.affected_rows)) {
+        if (((_k = (_j = data === null || data === void 0 ? void 0 : data.data) === null || _j === void 0 ? void 0 : _j.update_Invitations) === null || _k === void 0 ? void 0 : _k.affected_rows) && ((_m = (_l = data === null || data === void 0 ? void 0 : data.data) === null || _l === void 0 ? void 0 : _l.insert_users) === null || _m === void 0 ? void 0 : _m.affected_rows)) {
             return res.status(200).json({
                 status: 'success',
-                message: "User registered successffully!"
+                message: "User registered successfully!"
             });
         }
         return res.status(400).json({
