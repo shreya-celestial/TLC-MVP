@@ -43,7 +43,7 @@ function Main() {
           <Route exact path="/meetingdetails" element={<MeetingsDetails />} />
           <Route
             exact
-            path="/enrollmentdetails"
+            path="/enrollmentdetails/:type"
             element={<EnrollmentsDetails />}
           />
 
