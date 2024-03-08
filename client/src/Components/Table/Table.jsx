@@ -3,15 +3,13 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import colDefs from './coldefs';
 import { useStyles } from './Table.styles';
-import { Box } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 
 const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
   let rowData;
   if (data) rowData = data.data.users;
 
   const classes = useStyles();
-
-  const rowHeight = 35;
 
   const onSelectionChanged = () => {
     const selectedNodes = gridApi.getSelectedNodes();
@@ -20,8 +18,16 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
   };
 
   const gridOptions = {
-    rowSelection: 'multiple', // Enable multiple row selection
+    rowSelection: 'multiple',
     onSelectionChanged: onSelectionChanged,
+    rowHeight: 30,
+    headerHeight: 30,
+    suppressHorizontalScroll: true,
+    domLayout: 'autoHeight',
+
+  };
+  const defaultColDef = {
+    flex: 1,
   };
 
   let gridApi;
@@ -35,14 +41,15 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
     return (
       <>
         {params.value ? (
-          <p className={classes.verified}>Verified</p>
+          <Typography className={classes.verified}>Verified</Typography>
         ) : (
-          <p
+          <Button
             className={classes.pending}
             onClick={() => handleClickInColumn(params)}
+            disableRipple
           >
             Pending
-          </p>
+          </Button>
         )}
       </>
     );
@@ -52,27 +59,29 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
     if (colDef.headerName === 'Status') {
       colDef.cellRenderer = IsAdminVerifiedComp;
     }
+
     return colDef;
   });
 
   return (
-    <div
-      className="ag-theme-quartz" // applying the grid theme
-      style={{ height: 405 }} // the grid will fill the size of the parent container
-    >
-      {isPending && <Box className={classes.tableSkeleton}>loading</Box>}
+    <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
+      {isPending && (
+        <Box className={classes.tableSkeleton}>
+          <CircularProgress className="circularProgress" />
+        </Box>
+      )}
       {data && (
         <AgGridReact
+          className={classes.AgGridMain}
           rowData={rowData}
+          defaultColDef={defaultColDef}
           columnDefs={modifiedColumnDefs}
           gridOptions={gridOptions}
-          getRowClass={() => classes.row}
-          getRowHeight={() => rowHeight}
-          headerHeight={35}
           onGridReady={(params) => (gridApi = params.api)}
+          suppressRowClickSelection
         ></AgGridReact>
       )}
-    </div>
+    </Box>
   );
 };
 

@@ -171,10 +171,13 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: '20px',
     },
   },
-  flex: {
-    height: '100vh',
+  loader: {
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    '& svg': {
+      color: theme.palette.primaryGreen,
+    },
   },
 }));

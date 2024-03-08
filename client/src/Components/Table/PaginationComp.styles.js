@@ -3,32 +3,30 @@ import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles((theme) => ({
   pagination: {
     display: 'flex',
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    fontSize: '13px',
-    color: 'black',
-
-    '& svg': {
-      cursor: 'pointer',
-      fontSize: '20px',
+    gap: '5px',
+    justifyContent: 'flex-end',
+    height: '40px',
+    background: '#FFFFFF',
+    padding: '0 20px',
+    borderTop: `1px solid ${theme.palette.primaryGreen}`,
+    '& .pageInfo': {
+      fontSize: '12px',
+      fontWeight: '500',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '13px',
+      },
     },
   },
-  label: {
-    marginRight: '13px',
-  },
-  selectBox: {
-    padding: '0px',
-    outline: 'none',
-    borderRadius: '5px',
-    height: '30px',
-    width: '65px',
-    fontSize: '15px !important',
-  },
-  rowSelect: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-
-    '& p': { fontSize: '14px !important' },
+  pageBtn: {
+    '&.MuiIconButton-root': {
+      padding: '0px',
+      '& svg': {
+        fontSize: '20px',
+        [theme.breakpoints.down('sm')]: {
+          fontSize: '22px',
+        },
+      },
+    },
   },
 }));
