@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   FormControl,
-  InputLabel,
+  FormLabel,
+  IconButton,
+  Menu,
   MenuItem,
   Select,
   TextField,
@@ -11,6 +13,7 @@ import {
 import { useStyles } from './Volunteers.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
+import { useEffect, useState } from 'react';
 import { useEffect, useState } from 'react';
 
 import { volunteers } from '../../apis/volunteers';
@@ -23,6 +26,8 @@ import VerifyPopup from './VerifyPopup/VerifyPopup';
 import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
 
@@ -31,8 +36,10 @@ const Volunteers = () => {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(12);
   const [filters, setFilters] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+
   const [selectedRows, setSelectedRows] = useState([]);
 
   const {
@@ -64,7 +71,6 @@ const Volunteers = () => {
 
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
-
   const [statusDropdown, setStatusDropdown] = useState('all');
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
@@ -94,44 +100,24 @@ const Volunteers = () => {
     };
   }, [searchValue]);
 
-  // const handleSubmit = function (e) {
-  //   e.preventDefault();
-
-  //   const filtersObj = {
-  //     search: searchValue,
-  //     status: statusDropdown,
-  //     role: roleDropdown,
-  //     gender: genderDropdown,
-  //   };
-
-  //   for (const key in filtersObj) {
-  //     if (filtersObj[key] === 'all' || filtersObj[key] === '') {
-  //       delete filtersObj[key];
-  //     }
-  //   }
-
-  //   setFilters(filtersObj);
-  //   setCurrentPage(1);
-  // };
-
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
-
+  const handleReset = () => {
+    setRoleDropdown('all');
+    setGenderDropdown('all');
+    setStatusDropdown('all');
+  };
   return (
-    <Box className={classes.tableContainer}>
-      <Box>
+    <Box className={classes.root}>
+      <Box className={classes.HeadingAndActionBtn}>
         <Typography component="h1">Volunteers</Typography>
-        <Button
-          onClick={() => {
-            setShowInviteModal(true);
-          }}
-        >
-          Invite Volunteer
-        </Button>
-        <Box>
+
+        <Box className={classes.ActionBtn}>
           {selectedRows.length >= 1 && (
             <Button
+              className="deleteBtn"
+              disableRipple
               onClick={() => {
                 setShowDeleteModal(true);
               }}
@@ -142,6 +128,8 @@ const Volunteers = () => {
           {selectedRows.length === 1 && (
             <>
               <Button
+                className="editBtn"
+                disableRipple
                 onClick={() => {
                   navigate(`/volunteerdetail/${selectedRows[0].email}/edit`);
                 }}
@@ -149,6 +137,8 @@ const Volunteers = () => {
                 Edit
               </Button>
               <Button
+                className="viewBtn"
+                disableRipple
                 onClick={() => {
                   navigate(`/volunteerdetail/${selectedRows[0].email}/view`);
                 }}
@@ -157,134 +147,167 @@ const Volunteers = () => {
               </Button>
             </>
           )}
-        </Box>
-        {showInviteModal && (
-          <InvitePopup
-            hideInviteModalAndShowSuccess={hideInviteModalAndShowSuccess}
-            hideInviteModal={hideInviteModal}
-          />
-        )}
-        {showVerifyStatusModal && (
-          <VerifyPopup
-            selectedUser={selectedUser}
-            hideVerifyStatus={hideVerifyStatus}
-            hideVerifyModalAndShowSuccess={hideVerifyModalAndShowSuccess}
-          />
-        )}
-        {showDeleteModal && (
-          <DeletePopup
-            selectedRows={selectedRows}
-            hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
-            hideDeleteModal={hideDeleteModal}
-          />
-        )}
-        {alertType && (
-          <AlertReact
-            removeAlertType={removeAlertType}
-            type={alertType.type}
-            message={alertType.message}
-          />
-        )}
-        <Box>
-          <form>
-            <TextField
-              label="Search"
-              variant="outlined"
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-              size="small"
-            />
-
-            {/* Dropdown 1 */}
-            <FormControl variant="outlined">
-              <InputLabel id="status-label">Status</InputLabel>
-              <Select
-                labelId="status-label"
-                label="Status"
-                variant="outlined"
-                value={statusDropdown}
-                onChange={(e) => {
-                  setStatusDropdown(e.target.value);
-                }}
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="verified">Verified</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Dropdown 2 */}
-            <FormControl>
-              <InputLabel id="role-label">Role</InputLabel>
-              <Select
-                label="Role"
-                labelId="role-label"
-                variant="outlined"
-                value={roleDropdown}
-                onChange={(e) => {
-                  setRoleDropdown(e.target.value);
-                }}
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="volunteer">Volunteer</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Dropdown 3 */}
-            <FormControl>
-              <InputLabel id="gender-label">Gender</InputLabel>
-              <Select
-                label="Gender"
-                labelId="gender-label"
-                variant="outlined"
-                value={genderDropdown}
-                onChange={(e) => {
-                  setGenderDropdown(e.target.value);
-                }}
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="male">Male</MenuItem>
-                <MenuItem value="female">Female</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Button variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
+          {selectedRows.length === 0 && (
             <Button
-              variant="contained"
-              color="secondary"
-              type="button"
+              className="inviteBtn"
+              disableRipple
               onClick={() => {
-                setFilters({});
-                setCurrentPage(1);
+                setShowInviteModal(true);
               }}
             >
-              Reset
+              Invite
             </Button>
-          </form>
+          )}
         </Box>
       </Box>
-      <Table
-        colDefs={colDefs}
-        key={rowChanged}
-        updateSelectedRows={updateSelectedRows}
-        data={data?.data?.users}
-        isPending={isPending}
-        showVerifyStatus={showVerifyStatus}
-      />
-      <PaginationComp
-        updateCurrentPage={updateCurrentPage}
-        totalPages={data?.data?.total_pages}
-        updateRowsPerPage={updateRowsPerPage}
-        currentPage={currentPage}
-      />
+      {showInviteModal && (
+        <InvitePopup
+          hideInviteModalAndShowSuccess={hideInviteModalAndShowSuccess}
+          hideInviteModal={hideInviteModal}
+        />
+      )}
+      {showVerifyStatusModal && (
+        <VerifyPopup
+          selectedUser={selectedUser}
+          hideVerifyStatus={hideVerifyStatus}
+          hideVerifyModalAndShowSuccess={hideVerifyModalAndShowSuccess}
+        />
+      )}
+      {showDeleteModal && (
+        <DeletePopup
+          selectedRows={selectedRows}
+          hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          hideDeleteModal={hideDeleteModal}
+        />
+      )}
+      {alertType && (
+        <AlertReact
+          removeAlertType={removeAlertType}
+          type={alertType.type}
+          message={alertType.message}
+        />
+      )}
+      <Box className={classes.headerTablePagination}>
+        <Box className={classes.tableHeader}>
+          <TextField
+            placeholder="Search"
+            className={classes.searchbar}
+            autoComplete="off"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+          />
+          <IconButton
+            disableRipple
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            className={classes.filterIcon}
+          >
+            <FilterListIcon />
+          </IconButton>
+          {/* Filter modal */}
+          <Menu
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            className={classes.filterRoot}
+            onClose={() => setAnchorEl(null)}
+          >
+            <Box className={classes.filterContent}>
+              <Typography>Filters</Typography>
+              <FormControl className={classes.formControl}>
+                <FormLabel id="status">Status</FormLabel>
+                <Select
+                  labelId="status"
+                  value={statusDropdown}
+                  onChange={(e) => {
+                    setStatusDropdown(e.target.value);
+                  }}
+                  IconComponent={ExpandMoreOutlinedIcon}
+                  className={classes.selectBox}
+                  MenuProps={{
+                    classes: {
+                      paper: classes.selectDropdownMenu,
+                    },
+                  }}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="verified">Verified</MenuItem>
+                  <MenuItem value="pending">Pending</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl className={classes.formControl}>
+                <FormLabel id="role-label">Role</FormLabel>
+                <Select
+                  labelId="role-label"
+                  value={roleDropdown}
+                  onChange={(e) => {
+                    setRoleDropdown(e.target.value);
+                  }}
+                  IconComponent={ExpandMoreOutlinedIcon}
+                  className={classes.selectBox}
+                  MenuProps={{
+                    classes: {
+                      paper: classes.selectDropdownMenu,
+                    },
+                  }}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="volunteer">Volunteer</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl className={classes.formControl}>
+                <FormLabel id="gender-label">Gender</FormLabel>
+                <Select
+                  label="Gender"
+                  labelId="gender-label"
+                  value={genderDropdown}
+                  onChange={(e) => {
+                    setGenderDropdown(e.target.value);
+                  }}
+                  IconComponent={ExpandMoreOutlinedIcon}
+                  className={classes.selectBox}
+                  MenuProps={{
+                    classes: {
+                      paper: classes.selectDropdownMenu,
+                    },
+                  }}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                </Select>
+              </FormControl>
+
+              <Button
+                onClick={handleReset}
+                disableRipple
+                className={classes.resetFilterBtn}
+              >
+                Reset
+              </Button>
+            </Box>
+          </Menu>
+        </Box>
+      </Box>
+      <Box className={classes.tableContainer}>
+        <Table
+          colDefs={colDefs}
+          key={rowChanged}
+          updateSelectedRows={updateSelectedRows}
+          data={data?.data?.users}
+          isPending={isPending}
+          showVerifyStatus={showVerifyStatus}
+        />
+        <PaginationComp
+          updateCurrentPage={updateCurrentPage}
+          totalPages={data?.data?.total_pages}
+          updateRowsPerPage={updateRowsPerPage}
+          currentPage={currentPage}
+        />
+      </Box>
     </Box>
   );
 };

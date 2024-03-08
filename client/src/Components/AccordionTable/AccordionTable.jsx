@@ -13,7 +13,6 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 function AccordionTable({ rowData, columnDefs, headingName }) {
   const defaultColDef = {
     sortable: false,
-    minWidth: 250,
     flex: 1,
   };
 

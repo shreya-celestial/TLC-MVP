@@ -9,67 +9,45 @@ import { Box, IconButton, MenuItem, Select, Typography } from '@mui/material';
 const PaginationComp = ({
   updateCurrentPage,
   totalPages,
-  updateRowsPerPage,
   currentPage,
 }) => {
   const classes = useStyles();
 
-  const [selectedOption, setSelectedOption] = useState('10');
-
-  const handleChangeRows = (e) => {
-    setSelectedOption(Number(e.target.value));
-    updateRowsPerPage(Number(e.target.value));
-  };
-
   return (
-    <Box>
-      <Box className={classes.pagination}>
-        <Box>
-          <Box className={classes.rowSelect}>
-            <Typography>Rows Per Page</Typography>
-            <Select
-              variant="outlined"
-              value={selectedOption}
-              onChange={handleChangeRows}
-              size="small"
-              className={classes.selectBox}
-            >
-              <MenuItem value="10">10</MenuItem>
-              <MenuItem value="15">15</MenuItem>
-              <MenuItem value="20">20</MenuItem>
-            </Select>
-          </Box>
-        </Box>
-        <>
-          <IconButton
-            onClick={() => updateCurrentPage(1)}
-            disabled={currentPage === 1}
-          >
-            <FirstPageIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => updateCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeftIcon />
-          </IconButton>
-        </>
+    <Box className={classes.pagination}>
+      <IconButton
+        className={classes.pageBtn}
+        onClick={() => updateCurrentPage(1)}
+        disabled={currentPage === 1}
+      >
+        <FirstPageIcon />
+      </IconButton>
+      <IconButton
+        className={classes.pageBtn}
+        onClick={() => updateCurrentPage(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <ChevronLeftIcon />
+      </IconButton>
+
+      <Typography className="pageInfo">
         Page {currentPage} of {totalPages}
-        <>
-          <IconButton
-            onClick={() => updateCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            <ChevronRightIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => updateCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}
-          >
-            <LastPageIcon />
-          </IconButton>
-        </>
-      </Box>
+      </Typography>
+
+      <IconButton
+        className={classes.pageBtn}
+        onClick={() => updateCurrentPage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <ChevronRightIcon />
+      </IconButton>
+      <IconButton
+        className={classes.pageBtn}
+        onClick={() => updateCurrentPage(totalPages)}
+        disabled={currentPage === totalPages}
+      >
+        <LastPageIcon />
+      </IconButton>
     </Box>
   );
 };

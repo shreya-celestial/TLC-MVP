@@ -12,6 +12,9 @@ const allPageWorkshops = async (req: Request, res: Response) => {
     pastOrUpcoming,
     start,
     end,
+    type,
+    venue,
+    city,
     value
   } = req.query
   let page: number = 1; 
@@ -97,6 +100,40 @@ const allPageWorkshops = async (req: Request, res: Response) => {
           }
         },
       ]
+    }
+  }
+
+  if(type)
+  {
+    let types: any = type;
+    types = capitaliseStr(types)
+    filters = {
+      ...filters,
+      types: {
+        _like: `${types}%`
+      }
+    }
+  }
+  if(venue)
+  {
+    let venues: any = venue;
+    venues = capitaliseStr(venues)
+    filters = {
+      ...filters,
+      venue: {
+        _like: `${venues}%`
+      }
+    }
+  }
+  if(city)
+  {
+    let venue_city: any = city;
+    venue_city = capitaliseStr(venue_city)
+    filters = {
+      ...filters,
+      venue_city: {
+        _like: `${venue_city}%`
+      }
     }
   }
 
