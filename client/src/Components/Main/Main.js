@@ -15,6 +15,7 @@ import WorkshopsDetails from '../../Pages/Workshops/WorkshopsDetails/WorkshopsDe
 import AutocompletePopup from '../AutocompletePopup/AutocompletePopup';
 import InfoTable from '../InfoTable/InfoTable';
 import EnrollmentsDetails from '../../Pages/Enrollments/EnrollmentsDetails/EnrollmentsDetails';
+import MeetingsDetails from '../../Pages/Meetings/MeetingsDetails/MeetingsDetails';
 
 
 function Main() {
@@ -39,6 +40,7 @@ function Main() {
           <Route exact path="/worskhopdetail" element={<WorkshopsDetails />} />
           <Route exact path="/autocomplete" element={<AutocompletePopup />} />
           <Route exact path="/infotable" element={<InfoTable />} />
+          <Route exact path="/meetingdetails" element={<MeetingsDetails />} />
           <Route
             exact
             path="/enrollmentdetails"
