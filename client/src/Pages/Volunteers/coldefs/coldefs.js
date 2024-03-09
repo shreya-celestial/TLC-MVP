@@ -1,3 +1,5 @@
+import { useStyles } from '../../../Components/Table/Table.styles';
+
 const IsAdminComp = (params) => {
   if (!params.data.isAdminVerified) return `-`;
   return `${params.value ? 'Admin' : 'Volunteer'}`;
@@ -17,46 +19,28 @@ const colDefs = [
     checkboxSelection: true,
     headerName: '',
     width: 50,
-    resizable: false,
   },
-  { field: 'name', filter: false, editable: false, headerName: 'Name', minWidth:150 },
-  {
-    field: 'email',
-    filter: false,
-    editable: false,
-    minWidth: 250,
-    headerName: 'Email ID',
-  },
-  { field: 'phoneNumber', filter: false, editable: false, minWidth: 150 },
-  {
-    field: 'gender',
-    filter: false,
-    editable: false,
-    minWidth: 120,
-    headerName: 'Gender',
-  },
-  {
-    field: 'yearOfJoining',
-    filter: false,
-    editable: false,
-    minWidth: 120,
-    headerName: 'Joining Year',
-  },
+  { field: 'name', filter: false, editable: false },
+  { field: 'email', filter: false, editable: false, width: 300 },
+  { field: 'phoneNumber', filter: false, editable: false, width: 150 },
+  { field: 'gender', filter: false, editable: false, width: 150 },
+  { field: 'yearOfJoining', filter: false, editable: false, width: 150 },
+  { field: 'dob', filter: false, editable: false, width: 150 },
   {
     field: 'location',
     filter: false,
     editable: false,
     cellRenderer: LocationComp,
-    minWidth: 300,
-    headerName: 'Location',
+    width: 300,
   },
+  { field: 'pincode', filter: false, editable: false, width: 150 },
   {
     field: 'isAdmin',
     filter: false,
     editable: false,
     cellRenderer: IsAdminComp,
     headerName: 'Role',
-    minWidth: 120,
+    width: 150,
   },
   {
     field: 'isAdminVerified',
@@ -67,8 +51,7 @@ const colDefs = [
       display: 'flex',
       alignItems: 'center',
     },
-    minWidth: 120,
-    flex:1
+    width: 150,
   },
 ];
 

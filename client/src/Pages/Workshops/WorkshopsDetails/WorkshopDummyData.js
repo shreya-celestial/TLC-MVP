@@ -61,6 +61,7 @@ export const ParticipantColDef = [
   { field: 'email', headerName: 'Email ID' },
   { field: 'city', headerName: 'City' },
 ];
+
 export const ParticipantRowData = [
   {
     name: 'Sahil Mandoliya',

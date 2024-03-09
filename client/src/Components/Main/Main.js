@@ -12,11 +12,11 @@ import DeletePopup from '../DeletePopup/DeletePopup';
 import InvitePopup from '../../Pages/Volunteers/InvitePopup/InvitePopup';
 import VerifyPopup from '../../Pages/Volunteers/VerifyPopup/VerifyPopup';
 import WorkshopsDetails from '../../Pages/Workshops/WorkshopsDetails/WorkshopsDetails';
+import Workshops from '../../Pages/Workshops/Workshops';
 import AutocompletePopup from '../AutocompletePopup/AutocompletePopup';
 import InfoTable from '../InfoTable/InfoTable';
 import EnrollmentsDetails from '../../Pages/Enrollments/EnrollmentsDetails/EnrollmentsDetails';
 import MeetingsDetails from '../../Pages/Meetings/MeetingsDetails/MeetingsDetails';
-
 
 function Main() {
   return (
@@ -37,7 +37,17 @@ function Main() {
           <Route exact path="/delete" element={<DeletePopup />} />
           <Route exact path="/invite" element={<InvitePopup />} />
           <Route exact path="/verify" element={<VerifyPopup />} />
-          <Route exact path="/worskhopdetail" element={<WorkshopsDetails />} />
+          <Route exact path="/workshops" element={<Workshops />} />
+          <Route
+            exact
+            path="/workshopdetail/:id/:type"
+            element={<WorkshopsDetails />}
+          />
+          <Route
+            exact
+            path="/workshopdetail/:type"
+            element={<WorkshopsDetails />}
+          />
           <Route exact path="/autocomplete" element={<AutocompletePopup />} />
           <Route exact path="/infotable" element={<InfoTable />} />
           <Route exact path="/meetingdetails" element={<MeetingsDetails />} />
@@ -46,7 +56,6 @@ function Main() {
             path="/enrollmentdetails/:type"
             element={<EnrollmentsDetails />}
           />
-
         </Routes>
       </Wrapper>
     </BrowserRouter>

@@ -40,8 +40,9 @@ export function useAlerts(queryKey, fetchFn) {
     setShowDeleteModal(false);
     setAlertType({
       type: 'success',
-      message: 'User deleted Successfully',
+      message: 'Deleted Successfully',
     });
+    setRowChanged((prev) => !prev);
   };
 
   const hideVerifyModalAndShowSuccess = function () {

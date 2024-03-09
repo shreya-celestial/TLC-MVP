@@ -28,6 +28,8 @@ import { useAlerts } from '../../hooks/useAlerts';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
+import colDefs from './coldefs/coldefs';
+
 const Volunteers = () => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -288,17 +290,16 @@ const Volunteers = () => {
             </Box>
           </Menu>
         </Box>
-        {/* table */}
-        {data && <></>}
-        <Box className={classes.tableContainer}>
-          <Table
-            key={rowChanged}
-            updateSelectedRows={updateSelectedRows}
-            data={data}
-            isPending={isPending}
-            showVerifyStatus={showVerifyStatus}
-          />
-        </Box>
+      </Box>
+      <Box className={classes.tableContainer}>
+        <Table
+          colDefs={colDefs}
+          key={rowChanged}
+          updateSelectedRows={updateSelectedRows}
+          data={data?.data?.users}
+          isPending={isPending}
+          showVerifyStatus={showVerifyStatus}
+        />
         <PaginationComp
           updateCurrentPage={updateCurrentPage}
           totalPages={data?.data?.total_pages}

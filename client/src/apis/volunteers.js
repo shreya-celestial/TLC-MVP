@@ -1,20 +1,23 @@
-const BASEURL = "https://tlc-two.vercel.app/volunteers"
 
+const BASEURL = "https://tlc-two.vercel.app/volunteers"
+  
 export const volunteers = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters] = queryKey;
+
   for (const key in filters) {
     if (filters[key] === 'all' || filters[key] === '') {
       delete filters[key];
     }
   }
-  let pageParam = page ? `?page=${page}` : `?page=${1}`;
+
+  let pageParam = page ? `?page=${page}` : `?page=1`;
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
-  let searchParam = filters.search ? `&value=${filters.search}` : '';
-  let genderParam = filters.gender ? `&gender=${filters.gender}` : '';
-  let isAdminParam = filters.role
-    ? `&isAdmin=${filters.role === 'admin' ? 'true' : 'false'}`
+  let searchParam = filters?.search ? `&value=${filters.search}` : '';
+  let genderParam = filters?.gender ? `&gender=${filters.gender}` : '';
+  let isAdminParam = filters?.role
+    ? `&isAdmin=${filters?.role === 'admin' ? 'true' : 'false'}`
     : '';
-  let isAdminVerifiedParam = filters.status
+  let isAdminVerifiedParam = filters?.status
     ? `&isAdminVerified=${filters.status === 'verified' ? 'true' : 'false'}`
     : '';
 
