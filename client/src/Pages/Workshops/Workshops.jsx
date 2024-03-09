@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormLabel,
   InputLabel,
   MenuItem,
   Select,
@@ -27,8 +28,9 @@ import { useAlerts } from '../../hooks/useAlerts';
 import { workshopsColDef } from './coldefs/coldefs';
 import { workshops } from '../../apis/workshops';
 import DeletePopup from '../../Components/DeletePopup/DeletePopup';
+import dayjs from 'dayjs';
 
-const Volunteers = () => {
+const Workshops = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -71,18 +73,20 @@ const Volunteers = () => {
   };
 
   const [searchValue, setSearchValue] = useState('');
-  const [statusDropdown, setStatusDropdown] = useState('all');
-  const [roleDropdown, setRoleDropdown] = useState('all');
-  const [genderDropdown, setGenderDropdown] = useState('all');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
+
+  console.log(startDate, pastOrUpcoming);
 
   const handleSubmit = function (e) {
     e.preventDefault();
 
     const filtersObj = {
       search: searchValue,
-      status: statusDropdown,
-      role: roleDropdown,
-      gender: genderDropdown,
+      startDate,
+      endDate,
+      pastOrUpcoming,
     };
 
     for (const key in filtersObj) {
@@ -102,7 +106,7 @@ const Volunteers = () => {
   return (
     <Box className={classes.tableContainer}>
       <Box>
-        <Typography component="h1">Volunteers</Typography>
+        <Typography component="h1">Workshops</Typography>
         <Button
           onClick={() => {
             navigate(`/workshopdetail/create`);
@@ -165,68 +169,54 @@ const Volunteers = () => {
               }}
               size="small"
             />
-
-            {/* Dropdown 1 */}
-            {/* <LocalizationProvider
-              dateAdapter={AdapterDayjs}
-              className={classes.datepicker}
-            >
-              <DatePicker name="dob" required size="small" />
-            </LocalizationProvider> */}
-            <FormControl variant="outlined">
-              <InputLabel id="status-label">Status</InputLabel>
-              <Select
-                labelId="status-label"
-                label="Status"
-                variant="outlined"
-                value={statusDropdown}
-                onChange={(e) => {
-                  setStatusDropdown(e.target.value);
-                }}
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="verified">Verified</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Dropdown 2 */}
-            <FormControl>
-              <InputLabel id="role-label">Role</InputLabel>
-              <Select
-                label="Role"
-                labelId="role-label"
-                variant="outlined"
-                value={roleDropdown}
-                onChange={(e) => {
-                  setRoleDropdown(e.target.value);
-                }}
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="volunteer">Volunteer</MenuItem>
-              </Select>
-            </FormControl>
-
             {/* Dropdown 3 */}
             <FormControl>
-              <InputLabel id="gender-label">Gender</InputLabel>
+              <InputLabel id="pastorupcoming-label">
+                Past Or Upcoming
+              </InputLabel>
               <Select
-                label="Gender"
-                labelId="gender-label"
+                label="pastorupcoming"
+                labelId="pastorupcoming-label"
                 variant="outlined"
-                value={genderDropdown}
+                value={pastOrUpcoming}
                 onChange={(e) => {
-                  setGenderDropdown(e.target.value);
+                  setPastOrUpcoming(e.target.value);
                 }}
                 size="small"
               >
                 <MenuItem value="all">All</MenuItem>
-                <MenuItem value="male">Male</MenuItem>
-                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="past">Past</MenuItem>
+                <MenuItem value="upcoming">Upcoming</MenuItem>
               </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <FormLabel>Start Date</FormLabel>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                className={classes.datepicker}
+              >
+                <DatePicker
+                  disabled={pastOrUpcoming !== 'all' ? true : false}
+                  name="startDate"
+                  value={dayjs(startDate)}
+                  onChange={(date) => setStartDate(new Date(date))}
+                />
+              </LocalizationProvider>
+            </FormControl>
+            {/* end date */}
+            <FormControl className={classes.formControl}>
+              <FormLabel>End Date</FormLabel>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                className={classes.datepicker}
+              >
+                <DatePicker
+                  disabled={pastOrUpcoming !== 'all' ? true : false}
+                  name="endtDate"
+                  value={dayjs(endDate)}
+                  onChange={(date) => setEndDate(new Date(date))}
+                />
+              </LocalizationProvider>
             </FormControl>
 
             <Button variant="contained" color="primary" type="submit">
@@ -263,4 +253,4 @@ const Volunteers = () => {
     </Box>
   );
 };
-export default Volunteers;
+export default Workshops;

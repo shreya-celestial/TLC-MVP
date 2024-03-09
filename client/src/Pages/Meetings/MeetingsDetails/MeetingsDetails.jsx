@@ -27,6 +27,9 @@ import {
   MeetingPageVolunteersRowData,
 } from './MeetingDummyData';
 import { DeleteButtonCell } from '../../../Components/DeleteButtonCell/DeleteButtonCell';
+import { useReactQuery } from '../../../hooks/useReactQuery';
+import { getMeeting } from '../../../apis/meetings';
+import { useParams } from 'react-router-dom';
 
 function MeetingsDetails() {
   const classes = useStyles();
@@ -40,6 +43,12 @@ function MeetingsDetails() {
     'Confidence, Power and Excellence',
     'Love, Relationship, and Romance',
   ];
+  const { id, type } = useParams();
+
+  const { data, isPending, isError, error } = useReactQuery([id], getMeeting);
+
+  console.log(data);
+
   const dummyEnrollmentsColDef = [
     ...MeetingPageEnrollmentsColDef,
     !isView && {
@@ -47,6 +56,7 @@ function MeetingsDetails() {
       cellRenderer: DeleteButtonCell,
     },
   ].filter(Boolean);
+
   const dummyVolunteersColDef = [
     ...MeetingPageVolunteersColDef,
     !isView && {
@@ -54,17 +64,21 @@ function MeetingsDetails() {
       cellRenderer: DeleteButtonCell,
     },
   ].filter(Boolean);
+
   const closeOpenPopup = () => {
     setOpenPopup(false);
   };
+
   const handleVolunteerMode = () => {
     setOpenPopup(true);
     setMode('Volunteers');
   };
+
   const handleEnrollmentMode = () => {
     setOpenPopup(true);
     setMode('Enrollments');
   };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeaderMainContent}>
