@@ -1,7 +1,17 @@
-const ZIPCODE_API_KEY = 'c6d97520-d5f1-11ee-ad10-71ecb52c5f99'
-
 export const getLocationData = async (code) => {
-  const url = `https://app.zipcodebase.com/api/v1/search?apikey=${ZIPCODE_API_KEY}&codes=${code}&country=in`;
+  const url = `https://api.postalpincode.in/pincode/${code}`;
   const response = await fetch(url)
-  return await response.json()
+  const res = await response.json()
+  const data = {
+    results: {}
+  }
+  const codes = res[0]?.PostOffice?.map((office) => {
+    return {
+      ...office,
+      city: office?.Name,
+      state: office?.State
+    }
+  })
+  data.results[`${code}`] = codes
+  return data
 }

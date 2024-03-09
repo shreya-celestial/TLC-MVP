@@ -13,25 +13,30 @@ import {
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { resetPass } from '../../apis/user';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/Icons/tlcLogo.png';
+
 function ResetPassword() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get('reset');
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMatch, setIsMatch] = useState(true);
+
   const nav = useNavigate();
   const classes = useStyles();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const cookies = document.cookie;
     const pass1 = e.target.elements.password.value;
     const pass2 = e.target.elements.passwordConfirm.value;
     if (pass1 === pass2) {
-      const data = await resetPass({ password: pass1 }, cookies);
+      const data = await resetPass({
+        token,
+        password: pass1,
+      });
       if (data?.status === 'success') {
-        document.cookie =
-          'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         nav('/');
         return;
       }

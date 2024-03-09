@@ -51,6 +51,11 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
           setCity(data?.results[pincode][0].city);
           setCities(data?.results[pincode]);
         }
+        // else {
+        //   setCities(null);
+        //   setCity(null);
+        //   setState('');
+        // }
       } else {
         setCities(null);
         setCity(null);

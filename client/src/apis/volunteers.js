@@ -1,4 +1,7 @@
-export const volunteers = async function ({ signal, queryKey, sleep }) {
+
+const BASEURL = "https://tlc-two.vercel.app/volunteers"
+  
+export const volunteers = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters] = queryKey;
 
   for (const key in filters) {
@@ -19,7 +22,7 @@ export const volunteers = async function ({ signal, queryKey, sleep }) {
     : '';
 
   const res = await fetch(
-    `http://localhost:8080/volunteers/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}`,
+    `${BASEURL}/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}`,
     signal
   );
 
@@ -35,7 +38,7 @@ export const volunteers = async function ({ signal, queryKey, sleep }) {
 };
 
 export const inviteVolunteer = async function (data) {
-  const res = await fetch(`http://localhost:8080/volunteers/invite`, {
+  const res = await fetch(`${BASEURL}/invite`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -58,7 +61,7 @@ export const getVolunteer = async function ({ signal, queryKey }) {
   const [email] = queryKey;
 
   const res = await fetch(
-    `http://localhost:8080/volunteers/${email}/details`,
+    `${BASEURL}/${email}/details`,
     signal
   );
 
@@ -74,7 +77,7 @@ export const getVolunteer = async function ({ signal, queryKey }) {
 };
 
 export const updateVolunteerRole = async function (data) {
-  const res = await fetch(`http://localhost:8080/volunteers/updateRole`, {
+  const res = await fetch(`${BASEURL}/updateRole`, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
@@ -94,7 +97,7 @@ export const updateVolunteerRole = async function (data) {
 };
 
 export const deleteVolunteers = async function (data) {
-  const res = await fetch(`http://localhost:8080/volunteers/`, {
+  const res = await fetch(`${BASEURL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ emails: data }),
     headers: {
@@ -114,7 +117,7 @@ export const deleteVolunteers = async function (data) {
 };
 
 export const verifyVolunteer = async function (data) {
-  const res = await fetch(`http://localhost:8080/volunteers/adminVerified`, {
+  const res = await fetch(`${BASEURL}/adminVerified`, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
