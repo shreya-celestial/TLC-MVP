@@ -24,9 +24,7 @@ import { getLocationData } from '../../apis/global';
 
 import { getCookie } from '../../utils/utils';
 
-
 function VolunteerForm({ submit, isRole = false, isPending }) {
-
   const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -70,9 +68,7 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
     };
   }, [pincode]);
 
-
   const email = getCookie('email')?.replace('%40', '@');
-
 
   useEffect(() => {
     if (cities) {
@@ -109,7 +105,6 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
               required
               name="email"
               className={email ? classes.disabled : false}
-
             />
           </FormControl>
         </Box>
@@ -172,14 +167,12 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
                   </InputAdornment>
                 ),
               }}
-
             />
           </FormControl>
         </Box>
         {/* phone number and  date picker-DOB */}
         <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl}>
-
             <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
             <TextField
               id="phoneNumberField"
@@ -187,7 +180,6 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
               required
               name="phone"
             />
-
           </FormControl>
           <FormControl className={classes.formControl}>
             <FormLabel>Date of Birth</FormLabel>

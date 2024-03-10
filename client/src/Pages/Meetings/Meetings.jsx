@@ -10,17 +10,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useStyles } from './Volunteers.styles';
+import { useStyles } from './Meetings.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { useEffect, useState } from 'react';
 
-import { volunteers } from '../../apis/volunteers';
+import { meetings } from '../../apis/meetings';
 import PaginationComp from '../../Components/Table/PaginationComp';
 
-import InvitePopup from './InvitePopup/InvitePopup';
+import InvitePopup from '../Volunteers/InvitePopup/InvitePopup';
 import DeletePopup from './../../Components/DeletePopup/DeletePopup';
-import VerifyPopup from './VerifyPopup/VerifyPopup';
+import VerifyPopup from '../Volunteers/VerifyPopup/VerifyPopup';
 
 import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
@@ -29,14 +29,16 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
-const Volunteers = () => {
+const Meetings = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
-  const [filters, setFilters] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [selectedRows, setSelectedRows] = useState([]);
@@ -73,6 +75,8 @@ const Volunteers = () => {
   const [statusDropdown, setStatusDropdown] = useState('all');
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const { data, isPending, isError, error } = useReactQuery(
     [
@@ -80,13 +84,12 @@ const Volunteers = () => {
       rowsPerPage,
       {
         search: debouncedSearch,
-        status: statusDropdown,
-        role: roleDropdown,
-        gender: genderDropdown,
+        startDate,
+        endDate,
       },
       rowChanged,
     ],
-    volunteers
+    meetings
   );
 
   useEffect(() => {
@@ -102,15 +105,16 @@ const Volunteers = () => {
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
+
   const handleReset = () => {
-    setRoleDropdown('all');
-    setGenderDropdown('all');
-    setStatusDropdown('all');
+    setEndDate('');
+    setStartDate('');
   };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeadingAndActionBtn}>
-        <Typography component="h1">Volunteers</Typography>
+        <Typography component="h1">Meetings</Typography>
 
         <Box className={classes.ActionBtn}>
           {selectedRows.length >= 1 && (
@@ -130,7 +134,7 @@ const Volunteers = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/volunteerdetail/${selectedRows[0].email}/edit`);
+                  navigate(`/meetingdetails/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -139,7 +143,7 @@ const Volunteers = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/volunteerdetail/${selectedRows[0].email}/view`);
+                  navigate(`/meetingdetails/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -151,10 +155,10 @@ const Volunteers = () => {
               className="inviteBtn"
               disableRipple
               onClick={() => {
-                setShowInviteModal(true);
+                navigate(`/meetingdetails/create`);
               }}
             >
-              Invite
+              Create Meeting
             </Button>
           )}
         </Box>
@@ -174,6 +178,7 @@ const Volunteers = () => {
       )}
       {showDeleteModal && (
         <DeletePopup
+          type="meetings"
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
@@ -214,70 +219,31 @@ const Volunteers = () => {
             <Box className={classes.filterContent}>
               <Typography>Filters</Typography>
               <FormControl className={classes.formControl}>
-                <FormLabel id="status">Status</FormLabel>
-                <Select
-                  labelId="status"
-                  value={statusDropdown}
-                  onChange={(e) => {
-                    setStatusDropdown(e.target.value);
-                  }}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
+                <FormLabel>Start Date</FormLabel>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  className={classes.datepicker}
                 >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="verified">Verified</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                </Select>
+                  <DatePicker
+                    name="startDate"
+                    value={dayjs(startDate)}
+                    onChange={(date) => setStartDate(new Date(date))}
+                  />
+                </LocalizationProvider>
               </FormControl>
-
+              {/* end date */}
               <FormControl className={classes.formControl}>
-                <FormLabel id="role-label">Role</FormLabel>
-                <Select
-                  labelId="role-label"
-                  value={roleDropdown}
-                  onChange={(e) => {
-                    setRoleDropdown(e.target.value);
-                  }}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
+                <FormLabel>End Date</FormLabel>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  className={classes.datepicker}
                 >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="volunteer">Volunteer</MenuItem>
-                </Select>
-              </FormControl>
-
-              <FormControl className={classes.formControl}>
-                <FormLabel id="gender-label">Gender</FormLabel>
-                <Select
-                  label="Gender"
-                  labelId="gender-label"
-                  value={genderDropdown}
-                  onChange={(e) => {
-                    setGenderDropdown(e.target.value);
-                  }}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
-                >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                </Select>
+                  <DatePicker
+                    name="endtDate"
+                    value={dayjs(endDate)}
+                    onChange={(date) => setEndDate(new Date(date))}
+                  />
+                </LocalizationProvider>
               </FormControl>
 
               <Button
@@ -295,7 +261,7 @@ const Volunteers = () => {
             colDefs={colDefs}
             key={rowChanged}
             updateSelectedRows={updateSelectedRows}
-            data={data?.data?.users}
+            data={data?.data?.meetings}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
           />
@@ -310,4 +276,4 @@ const Volunteers = () => {
     </Box>
   );
 };
-export default Volunteers;
+export default Meetings;

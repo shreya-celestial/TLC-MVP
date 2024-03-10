@@ -15,3 +15,16 @@ export function getCookie(name) {
 export function deleteCookie(name) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
+
+export const compareTwoArrays = function (existingRows, newRows, by) {
+  let isEvery = true;
+  for (let i = 0; i < existingRows.length; i++) {
+    for (let j = 0; j < newRows.length; j++) {
+      if (existingRows[i][by] === newRows[j][by]) {
+        isEvery = false;
+        break;
+      }
+    }
+  }
+  return isEvery;
+};

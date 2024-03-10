@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import { useStyles } from './Navbar.styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import logo from '../../assets/Icons/tlcLogo.png'
+import logo from '../../assets/Icons/tlcLogo.png';
 const Navbar = ({ handleSidebarOpen }) => {
   const isLargerScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const [isSidebarOpen, setIsSideBarOpen] = useState(false);
@@ -21,7 +21,7 @@ const Navbar = ({ handleSidebarOpen }) => {
     handleSidebarOpen();
     setIsSideBarOpen(!isSidebarOpen);
   };
-  console.log(logo)
+
   return (
     <AppBar className={classes.root}>
       <Toolbar className="toolbar">
@@ -35,11 +35,7 @@ const Navbar = ({ handleSidebarOpen }) => {
               {!isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
             </IconButton>
           )}
-          <img
-            src={logo}
-            loading="lazy"
-            alt="The Last Center"
-          />
+          <img src={logo} loading="lazy" alt="The Last Center" />
         </Box>
         <Box className={classes.profile}>
           <Avatar>J D</Avatar>

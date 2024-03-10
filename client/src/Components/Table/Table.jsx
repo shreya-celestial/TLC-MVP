@@ -1,13 +1,18 @@
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import colDefs from './coldefs';
 import { useStyles } from './Table.styles';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 
-const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
+const Table = ({
+  data,
+  isPending,
+  updateSelectedRows,
+  showVerifyStatus,
+  colDefs,
+}) => {
   let rowData;
-  if (data) rowData = data.data.users;
+  if (data) rowData = data;
 
   const classes = useStyles();
 
@@ -24,7 +29,6 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
     headerHeight: 30,
     suppressHorizontalScroll: true,
     domLayout: 'autoHeight',
-
   };
   const defaultColDef = {
     flex: 1,
@@ -56,7 +60,7 @@ const Table = ({ data, isPending, updateSelectedRows, showVerifyStatus }) => {
   };
 
   const modifiedColumnDefs = colDefs.map((colDef) => {
-    if (colDef.headerName === 'Status') {
+    if (colDef.headerName === 'Status' && true) {
       colDef.cellRenderer = IsAdminVerifiedComp;
     }
 

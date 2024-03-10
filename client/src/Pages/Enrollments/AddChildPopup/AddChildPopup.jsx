@@ -24,8 +24,18 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { ChildTheme } from './PopupTheme';
 
-function AddChildPopup({ openChild, handleCloseOpenChild, childData }) {
+function AddChildPopup({
+  openChild,
+  handleCloseOpenChild,
+  closePopupAndSetRows,
+}) {
   const classes = useStyles();
+
+  const [name, setName] = useState();
+  const [gender, setGender] = useState('male');
+  const [dob, setDob] = useState();
+
+  console.log(dob);
 
   return (
     <Dialog open={openChild} className={classes.Dialog}>
@@ -48,7 +58,8 @@ function AddChildPopup({ openChild, handleCloseOpenChild, childData }) {
               id="fullNameField"
               placeholder="Enter Name"
               name="name"
-              value={childData && childData.name}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </FormControl>
         </Box>
@@ -59,7 +70,8 @@ function AddChildPopup({ openChild, handleCloseOpenChild, childData }) {
             <Select
               id="genderSelectBox"
               name="gender"
-              value={childData ? childData.gender : 'male'}
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
               IconComponent={ExpandMoreOutlinedIcon}
               className={classes.selectBox}
               MenuProps={{
@@ -81,7 +93,10 @@ function AddChildPopup({ openChild, handleCloseOpenChild, childData }) {
               >
                 <DatePicker
                   name="dateofbirth"
-                  value={childData && dayjs(childData.dob)}
+                  value={dayjs(dob)}
+                  onChange={(date) =>
+                    setDob(new Date(date).toISOString().split('T')[0])
+                  }
                 />
               </LocalizationProvider>
             </FormControl>
@@ -97,7 +112,17 @@ function AddChildPopup({ openChild, handleCloseOpenChild, childData }) {
         >
           Cancel
         </Button>
-        <Button className="doneBtn" disableRipple>
+        <Button
+          className="doneBtn"
+          disableRipple
+          onClick={() =>
+            closePopupAndSetRows({
+              name,
+              gender,
+              dob,
+            })
+          }
+        >
           Done
         </Button>
       </DialogActions>
