@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import helmet from "helmet";
 import user from "./Routes/user"
 import volunteers from "./Routes/volunteers"
 import workshops from "./Routes/workshops"
@@ -11,6 +12,7 @@ dotenv.config()
 
 const app = express();
 app.use(express.json());
+app.use(helmet());
 app.use(cors())
 
 app.use('/user', user)
