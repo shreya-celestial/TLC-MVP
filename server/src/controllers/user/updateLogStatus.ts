@@ -5,6 +5,14 @@ import { verifyAndUpdateKey } from "../../gql/user/mutations";
 
 const updateLogStatus = async (req: Request, res: Response) => {
   const {email, key, isLoggingOut} = req?.body
+
+  if(!key || key === 'null' || key === 'NULL')
+  {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Provide a valid key!'
+    })
+  }
   
   const newKey = CryptoJS.AES.encrypt(email, process.env.LOGIN_KEY || '')
   let isLoggedIn: string | null = newKey.toString();
