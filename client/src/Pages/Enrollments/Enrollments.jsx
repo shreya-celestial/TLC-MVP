@@ -10,17 +10,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useStyles } from './Volunteers.styles';
+import { useStyles } from './Enrollments.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { useEffect, useState } from 'react';
 
-import { volunteers } from '../../apis/volunteers';
+import { enrollments } from '../../apis/enrollments';
 import PaginationComp from '../../Components/Table/PaginationComp';
 
-import InvitePopup from './InvitePopup/InvitePopup';
+import InvitePopup from '../Volunteers/InvitePopup/InvitePopup';
 import DeletePopup from './../../Components/DeletePopup/DeletePopup';
-import VerifyPopup from './VerifyPopup/VerifyPopup';
+import VerifyPopup from '../Volunteers/VerifyPopup/VerifyPopup';
 
 import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
@@ -30,13 +30,12 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
 
-const Volunteers = () => {
+const Enrollments = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
-  const [filters, setFilters] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [selectedRows, setSelectedRows] = useState([]);
@@ -70,8 +69,6 @@ const Volunteers = () => {
 
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
-  const [statusDropdown, setStatusDropdown] = useState('all');
-  const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
 
   const { data, isPending, isError, error } = useReactQuery(
@@ -80,13 +77,11 @@ const Volunteers = () => {
       rowsPerPage,
       {
         search: debouncedSearch,
-        status: statusDropdown,
-        role: roleDropdown,
         gender: genderDropdown,
       },
       rowChanged,
     ],
-    volunteers
+    enrollments
   );
 
   useEffect(() => {
@@ -103,15 +98,15 @@ const Volunteers = () => {
     setSelectedRows(data);
   };
   const handleReset = () => {
-    setRoleDropdown('all');
     setGenderDropdown('all');
-    setStatusDropdown('all');
   };
+
+  console.log(selectedRows);
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeadingAndActionBtn}>
-        <Typography component="h1">Volunteers</Typography>
-
+        <Typography component="h1">Enrollments</Typography>
         <Box className={classes.ActionBtn}>
           {selectedRows.length >= 1 && (
             <Button
@@ -130,7 +125,7 @@ const Volunteers = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/volunteerdetail/${selectedRows[0].email}/edit`);
+                  navigate(`/meetingdetails/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -139,7 +134,7 @@ const Volunteers = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/volunteerdetail/${selectedRows[0].email}/view`);
+                  navigate(`/meetingdetails/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -151,10 +146,10 @@ const Volunteers = () => {
               className="inviteBtn"
               disableRipple
               onClick={() => {
-                setShowInviteModal(true);
+                navigate(`/meetingdetails/create`);
               }}
             >
-              Invite
+              Create Enrollment
             </Button>
           )}
         </Box>
@@ -213,49 +208,6 @@ const Volunteers = () => {
           >
             <Box className={classes.filterContent}>
               <Typography>Filters</Typography>
-              <FormControl className={classes.formControl}>
-                <FormLabel id="status">Status</FormLabel>
-                <Select
-                  labelId="status"
-                  value={statusDropdown}
-                  onChange={(e) => {
-                    setStatusDropdown(e.target.value);
-                  }}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
-                >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="verified">Verified</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                </Select>
-              </FormControl>
-
-              <FormControl className={classes.formControl}>
-                <FormLabel id="role-label">Role</FormLabel>
-                <Select
-                  labelId="role-label"
-                  value={roleDropdown}
-                  onChange={(e) => {
-                    setRoleDropdown(e.target.value);
-                  }}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
-                >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="volunteer">Volunteer</MenuItem>
-                </Select>
-              </FormControl>
 
               <FormControl className={classes.formControl}>
                 <FormLabel id="gender-label">Gender</FormLabel>
@@ -295,7 +247,7 @@ const Volunteers = () => {
             colDefs={colDefs}
             key={rowChanged}
             updateSelectedRows={updateSelectedRows}
-            data={data?.data?.users}
+            data={data?.data?.enrollments}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
           />
@@ -310,4 +262,4 @@ const Volunteers = () => {
     </Box>
   );
 };
-export default Volunteers;
+export default Enrollments;

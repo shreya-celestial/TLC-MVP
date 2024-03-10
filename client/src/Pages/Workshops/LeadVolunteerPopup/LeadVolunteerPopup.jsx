@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
   Button,
@@ -22,17 +22,55 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useStyles } from './LeadVolunteerPopup.styles';
-const VolunteersList = [
-  { name: 'Vikas Kumar', email: 'vikas@gmail.com' },
-  { name: 'Arpit Seth', email: 'arpitseth1@gmail.com' },
-  { name: 'Rahul Kumar', email: 'rahul2003@gmail.com' },
-  { name: 'Charu Sharma', email: 'charusharma@gmail.com' },
-  { name: 'Chirag Sen', email: 'chiragsen@gmail.com' },
-  { name: 'shubham gaur', email: 'shubhamgaur@gmail.com' },
-];
+import { useReactQuery } from '../../../hooks/useReactQuery';
+import { volunteers } from '../../../apis/volunteers';
 
-function LeadVolunteerPopup({ openLeadPopup, closeLeadPopup }) {
+function LeadVolunteerPopup({
+  openLeadPopup,
+  closeLeadPopup,
+  closeLeadPopupAndSetRows,
+}) {
   const classes = useStyles();
+
+  const [filters, setFilters] = useState({});
+  const [debouncedFilters, setDebouncedFilters] = useState();
+
+  const { data, isPending, isError, error } = useReactQuery(
+    [1, 10, { ...debouncedFilters }],
+    volunteers,
+    {
+      enabled: debouncedFilters?.search !== undefined,
+    }
+  );
+
+  useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setDebouncedFilters(filters);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [filters]);
+
+  const [volunteersList, setVolunteersList] = useState([]);
+  const [selectedVolunteers, setSelectedVolunteers] = useState([]);
+  const [role, setRole] = useState('volunteer');
+
+  useEffect(() => {
+    if (data) {
+      const filtered = data?.data?.users?.filter((user) => {
+        const vols = selectedVolunteers?.filter(
+          (vol) => JSON.stringify(vol) === JSON.stringify(user)
+        );
+        if (vols.length) {
+          return false;
+        }
+        return true;
+      });
+      setVolunteersList(filtered);
+    }
+  }, [data]);
 
   return (
     <Dialog open={openLeadPopup} className={classes.Dialog}>
@@ -41,7 +79,7 @@ function LeadVolunteerPopup({ openLeadPopup, closeLeadPopup }) {
         <IconButton
           className={classes.CloseIcon}
           disableRipple
-          onClick={() => closeLeadPopup()}
+          onClick={() => closeLeadPopup(selectedVolunteers)}
         >
           <CloseOutlinedIcon />
         </IconButton>
@@ -53,15 +91,20 @@ function LeadVolunteerPopup({ openLeadPopup, closeLeadPopup }) {
         <FormControl className={classes.formControl}>
           <FormLabel>Search Volunteers & Lead Volunteers</FormLabel>
           <Autocomplete
-            options={VolunteersList}
+            loading={isPending}
+            options={volunteersList}
             getOptionLabel={(option) => `${option.name} (${option.email})`}
-            onChange={(e, value) => console.log(value)}
+            onChange={(event, selectedElements) => {
+              setSelectedVolunteers((prev) => selectedElements);
+            }}
             className={classes.autocomplete}
             renderInput={(params) => (
               <TextField
                 className={classes.autocompleteTextField}
                 placeholder="Search to add"
+                // value={selectedVolunteers}
                 {...params}
+                onChange={(e) => setFilters({ search: e.target.value })}
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (
@@ -76,9 +119,9 @@ function LeadVolunteerPopup({ openLeadPopup, closeLeadPopup }) {
               />
             )}
             renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip label={option.name} {...getTagProps({ index })} />
-              ))
+              value.map((option, index) => {
+                return <Chip label={option.name} {...getTagProps({ index })} />;
+              })
             }
             PaperComponent={(props) => (
               <Paper
@@ -103,6 +146,7 @@ function LeadVolunteerPopup({ openLeadPopup, closeLeadPopup }) {
             defaultValue="volunteer"
             name="role"
             className={classes.radioGroup}
+            onChange={(e) => setRole(e.target.value)}
           >
             <FormControlLabel
               value="volunteer"
@@ -130,7 +174,14 @@ function LeadVolunteerPopup({ openLeadPopup, closeLeadPopup }) {
           Cancel
         </Button>
 
-        <Button className="doneBtn" disableRipple>
+        <Button
+          onClick={() => {
+            closeLeadPopupAndSetRows(selectedVolunteers, role);
+            setRole('volunteer');
+          }}
+          className="doneBtn"
+          disableRipple
+        >
           Done
         </Button>
       </DialogActions>

@@ -152,4 +152,10 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '10px',
   },
+  flex: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));

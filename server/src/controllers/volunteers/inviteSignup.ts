@@ -38,6 +38,7 @@ const inviteSignup = async (req: Request, res: Response) => {
     );
     const variables = {
       ...req.body,
+      isAdmin: verifyEmail?.data?.Invitations[0]?.isAdmin,
       name: capitaliseStr(req.body.name),
       state: capitaliseStr(req.body.state),
       location: capitaliseStr(req.body.location),
@@ -63,7 +64,7 @@ const inviteSignup = async (req: Request, res: Response) => {
     {
       return res.status(200).json({
         status: 'success',
-        message: "User registered successffully!"
+        message: "User registered successfully!"
       })
     }
     return res.status(400).json({

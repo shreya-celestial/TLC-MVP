@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -18,6 +18,7 @@ import PageHeader from '../../../Components/PageHeader/PageHeader';
 import { useStyles } from './EnrollmentsDetails.styles';
 import AddChildPopup from '../AddChildPopup/AddChildPopup';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
+import { useParams, useNavigate } from "react-router-dom"
 
 import {
   ChildRowData,
@@ -26,11 +27,59 @@ import {
   enrollPageWorkshopRowData,
 } from './ChildrenDummyData';
 import { DeleteEditButtonCell } from '../../../Components/DeleteEditButtonCell/DeleteEditButtonCell';
+import { getLocationData } from '../../../apis/global';
 
 const city = ['Bangalore', 'Dehradun', 'Noida', 'Gurgaon'];
 
 function EnrollmentsDetails() {
-  const isView = false;
+  const { type } = useParams()
+  const nav = useNavigate()
+
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState('')
+  const [dob, setDob] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [cities, setCities] = useState(null);
+  const [city, setCity] = useState(null);
+  const [state, setState] = useState('')
+
+  useEffect(() => {
+    let timer;
+    timer = setTimeout(async () => {
+      if (pincode) {
+        const data = await getLocationData(pincode);
+        if (data?.results[pincode]?.length) {
+          setCity(data?.results[pincode][0].city);
+          setCities(data?.results[pincode]);
+        }
+        // else {
+        //   setCities(null);
+        //   setCity(null);
+        //   setState('');
+        // }
+      } else {
+        setCities(null);
+        setCity(null);
+        setState('');
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [pincode]);
+
+  useEffect(() => {
+    if (cities) {
+      const data = cities.find((pincodeCity) => pincodeCity.city === city);
+      setState(data.state);
+    }
+  }, [city]);
+
+  const [isView, setIsView] = useState(false);
   const classes = useStyles();
   const [openChild, setOpenChild] = useState(false);
   const handleOpenChild = () => {
@@ -47,11 +96,24 @@ function EnrollmentsDetails() {
     },
   ].filter(Boolean);
 
+  useEffect(() => {
+    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+      nav('/dashboard')
+    }
+    if (type === 'view') {
+      setIsView(true)
+    }
+  }, [type])
+
+  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    return
+  }
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeaderMainContent}>
         <PageHeader
-          currentPage={'Create Enrollment'}
+          currentPage={`${type} Enrollment`}
           prevPage={'Enrollments'}
         />
         <Box className={classes.mainContent}>
@@ -149,15 +211,29 @@ function EnrollmentsDetails() {
                   placeholder="Enter Your Postal Code"
                   name="pincode"
                   type="number"
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value)}
                   disabled={isView}
                 />
               </FormControl>
               <FormControl className={classes.formControl}>
                 <FormLabel htmlFor="citySelectBox">City</FormLabel>
-                <Select
+                {!cities && (
+                  <TextField
+                    id="citySelectBox"
+                    placeholder="Enter Your City"
+                    name="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    disabled={isView}
+                    required
+                  />
+                )}
+                {cities && <Select
                   id="citySelectBox"
-                  value="Bangalore"
                   name="city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
                   IconComponent={ExpandMoreOutlinedIcon}
                   className={classes.selectBox}
                   disabled={isView}
@@ -167,12 +243,12 @@ function EnrollmentsDetails() {
                     },
                   }}
                 >
-                  {city.map((city, index) => (
-                    <MenuItem key={index} value={city}>
-                      {city}
+                  {cities.map((city, index) => (
+                    <MenuItem value={city?.city} key={city?.city}>
+                      {city?.city}
                     </MenuItem>
                   ))}
-                </Select>
+                </Select>}
               </FormControl>
               <FormControl className={classes.formControl}>
                 <FormLabel htmlFor="stateField">State</FormLabel>
@@ -180,6 +256,8 @@ function EnrollmentsDetails() {
                   id="stateField"
                   placeholder="Enter Your State"
                   name="state"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
                   disabled={isView}
                 />
               </FormControl>
