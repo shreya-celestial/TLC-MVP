@@ -20,14 +20,15 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useStyles } from './AutocompletePopup.styles';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { enrollments } from '../../apis/enrollments';
+import { enrollments as participants } from '../../apis/enrollments';
 import { meetings } from '../../apis/meetings';
+import { volunteers } from '../../apis/volunteers';
 
 function AutocompletePopup({
   mode,
   closeOpenPopup,
   openPopup,
-  closeEnrollmentsPopupAndSetRows,
+  closePopupAndSetRows,
 }) {
   const classes = useStyles();
 
@@ -35,14 +36,28 @@ function AutocompletePopup({
   const [debouncedFilters, setDebouncedFilters] = useState();
   const [participantsOptions, setParticipantsOptions] = useState([]);
   const [meetingsOptions, setMeetingsOptions] = useState([]);
+  const [volunteersOptions, setVolunteersOptions] = useState([]);
+
+  const [selectedMeetings, setSelectedMeetings] = useState();
+  const [selectedParticipants, setSelectedParticipants] = useState();
+  const [selectedVolunteers, setSelectedVolunteers] = useState();
+
+  const fetchFn =
+    mode === 'Meetings'
+      ? meetings
+      : mode === 'Volunteers'
+      ? volunteers
+      : participants;
 
   const { data, isPending, isError, error } = useReactQuery(
-    [1, 10, { ...debouncedFilters }],
-    mode === 'Meetings' ? meetings : enrollments,
+    [1, 10, { ...debouncedFilters }, mode],
+    fetchFn,
     {
       enabled: debouncedFilters?.search !== undefined,
     }
   );
+
+  console.log(data);
 
   useEffect(() => {
     let timer;
@@ -57,10 +72,18 @@ function AutocompletePopup({
   useEffect(() => {
     if (data) {
       const dataType =
-        mode === 'Meetings' ? data?.data?.meetings : data?.data?.enrollments;
+        mode === 'Meetings'
+          ? data?.data?.meetings
+          : mode === 'Volunteers'
+          ? data?.data?.users
+          : data?.data?.enrollments;
 
       const options =
-        mode === 'Meetings' ? meetingsOptions : participantsOptions;
+        mode === 'Meetings'
+          ? meetingsOptions
+          : mode === 'Volunteers'
+          ? participantsOptions
+          : participantsOptions;
 
       const filtered = dataType?.filter((participant) => {
         const vols = options?.filter(
@@ -71,10 +94,15 @@ function AutocompletePopup({
         }
         return true;
       });
+
       if (mode === 'Meetings') {
         setMeetingsOptions(filtered);
-      } else {
+      }
+      if (mode === 'Participants') {
         setParticipantsOptions(filtered);
+      }
+      if (mode === 'Volunteers') {
+        setVolunteersOptions(filtered);
       }
     }
   }, [data]);
@@ -99,14 +127,27 @@ function AutocompletePopup({
           <FormLabel>Search {mode}</FormLabel>
           <Autocomplete
             options={
-              mode === 'Meetings' ? meetingsOptions : participantsOptions
+              mode === 'Meetings'
+                ? meetingsOptions
+                : mode === 'Volunteers'
+                ? volunteersOptions
+                : participantsOptions
             }
             getOptionLabel={(option) =>
               mode === 'Meetings'
                 ? `${option.type} (${option.venue})`
+                : mode === 'Volunteers'
+                ? `${option.name} (${option.email})`
                 : `${option.name} (${option.email})`
             }
-            onChange={(e, value) => console.log(value)}
+            onChange={(event, selectedElements) => {
+              if (mode === 'Meetings')
+                setSelectedMeetings((prev) => selectedElements);
+              if (mode === 'Volunteers')
+                setSelectedVolunteers((prev) => selectedElements);
+              if (mode === 'Participants')
+                setSelectedParticipants((prev) => selectedElements);
+            }}
             renderInput={(params) => (
               <TextField
                 className={classes.autocompleteTextField}
@@ -166,8 +207,12 @@ function AutocompletePopup({
           className="doneBtn"
           disableRipple
           onClick={() =>
-            closeEnrollmentsPopupAndSetRows(
-              mode === 'Meetings' ? meetingsOptions : participantsOptions,
+            closePopupAndSetRows(
+              mode === 'Meetings'
+                ? selectedMeetings
+                : mode === 'Volunteers'
+                ? selectedVolunteers
+                : selectedParticipants,
               mode
             )
           }

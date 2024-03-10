@@ -27,3 +27,86 @@ export const enrollments = async function ({ signal, queryKey }) {
   const resData = await res.json();
   return resData;
 };
+
+export const getEnrollment = async function ({ signal, queryKey }) {
+  const [id] = queryKey;
+
+  const res = await fetch(
+    `https://tlc-two.vercel.app/enrollments/${id}/details`,
+    signal
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+export const createEnrollment = async function (data) {
+  const res = await fetch(`https://tlc-two.vercel.app/enrollments`, {
+    method: 'POST',
+    body: JSON.stringify(data.body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+export const updateEnrollment = async function (data) {
+  const res = await fetch(
+    `https://tlc-two.vercel.app/enrollments/${data.id}/edit`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(data.body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+export const deleteEnrollments = async function (data) {
+  console.log(JSON.stringify({ ids: data }));
+  const res = await fetch(`https://tlc-two.vercel.app/enrollments/`, {
+    method: 'DELETE',
+    body: JSON.stringify({ ids: data }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};

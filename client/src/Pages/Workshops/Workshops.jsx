@@ -59,11 +59,6 @@ const Workshops = () => {
     setShowDeleteModal,
   } = useAlerts();
 
-  const { data, isPending, isError, error } = useReactQuery(
-    [currentPage, rowsPerPage, filters, rowChanged],
-    workshops
-  );
-
   const updateCurrentPage = (val) => {
     setCurrentPage(val);
   };
@@ -77,27 +72,15 @@ const Workshops = () => {
   const [endDate, setEndDate] = useState('');
   const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
 
-  console.log(startDate, pastOrUpcoming);
-
-  const handleSubmit = function (e) {
-    e.preventDefault();
-
-    const filtersObj = {
-      search: searchValue,
-      startDate,
-      endDate,
-      pastOrUpcoming,
-    };
-
-    for (const key in filtersObj) {
-      if (filtersObj[key] === 'all' || filtersObj[key] === '') {
-        delete filtersObj[key];
-      }
-    }
-
-    setFilters(filtersObj);
-    setCurrentPage(1);
-  };
+  const { data, isPending, isError, error } = useReactQuery(
+    [
+      currentPage,
+      rowsPerPage,
+      { search: searchValue, startDate, endDate, pastOrUpcoming },
+      rowChanged,
+    ],
+    workshops
+  );
 
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
@@ -159,7 +142,7 @@ const Workshops = () => {
           />
         )}
         <Box>
-          <form onSubmit={handleSubmit}>
+          <form>
             <TextField
               label="Search"
               variant="outlined"

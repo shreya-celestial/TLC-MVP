@@ -13,4 +13,26 @@ const colDefs = [
   { field: 'state', filter: false, editable: false, width: 150 },
 ];
 
+export const ChildrenColDef = [
+  {
+    field: 'name',
+    headerName: 'Name',
+  },
+  {
+    field: 'gender',
+    headerName: 'Gender',
+  },
+  {
+    field: 'dob',
+    headerName: 'Date of Birth',
+  },
+];
+
+export const enrollPageWorkshopColDEf = [
+  { field: 'types', headerName: 'Workshop Name' },
+  { field: 'venue', headerName: 'Venue' },
+  { field: 'start_date', headerName: 'Start Date' },
+  { field: 'end_date', headerName: 'End Date' },
+];
+
 export default colDefs;

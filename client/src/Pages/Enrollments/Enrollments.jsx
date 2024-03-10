@@ -125,7 +125,7 @@ const Enrollments = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/meetingdetails/${selectedRows[0].id}/edit`);
+                  navigate(`/enrollmentdetails/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -134,7 +134,7 @@ const Enrollments = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/meetingdetails/${selectedRows[0].id}/view`);
+                  navigate(`/enrollmentdetails/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -146,7 +146,7 @@ const Enrollments = () => {
               className="inviteBtn"
               disableRipple
               onClick={() => {
-                navigate(`/meetingdetails/create`);
+                navigate(`/enrollmentdetails/create`);
               }}
             >
               Create Enrollment
@@ -172,6 +172,7 @@ const Enrollments = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          type="enrollments"
         />
       )}
       {alertType && (

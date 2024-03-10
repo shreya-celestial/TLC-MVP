@@ -111,8 +111,6 @@ const Meetings = () => {
     setStartDate('');
   };
 
-  console.log(selectedRows);
-
   return (
     <Box className={classes.root}>
       <Box className={classes.HeadingAndActionBtn}>
@@ -180,6 +178,7 @@ const Meetings = () => {
       )}
       {showDeleteModal && (
         <DeletePopup
+          type="meetings"
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
