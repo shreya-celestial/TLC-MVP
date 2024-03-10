@@ -29,6 +29,7 @@ const Table = ({
     headerHeight: 30,
     suppressHorizontalScroll: true,
     domLayout: 'autoHeight',
+    overlayNoRowsTemplate: 'No Records Found',
   };
   const defaultColDef = {
     flex: 1,

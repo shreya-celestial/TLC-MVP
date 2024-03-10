@@ -10,52 +10,80 @@ const LocationComp = (params) => {
     </p>
   );
 };
+export const Popup = () => {
+  return
+};
 
 export const workshopsColDef = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
-    headerName: '',
-    width: 50,
+    minWidth: 50,
+    resizable: false,
   },
   {
     field: 'types',
     filter: false,
     editable: false,
     headerName: 'Workshop Type',
+    minWidth: 250,
   },
-  { field: 'start_date', filter: false, editable: false, width: 300 },
-  { field: 'end_date', filter: false, editable: false, width: 150 },
+  {
+    field: 'start_date',
+    filter: false,
+    editable: false,
+    minWidth: 120,
+    headerName: 'Start Date',
+  },
+  {
+    field: 'end_date',
+    filter: false,
+    editable: false,
+    minWidth: 120,
+    headerName: 'End Date',
+  },
   {
     field: 'concluding_date',
     filter: false,
     editable: false,
-    width: 150,
+    minWidth: 200,
+    headerName: 'Concluding Session Date',
   },
-  { field: 'venue', filter: false, editable: false, width: 150 },
-  { field: 'venue_city', filter: false, editable: false, width: 150 },
+  {
+    field: 'venue',
+    filter: false,
+    editable: false,
+    minWidth: 250,
+    headerName: 'Venue',
+  },
+  {
+    field: 'venue_city',
+    filter: false,
+    editable: false,
+    minWidth: 150,
+    headerName: 'City',
+  },
 
   {
     field: 'lead_volunteers_count',
     filter: false,
     editable: false,
-    width: 150,
+    minWidth: 150,
+    headerName: 'Lead Volunteers',
   },
   {
     field: 'volunteers_count',
     filter: false,
     editable: false,
-    width: 150,
+    minWidth: 120,
+    headerName: 'Volunteers',
   },
   {
     field: 'participants_count',
     filter: false,
     editable: false,
-    cellStyle: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    width: 150,
+    headerName: 'Participants',
+    minWidth: 120,
   },
 ];
 

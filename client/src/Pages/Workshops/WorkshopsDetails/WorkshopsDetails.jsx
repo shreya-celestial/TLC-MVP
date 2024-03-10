@@ -295,7 +295,8 @@ function WorkshopsDetails() {
                   ? 'Edit Workshop'
                   : 'Create Workshop'
               }
-              prevPage={'Workshops'}
+              prevPage={'workshops'}
+              path={'workshops'}
             />
             <Box className={classes.mainContent}>
               {/* workshop type */}
