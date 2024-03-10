@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  ThemeProvider,
   Typography,
 } from '@mui/material';
 import { useStyles } from './Meetings.styles';
@@ -32,6 +33,7 @@ import colDefs from './coldefs/coldefs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { FilterTheme } from '../Workshops/FilterTheme';
 
 const Meetings = () => {
   const classes = useStyles();
@@ -152,7 +154,7 @@ const Meetings = () => {
           )}
           {selectedRows.length === 0 && (
             <Button
-              className="inviteBtn"
+              className="createMeetingBtn"
               disableRipple
               onClick={() => {
                 navigate(`/meetingdetails/create`);
@@ -218,6 +220,7 @@ const Meetings = () => {
           >
             <Box className={classes.filterContent}>
               <Typography>Filters</Typography>
+              <ThemeProvider theme={FilterTheme}>
               <FormControl className={classes.formControl}>
                 <FormLabel>Start Date</FormLabel>
                 <LocalizationProvider
@@ -245,6 +248,7 @@ const Meetings = () => {
                   />
                 </LocalizationProvider>
               </FormControl>
+              </ThemeProvider>
 
               <Button
                 onClick={handleReset}
