@@ -241,36 +241,31 @@ function WorkshopsDetails() {
     setViewType('edit');
   };
 
-  const editWorkshopHandler = function () {
+  const mutateWorkshopHandler = function (type) {
+    let modifiedStartDate = startDate;
+    let modifiedEndDate = endDate;
+    let modifiedConcludingDate = concludingDate;
+
+    if (type === 'create') {
+      modifiedStartDate = startDate?.toISOString().split('T')[0];
+      modifiedEndDate = endDate?.toISOString().split('T')[0];
+      modifiedConcludingDate = concludingDate?.toISOString().split('T')[0];
+    }
+
     mutate({
       body: {
         types: workshopType,
         venue,
         venue_city: venueCity,
-        start_date: startDate,
-        end_date: endDate,
-        concluding_date: endDate,
+        start_date: modifiedStartDate,
+        end_date: modifiedEndDate,
+        concluding_date: modifiedConcludingDate,
         vols: volunteersRowData.map((vol) => vol.email),
         leads: leadVolunteersRowData.map((vol) => vol.email),
         participants: participantsRowData.map((participant) => participant.id),
         meetings: meetingsRowData.map((meeting) => meeting.id),
       },
       id,
-    });
-  };
-
-  const createWorkshopHandler = function () {
-    mutate({
-      types: workshopType,
-      venue,
-      venue_city: venueCity,
-      start_date: startDate?.toISOString().split('T')[0],
-      end_date: endDate?.toISOString().split('T')[0],
-      concluding_date: endDate?.toISOString().split('T')[0],
-      vols: volunteersRowData.map((vol) => vol.email),
-      leads: leadVolunteersRowData.map((vol) => vol.email),
-      participants: participantsRowData.map((participant) => participant.id),
-      meetings: meetingsRowData.map((meeting) => meeting.id),
     });
   };
 
@@ -489,7 +484,7 @@ function WorkshopsDetails() {
               <Button
                 disableTouchRipple
                 className="saveBtn"
-                onClick={editWorkshopHandler}
+                onClick={() => mutateWorkshopHandler('edit')}
               >
                 {isPendingMutation ? 'Loading...' : 'Save'}
               </Button>
@@ -497,7 +492,7 @@ function WorkshopsDetails() {
               <Button
                 disableTouchRipple
                 className="saveBtn"
-                onClick={createWorkshopHandler}
+                onClick={() => mutateWorkshopHandler('create')}
               >
                 {isPendingMutation ? 'Loading...' : 'Create'}
               </Button>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   MenuItem,
@@ -108,7 +108,6 @@ function MeetingsDetails() {
   const { mutate, isPending: isPendingMutation } = useMutation({
     mutationFn: type === 'create' ? createMeeting : updateMeeting,
     onSuccess: (data) => {
-      console.log(data);
       if (data.status === 'error') {
         setAlertType({
           type: data.status,
@@ -122,8 +121,6 @@ function MeetingsDetails() {
       }
     },
     onError: (error) => {
-      console.log(error);
-
       setAlertType({
         type: 'error',
         message: error.info.message,
@@ -188,13 +185,18 @@ function MeetingsDetails() {
     }
   };
 
+  const [editingWorkshop, setEditingWorkshop] = useState(false);
+
   useEffect(() => {
     setMeetingType(meeting?.type?.trim() || 'none');
     setWorkshop(meeting?.workshop);
     setVenue(meeting?.venue || '');
     setVenueCity(meeting?.venue_city || '');
     setDate(meeting?.date || '');
-    setWorkshopOptions([meeting?.workshop]);
+
+    if (!editingWorkshop) {
+      setWorkshopOptions([meeting?.workshop]);
+    }
 
     if (viewType !== 'create') {
       const { fetchVolunteers, fetchEnrollments } =
@@ -202,13 +204,13 @@ function MeetingsDetails() {
       setVolunteersRowData(fetchVolunteers || []);
       setEnrollmentsRowData(fetchEnrollments || []);
     }
-  }, [meeting, viewType, isView]);
+  }, [meeting, viewType, isView, workshopsData, editingWorkshop]);
 
   useEffect(() => {
-    if (!isView) {
+    if (editingWorkshop) {
       setWorkshopOptions(workshopsData?.data?.workshops || []);
     }
-  }, [workshopsData, isView]);
+  }, [workshopsData, isView, meeting, editingWorkshop]);
 
   const mutateMeetingHandler = function (type) {
     let modifiedDate = date;
@@ -299,10 +301,18 @@ function MeetingsDetails() {
               <FormLabel>Workshop</FormLabel>
               <Autocomplete
                 options={workshopOptions}
-                defaultValue={workshopOptions[0]}
-                onChange={(event, selectedElement) =>
-                  setSelectedWorkshop((prev) => selectedElement)
+                value={
+                  editingWorkshop
+                    ? selectedWorkshop
+                    : { types: workshopOptions[0]?.types }
                 }
+                onChange={(event, selectedElement) => {
+                  if (!selectedElement) {
+                    setEditingWorkshop(true);
+                    // setWorkshopOptions([]);
+                  }
+                  setSelectedWorkshop((prev) => selectedElement);
+                }}
                 disabled={isView}
                 renderInput={(params) => (
                   <TextField
@@ -325,7 +335,9 @@ function MeetingsDetails() {
                     No Match Found
                   </Typography>
                 }
-                getOptionLabel={(option) => `${option.types} `}
+                getOptionLabel={(option) => {
+                  return `${option.types}`;
+                }}
               />
             </FormControl>
           </Box>

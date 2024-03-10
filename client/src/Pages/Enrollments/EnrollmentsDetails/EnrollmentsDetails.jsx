@@ -186,24 +186,6 @@ function EnrollmentsDetails() {
   };
 
   const mutateEnrollmentHandler = function (type) {
-    //   "{
-    //     ""name"": ""Name"",
-    //     ""email"": ""someEmail@gmail.com"",
-    //     ""mobile_number"": ""9898989898"",
-    //     ""dob"": ""2000-09-12"",
-    //     ""gender"": ""male"",
-    //     ""address"": ""address 1"",
-    //     ""city"": ""East Delhi"",
-    //     ""state"": ""Delhi"",
-    //     ""pincode"": 110091,
-    //     ""children"": [
-    //         {
-    //             ""dob"": ""2023-04-12"",
-    //             ""gender"": ""female"",
-    //             ""name"": ""Child Name""
-    //         }
-    //     ]
-    // }"
     mutate({
       body: {
         name,

@@ -9,8 +9,6 @@ export const workshops = async function ({ signal, queryKey }) {
     }
   }
 
-  console.log(filters);
-
   let pageParam = page ? `?page=${page}` : `?page=${1}`;
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
@@ -78,7 +76,7 @@ export const deleteWorkshops = async function (data) {
 export const createWorkshop = async function (data) {
   const res = await fetch(`${BASEURL}`, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify(data.body),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -96,6 +94,7 @@ export const createWorkshop = async function (data) {
 };
 
 export const updateWorkshop = async function (data) {
+  console.log(data);
   const res = await fetch(`${BASEURL}/${data.id}/update`, {
     method: 'PUT',
     body: JSON.stringify(data.body),
