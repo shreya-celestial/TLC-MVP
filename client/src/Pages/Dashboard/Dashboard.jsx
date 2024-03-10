@@ -1,69 +1,118 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './Dashboard.styles';
-import SmallCard from '../../Components/SmallCard/SmallCard';
+
+import { ReactComponent as EnrollmentColorIcon } from '../.././assets/Icons/enrollmentsColorIcon.svg';
+import { ReactComponent as VolunteerColorIcon } from '../.././assets/Icons/volunteerColorIcon.svg';
+import { ReactComponent as MeetingsColorIcon } from '../.././assets/Icons/meetingsColorIcon.svg';
+import { ReactComponent as WorkshopColorIcon } from '../.././assets/Icons/workshopColorIcon.svg';
 import UpcomingWorkshop from '../../Components/UpcomingWorkshop/UpcomingWorkshop';
+import DoughnutChart from './Charts/DonutChart/DoughnutChart';
+const upcominWorkshops = [
+  {
+    title: 'Confidence, Power and Excellence',
+    startDate: '2024-03-10',
+    endDate: '2024-03-20',
+    location: 'Pune',
+  },
+  {
+    title: 'Confidence, Power and Excellence',
+    startDate: '2024-03-10',
+    endDate: '2024-03-20',
+    location: 'Pune',
+  },
+  {
+    title: 'Confidence, Power and Excellence',
+    startDate: '2024-03-10',
+    endDate: '2024-03-20',
+    location: 'Pune',
+  },
+  {
+    title: 'Confidence, Power and Excellence',
+    startDate: '2024-03-10',
+    endDate: '2024-03-20',
+    location: 'Pune',
+  },
+];
 
 const Dashboard = () => {
   const classes = useStyles();
+  const smallCardData = [
+    {
+      id: 0,
+      title: 'Total volunteers',
+      value: 50,
+      icon: <VolunteerColorIcon />,
+      class: 'volunteer',
+    },
+    {
+      id: 1,
+      title: 'Total workshops',
+      value: 20,
+      icon: <WorkshopColorIcon />,
+      class: 'workshop',
+    },
+    {
+      id: 2,
+      title: 'Total Enrollments',
+      value: 1100,
+      icon: <EnrollmentColorIcon />,
+      class: 'enrollment',
+    },
+    {
+      id: 3,
+      title: 'Total Meetings',
+      value: 40,
+      icon: <MeetingsColorIcon />,
+      class: 'meeting',
+    },
+  ];
 
   return (
-    <>
-      <Grid className={classes.gridContainer} container spacing={2}>
-        <Grid item xs={6} md={3}>
-          <SmallCard
-            data={{
-              count: 50,
-              title: 'Total Volunteers',
-              type: 'volunteers',
-            }}
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <SmallCard
-            data={{
-              count: 50,
-              title: 'Total Workshops',
-              type: 'workshops',
-            }}
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <SmallCard
-            data={{
-              count: 50,
-              title: 'Total Enrollments',
-              type: 'enrollments',
-            }}
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <SmallCard
-            data={{
-              count: 50,
-              title: 'Total Meetings',
-              type: 'meetings',
-            }}
-          />
-        </Grid>
-      </Grid>
-
-      <Grid className={classes.gridContainer} container spacing={2}>
-        <Grid item xs={6} md={6}>
-          <Box className={classes.bigCard}>Volunteer</Box>
-        </Grid>
-        <Grid item xs={6} md={6}>
-          <Box className={classes.bigCard}>
-            <Typography className={classes.workshopHeading} component="h1">
-              Upcoming Workshops
-            </Typography>
-            <UpcomingWorkshop />
-            <UpcomingWorkshop />
-            <UpcomingWorkshop />
+    <Box className={classes.root}>
+      <Box className={classes.smallCardContainer}>
+        {smallCardData.map((item) => (
+          <Stack
+            key={item.id}
+            className={`${classes.smallCard} ${item.class}`}
+            divider={<Divider orientation="vertical" flexItem />}
+            direction={'row'}
+          >
+            {item.icon}
+            <Box className={classes.titleAndValue}>
+              <Typography className="cardValue">
+                {item.value.toLocaleString()}
+              </Typography>
+              <Typography className="cardTitle">{item.title}</Typography>
+            </Box>
+          </Stack>
+        ))}
+      </Box>
+      <Box className={classes.bigCardContainer}>
+        <Box className={classes.bigCard}>
+          <Typography className="bigCardHeading">
+            Last 6 Months Enrollments
+          </Typography>
+          <Box className={classes.chartMain}>
+            <DoughnutChart />
           </Box>
-        </Grid>
-      </Grid>
-    </>
+        </Box>
+        <Box className={classes.bigCard}>
+          <Typography className="bigCardHeading">Upcoming Workshops</Typography>
+          <Box className={classes.upcominWorkshops}>
+            {upcominWorkshops.map((workshop, index) => (
+              <UpcomingWorkshop
+                key={index}
+                title={workshop.title}
+                startDate={workshop.startDate}
+                endDate={workshop.endDate}
+                location={workshop.location}
+              />
+            ))}
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
