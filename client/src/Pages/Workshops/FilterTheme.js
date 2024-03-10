@@ -37,7 +37,6 @@ export const FilterTheme = createTheme({
           '& .MuiYearCalendar-root': {
             width: '250px',
             '& .MuiPickersYear-root button': {
-              border: '1px solid',
               fontSize: '12px',
               display: 'flex',
               justifyContent: 'center',

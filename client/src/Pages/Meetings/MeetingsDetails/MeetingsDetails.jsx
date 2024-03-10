@@ -252,6 +252,7 @@ function MeetingsDetails() {
               : 'Create Meeting'
           }
           prevPage={'Meetings'}
+          path={'meetings'}
         />
         <Box className={classes.mainContent}>
           {/* meeting type and workshop autocomplete  */}

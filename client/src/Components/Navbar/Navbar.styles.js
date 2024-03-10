@@ -72,4 +72,38 @@ export const useStyles = makeStyles((theme) => ({
       background: 'none !important',
     },
   },
+  // profile dropdown
+  profileDropdown: {
+    '& .MuiPaper-root': {
+      boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px !important',
+      borderRadius: '2px',
+      width: '124px',
+      transform: 'translate(0px, 13px) !important',
+
+      '& .MuiList-root': {
+        padding: '5px 0px',
+        '& li': {
+          padding: '0px',
+        },
+        '& a': {
+          gap: '8px',
+          padding: '4px 10px',
+          '& .MuiListItemIcon-root': {
+            minWidth: 'max-content',
+          },
+          '& .MuiListItemText-root': {
+            margin: '0px',
+            '& span': {
+              fontSize: '13px',
+              fontWeight: '500',
+            },
+          },
+          '& svg': {
+            fontSize: '18px',
+            color: '#2F2F2F',
+          },
+        },
+      },
+    },
+  },
 }));
