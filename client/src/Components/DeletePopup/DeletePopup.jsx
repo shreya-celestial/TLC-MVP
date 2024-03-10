@@ -16,6 +16,8 @@ import { useMutation } from '@tanstack/react-query';
 import { deleteVolunteers } from '../../apis/volunteers';
 import { deleteWorkshops } from '../../apis/workshops';
 import AlertReact from '../Alert/AlertReact';
+import { deleteMeetings } from '../../apis/meetings';
+import { deleteEnrollments } from '../../apis/enrollments';
 
 function DeletePopup({
   selectedRows,
@@ -28,7 +30,14 @@ function DeletePopup({
   const [alertType, setAlertType] = useState();
 
   const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: type === 'workshops' ? deleteWorkshops : deleteVolunteers,
+    mutationFn:
+      type === 'workshops'
+        ? deleteWorkshops
+        : type === 'meetings'
+        ? deleteMeetings
+        : type === 'enrollments'
+        ? deleteEnrollments
+        : deleteVolunteers,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -58,8 +67,21 @@ function DeletePopup({
     const idsOfDeleteWorkshops = selectedRows.map(
       (selectedRow) => selectedRow.id
     );
-    console.log(idsOfDeleteWorkshops);
     mutate(idsOfDeleteWorkshops);
+  };
+
+  const deleteMeetingsHandler = function () {
+    const idsOfDeleteMeetings = selectedRows.map(
+      (selectedRow) => selectedRow.id
+    );
+    mutate(idsOfDeleteMeetings);
+  };
+
+  const deleteEnrollmentsHandler = function () {
+    const idsOfDeleteEnrollments = selectedRows.map(
+      (selectedRow) => selectedRow.id
+    );
+    mutate(idsOfDeleteEnrollments);
   };
 
   const removeAlertType = function () {
@@ -97,7 +119,15 @@ function DeletePopup({
           {selectedRows.map((item, index) => (
             <span key={index}>
               {' '}
-              '{type === 'workshops' ? item.types : item.name}',{' '}
+              '
+              {type === 'workshops'
+                ? item.types
+                : type === 'meetings'
+                ? item.type
+                : type === 'enrollments'
+                ? item.name
+                : item.name}
+              ',{' '}
             </span>
           ))}
           ?
@@ -117,6 +147,10 @@ function DeletePopup({
           onClick={
             type === 'workshops'
               ? deleteWorkshopsHandler
+              : type === 'meetings'
+              ? deleteMeetingsHandler
+              : type === 'enrollments'
+              ? deleteEnrollmentsHandler
               : deleteVolunteersHandler
           }
         >

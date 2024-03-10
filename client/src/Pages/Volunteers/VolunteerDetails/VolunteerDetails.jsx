@@ -18,12 +18,8 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerDetails.styles';
 import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
-import {
-  meetingColDef,
-  meetingRowData,
-  workShopColDef,
-  workShopRowData,
-} from './DummyHistoryData';
+import { meetingRowData, workShopRowData } from './DummyHistoryData';
+import { workShopColDef, meetingColDef } from '../coldefs/coldefs';
 import { useParams } from 'react-router-dom';
 
 import { getVolunteer } from '../../../apis/volunteers';

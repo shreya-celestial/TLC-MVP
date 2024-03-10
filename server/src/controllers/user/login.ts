@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
 import getData from '../../utils/getData';
 import { getUserByEmail } from '../../gql/user/queries';
+import { updateStatus } from '../../gql/user/mutations';
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -54,11 +55,23 @@ const login = async (req: Request, res: Response) => {
         'Your account is not verified yet. Please contact your admin for more details.',
     });
   }
-  const userToSend: any = {};
+  let userToSend: any = {};
   for (let keys in user) {
     if (keys !== 'password') userToSend[keys] = user[keys];
   }
-  return res.status(200).json({ status: 'success', user: userToSend });
+  const encryptKey = CryptoJS.AES.encrypt(email, process.env.LOGIN_KEY || '')
+  const updateUserStatus = await getData(updateStatus, {
+    email, isLoggedIn: encryptKey.toString()
+  })
+  userToSend = {
+    ...userToSend,
+    key: encryptKey.toString()
+  }
+  if(updateUserStatus?.data?.update_users?.affected_rows)
+  {
+    return res.status(200).json({ status: 'success', user: userToSend });
+  }
+  return res.status(400).json({ status: 'error', message: 'Something went wrong. Please try again later!' });
 };
 
 export default login;

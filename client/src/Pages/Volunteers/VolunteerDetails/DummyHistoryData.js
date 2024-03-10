@@ -1,9 +1,3 @@
-export const workShopColDef = [
-  { field: 'workshop', headerName: 'Workshop Name' },
-  { field: 'role', headerName: 'Role' },
-  { field: 'startDate', headerName: 'Start Date' },
-  { field: 'endDate', headerName: 'End Date' },
-];
 export const workShopRowData = [
   {
     workshop: 'Confidence, Power and Excellence',
@@ -25,13 +19,6 @@ export const workShopRowData = [
   },
 ];
 
-export const meetingColDef = [
-  { field: 'meeting', headerName: 'Meeting Type' },
-  { field: 'workshop', headerName: 'Workshop' },
-  { field: 'date', headerName: 'Date' },
-  { field: 'volunteers', headerName: 'Volunteers' },
-  { field: 'enrollments', headerName: 'Enrollments' },
-];
 export const meetingRowData = [
   {
     meeting: 'Meeting Type 1',

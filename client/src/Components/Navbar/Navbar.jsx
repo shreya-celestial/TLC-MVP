@@ -21,6 +21,7 @@ const Navbar = ({ handleSidebarOpen }) => {
     handleSidebarOpen();
     setIsSideBarOpen(!isSidebarOpen);
   };
+
   return (
     <AppBar className={classes.root}>
       <Toolbar className="toolbar">

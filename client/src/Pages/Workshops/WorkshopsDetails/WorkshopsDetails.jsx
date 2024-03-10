@@ -29,9 +29,11 @@ import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getWorkshop } from '../../../apis/workshops';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { fetchRowData } from '../utils';
+import { fetchRowDataWorkshop } from '../utils';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { compareTwoArrays } from '../../../utils/utils';
+import { useMutation } from '@tanstack/react-query';
+import { createWorkshop, updateWorkshop } from '../../../apis/workshops';
 
 function WorkshopsDetails() {
   let { id, type } = useParams();
@@ -108,6 +110,29 @@ function WorkshopsDetails() {
   const [endDate, setEndDate] = useState('');
   const [concludingDate, setConcludingDate] = useState('');
 
+  const { mutate, isPending: isPendingMutation } = useMutation({
+    mutationFn: type === 'create' ? createWorkshop : updateWorkshop,
+    onSuccess: (data) => {
+      if (data.status === 'error') {
+        setAlertType({
+          type: data.status,
+          message: data.message,
+        });
+      } else {
+        setAlertType({
+          type: data.status,
+          message: data.message,
+        });
+      }
+    },
+    onError: (error) => {
+      setAlertType({
+        type: 'error',
+        message: error.info.message,
+      });
+    },
+  });
+
   const handleMeetingMode = () => {
     setopenPopup(true);
     setMode('Meetings');
@@ -125,7 +150,7 @@ function WorkshopsDetails() {
 
   const closeLeadPopupAndSetRows = (data, role) => {
     const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];
-
+    console.log(combinedArray, data);
     const isEvery = compareTwoArrays(combinedArray, data, 'email');
 
     if (!isEvery) {
@@ -149,10 +174,11 @@ function WorkshopsDetails() {
       });
   };
 
-  const closeEnrollmentsPopupAndSetRows = function (data, mode) {
+  const closePopupAndSetRows = function (data, mode) {
     setOpenLeadPopup(false);
     if (mode === 'Meetings') {
-      const isEvery = compareTwoArrays(meetingsRowData, data, 'email');
+      console.log(meetingsRowData, data);
+      const isEvery = compareTwoArrays(meetingsRowData, data, 'id');
 
       if (!isEvery) {
         setAlertType({
@@ -197,11 +223,16 @@ function WorkshopsDetails() {
     setConcludingDate(workshop?.concluding_date || '');
 
     if (viewType !== 'create') {
-      const { fetchVolunteers, fetchLeadVolunteers, fetchParticipants } =
-        fetchRowData(workshop);
+      const {
+        fetchVolunteers,
+        fetchLeadVolunteers,
+        fetchParticipants,
+        fetchMeetings,
+      } = fetchRowDataWorkshop(workshop);
       setVolunteersRowData(fetchVolunteers || []);
       setLeadVolunteersRowData(fetchLeadVolunteers || []);
       setParticipantsRowData(fetchParticipants || []);
+      setMeetingsRowData(fetchMeetings || []);
     }
   }, [workshop, viewType]);
 
@@ -210,24 +241,37 @@ function WorkshopsDetails() {
     setViewType('edit');
   };
 
-  const editWorkshop = function () {
-    console.log(
-      workshopType,
-      venue,
-      venueCity,
-      startDate,
-      endDate,
-      concludingDate
-    );
+  const editWorkshopHandler = function () {
+    mutate({
+      body: {
+        types: workshopType,
+        venue,
+        venue_city: venueCity,
+        start_date: startDate,
+        end_date: endDate,
+        concluding_date: endDate,
+        vols: volunteersRowData.map((vol) => vol.email),
+        leads: leadVolunteersRowData.map((vol) => vol.email),
+        participants: participantsRowData.map((participant) => participant.id),
+        meetings: meetingsRowData.map((meeting) => meeting.id),
+      },
+      id,
+    });
   };
 
-  const createWorkshop = function () {
-    console.log(
-      volunteersRowData,
-      leadVolunteersRowData,
-      meetingsRowData,
-      participantsRowData
-    );
+  const createWorkshopHandler = function () {
+    mutate({
+      types: workshopType,
+      venue,
+      venue_city: venueCity,
+      start_date: startDate?.toISOString().split('T')[0],
+      end_date: endDate?.toISOString().split('T')[0],
+      concluding_date: endDate?.toISOString().split('T')[0],
+      vols: volunteersRowData.map((vol) => vol.email),
+      leads: leadVolunteersRowData.map((vol) => vol.email),
+      participants: participantsRowData.map((participant) => participant.id),
+      meetings: meetingsRowData.map((meeting) => meeting.id),
+    });
   };
 
   return (
@@ -306,7 +350,7 @@ function WorkshopsDetails() {
                       name="startDate"
                       disabled={isView}
                       value={dayjs(startDate)}
-                      onChange={(date) => setStartDate(date)}
+                      onChange={(date) => setStartDate(new Date(date))}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -321,7 +365,7 @@ function WorkshopsDetails() {
                       name="endtDate"
                       disabled={isView}
                       value={dayjs(endDate)}
-                      onChange={(date) => setEndDate(date)}
+                      onChange={(date) => setEndDate(new Date(date))}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -336,7 +380,7 @@ function WorkshopsDetails() {
                       name="concludingSessionDate"
                       disabled={isView}
                       value={dayjs(concludingDate)}
-                      onChange={(date) => setConcludingDate(date)}
+                      onChange={(date) => setConcludingDate(new Date(date))}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -425,7 +469,7 @@ function WorkshopsDetails() {
               mode={mode}
               openPopup={openPopup}
               closeOpenPopup={closeOpenPopup}
-              closeEnrollmentsPopupAndSetRows={closeEnrollmentsPopupAndSetRows}
+              closePopupAndSetRows={closePopupAndSetRows}
             />
           </Box>
 
@@ -446,17 +490,17 @@ function WorkshopsDetails() {
               <Button
                 disableTouchRipple
                 className="saveBtn"
-                onClick={editWorkshop}
+                onClick={editWorkshopHandler}
               >
-                Save
+                {isPendingMutation ? 'Loading...' : 'Save'}
               </Button>
             ) : (
               <Button
                 disableTouchRipple
                 className="saveBtn"
-                onClick={createWorkshop}
+                onClick={createWorkshopHandler}
               >
-                Create
+                {isPendingMutation ? 'Loading...' : 'Create'}
               </Button>
             )}
           </Box>

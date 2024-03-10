@@ -76,17 +76,23 @@ const Workshops = () => {
   const [searchValue, setSearchValue] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
   const [pastOrUpcoming, setPastOrUpcoming] = useState('all');
+
+
+
   const { data, isPending, isError, error } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
+
       {
         search: searchValue,
         startDate,
         endDate,
         pastOrUpcoming,
       },
+
       rowChanged,
     ],
     workshops
@@ -134,7 +140,90 @@ const Workshops = () => {
               </Button>
             </>
           )}
+
           {selectedRows.length === 0 && (
+
+        </Box>
+        {alertType && (
+          <AlertReact
+            removeAlertType={removeAlertType}
+            type={alertType.type}
+            message={alertType.message}
+          />
+        )}
+        {showDeleteModal && (
+          <DeletePopup
+            selectedRows={selectedRows}
+            hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+            hideDeleteModal={hideDeleteModal}
+            type="workshops"
+          />
+        )}
+        <Box>
+          <form>
+            <TextField
+              label="Search"
+              variant="outlined"
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              size="small"
+            />
+            {/* Dropdown 3 */}
+            <FormControl>
+              <InputLabel id="pastorupcoming-label">
+                Past Or Upcoming
+              </InputLabel>
+              <Select
+                label="pastorupcoming"
+                labelId="pastorupcoming-label"
+                variant="outlined"
+                value={pastOrUpcoming}
+                onChange={(e) => {
+                  setPastOrUpcoming(e.target.value);
+                }}
+                size="small"
+              >
+                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="past">Past</MenuItem>
+                <MenuItem value="upcoming">Upcoming</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <FormLabel>Start Date</FormLabel>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                className={classes.datepicker}
+              >
+                <DatePicker
+                  disabled={pastOrUpcoming !== 'all' ? true : false}
+                  name="startDate"
+                  value={dayjs(startDate)}
+                  onChange={(date) => setStartDate(new Date(date))}
+                />
+              </LocalizationProvider>
+            </FormControl>
+            {/* end date */}
+            <FormControl className={classes.formControl}>
+              <FormLabel>End Date</FormLabel>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                className={classes.datepicker}
+              >
+                <DatePicker
+                  disabled={pastOrUpcoming !== 'all' ? true : false}
+                  name="endtDate"
+                  value={dayjs(endDate)}
+                  onChange={(date) => setEndDate(new Date(date))}
+                />
+              </LocalizationProvider>
+            </FormControl>
+
+            <Button variant="contained" color="primary" type="submit">
+              Submit
+            </Button>
+
             <Button
               onClick={() => {
                 navigate(`/workshopdetail/create`);

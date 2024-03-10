@@ -53,15 +53,6 @@ export const LeadVolunteersRowData = [
   },
 ];
 
-export const ParticipantColDef = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'gender', headerName: 'Gender' },
-  { field: 'children', headerName: 'Gender' },
-  { field: 'phonenumber', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
-  { field: 'city', headerName: 'City' },
-];
-
 export const ParticipantRowData = [
   {
     name: 'Sahil Mandoliya',
