@@ -1,4 +1,4 @@
-export const fetchRowData = function (workshop) {
+export const fetchRowDataWorkshop = function (workshop) {
   const fetchVolunteers = workshop?.workshop_volunteers?.map((w) => w.user);
   const fetchLeadVolunteers = workshop?.workshop_lead_volunteers?.map(
     (w) => w.user
@@ -10,5 +10,12 @@ export const fetchRowData = function (workshop) {
     return { ...w.enrollment, children: childrenNames.join(', ') };
   });
 
-  return { fetchVolunteers, fetchLeadVolunteers, fetchParticipants };
+  const fetchMeetings = workshop?.meetings;
+
+  return {
+    fetchVolunteers,
+    fetchLeadVolunteers,
+    fetchParticipants,
+    fetchMeetings,
+  };
 };

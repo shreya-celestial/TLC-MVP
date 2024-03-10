@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   MenuItem,
@@ -22,32 +22,29 @@ import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import AutocompletePopup from '../../../Components/AutocompletePopup/AutocompletePopup';
 import {
   MeetingPageEnrollmentsColDef,
-  MeetingPageEnrollmentsRowData,
   MeetingPageVolunteersColDef,
-  MeetingPageVolunteersRowData,
 } from './MeetingDummyData';
 import { DeleteButtonCell } from '../../../Components/DeleteButtonCell/DeleteButtonCell';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getMeeting } from '../../../apis/meetings';
 import { useParams } from 'react-router-dom';
+import { fetchRowDataMeeting } from '../utils';
+import dayjs from 'dayjs';
+import { compareTwoArrays } from '../../../utils/utils';
+import AlertReact from '../../../Components/Alert/AlertReact';
+import { workshops } from '../../../apis/workshops';
+import { createMeeting, updateMeeting } from '../../../apis/meetings';
+
+import { useMutation } from '@tanstack/react-query';
 
 function MeetingsDetails() {
   const classes = useStyles();
   const [openPopup, setOpenPopup] = useState(false);
   const [mode, setMode] = useState('');
-  const isView = false;
-  const DummyWorkshopList = [
-    'Freedom',
-    'Bhagwad Gita',
-    'Live Better Life',
-    'Confidence, Power and Excellence',
-    'Love, Relationship, and Romance',
-  ];
+
   const { id, type } = useParams();
 
-  const { data, isPending, isError, error } = useReactQuery([id], getMeeting);
-
-  console.log(data);
+  const [isView, setIsView] = useState(type === 'view' ? true : false);
 
   const dummyEnrollmentsColDef = [
     ...MeetingPageEnrollmentsColDef,
@@ -76,48 +73,240 @@ function MeetingsDetails() {
 
   const handleEnrollmentMode = () => {
     setOpenPopup(true);
-    setMode('Enrollments');
+    setMode('Participants');
+  };
+
+  const [volunteersRowData, setVolunteersRowData] = useState([]);
+  const [enrollmentsRowData, setEnrollmentsRowData] = useState([]);
+  const [workshopOptions, setWorkshopOptions] = useState([]);
+
+  const [meetingType, setMeetingType] = useState('none');
+  const [workshop, setWorkshop] = useState();
+  const [date, setDate] = useState('');
+  const [venue, setVenue] = useState('');
+  const [venueCity, setVenueCity] = useState('');
+  const [selectedWorkshop, setSelectedWorkshop] = useState([]);
+
+  const [viewType, setViewType] = useState(type);
+
+  const { data, isLoading, isError, error } = useReactQuery([id], getMeeting, {
+    enabled: viewType !== 'create',
+  });
+
+  const [filters, setFilters] = useState({});
+  const [debouncedFilters, setDebouncedFilters] = useState();
+
+  const {
+    data: workshopsData,
+    isPending: isPendingWorkshops,
+    isError: iseErrorWorkshops,
+    error: errorWorkshop,
+  } = useReactQuery([1, 10, { ...debouncedFilters }], workshops, {
+    enabled: debouncedFilters?.search !== undefined,
+  });
+
+  const { mutate, isPending: isPendingMutation } = useMutation({
+    mutationFn: type === 'create' ? createMeeting : updateMeeting,
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.status === 'error') {
+        setAlertType({
+          type: data.status,
+          message: data.message,
+        });
+      } else {
+        setAlertType({
+          type: data.status,
+          message: data.message,
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+
+      setAlertType({
+        type: 'error',
+        message: error.info.message,
+      });
+    },
+  });
+
+  useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setDebouncedFilters(filters);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [filters]);
+
+  const meeting = data?.data;
+
+  const [alertType, setAlertType] = useState();
+
+  const removeAlertType = function () {
+    setAlertType(undefined);
+  };
+
+  const closePopupAndSetRows = function (data, mode) {
+    if (mode === 'Participants') {
+      const isEvery = compareTwoArrays(enrollmentsRowData, data, 'email');
+
+      if (!isEvery) {
+        setAlertType({
+          type: 'error',
+          message: 'Some Participants are already existing',
+        });
+        setOpenPopup(false);
+        return;
+      }
+
+      setEnrollmentsRowData((prev) => {
+        return [...prev, ...data];
+      });
+      setOpenPopup(false);
+    }
+
+    if (mode === 'Volunteers') {
+      console.log(volunteersRowData, data);
+      const isEvery = compareTwoArrays(volunteersRowData, data, 'email');
+
+      if (!isEvery) {
+        setAlertType({
+          type: 'error',
+          message: 'Some Volunteers are already existing',
+        });
+        setOpenPopup(false);
+        return;
+      }
+
+      setVolunteersRowData((prev) => {
+        return [...prev, ...data];
+      });
+      setOpenPopup(false);
+    }
+  };
+
+  useEffect(() => {
+    setMeetingType(meeting?.type?.trim() || 'none');
+    setWorkshop(meeting?.workshop);
+    setVenue(meeting?.venue || '');
+    setVenueCity(meeting?.venue_city || '');
+    setDate(meeting?.date || '');
+    setWorkshopOptions([meeting?.workshop]);
+
+    if (viewType !== 'create') {
+      const { fetchVolunteers, fetchEnrollments } =
+        fetchRowDataMeeting(meeting);
+      setVolunteersRowData(fetchVolunteers || []);
+      setEnrollmentsRowData(fetchEnrollments || []);
+    }
+  }, [meeting, viewType, isView]);
+
+  useEffect(() => {
+    if (!isView) {
+      setWorkshopOptions(workshopsData?.data?.workshops || []);
+    }
+  }, [workshopsData, isView]);
+
+  const mutateMeetingHandler = function (type) {
+    let modifiedDate = date;
+    if (type === 'create') modifiedDate = date.toISOString().split('T')[0];
+
+    mutate({
+      body: {
+        date: modifiedDate,
+        type: meetingType,
+        venue,
+        venue_city: venueCity,
+        workshop_id: selectedWorkshop.id,
+        enrollments: enrollmentsRowData.map((enrollment) => enrollment.id),
+        volunteers: volunteersRowData.map((volunteer) => volunteer.email),
+      },
+      id,
+    });
+  };
+
+  const editHandler = function () {
+    setIsView(false);
+    setViewType('edit');
   };
 
   return (
     <Box className={classes.root}>
+      {alertType && (
+        <AlertReact
+          removeAlertType={removeAlertType}
+          type={alertType.type}
+          message={alertType.message}
+        />
+      )}
       <Box className={classes.HeaderMainContent}>
-        <PageHeader currentPage={'Create Meeting'} prevPage={'Meetings'} />
+        <PageHeader
+          currentPage={
+            viewType === 'view'
+              ? 'View Meeting'
+              : viewType === 'edit'
+              ? 'Edit Meeting'
+              : 'Create Meeting'
+          }
+          prevPage={'Meetings'}
+        />
         <Box className={classes.mainContent}>
           {/* meeting type and workshop autocomplete  */}
           <Box className={classes.formElementBox}>
-            <FormControl className={classes.formControl}>
-              <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
-              <Select
-                id="meetingType"
-                name="meetingType"
-                value="none"
-                IconComponent={ExpandMoreOutlinedIcon}
-                className={classes.selectBox}
-                disabled={isView}
-                MenuProps={{
-                  classes: {
-                    paper: classes.selectDropdownMenu,
-                  },
-                }}
-              >
-                <MenuItem value="none">None</MenuItem>
-                <MenuItem value="meetingType1">Meeting Type 1</MenuItem>
-                <MenuItem value="meetingType2">Meeting Type 2</MenuItem>
-                <MenuItem value="meetingType3">Meeting Type 3</MenuItem>
-                <MenuItem value="meetingType4">Meeting Type 4</MenuItem>
-              </Select>
-            </FormControl>
+            {!isView ? (
+              <FormControl className={classes.formControl}>
+                <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
+                <Select
+                  id="meetingType"
+                  name="meetingType"
+                  value={meetingType}
+                  onChange={(e) => setMeetingType(e.target.value)}
+                  IconComponent={ExpandMoreOutlinedIcon}
+                  className={classes.selectBox}
+                  disabled={isView}
+                  MenuProps={{
+                    classes: {
+                      paper: classes.selectDropdownMenu,
+                    },
+                  }}
+                >
+                  <MenuItem value="none">None</MenuItem>
+                  <MenuItem value="Meeting Type 1">Meeting Type 1</MenuItem>
+                  <MenuItem value="Meeting Type 2">Meeting Type 2</MenuItem>
+                  <MenuItem value="Meeting Type 3">Meeting Type 3</MenuItem>
+                  <MenuItem value="Meeting Type 4">Meeting Type 4</MenuItem>
+                </Select>
+              </FormControl>
+            ) : (
+              <FormControl className={classes.formControl}>
+                <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
+                <TextField
+                  id="meetingType"
+                  placeholder="Meeting"
+                  name="meeting"
+                  disabled={isView}
+                  value={meetingType}
+                />
+              </FormControl>
+            )}
 
             {/* workshop autocomplete */}
+
             <FormControl className={classes.formControl}>
               <FormLabel>Workshop</FormLabel>
               <Autocomplete
-                options={DummyWorkshopList}
+                options={workshopOptions}
+                defaultValue={workshopOptions[0]}
+                onChange={(event, selectedElement) =>
+                  setSelectedWorkshop((prev) => selectedElement)
+                }
                 disabled={isView}
-                onChange={(e, value) => console.log(value)}
                 renderInput={(params) => (
                   <TextField
+                    onChange={(e) => setFilters({ search: e.target.value })}
                     className={classes.autocompleteTextField}
                     placeholder="Search and add workshop"
                     {...params}
@@ -136,6 +325,7 @@ function MeetingsDetails() {
                     No Match Found
                   </Typography>
                 }
+                getOptionLabel={(option) => `${option.types} `}
               />
             </FormControl>
           </Box>
@@ -148,7 +338,12 @@ function MeetingsDetails() {
                 dateAdapter={AdapterDayjs}
                 className={classes.datepicker}
               >
-                <DatePicker name="date" disabled={isView} />
+                <DatePicker
+                  name="date"
+                  disabled={isView}
+                  value={dayjs(date)}
+                  onChange={(date) => setDate(new Date(date))}
+                />
               </LocalizationProvider>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -158,6 +353,8 @@ function MeetingsDetails() {
                 placeholder="Enter City "
                 name="city"
                 disabled={isView}
+                value={venueCity}
+                onChange={(e) => setVenueCity(e.target.value)}
               />
             </FormControl>
           </Box>
@@ -170,6 +367,8 @@ function MeetingsDetails() {
                 placeholder="Enter Meeting Venue"
                 name="venue"
                 disabled={isView}
+                value={venue}
+                onChange={(e) => setVenue(e.target.value)}
               />
             </FormControl>
           </Box>
@@ -191,7 +390,7 @@ function MeetingsDetails() {
 
           <AccordionTable
             columnDefs={dummyVolunteersColDef}
-            rowData={MeetingPageVolunteersRowData}
+            rowData={volunteersRowData}
             headingName={'Volunteers'}
           />
         </Box>
@@ -212,7 +411,7 @@ function MeetingsDetails() {
 
           <AccordionTable
             columnDefs={dummyEnrollmentsColDef}
-            rowData={MeetingPageEnrollmentsRowData}
+            rowData={enrollmentsRowData}
             headingName={'Enrollments'}
           />
         </Box>
@@ -221,6 +420,7 @@ function MeetingsDetails() {
           mode={mode}
           closeOpenPopup={closeOpenPopup}
           openPopup={openPopup}
+          closePopupAndSetRows={closePopupAndSetRows}
         />
       </Box>
 
@@ -229,13 +429,25 @@ function MeetingsDetails() {
         <Button disableTouchRipple className="cancelBtn">
           Cancel
         </Button>
-        {isView ? (
-          <Button disableTouchRipple className="editBtn">
+        {viewType === 'view' ? (
+          <Button disableTouchRipple className="editBtn" onClick={editHandler}>
             Edit
           </Button>
+        ) : viewType === 'edit' ? (
+          <Button
+            disableTouchRipple
+            className="saveBtn"
+            onClick={() => mutateMeetingHandler('edit')}
+          >
+            {isPendingMutation ? 'Loading...' : 'Save'}
+          </Button>
         ) : (
-          <Button disableTouchRipple className="saveBtn">
-            Save
+          <Button
+            disableTouchRipple
+            className="saveBtn"
+            onClick={() => mutateMeetingHandler('create')}
+          >
+            {isPendingMutation ? 'Loading...' : 'Create'}
           </Button>
         )}
       </Box>

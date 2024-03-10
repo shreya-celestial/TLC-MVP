@@ -60,6 +60,16 @@ function Main() {
           />
           <Route
             exact
+            path="/meetingdetails/:type"
+            element={<MeetingsDetails />}
+          />
+          <Route
+            exact
+            path="/enrollmentdetails/:id/:type"
+            element={<EnrollmentsDetails />}
+          />
+          <Route
+            exact
             path="/enrollmentdetails/:type"
             element={<EnrollmentsDetails />}
           />
