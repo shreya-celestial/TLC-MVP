@@ -1,3 +1,5 @@
+const BASE_URL = 'https://tlc-two.vercel.app/enrollments';
+
 export const enrollments = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters] = queryKey;
 
@@ -13,7 +15,7 @@ export const enrollments = async function ({ signal, queryKey }) {
   let genderParam = filters.gender ? `&gender=${filters.gender}` : '';
 
   const res = await fetch(
-    `http://localhost:8080/enrollments/${pageParam}${noOfRecordsParam}${searchParam}${genderParam}`,
+    `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${genderParam}`,
     signal
   );
 
@@ -31,10 +33,7 @@ export const enrollments = async function ({ signal, queryKey }) {
 export const getEnrollment = async function ({ signal, queryKey }) {
   const [id] = queryKey;
 
-  const res = await fetch(
-    `https://tlc-two.vercel.app/enrollments/${id}/details`,
-    signal
-  );
+  const res = await fetch(`${BASE_URL}/${id}/details`, signal);
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -48,7 +47,7 @@ export const getEnrollment = async function ({ signal, queryKey }) {
 };
 
 export const createEnrollment = async function (data) {
-  const res = await fetch(`https://tlc-two.vercel.app/enrollments`, {
+  const res = await fetch(`${BASE_URL}`, {
     method: 'POST',
     body: JSON.stringify(data.body),
     headers: {
@@ -68,16 +67,13 @@ export const createEnrollment = async function (data) {
 };
 
 export const updateEnrollment = async function (data) {
-  const res = await fetch(
-    `https://tlc-two.vercel.app/enrollments/${data.id}/edit`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(data.body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const res = await fetch(`${BASE_URL}/${data.id}/edit`, {
+    method: 'PUT',
+    body: JSON.stringify(data.body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -92,7 +88,7 @@ export const updateEnrollment = async function (data) {
 
 export const deleteEnrollments = async function (data) {
   console.log(JSON.stringify({ ids: data }));
-  const res = await fetch(`https://tlc-two.vercel.app/enrollments/`, {
+  const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
     headers: {

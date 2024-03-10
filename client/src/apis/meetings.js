@@ -1,3 +1,5 @@
+const BASE_URL = 'https://tlc-two.vercel.app/meetings';
+
 export const meetings = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters, mode] = queryKey;
 
@@ -11,7 +13,7 @@ export const meetings = async function ({ signal, queryKey }) {
   let isNullParam = mode === 'Meetings' ? '&isNull=true' : '';
 
   const res = await fetch(
-    `http://localhost:8080/meetings/${pageParam}${noOfRecordsParam}${searchParam}${startDateParam}${endDateParam}${isNullParam}`,
+    `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${startDateParam}${endDateParam}${isNullParam}`,
     signal
   );
 
@@ -29,10 +31,7 @@ export const meetings = async function ({ signal, queryKey }) {
 export const getMeeting = async function ({ signal, queryKey }) {
   const [id] = queryKey;
 
-  const res = await fetch(
-    `http://localhost:8080/meetings/${id}/details`,
-    signal
-  );
+  const res = await fetch(`${BASE_URL}/${id}/details`, signal);
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -46,7 +45,7 @@ export const getMeeting = async function ({ signal, queryKey }) {
 };
 
 export const createMeeting = async function (data) {
-  const res = await fetch(`https://tlc-two.vercel.app/meetings`, {
+  const res = await fetch(`${BASE_URL}`, {
     method: 'POST',
     body: JSON.stringify(data.body),
     headers: {
@@ -66,16 +65,13 @@ export const createMeeting = async function (data) {
 };
 
 export const updateMeeting = async function (data) {
-  const res = await fetch(
-    `https://tlc-two.vercel.app/meetings/${data.id}/edit`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(data.body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const res = await fetch(`${BASE_URL}/${data.id}/edit`, {
+    method: 'PUT',
+    body: JSON.stringify(data.body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -90,7 +86,7 @@ export const updateMeeting = async function (data) {
 
 export const deleteMeetings = async function (data) {
   console.log(JSON.stringify({ ids: data }));
-  const res = await fetch(`http://localhost:8080/meetings/`, {
+  const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
     headers: {
