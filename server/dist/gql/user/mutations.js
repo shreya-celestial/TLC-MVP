@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VerifyAndUpdatePass = exports.CheckAndUpdateToken = exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
+exports.verifyAndUpdateKey = exports.updateStatus = exports.VerifyAndUpdatePass = exports.CheckAndUpdateToken = exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
 exports.InsertUserMutation = `
   mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!,
     $phoneNumber: String!,  $yearOfJoining: Int!, 
@@ -8,22 +8,6 @@ exports.InsertUserMutation = `
     $isAdmin: Boolean) {
     insert_users(objects: { name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token, dob: $dob, gender: $gender, phoneNumber: $phoneNumber, yearOfJoining: $yearOfJoining, location: $location, city: $city, state: $state, pincode: $pincode}) {
       affected_rows
-      returning {
-        id
-        name
-        email
-        password
-        isVerified
-        token
-        dob
-        gender
-        phoneNumber
-        yearOfJoining
-        location
-        city
-        state
-        pincode
-      }
     }
   }
 `;
@@ -66,9 +50,40 @@ exports.CheckAndUpdateToken = `
   }
 `;
 exports.VerifyAndUpdatePass = `
-  mutation ResetPassword($token: String!, $_eq: Boolean = true, $password: String!, $tokenUpdated: String, $isPassToBeReset: Boolean!) {
-    update_users(where: {token: {_eq: $token}, isPassToBeReset: {_eq: $_eq}}, _set: {password: $password, token: $tokenUpdated, isPassToBeReset: $isPassToBeReset}) {
+  mutation ResetPassword($token: String!, $_eq: Boolean = true, $password: String!, $tokenUpdated: String, $isPassToBeReset: Boolean!, $isLoggedIn: String) {
+    update_users(where: {token: {_eq: $token}, isPassToBeReset: {_eq: $_eq}}, _set: {password: $password, token: $tokenUpdated, isPassToBeReset: $isPassToBeReset, isLoggedIn: $isLoggedIn}) {
       affected_rows
+    }
+  }
+`;
+exports.updateStatus = `
+  mutation MyMutation($isLoggedIn: String, $email: String!) {
+    update_users(where: {email: {_eq: $email}}, _set: {isLoggedIn: $isLoggedIn}) {
+      affected_rows
+    }
+  }
+`;
+exports.verifyAndUpdateKey = `
+  mutation MyMutation($email: String!, $key: String!, $isLoggedIn: String) {
+    update_users(where: {email: {_eq: $email}, isLoggedIn: {_eq: $key}}, _set: {isLoggedIn: $isLoggedIn}) {
+      affected_rows
+      returning {
+        id
+        name
+        isVerified
+        isAdminVerified
+        gender
+        phoneNumber
+        email
+        yearOfJoining
+        location
+        city
+        state
+        pincode
+        isAdmin
+        dob
+        pincode
+      }
     }
   }
 `;

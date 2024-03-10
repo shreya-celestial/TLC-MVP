@@ -5,6 +5,7 @@ import verifyUser from '../controllers/user/verifyUser';
 import forgotPass from '../controllers/user/forgotPass';
 import verifyReset from '../controllers/user/verifyReset';
 import resetPass from '../controllers/user/resetPass';
+import updateLogStatus from '../controllers/user/updateLogStatus';
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.get('/verifyUser/:token', verifyUser);
 router.post('/forgotPass', forgotPass);
 router.get('/verifyReset/:token', verifyReset);
 router.post('/resetPass', resetPass)
+router.put('/updateLogStatus', updateLogStatus)
 
 export default router;
