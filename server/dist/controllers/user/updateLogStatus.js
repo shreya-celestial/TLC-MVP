@@ -18,6 +18,12 @@ const mutations_1 = require("../../gql/user/mutations");
 const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e;
     const { email, key, isLoggingOut } = req === null || req === void 0 ? void 0 : req.body;
+    if (!key || key === 'null' || key === 'NULL') {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Provide a valid key!'
+        });
+    }
     const newKey = crypto_js_1.default.AES.encrypt(email, process.env.LOGIN_KEY || '');
     let isLoggedIn = newKey.toString();
     if (isLoggingOut) {
