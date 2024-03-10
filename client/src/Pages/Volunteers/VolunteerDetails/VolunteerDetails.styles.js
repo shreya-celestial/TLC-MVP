@@ -159,9 +159,6 @@ export const useStyles = makeStyles((theme) => ({
         },
       },
     },
-    datepicker: {
-      display: 'none !important',
-    },
   },
   // history
   VolunteerHistory: {
