@@ -29,7 +29,8 @@ import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getWorkshop } from '../../../apis/workshops';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { fetchRowDataWorkshop } from '../utils';
+import { fetchRowDataWorkshop, validateWorkshop } from '../../../utils/utils';
+
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { compareTwoArrays } from '../../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
@@ -241,37 +242,34 @@ function WorkshopsDetails() {
     setViewType('edit');
   };
 
-  const editWorkshopHandler = function () {
-    mutate({
-      body: {
-        types: workshopType,
-        venue,
-        venue_city: venueCity,
-        start_date: startDate,
-        end_date: endDate,
-        concluding_date: endDate,
-        vols: volunteersRowData.map((vol) => vol.email),
-        leads: leadVolunteersRowData.map((vol) => vol.email),
-        participants: participantsRowData.map((participant) => participant.id),
-        meetings: meetingsRowData.map((meeting) => meeting.id),
-      },
-      id,
-    });
-  };
+  const mutateWorkshopHandler = function (type) {
+    let modifiedStartDate = startDate;
+    let modifiedEndDate = endDate;
+    let modifiedConcludingDate = concludingDate;
 
-  const createWorkshopHandler = function () {
-    mutate({
+    if (type === 'create' && startDate && endDate && concludingDate) {
+      modifiedStartDate = startDate?.toISOString().split('T')[0];
+      modifiedEndDate = endDate?.toISOString().split('T')[0];
+      modifiedConcludingDate = concludingDate?.toISOString().split('T')[0];
+    }
+
+    const body = {
       types: workshopType,
       venue,
       venue_city: venueCity,
-      start_date: startDate?.toISOString().split('T')[0],
-      end_date: endDate?.toISOString().split('T')[0],
-      concluding_date: endDate?.toISOString().split('T')[0],
+      start_date: modifiedStartDate,
+      end_date: modifiedEndDate,
+      concluding_date: modifiedConcludingDate,
       vols: volunteersRowData.map((vol) => vol.email),
       leads: leadVolunteersRowData.map((vol) => vol.email),
       participants: participantsRowData.map((participant) => participant.id),
       meetings: meetingsRowData.map((meeting) => meeting.id),
-    });
+    };
+
+    const isValid = validateWorkshop(body);
+    if (isValid.type) return setAlertType(isValid);
+
+    mutate({ body, id });
   };
 
   return (
@@ -490,7 +488,7 @@ function WorkshopsDetails() {
               <Button
                 disableTouchRipple
                 className="saveBtn"
-                onClick={editWorkshopHandler}
+                onClick={() => mutateWorkshopHandler('edit')}
               >
                 {isPendingMutation ? 'Loading...' : 'Save'}
               </Button>
@@ -498,7 +496,7 @@ function WorkshopsDetails() {
               <Button
                 disableTouchRipple
                 className="saveBtn"
-                onClick={createWorkshopHandler}
+                onClick={() => mutateWorkshopHandler('create')}
               >
                 {isPendingMutation ? 'Loading...' : 'Create'}
               </Button>

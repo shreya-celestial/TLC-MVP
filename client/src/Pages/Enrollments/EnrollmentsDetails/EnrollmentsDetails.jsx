@@ -26,7 +26,10 @@ import { DeleteEditButtonCell } from '../../../Components/DeleteEditButtonCell/D
 import { getLocationData } from '../../../apis/global';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getEnrollment } from '../../../apis/enrollments';
-import { fetchRowDataEnrollment } from '../utils';
+import {
+  fetchRowDataEnrollment,
+  validateEnrollment,
+} from '../../../utils/utils';
 import dayjs from 'dayjs';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { useMutation } from '@tanstack/react-query';
@@ -186,39 +189,23 @@ function EnrollmentsDetails() {
   };
 
   const mutateEnrollmentHandler = function (type) {
-    //   "{
-    //     ""name"": ""Name"",
-    //     ""email"": ""someEmail@gmail.com"",
-    //     ""mobile_number"": ""9898989898"",
-    //     ""dob"": ""2000-09-12"",
-    //     ""gender"": ""male"",
-    //     ""address"": ""address 1"",
-    //     ""city"": ""East Delhi"",
-    //     ""state"": ""Delhi"",
-    //     ""pincode"": 110091,
-    //     ""children"": [
-    //         {
-    //             ""dob"": ""2023-04-12"",
-    //             ""gender"": ""female"",
-    //             ""name"": ""Child Name""
-    //         }
-    //     ]
-    // }"
-    mutate({
-      body: {
-        name,
-        email,
-        mobile_number: phone,
-        dob,
-        gender,
-        address,
-        city,
-        state,
-        pincode,
-        children: childrenRowData,
-      },
-      id,
-    });
+    const body = {
+      name,
+      email,
+      mobile_number: phone,
+      dob,
+      gender,
+      address,
+      city,
+      state,
+      pincode,
+      children: childrenRowData,
+    };
+
+    const isValid = validateEnrollment(body);
+    if (isValid.type) return setAlertType(isValid);
+
+    mutate({ body, id });
   };
 
   return (

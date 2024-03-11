@@ -20,6 +20,8 @@ import { useStyles } from './InvitePopup.styles';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { inviteVolunteer } from '../../../apis/volunteers';
 import { useMutation } from '@tanstack/react-query';
+import validator from 'validator';
+import { validateInvite } from '../../../utils/utils';
 
 function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
   const classes = useStyles();
@@ -56,11 +58,16 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
 
   const sendInvite = function (e) {
     e.preventDefault();
-    mutate({
+    const body = {
       isAdmin: roleDropdown === 'admin' ? 'true' : 'false',
       name: fullName,
       email,
-    });
+    };
+
+    const isValid = validateInvite(body);
+    if (isValid.type) return setAlertType(isValid);
+
+    mutate(body);
   };
 
   return (
