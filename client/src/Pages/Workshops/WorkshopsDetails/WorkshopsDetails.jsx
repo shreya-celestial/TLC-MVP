@@ -179,7 +179,6 @@ function WorkshopsDetails() {
   const closePopupAndSetRows = function (data, mode) {
     setOpenLeadPopup(false);
     if (mode === 'Meetings') {
-      console.log(meetingsRowData, data);
       const isEvery = compareTwoArrays(meetingsRowData, data, 'id');
 
       if (!isEvery) {
@@ -275,12 +274,12 @@ function WorkshopsDetails() {
 
   return (
     <>
-      {isPending && (
+      {isPending && viewType !== 'create' && (
         <Box className={classes.loader}>
           <CircularProgress />
         </Box>
       )}
-      {data && (
+      {(viewType === 'create' || data) && (
         <Box className={classes.root}>
           {alertType && (
             <AlertReact

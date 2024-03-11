@@ -70,6 +70,7 @@ const Workshops = () => {
   const [endDate, setEndDate] = useState('');
   const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
   const [debouncedSearch, setDebouncedValue] = useState('');
+  const [clickedCountDetails, setClickedCountDetails] = useState();
 
   const { data, isPending, isError, error } = useReactQuery(
     [
@@ -93,6 +94,18 @@ const Workshops = () => {
 
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
+  };
+
+  const showDetails = function (params) {
+    if (params.value > 0)
+      setClickedCountDetails({
+        id: params.data.id,
+        field: params.colDef.field,
+      });
+  };
+
+  const hideInfoTable = function () {
+    setClickedCountDetails(null);
   };
 
   return (
@@ -146,7 +159,6 @@ const Workshops = () => {
           )}
         </Box>
       </Box>
-
       {alertType && (
         <AlertReact
           removeAlertType={removeAlertType}
@@ -159,6 +171,13 @@ const Workshops = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          type="workshops"
+        />
+      )}
+      {clickedCountDetails && (
+        <InfoTable
+          clickedCountDetails={clickedCountDetails}
+          hideInfoTable={hideInfoTable}
           type="workshops"
         />
       )}
@@ -263,6 +282,7 @@ const Workshops = () => {
             data={data?.data?.workshops}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
+            showDetails={showDetails}
           />
         </Box>
         <PaginationComp

@@ -1,5 +1,3 @@
-import { useStyles } from '../../../Components/Table/Table.styles';
-
 const IsAdminComp = (params) => {
   if (!params.data.isAdminVerified) return `-`;
   return `${params.value ? 'Admin' : 'Volunteer'}`;

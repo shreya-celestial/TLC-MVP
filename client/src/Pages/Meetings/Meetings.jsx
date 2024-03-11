@@ -34,6 +34,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { FilterTheme } from '../Workshops/FilterTheme';
+import InfoTable from '../../Components/InfoTable/InfoTable';
 
 const Meetings = () => {
   const classes = useStyles();
@@ -74,11 +75,9 @@ const Meetings = () => {
 
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
-  const [statusDropdown, setStatusDropdown] = useState('all');
-  const [roleDropdown, setRoleDropdown] = useState('all');
-  const [genderDropdown, setGenderDropdown] = useState('all');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [clickedCountDetails, setClickedCountDetails] = useState();
 
   const { data, isPending, isError, error } = useReactQuery(
     [
@@ -111,6 +110,19 @@ const Meetings = () => {
   const handleReset = () => {
     setEndDate('');
     setStartDate('');
+  };
+
+  const showDetails = function (params) {
+    console.log(params.value);
+    if (params.value > 0)
+      setClickedCountDetails({
+        id: params.data.id,
+        field: params.colDef.field,
+      });
+  };
+
+  const hideInfoTable = function () {
+    setClickedCountDetails(null);
   };
 
   return (
@@ -193,6 +205,13 @@ const Meetings = () => {
           message={alertType.message}
         />
       )}
+      {clickedCountDetails && (
+        <InfoTable
+          clickedCountDetails={clickedCountDetails}
+          hideInfoTable={hideInfoTable}
+          type="meetings"
+        />
+      )}
       <Box className={classes.headerTablePagination}>
         <Box className={classes.tableHeader}>
           <TextField
@@ -221,33 +240,33 @@ const Meetings = () => {
             <Box className={classes.filterContent}>
               <Typography>Filters</Typography>
               <ThemeProvider theme={FilterTheme}>
-              <FormControl className={classes.formControl}>
-                <FormLabel>Start Date</FormLabel>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  className={classes.datepicker}
-                >
-                  <DatePicker
-                    name="startDate"
-                    value={dayjs(startDate)}
-                    onChange={(date) => setStartDate(new Date(date))}
-                  />
-                </LocalizationProvider>
-              </FormControl>
-              {/* end date */}
-              <FormControl className={classes.formControl}>
-                <FormLabel>End Date</FormLabel>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  className={classes.datepicker}
-                >
-                  <DatePicker
-                    name="endtDate"
-                    value={dayjs(endDate)}
-                    onChange={(date) => setEndDate(new Date(date))}
-                  />
-                </LocalizationProvider>
-              </FormControl>
+                <FormControl className={classes.formControl}>
+                  <FormLabel>Start Date</FormLabel>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    className={classes.datepicker}
+                  >
+                    <DatePicker
+                      name="startDate"
+                      value={dayjs(startDate)}
+                      onChange={(date) => setStartDate(new Date(date))}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+                {/* end date */}
+                <FormControl className={classes.formControl}>
+                  <FormLabel>End Date</FormLabel>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    className={classes.datepicker}
+                  >
+                    <DatePicker
+                      name="endtDate"
+                      value={dayjs(endDate)}
+                      onChange={(date) => setEndDate(new Date(date))}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
               </ThemeProvider>
 
               <Button
@@ -268,6 +287,7 @@ const Meetings = () => {
             data={data?.data?.meetings}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
+            showDetails={showDetails}
           />
         </Box>
         <PaginationComp

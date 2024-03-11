@@ -106,6 +106,7 @@ const Volunteers = () => {
     setGenderDropdown('all');
     setStatusDropdown('all');
   };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeadingAndActionBtn}>

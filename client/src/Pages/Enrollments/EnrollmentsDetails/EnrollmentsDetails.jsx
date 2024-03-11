@@ -211,12 +211,12 @@ function EnrollmentsDetails() {
 
   return (
     <>
-      {isPending && (
+      {isPending && viewType !== 'create' && (
         <Box className={classes.loader}>
           <CircularProgress />
         </Box>
       )}
-      {data && (
+      {(viewType === 'create' || data) && (
         <Box className={classes.root}>
           {alertType && (
             <AlertReact

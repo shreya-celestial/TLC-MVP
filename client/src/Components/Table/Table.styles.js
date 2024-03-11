@@ -87,4 +87,8 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  count: {
+    color: '#4e73be',
+    cursor: 'pointer',
+  },
 }));

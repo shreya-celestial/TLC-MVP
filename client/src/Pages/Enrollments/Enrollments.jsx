@@ -29,6 +29,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
+import InfoTable from '../../Components/InfoTable/InfoTable';
 
 const Enrollments = () => {
   const classes = useStyles();
@@ -70,6 +71,7 @@ const Enrollments = () => {
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
   const [genderDropdown, setGenderDropdown] = useState('all');
+  const [clickedCountDetails, setClickedCountDetails] = useState();
 
   const { data, isPending, isError, error } = useReactQuery(
     [
@@ -101,7 +103,18 @@ const Enrollments = () => {
     setGenderDropdown('all');
   };
 
-  console.log(selectedRows);
+  const showDetails = function (params) {
+    console.log(params.value);
+    if (params.value > 0)
+      setClickedCountDetails({
+        id: params.data.id,
+        field: params.colDef.field,
+      });
+  };
+
+  const hideInfoTable = function () {
+    setClickedCountDetails(null);
+  };
 
   return (
     <Box className={classes.root}>
@@ -182,6 +195,13 @@ const Enrollments = () => {
           message={alertType.message}
         />
       )}
+      {clickedCountDetails && (
+        <InfoTable
+          clickedCountDetails={clickedCountDetails}
+          hideInfoTable={hideInfoTable}
+          type="enrollments"
+        />
+      )}
       <Box className={classes.headerTablePagination}>
         <Box className={classes.tableHeader}>
           <TextField
@@ -251,6 +271,7 @@ const Enrollments = () => {
             data={data?.data?.enrollments}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
+            showDetails={showDetails}
           />
         </Box>
         <PaginationComp
