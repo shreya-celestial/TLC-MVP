@@ -52,9 +52,9 @@ function WorkshopsDetails() {
     ...VolunteersColDef,
     !isView
       ? {
-          headerName: 'Actions',
-          cellRenderer: DeleteButtonCell,
-        }
+        headerName: 'Actions',
+        cellRenderer: DeleteButtonCell,
+      }
       : undefined,
   ].filter(Boolean);
 
@@ -62,9 +62,9 @@ function WorkshopsDetails() {
     ...LeadVolunteersColDef,
     !isView
       ? {
-          headerName: 'Actions',
-          cellRenderer: DeleteButtonCell,
-        }
+        headerName: 'Actions',
+        cellRenderer: DeleteButtonCell,
+      }
       : undefined,
   ].filter(Boolean);
 
@@ -72,9 +72,9 @@ function WorkshopsDetails() {
     ...ParticipantColDef,
     !isView
       ? {
-          headerName: 'Actions',
-          cellRenderer: DeleteButtonCell,
-        }
+        headerName: 'Actions',
+        cellRenderer: DeleteButtonCell,
+      }
       : undefined,
   ].filter(Boolean);
 
@@ -82,9 +82,9 @@ function WorkshopsDetails() {
     ...MeetingColDef,
     !isView
       ? {
-          headerName: 'Actions',
-          cellRenderer: DeleteButtonCell,
-        }
+        headerName: 'Actions',
+        cellRenderer: DeleteButtonCell,
+      }
       : undefined,
   ].filter(Boolean);
 
@@ -242,16 +242,10 @@ function WorkshopsDetails() {
     setViewType('edit');
   };
 
-  const mutateWorkshopHandler = function (type) {
-    let modifiedStartDate = startDate;
-    let modifiedEndDate = endDate;
-    let modifiedConcludingDate = concludingDate;
-
-    if (type === 'create' && startDate && endDate && concludingDate) {
-      modifiedStartDate = startDate?.toISOString().split('T')[0];
-      modifiedEndDate = endDate?.toISOString().split('T')[0];
-      modifiedConcludingDate = concludingDate?.toISOString().split('T')[0];
-    }
+  const mutateWorkshopHandler = function () {
+    const modifiedStartDate = (new Date(startDate)).toLocaleDateString();
+    const modifiedEndDate = (new Date(endDate)).toLocaleDateString();
+    const modifiedConcludingDate = (new Date(concludingDate)).toLocaleDateString();
 
     const body = {
       types: workshopType,
@@ -290,8 +284,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                  ? 'Edit Workshop'
-                  : 'Create Workshop'
+                    ? 'Edit Workshop'
+                    : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function PageHeader({ currentPage, prevPage, path }) {
-  console.log(path);
+  // console.log(path);
   const navigate = useNavigate();
   const classes = useStyles();
   const handleNavigate = () => {

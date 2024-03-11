@@ -193,7 +193,7 @@ function EnrollmentsDetails() {
       name,
       email,
       mobile_number: phone,
-      dob,
+      dob: (new Date(dob)).toLocaleDateString(),
       gender,
       address,
       city,
@@ -223,8 +223,8 @@ function EnrollmentsDetails() {
             viewType === 'view'
               ? 'View Enrollment'
               : viewType === 'edit'
-              ? 'Edit Enrollment'
-              : 'Create Enrollment'
+                ? 'Edit Enrollment'
+                : 'Create Enrollment'
           }
           prevPage={'Enrollments'}
         />

@@ -57,7 +57,7 @@ function Signup() {
       email: e.target.elements.email.value,
       password: e.target.elements.password.value,
       name: e.target.elements.name.value,
-      dob: e.target.elements.dob.value,
+      dob: (new Date(e.target.elements.dob.value)).toLocaleDateString(),
       gender: e.target.elements.gender.value,
       phoneNumber: e.target.elements.phone.value,
       yearOfJoining: +e.target.elements.yearOfJoining.value,

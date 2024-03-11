@@ -214,9 +214,7 @@ function MeetingsDetails() {
   }, [workshopsData, isView, meeting, editingWorkshop]);
 
   const mutateMeetingHandler = function (type) {
-    let modifiedDate = date;
-    if (type === 'create' && date)
-      modifiedDate = date.toISOString().split('T')[0];
+    const modifiedDate = (new Date(date)).toLocaleDateString()
 
     const body = {
       date: modifiedDate,
@@ -254,8 +252,8 @@ function MeetingsDetails() {
             viewType === 'view'
               ? 'View Meeting'
               : viewType === 'edit'
-              ? 'Edit Meeting'
-              : 'Create Meeting'
+                ? 'Edit Meeting'
+                : 'Create Meeting'
           }
           prevPage={'Meetings'}
           path={'meetings'}
