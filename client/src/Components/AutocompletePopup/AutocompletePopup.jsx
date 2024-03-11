@@ -46,8 +46,8 @@ function AutocompletePopup({
     mode === 'Meetings'
       ? meetings
       : mode === 'Volunteers'
-      ? volunteers
-      : participants;
+        ? volunteers
+        : participants;
 
   const { data, isPending, isError, error } = useReactQuery(
     [1, 10, { ...debouncedFilters }, mode],
@@ -57,7 +57,7 @@ function AutocompletePopup({
     }
   );
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     let timer;
@@ -75,15 +75,15 @@ function AutocompletePopup({
         mode === 'Meetings'
           ? data?.data?.meetings
           : mode === 'Volunteers'
-          ? data?.data?.users
-          : data?.data?.enrollments;
+            ? data?.data?.users
+            : data?.data?.enrollments;
 
       const options =
         mode === 'Meetings'
           ? meetingsOptions
           : mode === 'Volunteers'
-          ? participantsOptions
-          : participantsOptions;
+            ? participantsOptions
+            : participantsOptions;
 
       const filtered = dataType?.filter((participant) => {
         const vols = options?.filter(
@@ -130,15 +130,15 @@ function AutocompletePopup({
               mode === 'Meetings'
                 ? meetingsOptions
                 : mode === 'Volunteers'
-                ? volunteersOptions
-                : participantsOptions
+                  ? volunteersOptions
+                  : participantsOptions
             }
             getOptionLabel={(option) =>
               mode === 'Meetings'
                 ? `${option.type} (${option.venue})`
                 : mode === 'Volunteers'
-                ? `${option.name} (${option.email})`
-                : `${option.name} (${option.email})`
+                  ? `${option.name} (${option.email})`
+                  : `${option.name} (${option.email})`
             }
             onChange={(event, selectedElements) => {
               if (mode === 'Meetings')
@@ -211,8 +211,8 @@ function AutocompletePopup({
               mode === 'Meetings'
                 ? selectedMeetings
                 : mode === 'Volunteers'
-                ? selectedVolunteers
-                : selectedParticipants,
+                  ? selectedVolunteers
+                  : selectedParticipants,
               mode
             )
           }
