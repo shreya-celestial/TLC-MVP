@@ -41,6 +41,5 @@ export const useStyles = makeStyles((theme) => ({
       width: '70%',
     },
     height: 'calc(100% - 15px)',
-    width: '100%',
   },
 }));

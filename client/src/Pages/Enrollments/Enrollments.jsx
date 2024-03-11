@@ -101,7 +101,7 @@ const Enrollments = () => {
     setGenderDropdown('all');
   };
 
-  console.log(selectedRows);
+ 
 
   return (
     <Box className={classes.root}>
@@ -143,7 +143,7 @@ const Enrollments = () => {
           )}
           {selectedRows.length === 0 && (
             <Button
-              className="inviteBtn"
+              className="createEnrollBtn"
               disableRipple
               onClick={() => {
                 navigate(`/enrollmentdetails/create`);
