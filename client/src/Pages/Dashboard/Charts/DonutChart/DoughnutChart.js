@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Box,useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useStyles } from './DoughnutChart.styles';
 
 const DoughnutChart = () => {
@@ -99,7 +99,6 @@ const DoughnutChart = () => {
             ],
 
             cutout: '75%',
-            borderRadius: 10,
           },
         ],
       },

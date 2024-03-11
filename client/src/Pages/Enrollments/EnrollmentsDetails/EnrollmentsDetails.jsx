@@ -227,6 +227,7 @@ function EnrollmentsDetails() {
                 : 'Create Enrollment'
           }
           prevPage={'Enrollments'}
+          path={"enrollments"}
         />
         <Box className={classes.mainContent}>
           {/*  PERSONAL INFORMATION*/}
@@ -394,7 +395,7 @@ function EnrollmentsDetails() {
         </Box>
         <Box className={classes.HeaderAndAccordionBox}>
           <Box className={classes.HeaderAndBtn}>
-            <Typography>Childrens Information</Typography>
+            <Typography>Children Information</Typography>
             {!isView && (
               <Button
                 className={classes.addBtn}
@@ -415,7 +416,7 @@ function EnrollmentsDetails() {
             <AccordionTable
               columnDefs={dummyCustomChildColDef}
               rowData={childrenRowData}
-              headingName={'Childrens'}
+              headingName={'Children'}
             />
           </Box>
         </Box>
