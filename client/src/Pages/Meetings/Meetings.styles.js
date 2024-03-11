@@ -50,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
     '& button.editBtn': {
       background: `${theme.palette.primaryBlue}`,
     },
-    '& button.inviteBtn': {
+    '& button.createMeetingBtn': {
       background: `${theme.palette.primaryGreen}`,
     },
   },
@@ -171,8 +171,24 @@ export const useStyles = makeStyles((theme) => ({
       paddingRight: '10px',
       height: '30px',
       backgroundColor: '#ffffff',
+      '& input': {
+        fontSize: '12px',
+        padding: '6px 10px',
+        '&:-webkit-autofill': {
+          '-webkit-box-shadow': '0 0 0 100px white inset',
+        },
+      },
       '& fieldset': {
         display: 'none',
+      },
+
+      '& .MuiInputAdornment-root button': {
+        padding: '0px',
+        margin: '0px',
+        '& svg': {
+          fontSize: '16px',
+          color: '#2F2F2F',
+        },
       },
     },
   },

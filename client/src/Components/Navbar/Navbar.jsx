@@ -3,6 +3,11 @@ import {
   Avatar,
   Box,
   IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -13,14 +18,18 @@ import { useStyles } from './Navbar.styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../../assets/Icons/tlcLogo.png';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { Link, NavLink } from 'react-router-dom';
 const Navbar = ({ handleSidebarOpen }) => {
   const isLargerScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const [isSidebarOpen, setIsSideBarOpen] = useState(false);
+  const [profileAnchorEL, setProfileAnchorEl] = useState(null);
   const classes = useStyles();
   const handleSidebar = () => {
     handleSidebarOpen();
     setIsSideBarOpen(!isSidebarOpen);
   };
+
   return (
     <AppBar className={classes.root}>
       <Toolbar className="toolbar">
@@ -46,9 +55,32 @@ const Navbar = ({ handleSidebarOpen }) => {
               Admin
             </Typography>
           </Box>
-          <IconButton className={classes.arrowProfileIcon}>
+          <IconButton
+            className={classes.arrowProfileIcon}
+            onClick={(e) => setProfileAnchorEl(e.currentTarget)}
+          >
             <ExpandMoreIcon />
           </IconButton>
+          {/* profile dropdown */}
+          <Menu
+            open={Boolean(profileAnchorEL)}
+            anchorEl={profileAnchorEL}
+            onClose={() => setProfileAnchorEl(null)}
+            className={classes.profileDropdown}
+          >
+            <ListItem>
+              <ListItemButton
+                LinkComponent={Link}
+                to={'/'}
+                onClick={() => setProfileAnchorEl(null)}
+              >
+                <ListItemIcon>
+                  <LogoutOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </Menu>
         </Box>
       </Toolbar>
     </AppBar>

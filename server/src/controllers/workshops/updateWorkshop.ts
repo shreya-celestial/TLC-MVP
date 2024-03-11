@@ -4,6 +4,13 @@ import getData from "../../utils/getData"
 import { updateWorkshopById, updateWorkshopMeetings } from "../../gql/workshops/mutations"
 
 const updateWorkshop = async (req: Request, res: Response) => {
+  if(req?.body?.meetings?.length === 0)
+  {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Workshop meetings required!'
+    })
+  }
   const vols = req.body.vols.map((vol: string)=>{
     return {
       user_email: vol,
