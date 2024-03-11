@@ -18,8 +18,10 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerDetails.styles';
 import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
-import { meetingRowData, workShopRowData } from './DummyHistoryData';
-import { workShopColDef, meetingColDef } from '../coldefs/coldefs';
+import colDefs, {
+  workshopColDefVolunteersPage,
+  meetingsColDefVolunteersPage,
+} from '../coldefs/coldefs';
 import { useParams } from 'react-router-dom';
 
 import { getVolunteer } from '../../../apis/volunteers';
@@ -90,6 +92,33 @@ function VolunteerDetails() {
   const saveVolunteer = function () {
     mutate({ email, isAdmin: role === 'admin' ? 'true' : 'false' });
   };
+
+  const [historyLeadRowData, setHistoryLeadRowData] = useState([]);
+  const [historyRowData, setHistoryRowData] = useState([]);
+  const [MeetingHistoryRowData, setMeetingHistoryRowData] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setHistoryLeadRowData(
+        data?.user?.workshop_lead_volunteers.map((v) => {
+          v.workshop.role = 'Lead Volunteer';
+          return v.workshop;
+        })
+      );
+      setHistoryRowData(
+        data?.user?.workshop_volunteers.map((v) => {
+          v.workshop.role = 'Volunteer';
+          return v.workshop;
+        })
+      );
+
+      setMeetingHistoryRowData(
+        data?.user?.meetings_volunteers.map((m) => m.meeting)
+      );
+    }
+  }, [data]);
+
+  console.log(MeetingHistoryRowData);
 
   return (
     <>
@@ -301,9 +330,10 @@ function VolunteerDetails() {
                 Workshop History
               </Typography>
               <AccordionTable
-                columnDefs={workShopColDef}
-                rowData={workShopRowData}
-                headingName={'workshops'}
+                columnDefs={workshopColDefVolunteersPage}
+                rowData={[...historyLeadRowData, ...historyRowData]}
+                headingName={'Workshops'}
+                isView={true}
               />
             </Box>
             <Box className={classes.VolunteerHistory}>
@@ -311,9 +341,10 @@ function VolunteerDetails() {
                 Meeting History
               </Typography>
               <AccordionTable
-                columnDefs={meetingColDef}
-                rowData={meetingRowData}
+                columnDefs={meetingsColDefVolunteersPage}
+                rowData={MeetingHistoryRowData}
                 headingName={'Meetings'}
+                isView={true}
               />
             </Box>
           </Box>

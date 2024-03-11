@@ -35,4 +35,10 @@ export const enrollPageWorkshopColDEf = [
   { field: 'end_date', headerName: 'End Date' },
 ];
 
+export const ChildrenPopupColdef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'dob', headerName: 'Date of Birth' },
+];
+
 export default colDefs;

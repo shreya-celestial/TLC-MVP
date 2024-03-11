@@ -14,11 +14,20 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useStyles } from './InfoTable.styles';
-import { LeadVolunteersColDef } from '../../Pages/Workshops/WorkshopsDetails/WorkshopDummyData';
+import {
+  LeadVolunteersPopupColDef,
+  ParticipantsPopupColDef,
+  VolunteersPopupColDef,
+} from '../../Pages/Workshops/coldefs/coldefs';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { getWorkshop } from '../../apis/workshops';
 import { getMeeting } from '../../apis/meetings';
 import { getEnrollment } from '../../apis/enrollments';
+import {
+  MeetingPopupEnrollmentsColDef,
+  VolunteersPopupMeetingColDef,
+} from '../../Pages/Meetings/coldefs/coldefs';
+import { ChildrenPopupColdef } from '../../Pages/Enrollments/coldefs/coldefs';
 
 function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
   const { id, field } = clickedCountDetails;
@@ -51,6 +60,7 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
   if (field === 'lead_volunteers_count') title = 'Lead Volunteers';
   if (field === 'volunteers_count') title = 'Volunteers';
   if (field === 'participants_count') title = 'Participants';
+  if (field === 'volunteers') title = 'Volunteers';
   if (field === 'enrollments') title = 'Enrollments';
   if (field === 'children') title = 'Children';
 
@@ -79,6 +89,21 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
     if (field === 'children') setRowData(data?.data?.children);
   }, [data, field]);
 
+  const modifiedColumnDefs =
+    field === 'lead_volunteers_count'
+      ? LeadVolunteersPopupColDef
+      : field === 'participants_count'
+      ? ParticipantsPopupColDef
+      : field === 'volunteers_count'
+      ? VolunteersPopupColDef
+      : field === 'volunteers'
+      ? VolunteersPopupMeetingColDef
+      : field === 'enrollments'
+      ? MeetingPopupEnrollmentsColDef
+      : field === 'children'
+      ? ChildrenPopupColdef
+      : VolunteersPopupColDef;
+
   return (
     <Dialog open className={classes.Dialog}>
       <DialogTitle className={classes.TitleAndClose}>
@@ -96,7 +121,7 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
         <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
           <AgGridReact
             className={classes.AgGridMain}
-            columnDefs={LeadVolunteersColDef}
+            columnDefs={modifiedColumnDefs}
             rowData={rowData}
             gridOptions={gridOptions}
             defaultColDef={defaultColDef}

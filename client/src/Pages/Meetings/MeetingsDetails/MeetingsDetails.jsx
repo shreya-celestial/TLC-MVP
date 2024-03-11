@@ -21,11 +21,7 @@ import PageHeader from '../../../Components/PageHeader/PageHeader';
 import { useStyles } from './MeetingsDetails.styles';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import AutocompletePopup from '../../../Components/AutocompletePopup/AutocompletePopup';
-import {
-  MeetingPageEnrollmentsColDef,
-  MeetingPageVolunteersColDef,
-} from './MeetingDummyData';
-import { DeleteButtonCell } from '../../../Components/DeleteButtonCell/DeleteButtonCell';
+
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getMeeting } from '../../../apis/meetings';
 import { useParams } from 'react-router-dom';
@@ -37,7 +33,6 @@ import { workshops } from '../../../apis/workshops';
 import { createMeeting, updateMeeting } from '../../../apis/meetings';
 
 import { useMutation } from '@tanstack/react-query';
-import validator from 'validator';
 
 function MeetingsDetails() {
   const classes = useStyles();
@@ -47,22 +42,6 @@ function MeetingsDetails() {
   const { id, type } = useParams();
 
   const [isView, setIsView] = useState(type === 'view' ? true : false);
-
-  const dummyEnrollmentsColDef = [
-    ...MeetingPageEnrollmentsColDef,
-    !isView && {
-      field: 'Actions',
-      cellRenderer: DeleteButtonCell,
-    },
-  ].filter(Boolean);
-
-  const dummyVolunteersColDef = [
-    ...MeetingPageVolunteersColDef,
-    !isView && {
-      field: 'Actions',
-      cellRenderer: DeleteButtonCell,
-    },
-  ].filter(Boolean);
 
   const closeOpenPopup = () => {
     setOpenPopup(false);
@@ -240,6 +219,18 @@ function MeetingsDetails() {
     setViewType('edit');
   };
 
+  const handleDeleteRow = function ({ email, row, id }) {
+    if (row === 'Volunteers') {
+      const updatedRow = volunteersRowData.filter((v) => v.email !== email);
+      setVolunteersRowData(updatedRow);
+    }
+
+    if (row === 'Enrollments') {
+      const updatedRow = enrollmentsRowData.filter((e) => e.email !== email);
+      setEnrollmentsRowData(updatedRow);
+    }
+  };
+
   return (
     <>
       {isPending && viewType !== 'create' && (
@@ -414,9 +405,10 @@ function MeetingsDetails() {
               </Box>
 
               <AccordionTable
-                columnDefs={dummyVolunteersColDef}
                 rowData={volunteersRowData}
                 headingName={'Volunteers'}
+                handleDeleteRow={handleDeleteRow}
+                isView={isView}
               />
             </Box>
             {/* add enrollments and accordion table  */}
@@ -435,9 +427,10 @@ function MeetingsDetails() {
               </Box>
 
               <AccordionTable
-                columnDefs={dummyEnrollmentsColDef}
                 rowData={enrollmentsRowData}
                 headingName={'Enrollments'}
+                handleDeleteRow={handleDeleteRow}
+                isView={isView}
               />
             </Box>
             {/* popup for adding volunteer and enrollments */}

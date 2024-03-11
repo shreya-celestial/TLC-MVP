@@ -163,14 +163,6 @@ function EnrollmentsDetails() {
     setOpenChild(false);
   };
 
-  const dummyCustomChildColDef = [
-    ...ChildrenColDef,
-    !isView && {
-      field: 'Actions',
-      cellRenderer: DeleteEditButtonCell,
-    },
-  ].filter(Boolean);
-
   useEffect(() => {
     if (type !== 'create' && type !== 'edit' && type !== 'view') {
       nav('/dashboard');
@@ -207,6 +199,24 @@ function EnrollmentsDetails() {
     if (isValid.type) return setAlertType(isValid);
 
     mutate({ body, id });
+  };
+
+  const handleDeleteRow = function ({ email, row, id }) {
+    if (row === 'Children') {
+      const updatedRow = childrenRowData.filter((c) => c.id !== id);
+      setChildrenRowData(updatedRow);
+    }
+  };
+
+  const updateChild = function (data, id) {
+    setChildrenRowData((prev) => {
+      const newData = prev.map((p) => {
+        if (p.id === id)
+          return { name: data.name, gender: data.gender, dob: data.dob };
+        return p;
+      });
+      return newData;
+    });
   };
 
   return (
@@ -425,9 +435,11 @@ function EnrollmentsDetails() {
 
               <Box className={classes.AccordionContainer}>
                 <AccordionTable
-                  columnDefs={dummyCustomChildColDef}
                   rowData={childrenRowData}
-                  headingName={'Childrens'}
+                  headingName={'Children'}
+                  handleDeleteRow={handleDeleteRow}
+                  isView={isView}
+                  updateChild={updateChild}
                 />
               </Box>
             </Box>

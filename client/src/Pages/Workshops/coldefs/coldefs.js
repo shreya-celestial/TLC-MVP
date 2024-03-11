@@ -1,20 +1,4 @@
-const IsAdminComp = (params) => {
-  if (!params.data.isAdminVerified) return `-`;
-  return `${params.value ? 'Admin' : 'Volunteer'}`;
-};
-
-const LocationComp = (params) => {
-  return (
-    <p>
-      {params.data.city}, {params.data.state}
-    </p>
-  );
-};
-export const Popup = () => {
-  return
-};
-
-export const workshopsColDef = [
+const colDefs = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
@@ -98,8 +82,8 @@ export const VolunteersColDef = [
 export const LeadVolunteersColDef = [
   { field: 'name', headerName: 'Name' },
   { field: 'gender', headerName: 'Gender' },
-  { field: 'phoneNumber', headerName: 'Phone Number' },
   { field: 'email', headerName: 'Email ID' },
+  { field: 'phoneNumber', headerName: 'Phone Number' },
   { field: 'city', headerName: 'City' },
 ];
 
@@ -114,9 +98,33 @@ export const ParticipantColDef = [
 
 export const MeetingColDef = [
   { field: 'type', headerName: 'Type' },
-  { field: 'workshop', headerName: 'Workshop' },
   { field: 'date', headerName: 'Date' },
-  { field: 'volunteers', headerName: 'Volunteers' },
   { field: 'venue', headerName: 'Venue' },
-  { field: 'venuCity', headerName: 'Venue City' },
+  { field: 'venue_city', headerName: 'Venue City' },
 ];
+
+export const LeadVolunteersPopupColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'phoneNumber', headerName: 'Phone Number' },
+  { field: 'city', headerName: 'City' },
+];
+
+export const ParticipantsPopupColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'mobile_number', headerName: 'Phone Number' },
+  { field: 'city', headerName: 'City' },
+];
+
+export const VolunteersPopupColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'phoneNumber', headerName: 'Phone Number' },
+  { field: 'city', headerName: 'City' },
+];
+
+export default colDefs;

@@ -1,18 +1,3 @@
-import { useStyles } from '../../../Components/Table/Table.styles';
-
-const IsAdminComp = (params) => {
-  if (!params.data.isAdminVerified) return `-`;
-  return `${params.value ? 'Admin' : 'Volunteer'}`;
-};
-
-const LocationComp = (params) => {
-  return (
-    <p>
-      {params.data.city}, {params.data.state}
-    </p>
-  );
-};
-
 const colDefs = [
   {
     headerCheckboxSelection: true,
@@ -70,6 +55,44 @@ const colDefs = [
     minWidth: 120,
     headerName: 'Enrollments',
   },
+];
+
+export const MeetingPageVolunteersColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'phonenumber', headerName: 'Phone Number' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'city', headerName: 'City' },
+];
+
+export const MeetingPageEnrollmentsColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'children', headerName: 'Children' },
+  { field: 'mobile_number', headerName: 'Phone Number' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'city', headerName: 'City' },
+];
+
+export const VolunteersPopupMeetingColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'phoneNumber', headerName: 'Phone Number' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'city', headerName: 'City' },
+];
+
+const RenderChildren = (params) => {
+  return <p>{params.data.children.length}</p>;
+};
+
+export const MeetingPopupEnrollmentsColDef = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'gender', headerName: 'Gender' },
+  { field: 'children', headerName: 'Children', cellRenderer: RenderChildren },
+  { field: 'mobile_number', headerName: 'Phone Number' },
+  { field: 'email', headerName: 'Email ID' },
+  { field: 'city', headerName: 'City' },
 ];
 
 export default colDefs;

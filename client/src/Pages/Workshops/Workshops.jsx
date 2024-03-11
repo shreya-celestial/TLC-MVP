@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   IconButton,
-  InputLabel,
   Menu,
   MenuItem,
   Select,
@@ -28,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
 
-import { workshopsColDef } from './coldefs/coldefs';
+import colDefs from './coldefs/coldefs';
 import { workshops } from '../../apis/workshops';
 import DeletePopup from '../../Components/DeletePopup/DeletePopup';
 import dayjs from 'dayjs';
@@ -276,7 +275,7 @@ const Workshops = () => {
         </Box>
         <Box className={classes.tableContainer}>
           <Table
-            colDefs={workshopsColDef}
+            colDefs={colDefs}
             key={rowChanged}
             updateSelectedRows={updateSelectedRows}
             data={data?.data?.workshops}
