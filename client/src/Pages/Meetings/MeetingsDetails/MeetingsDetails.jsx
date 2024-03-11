@@ -10,6 +10,7 @@ import {
   Paper,
   TextField,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -90,7 +91,7 @@ function MeetingsDetails() {
 
   const [viewType, setViewType] = useState(type);
 
-  const { data, isLoading, isError, error } = useReactQuery([id], getMeeting, {
+  const { data, isPending, isError, error } = useReactQuery([id], getMeeting, {
     enabled: viewType !== 'create',
   });
 
@@ -240,235 +241,248 @@ function MeetingsDetails() {
   };
 
   return (
-    <Box className={classes.root}>
-      {alertType && (
-        <AlertReact
-          removeAlertType={removeAlertType}
-          type={alertType.type}
-          message={alertType.message}
-        />
+    <>
+      {isPending && (
+        <Box className={classes.loader}>
+          <CircularProgress />
+        </Box>
       )}
-      <Box className={classes.HeaderMainContent}>
-        <PageHeader
-          currentPage={
-            viewType === 'view'
-              ? 'View Meeting'
-              : viewType === 'edit'
-              ? 'Edit Meeting'
-              : 'Create Meeting'
-          }
-          prevPage={'Meetings'}
-          path={'meetings'}
-        />
-        <Box className={classes.mainContent}>
-          {/* meeting type and workshop autocomplete  */}
-          <Box className={classes.formElementBox}>
-            {!isView ? (
-              <FormControl className={classes.formControl}>
-                <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
-                <Select
-                  id="meetingType"
-                  name="meetingType"
-                  value={meetingType}
-                  onChange={(e) => setMeetingType(e.target.value)}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  disabled={isView}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
-                >
-                  <MenuItem value="none">None</MenuItem>
-                  <MenuItem value="Meeting Type 1">Meeting Type 1</MenuItem>
-                  <MenuItem value="Meeting Type 2">Meeting Type 2</MenuItem>
-                  <MenuItem value="Meeting Type 3">Meeting Type 3</MenuItem>
-                  <MenuItem value="Meeting Type 4">Meeting Type 4</MenuItem>
-                </Select>
-              </FormControl>
-            ) : (
-              <FormControl className={classes.formControl}>
-                <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
-                <TextField
-                  id="meetingType"
-                  placeholder="Meeting"
-                  name="meeting"
-                  disabled={isView}
-                  value={meetingType}
-                />
-              </FormControl>
-            )}
+      {data && (
+        <Box className={classes.root}>
+          {alertType && (
+            <AlertReact
+              removeAlertType={removeAlertType}
+              type={alertType.type}
+              message={alertType.message}
+            />
+          )}
+          <Box className={classes.HeaderMainContent}>
+            <PageHeader
+              currentPage={
+                viewType === 'view'
+                  ? 'View Meeting'
+                  : viewType === 'edit'
+                  ? 'Edit Meeting'
+                  : 'Create Meeting'
+              }
+              prevPage={'Meetings'}
+              path={'meetings'}
+            />
+            <Box className={classes.mainContent}>
+              {/* meeting type and workshop autocomplete  */}
+              <Box className={classes.formElementBox}>
+                {!isView ? (
+                  <FormControl className={classes.formControl}>
+                    <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
+                    <Select
+                      id="meetingType"
+                      name="meetingType"
+                      value={meetingType}
+                      onChange={(e) => setMeetingType(e.target.value)}
+                      IconComponent={ExpandMoreOutlinedIcon}
+                      className={classes.selectBox}
+                      disabled={isView}
+                      MenuProps={{
+                        classes: {
+                          paper: classes.selectDropdownMenu,
+                        },
+                      }}
+                    >
+                      <MenuItem value="none">None</MenuItem>
+                      <MenuItem value="Meeting Type 1">Meeting Type 1</MenuItem>
+                      <MenuItem value="Meeting Type 2">Meeting Type 2</MenuItem>
+                      <MenuItem value="Meeting Type 3">Meeting Type 3</MenuItem>
+                      <MenuItem value="Meeting Type 4">Meeting Type 4</MenuItem>
+                    </Select>
+                  </FormControl>
+                ) : (
+                  <FormControl className={classes.formControl}>
+                    <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
+                    <TextField
+                      id="meetingType"
+                      placeholder="Meeting"
+                      name="meeting"
+                      disabled={isView}
+                      value={meetingType}
+                    />
+                  </FormControl>
+                )}
 
-            {/* workshop autocomplete */}
+                {/* workshop autocomplete */}
 
-            <FormControl className={classes.formControl}>
-              <FormLabel>Workshop</FormLabel>
-              <Autocomplete
-                options={workshopOptions}
-                value={
-                  editingWorkshop
-                    ? selectedWorkshop
-                    : { types: workshopOptions[0]?.types }
-                }
-                onChange={(event, selectedElement) => {
-                  if (!selectedElement) {
-                    setEditingWorkshop(true);
-                    // setWorkshopOptions([]);
-                  }
-                  setSelectedWorkshop((prev) => selectedElement);
-                }}
-                disabled={isView}
-                renderInput={(params) => (
+                <FormControl className={classes.formControl}>
+                  <FormLabel>Workshop</FormLabel>
+                  <Autocomplete
+                    options={workshopOptions}
+                    value={
+                      editingWorkshop
+                        ? selectedWorkshop
+                        : { types: workshopOptions[0]?.types }
+                    }
+                    onChange={(event, selectedElement) => {
+                      if (!selectedElement) {
+                        setEditingWorkshop(true);
+                        // setWorkshopOptions([]);
+                      }
+                      setSelectedWorkshop((prev) => selectedElement);
+                    }}
+                    disabled={isView}
+                    renderInput={(params) => (
+                      <TextField
+                        onChange={(e) => setFilters({ search: e.target.value })}
+                        className={classes.autocompleteTextField}
+                        placeholder="Search and add workshop"
+                        {...params}
+                      />
+                    )}
+                    PaperComponent={(props) => (
+                      <Paper
+                        {...props}
+                        className={classes.customAutocompleteDropdown}
+                      />
+                    )}
+                    className={classes.autocomplete}
+                    popupIcon={<ExpandMoreOutlinedIcon />}
+                    noOptionsText={
+                      <Typography className={classes.notFound}>
+                        No Match Found
+                      </Typography>
+                    }
+                    getOptionLabel={(option) => {
+                      return `${option.types}`;
+                    }}
+                  />
+                </FormControl>
+              </Box>
+
+              {/* date and city */}
+              <Box className={classes.formElementBox}>
+                <FormControl className={classes.formControl}>
+                  <FormLabel>Date</FormLabel>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    className={classes.datepicker}
+                  >
+                    <DatePicker
+                      name="date"
+                      disabled={isView}
+                      value={dayjs(date)}
+                      onChange={(date) => setDate(new Date(date))}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <FormLabel htmlFor="cityField">City</FormLabel>
                   <TextField
-                    onChange={(e) => setFilters({ search: e.target.value })}
-                    className={classes.autocompleteTextField}
-                    placeholder="Search and add workshop"
-                    {...params}
+                    id="cityField"
+                    placeholder="Enter City "
+                    name="city"
+                    disabled={isView}
+                    value={venueCity}
+                    onChange={(e) => setVenueCity(e.target.value)}
                   />
-                )}
-                PaperComponent={(props) => (
-                  <Paper
-                    {...props}
-                    className={classes.customAutocompleteDropdown}
+                </FormControl>
+              </Box>
+              {/* venue */}
+              <Box className={classes.formElementBox}>
+                <FormControl className={classes.formControl}>
+                  <FormLabel htmlFor="venueField">Venue</FormLabel>
+                  <TextField
+                    id="venueField"
+                    placeholder="Enter Meeting Venue"
+                    name="venue"
+                    disabled={isView}
+                    value={venue}
+                    onChange={(e) => setVenue(e.target.value)}
                   />
+                </FormControl>
+              </Box>
+            </Box>
+            {/* add volunteer autocomplete and accordion table */}
+            <Box className={classes.HeaderAndAccordionBox}>
+              <Box className={classes.HeaderAndBtn}>
+                <Typography>Add Volunteers</Typography>
+                {!isView && (
+                  <Button
+                    className={classes.addBtn}
+                    disableRipple
+                    onClick={handleVolunteerMode}
+                  >
+                    Add
+                  </Button>
                 )}
-                className={classes.autocomplete}
-                popupIcon={<ExpandMoreOutlinedIcon />}
-                noOptionsText={
-                  <Typography className={classes.notFound}>
-                    No Match Found
-                  </Typography>
-                }
-                getOptionLabel={(option) => {
-                  return `${option.types}`;
-                }}
+              </Box>
+
+              <AccordionTable
+                columnDefs={dummyVolunteersColDef}
+                rowData={volunteersRowData}
+                headingName={'Volunteers'}
               />
-            </FormControl>
+            </Box>
+            {/* add enrollments and accordion table  */}
+            <Box className={classes.HeaderAndAccordionBox}>
+              <Box className={classes.HeaderAndBtn}>
+                <Typography>Add Enrollments</Typography>
+                {!isView && (
+                  <Button
+                    className={classes.addBtn}
+                    disableRipple
+                    onClick={handleEnrollmentMode}
+                  >
+                    Add
+                  </Button>
+                )}
+              </Box>
+
+              <AccordionTable
+                columnDefs={dummyEnrollmentsColDef}
+                rowData={enrollmentsRowData}
+                headingName={'Enrollments'}
+              />
+            </Box>
+            {/* popup for adding volunteer and enrollments */}
+            <AutocompletePopup
+              mode={mode}
+              closeOpenPopup={closeOpenPopup}
+              openPopup={openPopup}
+              closePopupAndSetRows={closePopupAndSetRows}
+            />
           </Box>
 
-          {/* date and city */}
-          <Box className={classes.formElementBox}>
-            <FormControl className={classes.formControl}>
-              <FormLabel>Date</FormLabel>
-              <LocalizationProvider
-                dateAdapter={AdapterDayjs}
-                className={classes.datepicker}
-              >
-                <DatePicker
-                  name="date"
-                  disabled={isView}
-                  value={dayjs(date)}
-                  onChange={(date) => setDate(new Date(date))}
-                />
-              </LocalizationProvider>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <FormLabel htmlFor="cityField">City</FormLabel>
-              <TextField
-                id="cityField"
-                placeholder="Enter City "
-                name="city"
-                disabled={isView}
-                value={venueCity}
-                onChange={(e) => setVenueCity(e.target.value)}
-              />
-            </FormControl>
-          </Box>
-          {/* venue */}
-          <Box className={classes.formElementBox}>
-            <FormControl className={classes.formControl}>
-              <FormLabel htmlFor="venueField">Venue</FormLabel>
-              <TextField
-                id="venueField"
-                placeholder="Enter Meeting Venue"
-                name="venue"
-                disabled={isView}
-                value={venue}
-                onChange={(e) => setVenue(e.target.value)}
-              />
-            </FormControl>
-          </Box>
-        </Box>
-        {/* add volunteer autocomplete and accordion table */}
-        <Box className={classes.HeaderAndAccordionBox}>
-          <Box className={classes.HeaderAndBtn}>
-            <Typography>Add Volunteers</Typography>
-            {!isView && (
+          {/* action bar  */}
+          <Box className={classes.actionBar}>
+            <Button disableTouchRipple className="cancelBtn">
+              Cancel
+            </Button>
+            {viewType === 'view' ? (
               <Button
-                className={classes.addBtn}
-                disableRipple
-                onClick={handleVolunteerMode}
+                disableTouchRipple
+                className="editBtn"
+                onClick={editHandler}
               >
-                Add
+                Edit
+              </Button>
+            ) : viewType === 'edit' ? (
+              <Button
+                disableTouchRipple
+                className="saveBtn"
+                onClick={() => mutateMeetingHandler('edit')}
+              >
+                {isPendingMutation ? 'Loading...' : 'Save'}
+              </Button>
+            ) : (
+              <Button
+                disableTouchRipple
+                className="saveBtn"
+                onClick={() => mutateMeetingHandler('create')}
+              >
+                {isPendingMutation ? 'Loading...' : 'Create'}
               </Button>
             )}
           </Box>
-
-          <AccordionTable
-            columnDefs={dummyVolunteersColDef}
-            rowData={volunteersRowData}
-            headingName={'Volunteers'}
-          />
         </Box>
-        {/* add enrollments and accordion table  */}
-        <Box className={classes.HeaderAndAccordionBox}>
-          <Box className={classes.HeaderAndBtn}>
-            <Typography>Add Enrollments</Typography>
-            {!isView && (
-              <Button
-                className={classes.addBtn}
-                disableRipple
-                onClick={handleEnrollmentMode}
-              >
-                Add
-              </Button>
-            )}
-          </Box>
-
-          <AccordionTable
-            columnDefs={dummyEnrollmentsColDef}
-            rowData={enrollmentsRowData}
-            headingName={'Enrollments'}
-          />
-        </Box>
-        {/* popup for adding volunteer and enrollments */}
-        <AutocompletePopup
-          mode={mode}
-          closeOpenPopup={closeOpenPopup}
-          openPopup={openPopup}
-          closePopupAndSetRows={closePopupAndSetRows}
-        />
-      </Box>
-
-      {/* action bar  */}
-      <Box className={classes.actionBar}>
-        <Button disableTouchRipple className="cancelBtn">
-          Cancel
-        </Button>
-        {viewType === 'view' ? (
-          <Button disableTouchRipple className="editBtn" onClick={editHandler}>
-            Edit
-          </Button>
-        ) : viewType === 'edit' ? (
-          <Button
-            disableTouchRipple
-            className="saveBtn"
-            onClick={() => mutateMeetingHandler('edit')}
-          >
-            {isPendingMutation ? 'Loading...' : 'Save'}
-          </Button>
-        ) : (
-          <Button
-            disableTouchRipple
-            className="saveBtn"
-            onClick={() => mutateMeetingHandler('create')}
-          >
-            {isPendingMutation ? 'Loading...' : 'Create'}
-          </Button>
-        )}
-      </Box>
-    </Box>
+      )}
+    </>
   );
 }
 

@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
   Button,
+  CircularProgress,
 } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -93,7 +94,7 @@ function WorkshopsDetails() {
   const [openPopup, setopenPopup] = useState(false);
   const [mode, setMode] = useState('');
 
-  const { data, isLoading, isError, error } = useReactQuery([id], getWorkshop, {
+  const { data, isPending, isError, error } = useReactQuery([id], getWorkshop, {
     enabled: viewType !== 'create',
   });
 
@@ -274,8 +275,12 @@ function WorkshopsDetails() {
 
   return (
     <>
-      {isLoading && <Box className={classes.flex}>Loading....</Box>}
-      {
+      {isPending && (
+        <Box className={classes.loader}>
+          <CircularProgress />
+        </Box>
+      )}
+      {data && (
         <Box className={classes.root}>
           {alertType && (
             <AlertReact
@@ -503,7 +508,7 @@ function WorkshopsDetails() {
             )}
           </Box>
         </Box>
-      }
+      )}
     </>
   );
 }

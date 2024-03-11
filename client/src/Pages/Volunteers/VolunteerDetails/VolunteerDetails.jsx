@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -32,14 +32,22 @@ import AlertReact from '../../../Components/Alert/AlertReact';
 
 function VolunteerDetails() {
   const classes = useStyles();
-  let isView;
+  const [isView, setIsView] = useState();
 
   const isAdmin = true;
 
   const { email, type } = useParams();
 
-  if (type === 'edit') isView = false;
-  if (type === 'view') isView = true;
+  useEffect(() => {
+    if (type === 'edit') {
+      console.log('setting edit');
+      setIsView(false);
+    }
+    if (type === 'view') {
+      console.log('seting view');
+      setIsView(true);
+    }
+  }, [type]);
 
   const { data, isPending, isError, error } = useReactQuery(
     [email],
@@ -316,7 +324,11 @@ function VolunteerDetails() {
               Cancel
             </Button>
             {isView ? (
-              <Button disableTouchRipple className="editBtn">
+              <Button
+                disableTouchRipple
+                className="editBtn"
+                onClick={() => setIsView(false)}
+              >
                 Edit
               </Button>
             ) : (
