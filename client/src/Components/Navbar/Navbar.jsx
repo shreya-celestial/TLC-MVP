@@ -10,17 +10,21 @@ import {
   Menu,
   Toolbar,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useStyles } from './Navbar.styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../../assets/Icons/tlcLogo.png';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import UserContext from '../../store/userContext';
+import { logStatus } from '../../apis/user';
 const Navbar = ({ handleSidebarOpen }) => {
+  const { user, setUser } = useContext(UserContext)
+  const nav = useNavigate()
   const isLargerScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const [isSidebarOpen, setIsSideBarOpen] = useState(false);
   const [profileAnchorEL, setProfileAnchorEl] = useState(null);
@@ -29,6 +33,20 @@ const Navbar = ({ handleSidebarOpen }) => {
     handleSidebarOpen();
     setIsSideBarOpen(!isSidebarOpen);
   };
+
+  const handleLogout = async (e) => {
+    e.preventDefault()
+    setProfileAnchorEl(null)
+    const body = {
+      email: user?.email,
+      key: user?.key,
+      isLoggingOut: true
+    }
+    await logStatus(body)
+    setUser(null)
+    localStorage.clear();
+    nav('/')
+  }
 
   return (
     <AppBar className={classes.root}>
@@ -46,13 +64,13 @@ const Navbar = ({ handleSidebarOpen }) => {
           <img src={logo} loading="lazy" alt="The Last Center" />
         </Box>
         <Box className={classes.profile}>
-          <Avatar>J D</Avatar>
+          <Avatar>{user?.name?.substring(0, 1)}</Avatar>
           <Box className={classes.userNameAndUserRole}>
             <Typography className="userName" sx={{ color: 'black' }}>
-              John Doe
+              {user?.name}
             </Typography>
             <Typography className="userRole" sx={{ color: 'black' }}>
-              Admin
+              {user?.isAdmin ? 'Admin' : 'Volunteer'}
             </Typography>
           </Box>
           <IconButton
@@ -72,7 +90,7 @@ const Navbar = ({ handleSidebarOpen }) => {
               <ListItemButton
                 LinkComponent={Link}
                 to={'/'}
-                onClick={() => setProfileAnchorEl(null)}
+                onClick={handleLogout}
               >
                 <ListItemIcon>
                   <LogoutOutlinedIcon />

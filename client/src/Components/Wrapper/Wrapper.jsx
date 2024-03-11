@@ -2,8 +2,10 @@ import { Box } from '@mui/material';
 import Sidebar from '../Sidebar/Sidebar';
 import Navbar from '../Navbar/Navbar';
 import { useStyles } from './Wrapper.styles';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import UserContext from '../../store/userContext';
 const Wrapper = ({ children }) => {
+  const { user } = useContext(UserContext)
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const handleSidebarOpen = () => {
@@ -12,9 +14,10 @@ const Wrapper = ({ children }) => {
 
   return (
     <Box className={classes.root}>
-      <Navbar handleSidebarOpen={handleSidebarOpen} />
-      <Sidebar open={open} />
-      <Box className={classes.main}>{children}</Box>
+      {user && <Navbar handleSidebarOpen={handleSidebarOpen} />}
+      {user && <Sidebar open={open} />}
+      {user && <Box className={classes.main}>{children}</Box>}
+      {!user && <>{children}</>}
     </Box>
   );
 };

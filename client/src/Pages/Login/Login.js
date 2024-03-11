@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useStyles } from './Login.styles';
 import {
@@ -20,12 +20,14 @@ import { useMutation } from '@tanstack/react-query';
 import AlertReact from '../../Components/Alert/AlertReact';
 import logo from '../../assets/Icons/tlcLogo.png';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../../store/userContext';
 
 function Login() {
   const navigate = useNavigate();
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [alertType, setAlertType] = useState();
+  const { setUser } = useContext(UserContext)
 
   const removeAlertType = function () {
     setAlertType(undefined);
@@ -40,6 +42,12 @@ function Login() {
           message: data.message,
         });
       } else {
+        setUser(data?.user)
+        const keys = {
+          id: data?.user?.email,
+          key: data?.user?.key
+        }
+        localStorage.setItem('keys', JSON.stringify(keys))
         navigate('/dashboard');
       }
     },
