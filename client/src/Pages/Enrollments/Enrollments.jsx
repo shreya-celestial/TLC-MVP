@@ -185,6 +185,7 @@ const Enrollments = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          updateSelectedRows={updateSelectedRows}
           type="enrollments"
         />
       )}

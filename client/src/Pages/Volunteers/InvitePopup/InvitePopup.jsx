@@ -20,7 +20,6 @@ import { useStyles } from './InvitePopup.styles';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { inviteVolunteer } from '../../../apis/volunteers';
 import { useMutation } from '@tanstack/react-query';
-import validator from 'validator';
 import { validateInvite } from '../../../utils/utils';
 
 function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
@@ -155,7 +154,10 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
           <Button
             className="cancelBtn"
             disableRipple
-            onClick={() => SetOpen(false)}
+            onClick={() => {
+              hideInviteModal();
+              SetOpen(false);
+            }}
           >
             Cancel
           </Button>

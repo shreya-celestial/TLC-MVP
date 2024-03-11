@@ -176,6 +176,7 @@ const Volunteers = () => {
         <DeletePopup
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          updateSelectedRows={updateSelectedRows}
           hideDeleteModal={hideDeleteModal}
         />
       )}

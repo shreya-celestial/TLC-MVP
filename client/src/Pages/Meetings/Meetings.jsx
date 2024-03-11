@@ -193,6 +193,7 @@ const Meetings = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          updateSelectedRows={updateSelectedRows}
         />
       )}
       {alertType && (

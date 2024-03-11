@@ -107,6 +107,13 @@ const Workshops = () => {
     setClickedCountDetails(null);
   };
 
+  const handleReset = () => {
+    setEndDate('');
+    setStartDate('');
+    setPastOrUpcoming('upcoming');
+    setSearchValue('');
+  };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeadingAndActionBtn}>
@@ -170,6 +177,7 @@ const Workshops = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          updateSelectedRows={updateSelectedRows}
           type="workshops"
         />
       )}
@@ -263,10 +271,7 @@ const Workshops = () => {
               <Button
                 disableRipple
                 className={classes.resetFilterBtn}
-                onClick={() => {
-                  setFilters({});
-                  setCurrentPage(1);
-                }}
+                onClick={handleReset}
               >
                 Reset
               </Button>
