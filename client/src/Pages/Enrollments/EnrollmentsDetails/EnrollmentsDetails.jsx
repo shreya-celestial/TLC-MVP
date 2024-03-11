@@ -21,9 +21,8 @@ import AddChildPopup from '../AddChildPopup/AddChildPopup';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { ChildrenColDef, enrollPageWorkshopColDEf } from '../coldefs/coldefs';
+import { enrollPageWorkshopColDEf } from '../coldefs/coldefs';
 
-import { DeleteEditButtonCell } from '../../../Components/DeleteEditButtonCell/DeleteEditButtonCell';
 import { getLocationData } from '../../../apis/global';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getEnrollment } from '../../../apis/enrollments';
@@ -416,7 +415,7 @@ function EnrollmentsDetails() {
             </Box>
             <Box className={classes.HeaderAndAccordionBox}>
               <Box className={classes.HeaderAndBtn}>
-                <Typography>Childrens Information</Typography>
+                <Typography>Children Information</Typography>
                 {!isView && (
                   <Button
                     className={classes.addBtn}
