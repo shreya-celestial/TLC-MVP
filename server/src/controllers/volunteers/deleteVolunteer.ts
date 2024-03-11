@@ -19,6 +19,9 @@ const deleteVolunteer = async (req: Request, res: Response) => {
       isVerified: {
         _eq: true
       }
+    },
+    where1: {
+      _or: [...volunteers]
     }
   }
 

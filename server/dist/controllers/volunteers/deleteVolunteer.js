@@ -30,6 +30,9 @@ const deleteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
             isVerified: {
                 _eq: true
             }
+        },
+        where1: {
+            _or: [...volunteers]
         }
     };
     const data = yield (0, getData_1.default)(mutations_1.DeleteVolunteersByEmail, variables);

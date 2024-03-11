@@ -7,8 +7,11 @@ export const UpdateVolunteerRoleByEmail = `
 `;
 
 export const DeleteVolunteersByEmail = `
-  mutation DeleteMultipleVolunteers($where: users_bool_exp!) {
+  mutation DeleteMultipleVolunteers($where: users_bool_exp!, $where1: Invitations_bool_exp!) {
     delete_users(where: $where) {
+      affected_rows
+    }
+    delete_Invitations(where: $where1) {
       affected_rows
     }
   }
