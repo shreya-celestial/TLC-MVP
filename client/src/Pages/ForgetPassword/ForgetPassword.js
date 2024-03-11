@@ -11,15 +11,31 @@ import {
 import { useStyles } from './ForgetPassword.styles';
 import { forgotPass } from '../../apis/user';
 import logo from '../../assets/Icons/tlcLogo.png';
+import validator from 'validator';
+import AlertReact from '../../Components/Alert/AlertReact';
 function ForgetPassword() {
   const classes = useStyles();
   const [isFound, setIsFound] = useState(true);
+
+  const [alertType, setAlertType] = useState();
+
+  const removeAlertType = function () {
+    setAlertType(undefined);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = {
       email: e.target.elements.email.value,
     };
+
+    if (!validator.isEmail(body.email)) {
+      return setAlertType({
+        type: 'error',
+        message: 'Please enter a valid email.',
+      });
+    }
+
     const data = await forgotPass(body);
     if (data?.status === 'error') {
       setIsFound(false);
@@ -28,6 +44,13 @@ function ForgetPassword() {
 
   return (
     <Box className={classes.root}>
+      {alertType && (
+        <AlertReact
+          removeAlertType={removeAlertType}
+          type={alertType.type}
+          message={alertType.message}
+        />
+      )}
       <Box className={classes.mainWrapper}>
         <img className={classes.logo} src={logo} alt="The Last Center Logo" />
         <Typography className={classes.header}>Forgot Password</Typography>

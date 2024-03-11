@@ -36,7 +36,6 @@ const Volunteers = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
-  const [filters, setFilters] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [selectedRows, setSelectedRows] = useState([]);

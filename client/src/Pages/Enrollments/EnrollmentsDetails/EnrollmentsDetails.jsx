@@ -26,7 +26,10 @@ import { DeleteEditButtonCell } from '../../../Components/DeleteEditButtonCell/D
 import { getLocationData } from '../../../apis/global';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getEnrollment } from '../../../apis/enrollments';
-import { fetchRowDataEnrollment } from '../utils';
+import {
+  fetchRowDataEnrollment,
+  validateEnrollment,
+} from '../../../utils/utils';
 import dayjs from 'dayjs';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { useMutation } from '@tanstack/react-query';
@@ -186,21 +189,23 @@ function EnrollmentsDetails() {
   };
 
   const mutateEnrollmentHandler = function (type) {
-    mutate({
-      body: {
-        name,
-        email,
-        mobile_number: phone,
-        dob,
-        gender,
-        address,
-        city,
-        state,
-        pincode,
-        children: childrenRowData,
-      },
-      id,
-    });
+    const body = {
+      name,
+      email,
+      mobile_number: phone,
+      dob,
+      gender,
+      address,
+      city,
+      state,
+      pincode,
+      children: childrenRowData,
+    };
+
+    const isValid = validateEnrollment(body);
+    if (isValid.type) return setAlertType(isValid);
+
+    mutate({ body, id });
   };
 
   return (

@@ -28,7 +28,7 @@ import { DeleteButtonCell } from '../../../Components/DeleteButtonCell/DeleteBut
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getMeeting } from '../../../apis/meetings';
 import { useParams } from 'react-router-dom';
-import { fetchRowDataMeeting } from '../utils';
+import { fetchRowDataMeeting, validateMeeting } from '../../../utils/utils';
 import dayjs from 'dayjs';
 import { compareTwoArrays } from '../../../utils/utils';
 import AlertReact from '../../../Components/Alert/AlertReact';
@@ -36,6 +36,7 @@ import { workshops } from '../../../apis/workshops';
 import { createMeeting, updateMeeting } from '../../../apis/meetings';
 
 import { useMutation } from '@tanstack/react-query';
+import validator from 'validator';
 
 function MeetingsDetails() {
   const classes = useStyles();
@@ -214,20 +215,23 @@ function MeetingsDetails() {
 
   const mutateMeetingHandler = function (type) {
     let modifiedDate = date;
-    if (type === 'create') modifiedDate = date.toISOString().split('T')[0];
+    if (type === 'create' && date)
+      modifiedDate = date.toISOString().split('T')[0];
 
-    mutate({
-      body: {
-        date: modifiedDate,
-        type: meetingType,
-        venue,
-        venue_city: venueCity,
-        workshop_id: selectedWorkshop.id,
-        enrollments: enrollmentsRowData.map((enrollment) => enrollment.id),
-        volunteers: volunteersRowData.map((volunteer) => volunteer.email),
-      },
-      id,
-    });
+    const body = {
+      date: modifiedDate,
+      type: meetingType,
+      venue,
+      venue_city: venueCity,
+      workshop_id: selectedWorkshop?.id,
+      enrollments: enrollmentsRowData.map((enrollment) => enrollment.id),
+      volunteers: volunteersRowData.map((volunteer) => volunteer.email),
+    };
+
+    const isValid = validateMeeting(body);
+    if (isValid.type) return setAlertType(isValid);
+
+    mutate({ body, id });
   };
 
   const editHandler = function () {

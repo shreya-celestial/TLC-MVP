@@ -7,7 +7,7 @@ import VolunteerForm from '../../Components/VolunteerForm/VolunteerForm';
 
 import { signup, signupInvite } from '../../apis/user';
 import AlertReact from '../../Components/Alert/AlertReact';
-import { getCookie, deleteCookie } from '../../utils/utils';
+import { getCookie, deleteCookie, validateSignup } from '../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import validator from 'validator';
 import logo from '../../assets/Icons/tlcLogo.png';
@@ -43,46 +43,13 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!e.target.elements.dob.value) {
-      setAlertType({
-        type: 'error',
-        message: 'Please enter your Date of birth',
-      });
-    }
 
-    if (!validator.isMobilePhone(e.target.elements.phone.value)) {
-      return setAlertType({
-        type: 'error',
-        message: 'please provide valid mobile number',
-      });
-    }
-
-    if (!validator.isEmail(e.target.elements.email.value)) {
-      return setAlertType({
-        type: 'error',
-        message: 'please provide valid email',
-      });
-    }
-
-    if (
-      !validator.isStrongPassword(e.target.elements.password.value, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      return setAlertType({
-        type: 'error',
-        message:
-          'Password must be 8 characters long and contain alphanumeric values',
-      });
-    }
+    const isValid = validateSignup(e.target.elements);
+    if (isValid.type) return setAlertType(isValid);
 
     const token = queryParams.get('token');
     const email = queryParams.get('for');
-    console.log(queryParams)
+    console.log(queryParams);
     // const token = getCookie('token');
     // const email = getCookie('email');
 

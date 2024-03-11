@@ -29,7 +29,8 @@ import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getWorkshop } from '../../../apis/workshops';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { fetchRowDataWorkshop } from '../utils';
+import { fetchRowDataWorkshop, validateWorkshop } from '../../../utils/utils';
+
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { compareTwoArrays } from '../../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
@@ -246,27 +247,29 @@ function WorkshopsDetails() {
     let modifiedEndDate = endDate;
     let modifiedConcludingDate = concludingDate;
 
-    if (type === 'create') {
+    if (type === 'create' && startDate && endDate && concludingDate) {
       modifiedStartDate = startDate?.toISOString().split('T')[0];
       modifiedEndDate = endDate?.toISOString().split('T')[0];
       modifiedConcludingDate = concludingDate?.toISOString().split('T')[0];
     }
 
-    mutate({
-      body: {
-        types: workshopType,
-        venue,
-        venue_city: venueCity,
-        start_date: modifiedStartDate,
-        end_date: modifiedEndDate,
-        concluding_date: modifiedConcludingDate,
-        vols: volunteersRowData.map((vol) => vol.email),
-        leads: leadVolunteersRowData.map((vol) => vol.email),
-        participants: participantsRowData.map((participant) => participant.id),
-        meetings: meetingsRowData.map((meeting) => meeting.id),
-      },
-      id,
-    });
+    const body = {
+      types: workshopType,
+      venue,
+      venue_city: venueCity,
+      start_date: modifiedStartDate,
+      end_date: modifiedEndDate,
+      concluding_date: modifiedConcludingDate,
+      vols: volunteersRowData.map((vol) => vol.email),
+      leads: leadVolunteersRowData.map((vol) => vol.email),
+      participants: participantsRowData.map((participant) => participant.id),
+      meetings: meetingsRowData.map((meeting) => meeting.id),
+    };
+
+    const isValid = validateWorkshop(body);
+    if (isValid.type) return setAlertType(isValid);
+
+    mutate({ body, id });
   };
 
   return (

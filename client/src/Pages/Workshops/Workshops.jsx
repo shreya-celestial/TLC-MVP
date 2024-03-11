@@ -17,7 +17,7 @@ import { useStyles } from './Workshops.styles';
 
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PaginationComp from '../../Components/Table/PaginationComp';
 
@@ -42,20 +42,12 @@ const Workshops = () => {
 
   const {
     removeAlertType,
-    hideInviteModal,
     hideDeleteModal,
-    hideVerifyStatus,
     showVerifyStatus,
-    hideInviteModalAndShowSuccess,
     hideDeleteModalAndShowSuccess,
-    hideVerifyModalAndShowSuccess,
-    showInviteModal,
     showDeleteModal,
-    showVerifyStatusModal,
     alertType,
     rowChanged,
-    selectedUser,
-    setShowInviteModal,
     setShowDeleteModal,
   } = useAlerts();
 
@@ -71,16 +63,27 @@ const Workshops = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
+  const [debouncedSearch, setDebouncedValue] = useState('');
 
   const { data, isPending, isError, error } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
-      { search: searchValue, startDate, endDate, pastOrUpcoming },
+      { search: debouncedSearch, startDate, endDate, pastOrUpcoming },
       rowChanged,
     ],
     workshops
   );
+
+  useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setDebouncedValue(searchValue);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchValue]);
 
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
