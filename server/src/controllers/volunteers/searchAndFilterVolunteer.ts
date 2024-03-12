@@ -115,6 +115,11 @@ const searchAndFilterVolunteer = async (req: Request, res: Response) => {
           phoneNumber: {
             _like: `${phone}%`
           }
+        },
+        {
+          city: {
+            _like: `${name}%`
+          }
         }
       ]
     }
