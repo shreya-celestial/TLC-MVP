@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -27,7 +27,7 @@ import { DeleteButtonCell } from '../../../Components/DeleteButtonCell/DeleteBut
 import AutocompletePopup from '../../../Components/AutocompletePopup/AutocompletePopup';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getWorkshop } from '../../../apis/workshops';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { fetchRowDataWorkshop, validateWorkshop } from '../../../utils/utils';
 
@@ -35,9 +35,13 @@ import AlertReact from '../../../Components/Alert/AlertReact';
 import { compareTwoArrays } from '../../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import { createWorkshop, updateWorkshop } from '../../../apis/workshops';
+import UserContext from '../../../store/userContext';
 
 function WorkshopsDetails() {
   let { id, type } = useParams();
+
+  const nav = useNavigate()
+  const { user } = useContext(UserContext)
 
   const [isView, setIsView] = useState(type === 'view' ? true : false);
   const [viewType, setViewType] = useState(type);
@@ -266,6 +270,29 @@ function WorkshopsDetails() {
     mutate({ body, id });
   };
 
+  useEffect(() => {
+    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+      nav('/workshops');
+    }
+    if (type === 'view') {
+      setIsView(true);
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (!user?.isAdmin && type !== 'view') {
+      nav('/workshops')
+    }
+  }, [user, type])
+
+  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    return;
+  }
+
+  if (!user?.isAdmin && type !== 'view') {
+    return;
+  }
+
   return (
     <>
       {isLoading && <Box className={classes.flex}>Loading....</Box>}
@@ -466,36 +493,38 @@ function WorkshopsDetails() {
           </Box>
 
           {/* action bar  */}
-          <Box className={classes.actionBar}>
-            <Button disableTouchRipple className="cancelBtn">
-              Cancel
-            </Button>
-            {viewType === 'view' ? (
-              <Button
-                disableTouchRipple
-                className="editBtn"
-                onClick={editHandler}
-              >
-                Edit
+          {user?.isAdmin &&
+            <Box className={classes.actionBar}>
+              <Button disableTouchRipple className="cancelBtn">
+                Cancel
               </Button>
-            ) : viewType === 'edit' ? (
-              <Button
-                disableTouchRipple
-                className="saveBtn"
-                onClick={() => mutateWorkshopHandler('edit')}
-              >
-                {isPendingMutation ? 'Loading...' : 'Save'}
-              </Button>
-            ) : (
-              <Button
-                disableTouchRipple
-                className="saveBtn"
-                onClick={() => mutateWorkshopHandler('create')}
-              >
-                {isPendingMutation ? 'Loading...' : 'Create'}
-              </Button>
-            )}
-          </Box>
+              {viewType === 'view' ? (
+                <Button
+                  disableTouchRipple
+                  className="editBtn"
+                  onClick={editHandler}
+                >
+                  Edit
+                </Button>
+              ) : viewType === 'edit' ? (
+                <Button
+                  disableTouchRipple
+                  className="saveBtn"
+                  onClick={() => mutateWorkshopHandler('edit')}
+                >
+                  {isPendingMutation ? 'Loading...' : 'Save'}
+                </Button>
+              ) : (
+                <Button
+                  disableTouchRipple
+                  className="saveBtn"
+                  onClick={() => mutateWorkshopHandler('create')}
+                >
+                  {isPendingMutation ? 'Loading...' : 'Create'}
+                </Button>
+              )}
+            </Box>
+          }
         </Box>
       }
     </>

@@ -8,6 +8,8 @@ import { ReactComponent as MeetingsColorIcon } from '../.././assets/Icons/meetin
 import { ReactComponent as WorkshopColorIcon } from '../.././assets/Icons/workshopColorIcon.svg';
 import UpcomingWorkshop from '../../Components/UpcomingWorkshop/UpcomingWorkshop';
 import DoughnutChart from './Charts/DonutChart/DoughnutChart';
+import { useReactQuery } from '../../hooks/useReactQuery';
+import { dashboardDetails } from '../../apis/dashboard';
 const upcominWorkshops = [
   {
     title: 'Confidence, Power and Excellence',
@@ -36,33 +38,35 @@ const upcominWorkshops = [
 ];
 
 const Dashboard = () => {
+  const { data, isPending } = useReactQuery([(new Date()).getSeconds()], dashboardDetails)
+  console.log(data)
   const classes = useStyles();
   const smallCardData = [
     {
       id: 0,
       title: 'Total volunteers',
-      value: 50,
+      value: data?.data?.volunteers || 0,
       icon: <VolunteerColorIcon />,
       class: 'volunteer',
     },
     {
       id: 1,
       title: 'Total workshops',
-      value: 20,
+      value: data?.data?.workshops || 0,
       icon: <WorkshopColorIcon />,
       class: 'workshop',
     },
     {
       id: 2,
       title: 'Total Enrollments',
-      value: 1100,
+      value: data?.data?.enrollments || 0,
       icon: <EnrollmentColorIcon />,
       class: 'enrollment',
     },
     {
       id: 3,
       title: 'Total Meetings',
-      value: 40,
+      value: data?.data?.meetings || 0,
       icon: <MeetingsColorIcon />,
       class: 'meeting',
     },
@@ -94,7 +98,7 @@ const Dashboard = () => {
             Last 6 Months Enrollments
           </Typography>
           <Box className={classes.chartMain}>
-            <DoughnutChart />
+            <DoughnutChart data={data} />
           </Box>
         </Box>
         <Box className={classes.bigCard}>

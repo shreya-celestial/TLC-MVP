@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto';
 import { Box, useMediaQuery } from '@mui/material';
 import { useStyles } from './DoughnutChart.styles';
 
-const DoughnutChart = () => {
+const DoughnutChart = ({ data }) => {
   const isSmScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const chartRef = useRef(null);
   const [chartInstance, setChartInstance] = useState(null);

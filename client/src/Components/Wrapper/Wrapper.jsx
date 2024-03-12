@@ -17,7 +17,7 @@ const Wrapper = ({ children }) => {
       {user && <Navbar handleSidebarOpen={handleSidebarOpen} />}
       {user && <Sidebar open={open} />}
       {user && <Box className={classes.main}>{children}</Box>}
-      {!user && <Box className={classes.notUser}>{children}</Box>}
+      {!user && <Box>{children}</Box>}
     </Box>
   );
 };

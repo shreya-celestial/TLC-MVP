@@ -14,15 +14,5 @@ export const useStyles = makeStyles((theme) => ({
     '&::-webkit-scrollbar': {
       display: 'none',
     },
-  },
-  notUser: {
-    height: 'calc(100vh - 55px)',
-    overflowY: 'scroll',
-    [theme.breakpoints.between('xs', 'md')]: {
-      width: '100%',
-    },
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
   }
 }));

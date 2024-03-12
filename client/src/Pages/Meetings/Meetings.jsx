@@ -136,7 +136,7 @@ const Meetings = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/meetingdetails/${selectedRows[0].id}/edit`);
+                  navigate(`/meetings/details/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -145,7 +145,7 @@ const Meetings = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/meetingdetails/${selectedRows[0].id}/view`);
+                  navigate(`/meetings/details/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -157,7 +157,7 @@ const Meetings = () => {
               className="createMeetingBtn"
               disableRipple
               onClick={() => {
-                navigate(`/meetingdetails/create`);
+                navigate(`/meetings/details/create`);
               }}
             >
               Create Meeting
@@ -221,33 +221,33 @@ const Meetings = () => {
             <Box className={classes.filterContent}>
               <Typography>Filters</Typography>
               <ThemeProvider theme={FilterTheme}>
-              <FormControl className={classes.formControl}>
-                <FormLabel>Start Date</FormLabel>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  className={classes.datepicker}
-                >
-                  <DatePicker
-                    name="startDate"
-                    value={dayjs(startDate)}
-                    onChange={(date) => setStartDate(new Date(date))}
-                  />
-                </LocalizationProvider>
-              </FormControl>
-              {/* end date */}
-              <FormControl className={classes.formControl}>
-                <FormLabel>End Date</FormLabel>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  className={classes.datepicker}
-                >
-                  <DatePicker
-                    name="endtDate"
-                    value={dayjs(endDate)}
-                    onChange={(date) => setEndDate(new Date(date))}
-                  />
-                </LocalizationProvider>
-              </FormControl>
+                <FormControl className={classes.formControl}>
+                  <FormLabel>Start Date</FormLabel>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    className={classes.datepicker}
+                  >
+                    <DatePicker
+                      name="startDate"
+                      value={dayjs(startDate)}
+                      onChange={(date) => setStartDate(new Date(date))}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+                {/* end date */}
+                <FormControl className={classes.formControl}>
+                  <FormLabel>End Date</FormLabel>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    className={classes.datepicker}
+                  >
+                    <DatePicker
+                      name="endtDate"
+                      value={dayjs(endDate)}
+                      onChange={(date) => setEndDate(new Date(date))}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
               </ThemeProvider>
 
               <Button

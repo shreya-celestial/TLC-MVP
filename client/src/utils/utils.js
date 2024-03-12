@@ -222,13 +222,6 @@ export const validateSignup = function (data) {
     };
   }
 
-  if (!validator.isEmail(data.email.value)) {
-    return {
-      type: 'error',
-      message: 'please provide valid email',
-    };
-  }
-
   if (
     !validator.isStrongPassword(data.password.value, {
       minLength: 8,
