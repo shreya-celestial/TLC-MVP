@@ -40,14 +40,12 @@ function WorkshopsDetails() {
     setAlertType(undefined);
   };
 
-  // custom column def for showing delete icon in edit mode
-
   const classes = useStyles();
   const [openLeadPopup, setOpenLeadPopup] = useState(false);
   const [openPopup, setopenPopup] = useState(false);
   const [mode, setMode] = useState('');
 
-  const { data, isPending, isError, error } = useReactQuery([id], getWorkshop, {
+  const { data, isPending, isError } = useReactQuery([id], getWorkshop, {
     enabled: viewType !== 'create',
   });
 
@@ -65,7 +63,11 @@ function WorkshopsDetails() {
   const [endDate, setEndDate] = useState('');
   const [concludingDate, setConcludingDate] = useState('');
 
-  const { mutate, isPending: isPendingMutation } = useMutation({
+  const {
+    mutate,
+    isPending: isPendingMutation,
+    isError: isErrorMutation,
+  } = useMutation({
     mutationFn: type === 'create' ? createWorkshop : updateWorkshop,
     onSuccess: (data) => {
       if (data.status === 'error') {
@@ -83,7 +85,7 @@ function WorkshopsDetails() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -105,7 +107,6 @@ function WorkshopsDetails() {
 
   const closeLeadPopupAndSetRows = (data, role) => {
     const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];
-    console.log(combinedArray, data);
     const isEvery = compareTwoArrays(combinedArray, data, 'email');
 
     if (!isEvery) {
@@ -195,7 +196,7 @@ function WorkshopsDetails() {
     setViewType('edit');
   };
 
-  const mutateWorkshopHandler = function (type) {
+  const mutateWorkshopHandler = async function (type) {
     let modifiedStartDate = startDate;
     let modifiedEndDate = endDate;
     let modifiedConcludingDate = concludingDate;
@@ -222,7 +223,14 @@ function WorkshopsDetails() {
     const isValid = validateWorkshop(body);
     if (isValid.type) return setAlertType(isValid);
 
-    mutate({ body, id });
+    try {
+      await mutate({ body, id });
+    } catch (err) {
+      setAlertType({
+        type: 'error',
+        message: 'Something went wrong.',
+      });
+    }
   };
 
   const handleDeleteRow = function ({ email, row, id }) {
@@ -251,13 +259,20 @@ function WorkshopsDetails() {
           <CircularProgress />
         </Box>
       )}
+      {isError && (
+        <Box className={classes.loader}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
+        </Box>
+      )}
       {(viewType === 'create' || data) && (
         <Box className={classes.root}>
           {alertType && (
             <AlertReact
               removeAlertType={removeAlertType}
               type={alertType.type}
-              message={alertType.message}
+              message={alertType.message || 'Something went wrong'}
             />
           )}
           <Box className={classes.HeaderMainContent}>
@@ -374,11 +389,13 @@ function WorkshopsDetails() {
                     Add
                   </Button>
                 )}
-                <LeadVolunteerPopup
-                  closeLeadPopupAndSetRows={closeLeadPopupAndSetRows}
-                  openLeadPopup={openLeadPopup}
-                  closeLeadPopup={closeLeadPopup}
-                />
+                {openLeadPopup && (
+                  <LeadVolunteerPopup
+                    closeLeadPopupAndSetRows={closeLeadPopupAndSetRows}
+                    openLeadPopup={openLeadPopup}
+                    closeLeadPopup={closeLeadPopup}
+                  />
+                )}
               </Box>
               <Box className={classes.AccordionContainer}>
                 <AccordionTable
@@ -443,12 +460,14 @@ function WorkshopsDetails() {
               </Box>
             </Box>
             {/* popup for adding participant and meetings  */}
-            <AutocompletePopup
-              mode={mode}
-              openPopup={openPopup}
-              closeOpenPopup={closeOpenPopup}
-              closePopupAndSetRows={closePopupAndSetRows}
-            />
+            {openPopup && (
+              <AutocompletePopup
+                mode={mode}
+                openPopup={openPopup}
+                closeOpenPopup={closeOpenPopup}
+                closePopupAndSetRows={closePopupAndSetRows}
+              />
+            )}
           </Box>
 
           {/* action bar  */}

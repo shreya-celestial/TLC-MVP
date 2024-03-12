@@ -18,7 +18,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerDetails.styles';
 import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
-import colDefs, {
+import {
   workshopColDefVolunteersPage,
   meetingsColDefVolunteersPage,
 } from '../coldefs/coldefs';
@@ -51,10 +51,7 @@ function VolunteerDetails() {
     }
   }, [type]);
 
-  const { data, isPending, isError, error } = useReactQuery(
-    [email],
-    getVolunteer
-  );
+  const { data, isPending, isError } = useReactQuery([email], getVolunteer);
 
   const [role, setRole] = useState(
     data?.user?.isAdmin === true ? 'admin' : 'volunteer'
@@ -84,7 +81,7 @@ function VolunteerDetails() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -118,13 +115,18 @@ function VolunteerDetails() {
     }
   }, [data]);
 
-  console.log(MeetingHistoryRowData);
-
   return (
     <>
       {isPending && (
         <Box className={classes.loader}>
           <CircularProgress />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.loader}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
         </Box>
       )}
       {data && (

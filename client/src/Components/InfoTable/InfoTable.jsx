@@ -28,6 +28,7 @@ import {
   VolunteersPopupMeetingColDef,
 } from '../../Pages/Meetings/coldefs/coldefs';
 import { ChildrenPopupColdef } from '../../Pages/Enrollments/coldefs/coldefs';
+import classNames from 'classnames';
 
 function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
   const { id, field } = clickedCountDetails;
@@ -55,6 +56,8 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
       ? getWorkshop
       : getEnrollment
   );
+
+  console.log(isError);
 
   let title;
   if (field === 'lead_volunteers_count') title = 'Lead Volunteers';
@@ -119,13 +122,28 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
 
       <DialogContent className={classes.DiaogContent}>
         <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
-          <AgGridReact
-            className={classes.AgGridMain}
-            columnDefs={modifiedColumnDefs}
-            rowData={rowData}
-            gridOptions={gridOptions}
-            defaultColDef={defaultColDef}
-          />
+          {isError && (
+            <Box
+              className={classNames(
+                classes.AgGridMain,
+                classes.errorBox,
+                classes.loader
+              )}
+            >
+              <Typography className="errorMessage">
+                Something went wrong while fetching data.
+              </Typography>
+            </Box>
+          )}
+          {(data || isPending) && (
+            <AgGridReact
+              className={classes.AgGridMain}
+              columnDefs={modifiedColumnDefs}
+              rowData={rowData}
+              gridOptions={gridOptions}
+              defaultColDef={defaultColDef}
+            />
+          )}
         </Box>
       </DialogContent>
       {/* action buttons */}

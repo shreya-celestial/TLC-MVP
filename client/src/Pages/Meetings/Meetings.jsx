@@ -58,7 +58,6 @@ const Meetings = () => {
     alertType,
     rowChanged,
     selectedUser,
-    setShowInviteModal,
     setShowDeleteModal,
   } = useAlerts();
 
@@ -76,7 +75,7 @@ const Meetings = () => {
   const [endDate, setEndDate] = useState('');
   const [clickedCountDetails, setClickedCountDetails] = useState();
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -286,6 +285,7 @@ const Meetings = () => {
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
             showDetails={showDetails}
+            isError={isError}
           />
         </Box>
         <PaginationComp

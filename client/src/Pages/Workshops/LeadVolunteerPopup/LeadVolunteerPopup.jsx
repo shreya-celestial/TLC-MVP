@@ -35,7 +35,7 @@ function LeadVolunteerPopup({
   const [filters, setFilters] = useState({});
   const [debouncedFilters, setDebouncedFilters] = useState();
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [1, 10, { ...debouncedFilters }],
     volunteers,
     {
@@ -71,6 +71,7 @@ function LeadVolunteerPopup({
       setVolunteersList(filtered);
     }
   }, [data]);
+  console.log(isError, isPending);
 
   return (
     <Dialog open={openLeadPopup} className={classes.Dialog}>
@@ -90,6 +91,11 @@ function LeadVolunteerPopup({
 
         <FormControl className={classes.formControl}>
           <FormLabel>Search Volunteers & Lead Volunteers</FormLabel>
+          {isError && (
+            <Typography variant="body2" color="error">
+              Cannot fetch volunteers
+            </Typography>
+          )}
           <Autocomplete
             loading={isPending}
             options={volunteersList}
@@ -102,7 +108,6 @@ function LeadVolunteerPopup({
               <TextField
                 className={classes.autocompleteTextField}
                 placeholder="Search to add"
-                // value={selectedVolunteers}
                 {...params}
                 onChange={(e) => setFilters({ search: e.target.value })}
                 InputProps={{

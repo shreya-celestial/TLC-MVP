@@ -80,8 +80,7 @@ function MeetingsDetails() {
   const {
     data: workshopsData,
     isPending: isPendingWorkshops,
-    isError: iseErrorWorkshops,
-    error: errorWorkshop,
+    isError: isErrorWorkshops,
   } = useReactQuery([1, 10, { ...debouncedFilters }], workshops, {
     enabled: debouncedFilters?.search !== undefined,
   });
@@ -104,7 +103,7 @@ function MeetingsDetails() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -176,7 +175,7 @@ function MeetingsDetails() {
     setDate(meeting?.date || '');
 
     if (!editingWorkshop) {
-      setWorkshopOptions([meeting?.workshop]);
+      setWorkshopOptions([meeting?.workshop || { types: 'none' }]);
     }
 
     if (viewType !== 'create') {
@@ -225,7 +224,7 @@ function MeetingsDetails() {
       setVolunteersRowData(updatedRow);
     }
 
-    if (row === 'Enrollments') {
+    if (row === 'Participants') {
       const updatedRow = enrollmentsRowData.filter((e) => e.email !== email);
       setEnrollmentsRowData(updatedRow);
     }
@@ -236,6 +235,13 @@ function MeetingsDetails() {
       {isPending && viewType !== 'create' && (
         <Box className={classes.loader}>
           <CircularProgress />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.loader}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
         </Box>
       )}
       {(viewType === 'create' || data) && (
@@ -302,8 +308,14 @@ function MeetingsDetails() {
                 {/* workshop autocomplete */}
 
                 <FormControl className={classes.formControl}>
+                  {isErrorWorkshops && (
+                    <Typography variant="body2" color="error">
+                      Cannot fetch workshops
+                    </Typography>
+                  )}
                   <FormLabel>Workshop</FormLabel>
                   <Autocomplete
+                    loading={isPendingWorkshops}
                     options={workshopOptions}
                     value={
                       editingWorkshop
@@ -313,7 +325,6 @@ function MeetingsDetails() {
                     onChange={(event, selectedElement) => {
                       if (!selectedElement) {
                         setEditingWorkshop(true);
-                        // setWorkshopOptions([]);
                       }
                       setSelectedWorkshop((prev) => selectedElement);
                     }}
@@ -340,7 +351,7 @@ function MeetingsDetails() {
                       </Typography>
                     }
                     getOptionLabel={(option) => {
-                      return `${option.types}`;
+                      return `${option?.types}`;
                     }}
                   />
                 </FormControl>
@@ -414,7 +425,7 @@ function MeetingsDetails() {
             {/* add enrollments and accordion table  */}
             <Box className={classes.HeaderAndAccordionBox}>
               <Box className={classes.HeaderAndBtn}>
-                <Typography>Add Enrollments</Typography>
+                <Typography>Add Participants</Typography>
                 {!isView && (
                   <Button
                     className={classes.addBtn}
@@ -428,18 +439,20 @@ function MeetingsDetails() {
 
               <AccordionTable
                 rowData={enrollmentsRowData}
-                headingName={'Enrollments'}
+                headingName={'Participants'}
                 handleDeleteRow={handleDeleteRow}
                 isView={isView}
               />
             </Box>
             {/* popup for adding volunteer and enrollments */}
-            <AutocompletePopup
-              mode={mode}
-              closeOpenPopup={closeOpenPopup}
-              openPopup={openPopup}
-              closePopupAndSetRows={closePopupAndSetRows}
-            />
+            {openPopup && (
+              <AutocompletePopup
+                mode={mode}
+                closeOpenPopup={closeOpenPopup}
+                openPopup={openPopup}
+                closePopupAndSetRows={closePopupAndSetRows}
+              />
+            )}
           </Box>
 
           {/* action bar  */}

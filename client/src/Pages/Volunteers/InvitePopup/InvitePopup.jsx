@@ -35,7 +35,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
     setAlertType(undefined);
   };
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: inviteVolunteer,
     onSuccess: (data) => {
       if (data.status === 'error') {
@@ -50,7 +50,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });

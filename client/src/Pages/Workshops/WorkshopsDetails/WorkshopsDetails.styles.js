@@ -166,5 +166,10 @@ export const useStyles = makeStyles((theme) => ({
     '& svg': {
       color: theme.palette.primaryGreen,
     },
+    '& .errorMessage': {
+      color: '#6C6C6C',
+      fontSize: '14px',
+      fontWeight: '500',
+    },
   },
 }));

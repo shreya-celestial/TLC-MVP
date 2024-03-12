@@ -1,6 +1,5 @@
+const BASEURL = 'https://tlc-two.vercel.app/volunteers';
 
-const BASEURL = "https://tlc-two.vercel.app/volunteers"
-  
 export const volunteers = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters] = queryKey;
 
@@ -60,10 +59,7 @@ export const inviteVolunteer = async function (data) {
 export const getVolunteer = async function ({ signal, queryKey }) {
   const [email] = queryKey;
 
-  const res = await fetch(
-    `${BASEURL}/${email}/details`,
-    signal
-  );
+  const res = await fetch(`${BASEURL}/${email}/details`, signal);
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');

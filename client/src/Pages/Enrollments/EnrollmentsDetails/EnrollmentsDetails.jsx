@@ -22,7 +22,6 @@ import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { enrollPageWorkshopColDEf } from '../coldefs/coldefs';
-
 import { getLocationData } from '../../../apis/global';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getEnrollment } from '../../../apis/enrollments';
@@ -89,13 +88,9 @@ function EnrollmentsDetails() {
     }
   }, [city]);
 
-  const { data, isPending, isError, error } = useReactQuery(
-    [id],
-    getEnrollment,
-    {
-      enabled: viewType !== 'create',
-    }
-  );
+  const { data, isPending, isError } = useReactQuery([id], getEnrollment, {
+    enabled: viewType !== 'create',
+  });
 
   const enrollment = data?.data;
 
@@ -135,7 +130,7 @@ function EnrollmentsDetails() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -223,6 +218,13 @@ function EnrollmentsDetails() {
       {isPending && viewType !== 'create' && (
         <Box className={classes.loader}>
           <CircularProgress />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.loader}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
         </Box>
       )}
       {(viewType === 'create' || data) && (
@@ -426,11 +428,13 @@ function EnrollmentsDetails() {
                   </Button>
                 )}
               </Box>
-              <AddChildPopup
-                openChild={openChild}
-                handleCloseOpenChild={handleCloseOpenChild}
-                closePopupAndSetRows={closePopupAndSetRows}
-              />
+              {openChild && (
+                <AddChildPopup
+                  openChild={openChild}
+                  handleCloseOpenChild={handleCloseOpenChild}
+                  closePopupAndSetRows={closePopupAndSetRows}
+                />
+              )}
 
               <Box className={classes.AccordionContainer}>
                 <AccordionTable

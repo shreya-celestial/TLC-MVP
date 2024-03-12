@@ -40,7 +40,6 @@ const Workshops = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [filters, setFilters] = useState({});
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -71,7 +70,7 @@ const Workshops = () => {
   const [debouncedSearch, setDebouncedValue] = useState('');
   const [clickedCountDetails, setClickedCountDetails] = useState();
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -287,6 +286,7 @@ const Workshops = () => {
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
             showDetails={showDetails}
+            isError={isError}
           />
         </Box>
         <PaginationComp

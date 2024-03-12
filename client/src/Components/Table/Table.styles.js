@@ -31,6 +31,11 @@ export const useStyles = makeStyles((theme) => ({
     '& svg': {
       color: theme.palette.primaryGreen,
     },
+    '& .errorMessage': {
+      color: '#6C6C6C',
+      fontSize: '14px',
+      fontWeight: '500',
+    },
   },
   AgGridMain: {
     '& .ag-root-wrapper': {
@@ -90,5 +95,11 @@ export const useStyles = makeStyles((theme) => ({
   count: {
     color: '#4e73be',
     cursor: 'pointer',
+  },
+
+  errorMessage: {
+    color: '#6C6C6C',
+    fontSize: '12px',
+    fontWeight: '500',
   },
 }));

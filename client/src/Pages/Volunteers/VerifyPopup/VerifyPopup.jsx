@@ -34,7 +34,7 @@ function VerifyPopup({
     setAlertType(undefined);
   };
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: verifyVolunteer,
     onSuccess: (data) => {
       if (data.status === 'error') {
@@ -47,10 +47,9 @@ function VerifyPopup({
       }
     },
     onError: (error) => {
-      alert(error.info.message);
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });

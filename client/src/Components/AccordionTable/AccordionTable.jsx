@@ -195,7 +195,6 @@ function AccordionTable({
       : headingName === 'Workshops'
       ? workShopColDef
       : MeetingCustomColDef;
-  console.log(headingName);
 
   return (
     <Accordion className={classes.accordion}>

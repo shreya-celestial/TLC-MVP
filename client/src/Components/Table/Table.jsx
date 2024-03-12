@@ -11,6 +11,7 @@ const Table = ({
   showVerifyStatus,
   colDefs,
   showDetails,
+  isError,
 }) => {
   let rowData;
   if (data) rowData = data;
@@ -96,6 +97,13 @@ const Table = ({
       {isPending && (
         <Box className={classes.tableSkeleton}>
           <CircularProgress className="circularProgress" />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.tableSkeleton}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
         </Box>
       )}
       {data && (

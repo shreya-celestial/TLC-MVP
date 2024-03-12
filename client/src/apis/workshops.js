@@ -68,8 +68,8 @@ export const deleteWorkshops = async function (data) {
     error.info = await res.json();
     throw error;
   }
-
   const resData = await res.json();
+
   return resData;
 };
 

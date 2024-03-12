@@ -73,7 +73,7 @@ const Enrollments = () => {
   const [genderDropdown, setGenderDropdown] = useState('all');
   const [clickedCountDetails, setClickedCountDetails] = useState();
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -273,6 +273,7 @@ const Enrollments = () => {
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
             showDetails={showDetails}
+            isError={isError}
           />
         </Box>
         <PaginationComp

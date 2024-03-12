@@ -125,7 +125,13 @@ function AutocompletePopup({
 
         <FormControl className={classes.formControl}>
           <FormLabel>Search {mode}</FormLabel>
+          {isError && (
+            <Typography variant="body2" color="error">
+              Cannot fetch data
+            </Typography>
+          )}
           <Autocomplete
+            loading={isPending}
             options={
               mode === 'Meetings'
                 ? meetingsOptions

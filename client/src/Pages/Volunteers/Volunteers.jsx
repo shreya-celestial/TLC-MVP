@@ -73,7 +73,7 @@ const Volunteers = () => {
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -298,6 +298,7 @@ const Volunteers = () => {
             updateSelectedRows={updateSelectedRows}
             data={data?.data?.users}
             isPending={isPending}
+            isError={isError}
             showVerifyStatus={showVerifyStatus}
           />
         </Box>
