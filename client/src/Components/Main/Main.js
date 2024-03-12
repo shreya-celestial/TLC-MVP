@@ -21,6 +21,7 @@ import Meetings from '../../Pages/Meetings/Meetings';
 import Enrollments from '../../Pages/Enrollments/Enrollments';
 import UserContext from '../../store/userContext';
 import { logStatus } from '../../apis/user';
+import ErrorPage from '../../Pages/ErrorPage/ErrorPage';
 
 let SESSIONUSER = localStorage.getItem('keys');
 SESSIONUSER = SESSIONUSER ? JSON.parse(SESSIONUSER) : null
@@ -42,8 +43,10 @@ function Main() {
         localStorage.setItem('keys', JSON.stringify(keys))
         return
       }
-      setError(userData?.message)
-      localStorage.clear()
+      setError(() => {
+        localStorage.clear()
+        return userData?.message
+      })
     }
     if (SESSIONUSER) {
       const { id: email, key } = SESSIONUSER
@@ -64,15 +67,15 @@ function Main() {
             {!user && !loader && <Route exact path="/signup" element={<Signup />} />}
             {!user && !loader && <Route exact path="/forgotPass" element={<ForgetPassword />} />}
             {!user && !loader && <Route exact path="/resetPass" element={<ResetPassword />} />}
-            {!user && !loader && <Route exact path='*' element={<>Error</>} />}
+            {!user && !loader && <Route exact path='*' element={<ErrorPage />} />}
             {loader && !error && <Route exact path='*' element={<>Loading...</>} />}
-            {loader && error && <Route exact path='*' element={<>{error} <a href='/'>Click</a></>} />}
+            {loader && error && <Route exact path='*' element={<ErrorPage>{error}</ErrorPage>} />}
             {user && !loader && <Route exact path="/" element={<Dashboard />} />}
             {user && !loader && <Route exact path="/dashboard" element={<Dashboard />} />}
             {user && !loader && <Route exact path="/volunteers" element={<Volunteers />} />}
             {user && !loader && <Route
               exact
-              path="/volunteerdetail/:email/:type"
+              path="/volunteers/detail/:email/:type"
               element={<VolunteerDetails />}
             />}
             {user && !loader && <Route exact path="/delete" element={<DeletePopup />} />}
@@ -81,12 +84,12 @@ function Main() {
             {user && !loader && <Route exact path="/workshops" element={<Workshops />} />}
             {user && !loader && <Route
               exact
-              path="/workshopdetail/:id/:type"
+              path="/workshops/detail/:id/:type"
               element={<WorkshopsDetails />}
             />}
             {user && !loader && <Route
               exact
-              path="/workshopdetail/:type"
+              path="/workshops/detail/:type"
               element={<WorkshopsDetails />}
             />}
             {user && !loader && <Route exact path="/autocomplete" element={<AutocompletePopup />} />}
@@ -94,26 +97,26 @@ function Main() {
             {user && !loader && <Route exact path="/meetings" element={<Meetings />} />}
             {user && !loader && <Route
               exact
-              path="/meetingdetails/:id/:type"
+              path="/meetings/details/:id/:type"
               element={<MeetingsDetails />}
             />}
             {user && !loader && <Route
               exact
-              path="/meetingdetails/:type"
+              path="/meetings/details/:type"
               element={<MeetingsDetails />}
             />}
             {user && !loader && <Route
               exact
-              path="/enrollmentdetails/:id/:type"
+              path="/enrollments/details/:id/:type"
               element={<EnrollmentsDetails />}
             />}
             {user && !loader && <Route
               exact
-              path="/enrollmentdetails/:type"
+              path="/enrollments/details/:type"
               element={<EnrollmentsDetails />}
             />}
             {user && !loader && <Route exact path="/enrollments" element={<Enrollments />} />}
-            {user && !loader && <Route exact path='*' element={<>Error</>} />}
+            {user && !loader && <Route exact path='*' element={<ErrorPage />} />}
           </Routes>
         </Wrapper>
       </BrowserRouter>

@@ -101,7 +101,7 @@ const Enrollments = () => {
     setGenderDropdown('all');
   };
 
- 
+
 
   return (
     <Box className={classes.root}>
@@ -125,7 +125,7 @@ const Enrollments = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/enrollmentdetails/${selectedRows[0].id}/edit`);
+                  navigate(`/enrollments/details/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -134,7 +134,7 @@ const Enrollments = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/enrollmentdetails/${selectedRows[0].id}/view`);
+                  navigate(`/enrollments/details/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -146,7 +146,7 @@ const Enrollments = () => {
               className="createEnrollBtn"
               disableRipple
               onClick={() => {
-                navigate(`/enrollmentdetails/create`);
+                navigate(`/enrollments/details/create`);
               }}
             >
               Create Enrollment

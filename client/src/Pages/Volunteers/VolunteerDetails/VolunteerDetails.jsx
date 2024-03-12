@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -20,7 +20,7 @@ import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { meetingRowData, workShopRowData } from './DummyHistoryData';
 import { workShopColDef, meetingColDef } from '../coldefs/coldefs';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { getVolunteer } from '../../../apis/volunteers';
 import { useReactQuery } from '../../../hooks/useReactQuery';
@@ -29,12 +29,15 @@ import dayjs from 'dayjs';
 import { useMutation } from '@tanstack/react-query';
 import { updateVolunteerRole } from '../../../apis/volunteers';
 import AlertReact from '../../../Components/Alert/AlertReact';
+import UserContext from '../../../store/userContext';
 
 function VolunteerDetails() {
   const classes = useStyles();
   let isView;
 
   const isAdmin = true;
+  const { user } = useContext(UserContext)
+  const nav = useNavigate()
 
   const { email, type } = useParams();
 
@@ -83,6 +86,29 @@ function VolunteerDetails() {
     mutate({ email, isAdmin: role === 'admin' ? 'true' : 'false' });
   };
 
+  useEffect(() => {
+    if (type !== 'edit' && type !== 'view') {
+      nav('/volunteers');
+    }
+    if (type === 'view') {
+      isView = true;
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (!user?.isAdmin && type !== 'view') {
+      nav('/volunteers')
+    }
+  }, [user, type])
+
+  if (type !== 'edit' && type !== 'view') {
+    return;
+  }
+
+  if (!user?.isAdmin && type !== 'view') {
+    return;
+  }
+
   return (
     <>
       {isPending && (
@@ -107,8 +133,8 @@ function VolunteerDetails() {
                 type === 'edit'
                   ? 'Edit Volunteer'
                   : type === 'view'
-                  ? 'View Volunteer'
-                  : ''
+                    ? 'View Volunteer'
+                    : ''
               }
               prevPage={'volunteers'}
               path={'volunteers'}
@@ -311,7 +337,7 @@ function VolunteerDetails() {
           </Box>
 
           {/* action bar  */}
-          <Box className={classes.actionBar}>
+          {user?.isAdmin && <Box className={classes.actionBar}>
             <Button disableTouchRipple className="cancelBtn">
               Cancel
             </Button>
@@ -328,7 +354,7 @@ function VolunteerDetails() {
                 {isPendingMutation ? 'Loading...' : 'Save'}
               </Button>
             )}
-          </Box>
+          </Box>}
         </Box>
       )}
     </>

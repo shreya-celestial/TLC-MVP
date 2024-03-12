@@ -172,7 +172,7 @@ function EnrollmentsDetails() {
 
   useEffect(() => {
     if (type !== 'create' && type !== 'edit' && type !== 'view') {
-      nav('/dashboard');
+      nav('/enrollments');
     }
     if (type === 'view') {
       setIsView(true);

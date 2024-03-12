@@ -140,7 +140,7 @@ function Login() {
             </Box>
           </form>
 
-          <Divider sx={{ fontSize: '12px' }}>OR</Divider>
+          {/* <Divider sx={{ fontSize: '12px' }}>OR</Divider>
           <Button
             startIcon={<GoogleIcon />}
             disableRipple
@@ -148,7 +148,7 @@ function Login() {
             onClick={() => alert('login with google')}
           >
             Continue with Google
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </Box>

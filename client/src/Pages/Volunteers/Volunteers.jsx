@@ -13,7 +13,7 @@ import {
 import { useStyles } from './Volunteers.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { volunteers } from '../../apis/volunteers';
 import PaginationComp from '../../Components/Table/PaginationComp';
@@ -29,10 +29,13 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
+import UserContext from '../../store/userContext';
 
 const Volunteers = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const { user } = useContext(UserContext)
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
@@ -112,7 +115,7 @@ const Volunteers = () => {
         <Typography component="h1">Volunteers</Typography>
 
         <Box className={classes.ActionBtn}>
-          {selectedRows.length >= 1 && (
+          {user?.isAdmin && selectedRows.length >= 1 && (
             <Button
               className="deleteBtn"
               disableRipple
@@ -125,27 +128,27 @@ const Volunteers = () => {
           )}
           {selectedRows.length === 1 && (
             <>
-              <Button
+              {user?.isAdmin && <Button
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/volunteerdetail/${selectedRows[0].email}/edit`);
+                  navigate(`/volunteers/detail/${selectedRows[0].email}/edit`);
                 }}
               >
                 Edit
-              </Button>
+              </Button>}
               <Button
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/volunteerdetail/${selectedRows[0].email}/view`);
+                  navigate(`/volunteers/detail/${selectedRows[0].email}/view`);
                 }}
               >
                 View
               </Button>
             </>
           )}
-          {selectedRows.length === 0 && (
+          {user?.isAdmin && selectedRows.length === 0 && (
             <Button
               className="inviteBtn"
               disableRipple

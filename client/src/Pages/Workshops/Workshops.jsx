@@ -20,7 +20,7 @@ import { useStyles } from './Workshops.styles';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import PaginationComp from '../../Components/Table/PaginationComp';
 
@@ -34,10 +34,13 @@ import DeletePopup from '../../Components/DeletePopup/DeletePopup';
 import dayjs from 'dayjs';
 import { FilterTheme } from './FilterTheme';
 import InfoTable from '../../Components/InfoTable/InfoTable';
+import UserContext from '../../store/userContext';
 
 const Workshops = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const { user } = useContext(UserContext)
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -100,7 +103,7 @@ const Workshops = () => {
       <Box className={classes.HeadingAndActionBtn}>
         <Typography component="h1">Workshops</Typography>
         <Box className={classes.ActionBtn}>
-          {selectedRows.length >= 1 && (
+          {user?.isAdmin && selectedRows.length >= 1 && (
             <Button
               onClick={() => {
                 setShowDeleteModal(true);
@@ -113,18 +116,18 @@ const Workshops = () => {
           )}
           {selectedRows.length === 1 && (
             <>
-              <Button
+              {user?.isAdmin && <Button
                 onClick={() => {
-                  navigate(`/workshopdetail/${selectedRows[0].id}/edit`);
+                  navigate(`/workshops/detail/${selectedRows[0].id}/edit`);
                 }}
                 className="editBtn"
                 disableRipple
               >
                 Edit
-              </Button>
+              </Button>}
               <Button
                 onClick={() => {
-                  navigate(`/workshopdetail/${selectedRows[0].id}/view`);
+                  navigate(`/workshops/detail/${selectedRows[0].id}/view`);
                 }}
                 className="viewBtn"
                 disableRipple
@@ -133,10 +136,10 @@ const Workshops = () => {
               </Button>
             </>
           )}
-          {selectedRows.length === 0 && (
+          {user?.isAdmin && selectedRows.length === 0 && (
             <Button
               onClick={() => {
-                navigate(`/workshopdetail/create`);
+                navigate(`/workshops/detail/create`);
               }}
               className="createWorkshopBtn"
               disableRipple
