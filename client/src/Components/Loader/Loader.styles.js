@@ -4,8 +4,9 @@ export const useStyles = makeStyles((theme) => ({
   loaderRoot: {
     '&.MuiBackdrop-root': {
       zIndex: '1500',
+      backgroundColor: '#FFFFFF',
       '& svg': {
-        color: '#2F2F2F',
+        color: '#259311',
       },
     },
   },

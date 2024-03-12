@@ -22,6 +22,7 @@ import Enrollments from '../../Pages/Enrollments/Enrollments';
 import UserContext from '../../store/userContext';
 import { logStatus } from '../../apis/user';
 import ErrorPage from '../../Pages/ErrorPage/ErrorPage';
+import Loader from '../Loader/Loader';
 
 let SESSIONUSER = localStorage.getItem('keys');
 SESSIONUSER = SESSIONUSER ? JSON.parse(SESSIONUSER) : null
@@ -68,7 +69,7 @@ function Main() {
             {!user && !loader && <Route exact path="/forgotPass" element={<ForgetPassword />} />}
             {!user && !loader && <Route exact path="/resetPass" element={<ResetPassword />} />}
             {!user && !loader && <Route exact path='*' element={<ErrorPage />} />}
-            {loader && !error && <Route exact path='*' element={<>Loading...</>} />}
+            {loader && !error && <Route exact path='*' element={<Loader />} />}
             {loader && error && <Route exact path='*' element={<ErrorPage>{error}</ErrorPage>} />}
             {user && !loader && <Route exact path="/" element={<Dashboard />} />}
             {user && !loader && <Route exact path="/dashboard" element={<Dashboard />} />}

@@ -57,13 +57,14 @@ function ForgetPassword() {
           message: 'Please enter a valid email.',
         });
       }
-
+      setStatus('Loading')
       const data = await forgotPass(body);
       if (data?.status === 'error') {
         setAlertType({
           type: 'error',
           message: data.message,
         });
+        setTimer(0)
       }
       if (data?.status === 'success') {
         setAlertType({
@@ -71,9 +72,11 @@ function ForgetPassword() {
           message: data.message,
         });
       }
+      setStatus(null)
     };
     verify(e);
   }
+
   function Throttle(e, fun, delay) {
     return () => {
       if (isThrottle) {
@@ -128,7 +131,7 @@ function ForgetPassword() {
               className={classes.verifyBtn}
               disabled={disableBtn}
             >
-              {disableBtn ? `Resend in ${timer} seconds` : 'Verify'}
+              {status ? 'Loading...' : disableBtn ? `Resend in ${timer} seconds` : 'Verify'}
             </Button>
 
             <Link to={'/'} className="backToLogin">
