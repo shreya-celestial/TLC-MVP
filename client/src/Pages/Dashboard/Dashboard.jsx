@@ -9,37 +9,11 @@ import { ReactComponent as WorkshopColorIcon } from '../.././assets/Icons/worksh
 import UpcomingWorkshop from '../../Components/UpcomingWorkshop/UpcomingWorkshop';
 import DoughnutChart from './Charts/DonutChart/DoughnutChart';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { dashboardDetails } from '../../apis/dashboard';
-const upcominWorkshops = [
-  {
-    title: 'Confidence, Power and Excellence',
-    startDate: '2024-03-10',
-    endDate: '2024-03-20',
-    location: 'Pune',
-  },
-  {
-    title: 'Confidence, Power and Excellence',
-    startDate: '2024-03-10',
-    endDate: '2024-03-20',
-    location: 'Pune',
-  },
-  {
-    title: 'Confidence, Power and Excellence',
-    startDate: '2024-03-10',
-    endDate: '2024-03-20',
-    location: 'Pune',
-  },
-  {
-    title: 'Confidence, Power and Excellence',
-    startDate: '2024-03-10',
-    endDate: '2024-03-20',
-    location: 'Pune',
-  },
-];
+import { dashboardDetails, dashboardWorkshops } from '../../apis/dashboard';
 
 const Dashboard = () => {
   const { data, isPending } = useReactQuery([(new Date()).getSeconds()], dashboardDetails)
-  console.log(data)
+  const { data: wkshps, isPending: isLoading } = useReactQuery([(new Date()).getSeconds() + 'wkshps'], dashboardWorkshops)
   const classes = useStyles();
   const smallCardData = [
     {
@@ -104,15 +78,16 @@ const Dashboard = () => {
         <Box className={classes.bigCard}>
           <Typography className="bigCardHeading">Upcoming Workshops</Typography>
           <Box className={classes.upcominWorkshops}>
-            {upcominWorkshops.map((workshop, index) => (
+            {wkshps?.data?.workshops?.map((workshop) => (
               <UpcomingWorkshop
-                key={index}
-                title={workshop.title}
-                startDate={workshop.startDate}
-                endDate={workshop.endDate}
-                location={workshop.location}
+                key={workshop?.id}
+                title={workshop?.types}
+                startDate={workshop?.start_date}
+                endDate={workshop?.end_date}
+                location={workshop?.venue_city}
               />
             ))}
+            {!wkshps && isLoading && <p>Loading...</p>}
           </Box>
         </Box>
       </Box>
