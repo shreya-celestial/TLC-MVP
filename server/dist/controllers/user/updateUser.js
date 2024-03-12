@@ -12,26 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const crypto_js_1 = __importDefault(require("crypto-js"));
+const global_1 = require("../../utils/global");
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
-const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
-    const password = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
-    const variables = {
-        token: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.token,
-        password: password.toString(),
-        tokenUpdated: null,
-        isPassToBeReset: false
-    };
-    const data = yield (0, getData_1.default)(mutations_1.VerifyAndUpdatePass, variables);
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c;
+    const { email } = req === null || req === void 0 ? void 0 : req.params;
+    const variables = Object.assign(Object.assign({}, req === null || req === void 0 ? void 0 : req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: email.toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob) });
+    const data = yield (0, getData_1.default)(mutations_1.updateUserByEmail, variables);
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_b = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _b === void 0 ? void 0 : _b.message,
+            message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message,
         });
     }
-    if (!((_d = (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.update_users) === null || _d === void 0 ? void 0 : _d.affected_rows)) {
+    if (!((_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.update_users) === null || _c === void 0 ? void 0 : _c.affected_rows)) {
         return res.status(404).json({
             status: 'error',
             message: 'User not found!',
@@ -39,7 +34,7 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return res.status(200).json({
         status: 'success',
-        message: 'Password reset successful!'
+        message: 'User updated successfully!'
     });
 });
-exports.default = resetPass;
+exports.default = updateUser;
