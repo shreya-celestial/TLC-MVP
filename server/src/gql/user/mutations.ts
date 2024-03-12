@@ -90,3 +90,11 @@ export const verifyAndUpdateKey = `
     }
   }
 `;
+
+export const updateUserByEmail = `
+  mutation MyMutation($email: String!, $city: String!, $dob: date!, $gender: String!, $location: String!, $name: String!, $phoneNumber: String!, $pincode: Int!, $yearOfJoining: Int!, $state: String!) {
+    update_users(where: {email: {_eq: $email}, isVerified: {_eq: true}, isAdminVerified: {_eq: true}}, _set: {city: $city, dob: $dob, gender: $gender, location: $location, name: $name, phoneNumber: $phoneNumber, pincode: $pincode, yearOfJoining: $yearOfJoining, state: $state}) {
+      affected_rows
+    }
+  }
+`;
