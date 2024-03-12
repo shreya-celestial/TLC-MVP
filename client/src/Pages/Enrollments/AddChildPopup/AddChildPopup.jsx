@@ -35,8 +35,6 @@ function AddChildPopup({
   const [gender, setGender] = useState('male');
   const [dob, setDob] = useState();
 
-  console.log(dob);
-
   return (
     <Dialog open={openChild} className={classes.Dialog}>
       <DialogTitle className={classes.TitleAndClose}>
@@ -93,7 +91,7 @@ function AddChildPopup({
               >
                 <DatePicker
                   name="dateofbirth"
-                  value={dayjs(dob)}
+                  value={dob ? dayjs(dob) : ''}
                   onChange={(date) =>
                     setDob(new Date(date).toISOString().split('T')[0])
                   }
