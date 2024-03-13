@@ -22,6 +22,7 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../../store/userContext';
 import { logStatus } from '../../apis/user';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const Navbar = ({ handleSidebarOpen }) => {
   const { user, setUser } = useContext(UserContext);
   const nav = useNavigate();
@@ -55,7 +56,6 @@ const Navbar = ({ handleSidebarOpen }) => {
   } else if (userFullName.length == 1) {
     userName = userFullName[0].substring(0, 1);
   }
- 
 
   return (
     <AppBar className={classes.root}>
@@ -96,10 +96,19 @@ const Navbar = ({ handleSidebarOpen }) => {
             className={classes.profileDropdown}
           >
             <ListItem>
+              <ListItemButton LinkComponent={Link} to={'/'} disableRipple>
+                <ListItemIcon>
+                  <EditOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText>Edit Profile</ListItemText>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
               <ListItemButton
                 LinkComponent={Link}
                 to={'/'}
                 onClick={handleLogout}
+                disableRipple
               >
                 <ListItemIcon>
                   <LogoutOutlinedIcon />

@@ -36,9 +36,9 @@ function Login() {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      if (data.status === 'error') {
+      if (data.status === 'error' || data?.message === 'Please provide email and password!') {
         setAlertType({
-          type: data.status,
+          type: data.status || 'error',
           message: data.message,
         });
       } else {
@@ -91,6 +91,7 @@ function Login() {
                 id="emailField"
                 placeholder="Enter Your Email Address"
                 name="email"
+                required
               />
             </FormControl>
             <Box className={classes.FormElementInBox}>
@@ -101,6 +102,7 @@ function Login() {
                   placeholder="Enter Your Password"
                   id="passwordField"
                   name="password"
+                  required
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">

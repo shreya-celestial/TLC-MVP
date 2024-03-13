@@ -52,27 +52,13 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: { width: '738px' },
   },
 
-  signUpBtn: {
-    height: '40px',
-    borderRadius: '5px !important',
-    textTransform: 'capitalize !important',
-    backgroundColor: '#259311 !important',
-    color: '#ffffff !important',
-    fontWeight: '400 !important',
-
-    '&:hover': {
-      [theme.breakpoints.up('md')]: {
-        opacity: '.9',
-      },
-    },
-  },
   signUpBtn_loginLink: {
     display: 'flex',
     flexDirection: 'column',
     gap: '15px',
   },
   loginLink: {
-    fontSize: '14px !important',
+    fontSize: '12px !important',
     fontWeight: '500 !important',
     textAlign: 'center',
     '& .login': { textDecoration: 'none', color: '#4E73BE' },
