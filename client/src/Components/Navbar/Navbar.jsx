@@ -70,7 +70,7 @@ const Navbar = ({ handleSidebarOpen }) => {
               {!isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
             </IconButton>
           )}
-          <img src={logo} loading="lazy" alt="The Last Center" />
+          <img src={logo} loading="lazy" alt="The Last Center" style={{ cursor: 'pointer' }} onClick={() => { nav('/dashboard') }} />
         </Box>
         <Box className={classes.profile}>
           <Avatar>{userName}</Avatar>
@@ -96,7 +96,7 @@ const Navbar = ({ handleSidebarOpen }) => {
             className={classes.profileDropdown}
           >
             <ListItem>
-              <ListItemButton LinkComponent={Link} to={'/'} disableRipple>
+              <ListItemButton LinkComponent={Link} to={'/editprofile'} disableRipple onClick={() => setProfileAnchorEl(null)}>
                 <ListItemIcon>
                   <EditOutlinedIcon />
                 </ListItemIcon>
