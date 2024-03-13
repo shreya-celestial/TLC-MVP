@@ -119,6 +119,10 @@ const Workshops = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, pastOrUpcoming, startDate, endDate]);
+
+  useEffect(() => {
     if (createSuccess === 'success') {
       setAlertType({
         type: 'success',
@@ -319,6 +323,7 @@ const Workshops = () => {
           totalPages={data?.data?.total_pages}
           updateRowsPerPage={updateRowsPerPage}
           currentPage={currentPage}
+          isPending={isPending}
         />
       </Box>
     </Box>

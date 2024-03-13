@@ -119,6 +119,10 @@ const Enrollments = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, genderDropdown]);
+
+  useEffect(() => {
     if (createSuccess === 'success') {
       setAlertType({
         type: 'success',
@@ -301,6 +305,7 @@ const Enrollments = () => {
           totalPages={data?.data?.total_pages}
           updateRowsPerPage={updateRowsPerPage}
           currentPage={currentPage}
+          isPending={isPending}
         />
       </Box>
     </Box>

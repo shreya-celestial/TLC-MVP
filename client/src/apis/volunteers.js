@@ -1,7 +1,7 @@
 const BASEURL = 'https://tlc-two.vercel.app/volunteers';
 
 export const volunteers = async function ({ signal, queryKey }) {
-  const [page, noOfRecords, filters] = queryKey;
+  let [page, noOfRecords, filters] = queryKey;
 
   for (const key in filters) {
     if (

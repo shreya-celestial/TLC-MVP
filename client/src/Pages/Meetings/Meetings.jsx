@@ -127,6 +127,10 @@ const Meetings = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, startDate, endDate]);
+
+  useEffect(() => {
     if (createSuccess === 'success') {
       setAlertType({
         type: 'success',
@@ -316,6 +320,7 @@ const Meetings = () => {
           totalPages={data?.data?.total_pages}
           updateRowsPerPage={updateRowsPerPage}
           currentPage={currentPage}
+          isPending={isPending}
         />
       </Box>
     </Box>
