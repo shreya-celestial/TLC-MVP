@@ -144,7 +144,7 @@ const Meetings = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/meetingdetails/${selectedRows[0].id}/edit`);
+                  navigate(`/meetings/details/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -153,7 +153,7 @@ const Meetings = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/meetingdetails/${selectedRows[0].id}/view`);
+                  navigate(`/meetings/details/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -165,7 +165,7 @@ const Meetings = () => {
               className="createMeetingBtn"
               disableRipple
               onClick={() => {
-                navigate(`/meetingdetails/create`);
+                navigate(`/meetings/details/create`);
               }}
             >
               Create Meeting

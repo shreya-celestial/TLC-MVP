@@ -101,7 +101,7 @@ function AddChildPopup({
               >
                 <DatePicker
                   name="dateofbirth"
-                  value={dayjs(dob)}
+                  value={dob ? dayjs(dob) : ''}
                   onChange={(date) =>
                     setDob(new Date(date).toISOString().split('T')[0])
                   }

@@ -14,5 +14,5 @@ export const useStyles = makeStyles((theme) => ({
     '&::-webkit-scrollbar': {
       display: 'none',
     },
-  },
+  }
 }));

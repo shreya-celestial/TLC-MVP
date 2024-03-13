@@ -126,8 +126,16 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '15px',
   },
-  disabled: {
-    // backgroundColor: 'gray',
-    // color: 'black',
-  },
+  borderClass: {
+    border: '1px solid #C6C6C6',
+    height: '40px',
+    fontSize: '14px',
+    fontWeight: '400',
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: '10px',
+    borderRadius: '5px',
+    background: '#E0E0E0',
+    color: '#696969'
+  }
 }));

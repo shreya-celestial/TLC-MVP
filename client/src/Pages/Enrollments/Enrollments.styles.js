@@ -50,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
     '& button.editBtn': {
       background: `${theme.palette.primaryBlue}`,
     },
-    '& button.inviteBtn': {
+    '& button.createEnrollBtn': {
       background: `${theme.palette.primaryGreen}`,
     },
   },

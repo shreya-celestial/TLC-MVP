@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -18,6 +18,9 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerDetails.styles';
 import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
+import { meetingRowData, workShopRowData } from './DummyHistoryData';
+import { workShopColDef, meetingColDef } from '../coldefs/coldefs';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   workshopColDefVolunteersPage,
   meetingsColDefVolunteersPage,
@@ -31,12 +34,15 @@ import dayjs from 'dayjs';
 import { useMutation } from '@tanstack/react-query';
 import { updateVolunteerRole } from '../../../apis/volunteers';
 import AlertReact from '../../../Components/Alert/AlertReact';
+import UserContext from '../../../store/userContext';
 
 function VolunteerDetails() {
   const classes = useStyles();
   const [isView, setIsView] = useState();
 
   const isAdmin = true;
+  const { user } = useContext(UserContext);
+  const nav = useNavigate();
 
   const { email, type } = useParams();
 
@@ -114,6 +120,29 @@ function VolunteerDetails() {
       );
     }
   }, [data]);
+
+  useEffect(() => {
+    if (type !== 'edit' && type !== 'view') {
+      nav('/volunteers');
+    }
+    if (type === 'view') {
+      isView = true;
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (!user?.isAdmin && type !== 'view') {
+      nav('/volunteers');
+    }
+  }, [user, type]);
+
+  if (type !== 'edit' && type !== 'view') {
+    return;
+  }
+
+  if (!user?.isAdmin && type !== 'view') {
+    return;
+  }
 
   return (
     <>
@@ -352,28 +381,30 @@ function VolunteerDetails() {
           </Box>
 
           {/* action bar  */}
-          <Box className={classes.actionBar}>
-            <Button disableTouchRipple className="cancelBtn">
-              Cancel
-            </Button>
-            {isView ? (
-              <Button
-                disableTouchRipple
-                className="editBtn"
-                onClick={() => setIsView(false)}
-              >
-                Edit
+          {user?.isAdmin && (
+            <Box className={classes.actionBar}>
+              <Button disableTouchRipple className="cancelBtn">
+                Cancel
               </Button>
-            ) : (
-              <Button
-                disableTouchRipple
-                className="saveBtn"
-                onClick={saveVolunteer}
-              >
-                {isPendingMutation ? 'Loading...' : 'Save'}
-              </Button>
-            )}
-          </Box>
+              {isView ? (
+                <Button
+                  disableTouchRipple
+                  className="editBtn"
+                  onClick={() => setIsView(false)}
+                >
+                  Edit
+                </Button>
+              ) : (
+                <Button
+                  disableTouchRipple
+                  className="saveBtn"
+                  onClick={saveVolunteer}
+                >
+                  {isPendingMutation ? 'Loading...' : 'Save'}
+                </Button>
+              )}
+            </Box>
+          )}
         </Box>
       )}
     </>

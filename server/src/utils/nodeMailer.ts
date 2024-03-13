@@ -1,7 +1,7 @@
 import { createTransport } from "nodemailer";
 
 const authMail = {
-  user: 'gaurav.yadav@celestialsys.com',
+  user: 'infotech@thelastcentre.com',
   pass: process.env.MAIL_API_KEY
 }
 
