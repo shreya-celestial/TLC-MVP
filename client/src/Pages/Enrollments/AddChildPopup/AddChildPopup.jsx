@@ -131,6 +131,7 @@ function AddChildPopup({
                 name,
                 gender,
                 dob,
+                id: Math.random(),
               });
             }
           }}

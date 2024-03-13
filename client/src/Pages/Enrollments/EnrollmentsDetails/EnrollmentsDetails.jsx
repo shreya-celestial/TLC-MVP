@@ -151,10 +151,13 @@ function EnrollmentsDetails() {
   };
 
   const closePopupAndSetRows = (data) => {
-    setChildrenRowData((prev) => {
-      return [...prev, data];
-    });
     setOpenChild(false);
+    if (data) {
+      setChildrenRowData((prev) => {
+        return [...prev, data];
+      });
+      setOpenChild(false);
+    }
   };
 
   useEffect(() => {
@@ -175,6 +178,8 @@ function EnrollmentsDetails() {
     setViewType('edit');
   };
 
+  console.log(childrenRowData);
+
   const mutateEnrollmentHandler = function (type) {
     const body = {
       name,
@@ -186,7 +191,13 @@ function EnrollmentsDetails() {
       city,
       state,
       pincode,
-      children: childrenRowData,
+      children: childrenRowData.map((cr) => {
+        return {
+          name: cr.name,
+          gender: cr.gender,
+          dob: cr.dob,
+        };
+      }),
     };
 
     const isValid = validateEnrollment(body);
@@ -206,7 +217,7 @@ function EnrollmentsDetails() {
     setChildrenRowData((prev) => {
       const newData = prev.map((p) => {
         if (p.id === id)
-          return { name: data.name, gender: data.gender, dob: data.dob };
+          return { name: data.name, gender: data.gender, dob: data.dob, id };
         return p;
       });
       return newData;

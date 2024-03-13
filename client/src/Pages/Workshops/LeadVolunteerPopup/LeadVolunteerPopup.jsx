@@ -71,7 +71,6 @@ function LeadVolunteerPopup({
       setVolunteersList(filtered);
     }
   }, [data]);
-  console.log(isError, isPending);
 
   return (
     <Dialog open={openLeadPopup} className={classes.Dialog}>
