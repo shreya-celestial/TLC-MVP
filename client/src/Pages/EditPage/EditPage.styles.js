@@ -1,4 +1,5 @@
 import { makeStyles } from '@mui/styles';
+
 export const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
@@ -17,6 +18,10 @@ export const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       padding: '10px',
+    },
+    '& .editProfileHeading': {
+      fontSize: '18px',
+      fontWeight: '600',
     },
   },
   actionBar: {
@@ -38,20 +43,17 @@ export const useStyles = makeStyles((theme) => ({
       borderRadius: '5px',
       textTransform: 'capitalize',
       fontSize: '12px',
-      color: '#FFFFFF',
     },
-    '& button.cancelBtn': {
-      background: `${theme.palette.primaryGray}`,
+    '& .cancelBtn': {
+      background: `${theme.palette.primaryGray} !important`,
       color: theme.palette.text.primary,
     },
-    '& button.saveBtn': {
-      background: `${theme.palette.primaryGreen}`,
-    },
-    '& button.editBtn': {
-      background: `${theme.palette.primaryBlue}`,
+    '& .saveBtn': {
+      background: `${theme.palette.primaryGreen} !important`,
+      color: '#FFFFFF',
     },
   },
-
+  // main content
   mainContent: {
     width: '70%',
     display: 'flex',
@@ -64,6 +66,11 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
       fontWeight: '600',
     },
+  },
+  HeadingAndElementBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
   },
 
   formElementBox: {
@@ -78,10 +85,13 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     gap: '5px',
 
-    '& label.MuiFormLabel-root': {
+    '& label': {
       fontWeight: '500',
       fontSize: '14px',
-      color: '#2F2F2F',
+      color: '#2F2F2F !important',
+      '& .MuiFormLabel-asterisk': {
+        color: theme.palette.primaryGreen,
+      },
     },
     '& .MuiInputBase-formControl': {
       border: '1px solid #C6C6C6',
@@ -122,13 +132,20 @@ export const useStyles = makeStyles((theme) => ({
         },
       },
     },
+    // empty required field
+    '&.emptyField': {
+      '& .MuiInputBase-formControl': {
+        borderColor: '#C1423F',
+      },
+      '& .MuiFormLabel-asterisk': {
+        color: '#C1423F',
+      },
+    },
   },
   selectBox: {
-    '&.MuiInputBase-root': {
-      fontSize: '14px',
-      '& .MuiSelect-select': {
-        paddingLeft: '10px',
-      },
+    fontSize: '14px !important',
+    '& .MuiSelect-select': {
+      paddingLeft: '10px !important',
     },
     '& svg': {
       color: '#2F2F2F',
@@ -138,11 +155,9 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   selectDropdownMenu: {
-    '&.MuiPaper-root': {
-      maxHeight: '200px ',
-      borderRadius: '5px',
-      boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-    },
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px !important',
+    maxHeight: '200px !important',
+    borderRadius: '5px !important',
     [theme.breakpoints.down('sm')]: {
       transform: 'translateX(-8px) !important',
     },
@@ -152,8 +167,8 @@ export const useStyles = makeStyles((theme) => ({
       '& li': {
         padding: '5px 10px',
         fontSize: '14px',
-        '&.MuiMenuItem-root.Mui-selected': {
-          background: '#F2F3F4',
+        '&.Mui-selected': {
+          background: '#F2F3F4 !important',
         },
         '& span': {
           display: 'none',
@@ -161,93 +176,15 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
-
-  HeaderAndAccordionBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  HeaderAndBtn: {
-    height: '30px',
+  preFilled: {
+    border: '1px solid',
+    height: '40px',
+    borderRadius: '5px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    '& p': {
-      fontSize: '14px ',
-      fontWeight: '600',
-    },
-  },
-  addBtn: {
-    '&.MuiButtonBase-root': {
-      minWidth: '75px',
-      height: '30px',
-      padding: '0 10px',
-      borderRadius: '5px',
-      textTransform: 'capitalize',
-      fontSize: '12px',
-      background: `${theme.palette.primaryGreen} !important`,
-      color: '#ffffff',
-    },
-  },
-
-  autocomplete: {
-    '& .MuiAutocomplete-endAdornment button': {
-      padding: '0px',
-      fontSize: '20px',
-      '&:hover': {
-        background: 'transparent',
-      },
-
-      '& svg': {
-        color: '#2F2F2F',
-        fontSize: '20px',
-      },
-      '& span': {
-        display: 'none',
-      },
-    },
-  },
-
-  autocompleteTextField: {
-    '& .MuiInputBase-root.MuiOutlinedInput-root': {
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      '&.Mui-disabled': {
-        '& .MuiAutocomplete-endAdornment svg': {
-          color: '#696969',
-        },
-      },
-    },
-  },
-  //   autocomplete dropdown
-  customAutocompleteDropdown: {
-    '&.MuiPaper-rounded': {
-      boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px ',
-      maxHeight: '200px',
-      borderRadius: '5px',
-    },
-
-    '& ul': {
-      maxHeight: '200px',
-      padding: '5px 0px',
-    },
-    '& li': {
-      padding: '5px 10px',
-      fontSize: '14px',
-      '&.MuiAutocomplete-option[aria-selected="true"]': {
-        background: '#F2F3F4 !important',
-      },
-    },
-  },
-  notFound: {
-    color: '#2F2F2F',
-    fontSize: '12px !important',
-  },
-  workshopHistory: {
-    '& .historyHeading': {
-      fontSize: '14px',
-      fontWeight: '600',
-      marginBottom: '20px',
-    },
+    paddingLeft: '10px',
+    color: '#696969',
+    border: '1px solid #C6C6C6',
+    background: '#E0E0E0',
   },
 }));

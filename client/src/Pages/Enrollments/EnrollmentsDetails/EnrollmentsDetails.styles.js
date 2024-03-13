@@ -114,6 +114,9 @@ export const useStyles = makeStyles((theme) => ({
           height: '20px',
           color: '#2F2F2F',
         },
+        '& .MuiTouchRipple-root': {
+          display: 'none',
+        },
       },
       '&.Mui-disabled': {
         background: '#E0E0E0 !important',
@@ -204,5 +207,4 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: '20px',
     },
   },
-
 }));

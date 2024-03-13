@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   alert: {
     '&.MuiAlert-root': {
-      position: 'absolute',
+      position: 'fixed',
       top: '-100px',
       zIndex: '1600',
       left: '50%',

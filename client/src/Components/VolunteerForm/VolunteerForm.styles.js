@@ -68,6 +68,9 @@ export const useStyles = makeStyles((theme) => ({
           height: '20px',
           color: '#2F2F2F',
         },
+        '& .MuiTouchRipple-root': {
+          display: 'none',
+        },
       },
     },
   },
@@ -136,6 +139,6 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: '10px',
     borderRadius: '5px',
     background: '#E0E0E0',
-    color: '#696969'
-  }
+    color: '#696969',
+  },
 }));

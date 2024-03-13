@@ -189,6 +189,9 @@ export const useStyles = makeStyles((theme) => ({
           fontSize: '16px',
           color: '#2F2F2F',
         },
+        '& .MuiTouchRipple-root': {
+          display: 'none',
+        },
       },
     },
   },
