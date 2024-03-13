@@ -297,8 +297,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                    ? 'Edit Workshop'
-                    : 'Create Workshop'
+                  ? 'Edit Workshop'
+                  : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}
@@ -306,7 +306,7 @@ function WorkshopsDetails() {
             <Box className={classes.mainContent}>
               {/* workshop type */}
               <Box className={classes.formElementBox}>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="worskhopType">Workshop Type</FormLabel>
                   <TextField
                     id="worskhopType"
@@ -319,7 +319,7 @@ function WorkshopsDetails() {
                 </FormControl>
               </Box>
               <Box className={classes.formElementBox}>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="workshopVenue">Venue</FormLabel>
                   <TextField
                     id="workshopVenue"
@@ -330,7 +330,7 @@ function WorkshopsDetails() {
                     onChange={(e) => setVenue(e.target.value)}
                   />
                 </FormControl>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="worskhopVenueCity">Venue City</FormLabel>
                   <TextField
                     id="worskhopVenueCity"
@@ -345,7 +345,7 @@ function WorkshopsDetails() {
 
               <Box className={classes.formElementBox}>
                 {/* start date */}
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel>Start Date</FormLabel>
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
@@ -361,7 +361,7 @@ function WorkshopsDetails() {
                   </LocalizationProvider>
                 </FormControl>
                 {/* end date */}
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel>End Date</FormLabel>
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
@@ -378,7 +378,7 @@ function WorkshopsDetails() {
                   </LocalizationProvider>
                 </FormControl>
                 {/* concluding session date */}
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel>Concluding Session Date</FormLabel>
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
@@ -389,7 +389,9 @@ function WorkshopsDetails() {
                       disabled={isView}
                       value={dayjs(concludingDate)}
                       disablePast={type === 'create' ? true : false}
-                      minDate={endDate ? dayjs(endDate) : (startDate && dayjs(startDate))}
+                      minDate={
+                        endDate ? dayjs(endDate) : startDate && dayjs(startDate)
+                      }
                       onChange={(date) => setConcludingDate(new Date(date))}
                     />
                   </LocalizationProvider>

@@ -80,8 +80,9 @@ const colDefs = [
       display: 'flex',
       alignItems: 'center',
     },
-    minWidth: 120,
+    width: 100,
     pinned: 'right',
+    resizable:false
   },
 ];
 

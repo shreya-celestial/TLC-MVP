@@ -120,7 +120,6 @@ function MeetingsDetails() {
   }, [filters]);
 
   const meeting = data?.data;
-  console.log(data);
 
   const [alertType, setAlertType] = useState();
 
@@ -274,8 +273,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                    ? 'Edit Meeting'
-                    : 'Create Meeting'
+                  ? 'Edit Meeting'
+                  : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}
@@ -284,7 +283,7 @@ function MeetingsDetails() {
               {/* meeting type and workshop autocomplete  */}
               <Box className={classes.formElementBox}>
                 {!isView ? (
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
                     <Select
                       id="meetingType"
@@ -308,7 +307,7 @@ function MeetingsDetails() {
                     </Select>
                   </FormControl>
                 ) : (
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
                     <TextField
                       id="meetingType"
@@ -322,7 +321,7 @@ function MeetingsDetails() {
 
                 {/* workshop autocomplete */}
 
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   {isErrorWorkshops && (
                     <Typography variant="body2" color="error">
                       Cannot fetch workshops
@@ -374,7 +373,7 @@ function MeetingsDetails() {
 
               {/* date and city */}
               <Box className={classes.formElementBox}>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel>Date</FormLabel>
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
@@ -389,7 +388,7 @@ function MeetingsDetails() {
                     />
                   </LocalizationProvider>
                 </FormControl>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="cityField">City</FormLabel>
                   <TextField
                     id="cityField"
@@ -403,7 +402,7 @@ function MeetingsDetails() {
               </Box>
               {/* venue */}
               <Box className={classes.formElementBox}>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="venueField">Venue</FormLabel>
                   <TextField
                     id="venueField"

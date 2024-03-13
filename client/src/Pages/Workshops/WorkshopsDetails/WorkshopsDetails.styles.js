@@ -81,6 +81,9 @@ export const useStyles = makeStyles((theme) => ({
       fontWeight: '500',
       fontSize: '14px',
       color: '#2F2F2F',
+      '& .MuiFormLabel-asterisk': {
+        color: theme.palette.primaryRed,
+      },
     },
     '& .MuiInputBase-formControl': {
       border: '1px solid #C6C6C6',

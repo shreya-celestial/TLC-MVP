@@ -18,13 +18,13 @@ import dayjs from 'dayjs';
 import UserContext from '../../store/userContext';
 import { useMutation } from '@tanstack/react-query';
 import { updateProfile } from '../../apis/user';
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import profileValidator from '../../utils/profileValidator';
 
 function EditPage() {
-  const { user, setUser } = useContext(UserContext)
-  const nav = useNavigate()
+  const { user, setUser } = useContext(UserContext);
+  const nav = useNavigate();
   const [alertType, setAlertType] = useState();
   const { mutate, isPending } = useMutation({
     mutationFn: updateProfile,
@@ -40,10 +40,10 @@ function EditPage() {
           gender: data?.gender,
           phoneNumber: data?.phonenumber,
           pincode: +data?.postalcode,
-          yearOfJoining: +data?.joinYear
-        }))
-        nav(-1)
-        return
+          yearOfJoining: +data?.joinYear,
+        }));
+        nav(-1);
+        return;
       }
       setAlertType({
         type: reqData.status,
@@ -55,8 +55,8 @@ function EditPage() {
         type: 'error',
         message: error,
       });
-    }
-  })
+    },
+  });
 
   const removeAlertType = function () {
     setAlertType(undefined);
@@ -76,7 +76,7 @@ function EditPage() {
     dob: user?.dob,
   };
 
-  const [data, setData] = useState(userData)
+  const [data, setData] = useState(userData);
   const classes = useStyles();
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -85,7 +85,7 @@ function EditPage() {
   }
 
   const handleSubmit = () => {
-    const mail = user?.email
+    const mail = user?.email;
     const body = {
       name: data?.name,
       dob: data?.dob,
@@ -95,8 +95,8 @@ function EditPage() {
       gender: data?.gender,
       phoneNumber: data?.phonenumber,
       pincode: +data?.postalcode,
-      yearOfJoining: +data?.joinYear
-    }
+      yearOfJoining: +data?.joinYear,
+    };
 
     const check = profileValidator(body);
     if (check?.type === 'error') {
@@ -105,8 +105,8 @@ function EditPage() {
         message: check?.message,
       });
     }
-    mutate({ mail, body })
-  }
+    mutate({ mail, body });
+  };
 
   return (
     <Box className={classes.root}>
@@ -126,11 +126,7 @@ function EditPage() {
 
             {/* name*/}
             <Box className={classes.formElementBox}>
-              <FormControl
-                className={`${classes.formControl} ${!data.name && 'emptyField'
-                  }`}
-                required
-              >
+              <FormControl className={classes.formControl} required>
                 <FormLabel htmlFor="fullNameField">Name</FormLabel>
                 <TextField
                   id="fullNameField"
@@ -138,10 +134,11 @@ function EditPage() {
                   required
                   name="name"
                   value={data.name}
-                  onChange={(e) => setData((prev) => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setData((prev) => ({ ...prev, name: e.target.value }))
+                  }
                 />
               </FormControl>
-
             </Box>
 
             {/*email and phone number*/}
@@ -154,8 +151,7 @@ function EditPage() {
                 </Typography>
               </FormControl>
               <FormControl
-                className={`${classes.formControl} ${!data.phonenumber && 'emptyField'
-                  }`}
+                className={classes.formControl}
                 required
               >
                 <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
@@ -165,15 +161,19 @@ function EditPage() {
                   name="phone"
                   required
                   value={data.phonenumber}
-                  onChange={(e) => setData((prev) => ({ ...prev, phonenumber: e.target.value }))}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      phonenumber: e.target.value,
+                    }))
+                  }
                 />
               </FormControl>
             </Box>
             {/* date picker-DOB and Gender */}
             <Box className={classes.formElementBox}>
               <FormControl
-                className={`${classes.formControl} ${!data.dob && 'emptyField'
-                  }`}
+                className={classes.formControl}
                 required
               >
                 <FormLabel>Date of Birth</FormLabel>
@@ -181,17 +181,29 @@ function EditPage() {
                   dateAdapter={AdapterDayjs}
                   className={classes.datepicker}
                 >
-                  <DatePicker required name="dob" value={dayjs(data.dob)} onChange={(date) => setData((prev) => ({ ...prev, dob: (new Date(date)).toLocaleDateString() }))} />
+                  <DatePicker
+                    required
+                    name="dob"
+                    value={dayjs(data.dob)}
+                    onChange={(date) =>
+                      setData((prev) => ({
+                        ...prev,
+                        dob: new Date(date).toLocaleDateString(),
+                      }))
+                    }
+                  />
                 </LocalizationProvider>
               </FormControl>
-              <FormControl className={classes.formControl}>
+              <FormControl className={classes.formControl} required>
                 <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
                 <Select
                   id="genderSelectBox"
                   name="gender"
                   required
                   value={data.gender}
-                  onChange={(e) => setData((prev) => ({ ...prev, gender: e.target.value }))}
+                  onChange={(e) =>
+                    setData((prev) => ({ ...prev, gender: e.target.value }))
+                  }
                   IconComponent={ExpandMoreOutlinedIcon}
                   className={classes.selectBox}
                   MenuProps={{
@@ -224,7 +236,9 @@ function EditPage() {
                   name="yearOfJoining"
                   value={data.joinYear}
                   required
-                  onChange={(e) => setData((prev) => ({ ...prev, joinYear: e.target.value }))}
+                  onChange={(e) =>
+                    setData((prev) => ({ ...prev, joinYear: e.target.value }))
+                  }
                   IconComponent={ExpandMoreOutlinedIcon}
                   className={classes.selectBox}
                   MenuProps={{
@@ -248,8 +262,7 @@ function EditPage() {
 
             {/* location */}
             <FormControl
-              className={`${classes.formControl} ${!data.address && 'emptyField'
-                }`}
+              className={classes.formControl}
               required
             >
               <FormLabel htmlFor="locationField">Address</FormLabel>
@@ -259,13 +272,14 @@ function EditPage() {
                 name="address"
                 required
                 value={data.address}
-                onChange={(e) => setData((prev) => ({ ...prev, address: e.target.value }))}
+                onChange={(e) =>
+                  setData((prev) => ({ ...prev, address: e.target.value }))
+                }
               />
             </FormControl>
             {/* postal code */}
             <FormControl
-              className={`${classes.formControl} ${!data.postalcode && 'emptyField'
-                }`}
+             className={classes.formControl}
               required
             >
               <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
@@ -276,13 +290,17 @@ function EditPage() {
                 type="number"
                 required
                 value={data.postalcode}
-                onChange={(e) => setData((prev) => ({ ...prev, postalcode: e.target.value }))}
+                onChange={(e) =>
+                  setData((prev) => ({ ...prev, postalcode: e.target.value }))
+                }
               />
             </FormControl>
             {/* city and state */}
             <Box className={classes.formElementBox}>
-              <FormControl className={`${classes.formControl} ${!data.city && 'emptyField'
-                }`} required>
+              <FormControl
+                className={classes.formControl}
+                required
+              >
                 <FormLabel htmlFor="cityField">City</FormLabel>
                 <TextField
                   id="cityField"
@@ -290,11 +308,15 @@ function EditPage() {
                   name="city"
                   required
                   value={data.city}
-                  onChange={(e) => setData((prev) => ({ ...prev, city: e.target.value }))}
+                  onChange={(e) =>
+                    setData((prev) => ({ ...prev, city: e.target.value }))
+                  }
                 />
               </FormControl>
-              <FormControl className={`${classes.formControl} ${!data.state && 'emptyField'
-                }`} required>
+              <FormControl
+                className={classes.formControl}
+                required
+              >
                 <FormLabel htmlFor="stateField">State</FormLabel>
                 <TextField
                   id="stateField"
@@ -302,7 +324,9 @@ function EditPage() {
                   name="state"
                   required
                   value={data.state}
-                  onChange={(e) => setData((prev) => ({ ...prev, state: e.target.value }))}
+                  onChange={(e) =>
+                    setData((prev) => ({ ...prev, state: e.target.value }))
+                  }
                 />
               </FormControl>
             </Box>
@@ -313,7 +337,11 @@ function EditPage() {
       {/* action bar  */}
 
       <Box className={classes.actionBar}>
-        <Button disableTouchRipple className="cancelBtn" onClick={() => nav(-1)}>
+        <Button
+          disableTouchRipple
+          className="cancelBtn"
+          onClick={() => nav(-1)}
+        >
           Cancel
         </Button>
 

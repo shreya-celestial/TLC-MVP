@@ -85,20 +85,27 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box className={classes.bigCard}>
-            <Typography className="bigCardHeading">Upcoming Workshops</Typography>
+            <Typography className="bigCardHeading">
+              Upcoming Workshops
+            </Typography>
             <Box className={classes.upcominWorkshops}>
-              {!isLoading && (wkshps?.data?.workshops?.length > 0 ?
-                wkshps?.data?.workshops?.map((workshop) => (
-                  <UpcomingWorkshop
-                    key={workshop?.id}
-                    title={workshop?.types}
-                    startDate={workshop?.start_date}
-                    endDate={workshop?.end_date}
-                    location={workshop?.venue_city}
-                  />
-                )) :
-                <p>No Upcoming workshops!</p>)}
-              {!wkshps && isLoading && <p>Loading...</p>}
+              {!isLoading &&
+                (wkshps?.data?.workshops?.length > 0 ? (
+                  wkshps?.data?.workshops?.map((workshop) => (
+                    <UpcomingWorkshop
+                      key={workshop?.id}
+                      title={workshop?.types}
+                      startDate={workshop?.start_date}
+                      endDate={workshop?.end_date}
+                      location={workshop?.venue_city}
+                    />
+                  ))
+                ) : (
+                  <Typography className="noWorkshop">
+                    No Upcoming workshops!
+                  </Typography>
+                ))}
+              {!wkshps && isLoading && <Typography className='upcomingLoading'>Loading...</Typography>}
             </Box>
           </Box>
         </Box>

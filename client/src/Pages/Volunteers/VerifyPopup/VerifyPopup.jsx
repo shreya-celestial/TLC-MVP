@@ -88,7 +88,7 @@ function VerifyPopup({
         )}
         <Box className={classes.formElementBox}>
           {/* role */}
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="roleSelectBox">Select Role</FormLabel>
             <Select
               id="roleSelectBox"

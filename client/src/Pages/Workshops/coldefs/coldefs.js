@@ -72,28 +72,28 @@ const colDefs = [
 ];
 
 export const VolunteersColDef = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'gender', headerName: 'Gender' },
-  { field: 'phoneNumber', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
-  { field: 'city', headerName: 'City' },
+  { field: 'name', headerName: 'Name', minWidth: 150 },
+  { field: 'gender', headerName: 'Gender', minWidth: 100 },
+  { field: 'phoneNumber', headerName: 'Phone Number', minWidth: 150 },
+  { field: 'email', headerName: 'Email ID', minWidth: 250 },
+  { field: 'city', headerName: 'City', minWidth: 150 },
 ];
 
 export const LeadVolunteersColDef = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'gender', headerName: 'Gender' },
-  { field: 'email', headerName: 'Email ID' },
-  { field: 'phoneNumber', headerName: 'Phone Number' },
-  { field: 'city', headerName: 'City' },
+  { field: 'name', headerName: 'Name', minWidth: 150 },
+  { field: 'gender', headerName: 'Gender', minWidth: 100 },
+  { field: 'email', headerName: 'Email ID', minWidth: 250 },
+  { field: 'phoneNumber', headerName: 'Phone Number', minWidth: 150 },
+  { field: 'city', headerName: 'City', minWidth: 150 },
 ];
 
 export const ParticipantColDef = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'gender', headerName: 'Gender' },
-  { field: 'children', headerName: 'Children' },
-  { field: 'mobile_number', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
-  { field: 'city', headerName: 'City' },
+  { field: 'name', headerName: 'Name', minWidth: 150 },
+  { field: 'gender', headerName: 'Gender', minWidth: 100 },
+  { field: 'children', headerName: 'Children', minWidth: 100 },
+  { field: 'mobile_number', headerName: 'Phone Number', minWidth: 150 },
+  { field: 'email', headerName: 'Email ID', minWidth: 250 },
+  { field: 'city', headerName: 'City', minWidth: 150 },
 ];
 
 export const MeetingColDef = [

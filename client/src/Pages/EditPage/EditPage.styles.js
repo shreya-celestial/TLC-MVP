@@ -90,7 +90,7 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
       color: '#2F2F2F !important',
       '& .MuiFormLabel-asterisk': {
-        color: theme.palette.primaryGreen,
+        color: theme.palette.primaryRed,
       },
     },
     '& .MuiInputBase-formControl': {
@@ -130,15 +130,6 @@ export const useStyles = makeStyles((theme) => ({
         '& .MuiInputAdornment-root button svg': {
           color: '#696969',
         },
-      },
-    },
-    // empty required field
-    '&.emptyField': {
-      '& .MuiInputBase-formControl': {
-        borderColor: '#C1423F',
-      },
-      '& .MuiFormLabel-asterisk': {
-        color: '#C1423F',
       },
     },
   },

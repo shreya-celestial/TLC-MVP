@@ -172,7 +172,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
               name="phone"
             />
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl } required>
             <FormLabel>Date of Birth</FormLabel>
             <LocalizationProvider
               dateAdapter={AdapterDayjs}
@@ -186,7 +186,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
         {/* role and year of joining */}
         <Box className={classes.formElementBox}>
           {isRole && (
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="roleSelectBox">Role</FormLabel>
               <Select
                 id="roleSelectBox"
@@ -208,7 +208,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
             </FormControl>
           )}
 
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="yearSelectBox">Year Of Joining TLC</FormLabel>
             <Select
               id="yearSelectBox"
@@ -232,7 +232,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
             </Select>
           </FormControl>
 
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
             <Select
               id="genderSelectBox"
@@ -261,7 +261,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
           <Typography>Address Information</Typography>
         </Box>
         {/* location */}
-        <FormControl className={classes.formControl}>
+        <FormControl className={classes.formControl} required>
           <FormLabel htmlFor="locationField">Address</FormLabel>
           <TextField
             id="locationField"
@@ -271,7 +271,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
           />
         </FormControl>
         {/* postal code */}
-        <FormControl className={classes.formControl}>
+        <FormControl className={classes.formControl} required>
           <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
           <TextField
             id="postalCodeField"
@@ -285,7 +285,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
         </FormControl>
         {/* city and state */}
         <Box className={classes.formElementBox}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="citySelectBox">City</FormLabel>
             {!cities && (
               <TextField
@@ -320,7 +320,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
               </Select>
             )}
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="stateField">State</FormLabel>
             <TextField
               id="stateField"
