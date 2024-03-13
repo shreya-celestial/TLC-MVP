@@ -25,7 +25,7 @@ const verifyInvite = async (req: Request, res: Response) => {
     {
       return res.status(404).send('Invitation expired!')
     }
-    return res.redirect(303, `http://localhost:3000/signup?token=${token}&for=${data?.data?.Invitations[0]?.email}`)
+    return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/signup?token=${token}&for=${data?.data?.Invitations[0]?.email}`)
   }
   return res.status(404).send('Error! Page not found.')
 }

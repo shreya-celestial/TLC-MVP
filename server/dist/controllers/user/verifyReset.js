@@ -21,7 +21,7 @@ const verifyReset = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             token: req.params.token
         });
         if ((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.users) === null || _b === void 0 ? void 0 : _b.length) {
-            return res.redirect(303, `http://localhost:3000/resetPass?reset=${(_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.token}`);
+            return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${(_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.token}`);
         }
         return res.status(400).send('Error! Something went wrong. Please try again later.');
     }

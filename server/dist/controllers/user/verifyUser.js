@@ -28,7 +28,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (((_c = (_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.returning) === null || _c === void 0 ? void 0 : _c.length) === 0) {
             return res.status(100).send('It seems that your link has been used. Please login and continue.');
         }
-        return res.redirect(303, 'http://localhost:3000/');
+        return res.redirect(303, 'https://tlc-mvp-app-amber.vercel.app/');
     }
     return res.status(404).send('Error! Page not found.');
 });
