@@ -175,7 +175,9 @@ function MeetingsDetails() {
     setVenue(meeting?.venue || '');
     setVenueCity(meeting?.venue_city || '');
     setDate(meeting?.date || '');
+  }, [meeting]);
 
+  useEffect(() => {
     if (!editingWorkshop) {
       setWorkshopOptions([meeting?.workshop || { types: 'none' }]);
       setSelectedWorkshop(meeting?.workshop);

@@ -378,7 +378,11 @@ function VolunteerDetails() {
           {/* action bar  */}
           {user?.isAdmin && (
             <Box className={classes.actionBar}>
-              <Button disableTouchRipple className="cancelBtn">
+              <Button
+                disableTouchRipple
+                className="cancelBtn"
+                onClick={() => nav('/volunteers')}
+              >
                 Cancel
               </Button>
               {isView ? (
