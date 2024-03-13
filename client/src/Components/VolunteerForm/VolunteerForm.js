@@ -163,7 +163,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
         </Box>
         {/* phone number and  date picker-DOB */}
         <Box className={classes.formElementBox}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
             <TextField
               id="phoneNumberField"
