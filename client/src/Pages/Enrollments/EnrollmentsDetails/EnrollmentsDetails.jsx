@@ -156,7 +156,6 @@ function EnrollmentsDetails() {
       setChildrenRowData((prev) => {
         return [...prev, data];
       });
-      setOpenChild(false);
     }
   };
 
