@@ -39,7 +39,7 @@ const Workshops = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -134,15 +134,17 @@ const Workshops = () => {
           )}
           {selectedRows.length === 1 && (
             <>
-              {user?.isAdmin && <Button
-                onClick={() => {
-                  navigate(`/workshops/detail/${selectedRows[0].id}/edit`);
-                }}
-                className="editBtn"
-                disableRipple
-              >
-                Edit
-              </Button>}
+              {user?.isAdmin && (
+                <Button
+                  onClick={() => {
+                    navigate(`/workshops/detail/${selectedRows[0].id}/edit`);
+                  }}
+                  className="editBtn"
+                  disableRipple
+                >
+                  Edit
+                </Button>
+              )}
               <Button
                 onClick={() => {
                   navigate(`/workshops/detail/${selectedRows[0].id}/view`);

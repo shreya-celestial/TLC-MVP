@@ -123,20 +123,20 @@ function WorkshopsDetails() {
     }
 
     setOpenLeadPopup(false);
-    if (role === 'volunteer')
+    if (role === 'volunteer' && data)
       setVolunteersRowData((prev) => {
         return [...prev, ...data];
       });
 
-    if (role === 'leadvolunteer')
+    if (role === 'leadvolunteer' && data)
       setLeadVolunteersRowData((prev) => {
         return [...prev, ...data];
       });
   };
 
   const closePopupAndSetRows = function (data, mode) {
-    setOpenLeadPopup(false);
-    if (mode === 'Meetings') {
+    setopenPopup(false);
+    if (mode === 'Meetings' && data) {
       const isEvery = compareTwoArrays(meetingsRowData, data, 'id');
 
       if (!isEvery) {
@@ -154,7 +154,7 @@ function WorkshopsDetails() {
       setopenPopup(false);
     }
 
-    if (mode === 'Participants') {
+    if (mode === 'Participants' && data) {
       const isEvery = compareTwoArrays(participantsRowData, data, 'email');
 
       if (!isEvery) {

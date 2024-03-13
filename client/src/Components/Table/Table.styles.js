@@ -50,6 +50,8 @@ export const useStyles = makeStyles((theme) => ({
         fontSize: '12px',
         color: '#2F2F2F',
         fontFamily: '"Inter", sans-serif',
+        fontWeight: '500',
+        cursor: 'pointer',
       },
     },
     '& .ag-header-cell-resize': {
@@ -102,4 +104,10 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: '12px',
     fontWeight: '500',
   },
+
+  // customHeaderText: {
+  //   fontSize: '12px',
+  //   color: '#2F2F2F',
+  //   fontFamily: '"Inter", sans-serif',
+  // },
 }));

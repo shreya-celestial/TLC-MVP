@@ -23,6 +23,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { ChildTheme } from './PopupTheme';
+import AlertReact from '../../../Components/Alert/AlertReact';
 
 function AddChildPopup({
   openChild,
@@ -45,6 +46,32 @@ function AddChildPopup({
     }
   }, [childData]);
 
+  const [alertType, setAlertType] = useState();
+
+  const removeAlertType = function () {
+    setAlertType(undefined);
+  };
+
+  const updateChild = function (data, id) {
+    if (!data.name || !data.dob || !data.gender) {
+      return setAlertType({
+        type: 'error',
+        message: 'Please provide all details',
+      });
+    }
+    updateChildAndClosePopup(data, id);
+  };
+
+  const createChild = function (data) {
+    if (!data.name || !data.dob || !data.gender) {
+      return setAlertType({
+        type: 'error',
+        message: 'Please provide all details',
+      });
+    }
+    closePopupAndSetRows(data);
+  };
+
   return (
     <Dialog open={openChild} className={classes.Dialog}>
       <DialogTitle className={classes.TitleAndClose}>
@@ -59,6 +86,15 @@ function AddChildPopup({
       </DialogTitle>
       {/* name */}
       <DialogContent className={classes.DiaogContent}>
+        {alertType && (
+          <AlertReact
+            removeAlertType={removeAlertType}
+            type={alertType.type}
+            message={alertType.message}
+            zIndex={999}
+            componentType={'popup'}
+          />
+        )}
         <Box className={classes.formElementBox}>
           <FormControl className={classes.formControl}>
             <FormLabel htmlFor="fullNameField">Name</FormLabel>
@@ -125,12 +161,13 @@ function AddChildPopup({
           disableRipple
           onClick={() => {
             if (childData) {
-              updateChildAndClosePopup({ name, gender, dob }, childData.id);
+              updateChild({ name, gender, dob }, childData.id);
             } else {
-              closePopupAndSetRows({
+              createChild({
                 name,
                 gender,
                 dob,
+                id: Math.random(),
               });
             }
           }}

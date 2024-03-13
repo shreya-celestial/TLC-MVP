@@ -25,6 +25,7 @@ const colDefs = [
     editable: false,
     minWidth: 160,
     headerName: 'Name',
+    // sortable: false,
   },
   {
     field: 'email',
@@ -80,6 +81,7 @@ const colDefs = [
       alignItems: 'center',
     },
     minWidth: 120,
+    pinned: 'right',
   },
 ];
 

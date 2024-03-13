@@ -35,7 +35,7 @@ const Volunteers = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
@@ -75,6 +75,8 @@ const Volunteers = () => {
   const [statusDropdown, setStatusDropdown] = useState('all');
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
+  const [sortDropdown, setSortDropdown] = useState('none');
+  // const [sort, setSort] = useState('');
 
   const { data, isPending, isError } = useReactQuery(
     [
@@ -104,11 +106,15 @@ const Volunteers = () => {
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
-  const handleReset = () => {
+  const handleReset = function () {
     setRoleDropdown('all');
     setGenderDropdown('all');
     setStatusDropdown('all');
   };
+
+  // const updateSort = function (data) {
+  //   setSort(data);
+  // };
 
   return (
     <Box className={classes.root}>
@@ -129,15 +135,19 @@ const Volunteers = () => {
           )}
           {selectedRows.length === 1 && (
             <>
-              {user?.isAdmin && <Button
-                className="editBtn"
-                disableRipple
-                onClick={() => {
-                  navigate(`/volunteers/detail/${selectedRows[0].email}/edit`);
-                }}
-              >
-                Edit
-              </Button>}
+              {user?.isAdmin && (
+                <Button
+                  className="editBtn"
+                  disableRipple
+                  onClick={() => {
+                    navigate(
+                      `/volunteers/detail/${selectedRows[0].email}/edit`
+                    );
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
               <Button
                 className="viewBtn"
                 disableRipple

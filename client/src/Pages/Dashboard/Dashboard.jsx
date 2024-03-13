@@ -13,8 +13,14 @@ import { dashboardDetails, dashboardWorkshops } from '../../apis/dashboard';
 import Loader from '../../Components/Loader/Loader';
 
 const Dashboard = () => {
-  const { data, isPending } = useReactQuery([(new Date()).getSeconds()], dashboardDetails)
-  const { data: wkshps, isPending: isLoading } = useReactQuery([(new Date()).getSeconds() + 'wkshps'], dashboardWorkshops)
+  const { data, isPending } = useReactQuery(
+    [new Date().getSeconds()],
+    dashboardDetails
+  );
+  const { data: wkshps, isPending: isLoading } = useReactQuery(
+    [new Date().getSeconds() + 'wkshps'],
+    dashboardWorkshops
+  );
   const classes = useStyles();
   const smallCardData = [
     {

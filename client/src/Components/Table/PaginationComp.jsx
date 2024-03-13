@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { useStyles } from './PaginationComp.styles';
-import { Box, IconButton, MenuItem, Select, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 
-const PaginationComp = ({
-  updateCurrentPage,
-  totalPages,
-  currentPage,
-}) => {
+const PaginationComp = ({ updateCurrentPage, totalPages, currentPage }) => {
   const classes = useStyles();
 
   return (

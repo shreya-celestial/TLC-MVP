@@ -38,26 +38,24 @@ function AutocompletePopup({
   const [meetingsOptions, setMeetingsOptions] = useState([]);
   const [volunteersOptions, setVolunteersOptions] = useState([]);
 
-  const [selectedMeetings, setSelectedMeetings] = useState();
-  const [selectedParticipants, setSelectedParticipants] = useState();
-  const [selectedVolunteers, setSelectedVolunteers] = useState();
+  const [selectedMeetings, setSelectedMeetings] = useState([]);
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
+  const [selectedVolunteers, setSelectedVolunteers] = useState([]);
 
   const fetchFn =
     mode === 'Meetings'
       ? meetings
       : mode === 'Volunteers'
-        ? volunteers
-        : participants;
+      ? volunteers
+      : participants;
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [1, 10, { ...debouncedFilters }, mode],
     fetchFn,
     {
       enabled: debouncedFilters?.search !== undefined,
     }
   );
-
-  // console.log(data);
 
   useEffect(() => {
     let timer;
@@ -75,18 +73,18 @@ function AutocompletePopup({
         mode === 'Meetings'
           ? data?.data?.meetings
           : mode === 'Volunteers'
-            ? data?.data?.users
-            : data?.data?.enrollments;
+          ? data?.data?.users
+          : data?.data?.enrollments;
 
-      const options =
+      const selected =
         mode === 'Meetings'
-          ? meetingsOptions
+          ? selectedMeetings
           : mode === 'Volunteers'
-            ? participantsOptions
-            : participantsOptions;
+          ? selectedVolunteers
+          : selectedParticipants;
 
       const filtered = dataType?.filter((participant) => {
-        const vols = options?.filter(
+        const vols = selected?.filter(
           (vol) => JSON.stringify(vol) === JSON.stringify(participant)
         );
         if (vols.length) {
@@ -136,15 +134,15 @@ function AutocompletePopup({
               mode === 'Meetings'
                 ? meetingsOptions
                 : mode === 'Volunteers'
-                  ? volunteersOptions
-                  : participantsOptions
+                ? volunteersOptions
+                : participantsOptions
             }
             getOptionLabel={(option) =>
               mode === 'Meetings'
                 ? `${option.type} (${option.venue})`
                 : mode === 'Volunteers'
-                  ? `${option.name} (${option.email})`
-                  : `${option.name} (${option.email})`
+                ? `${option.name} (${option.email})`
+                : `${option.name} (${option.email})`
             }
             onChange={(event, selectedElements) => {
               if (mode === 'Meetings')
@@ -217,8 +215,8 @@ function AutocompletePopup({
               mode === 'Meetings'
                 ? selectedMeetings
                 : mode === 'Volunteers'
-                  ? selectedVolunteers
-                  : selectedParticipants,
+                ? selectedVolunteers
+                : selectedParticipants,
               mode
             )
           }

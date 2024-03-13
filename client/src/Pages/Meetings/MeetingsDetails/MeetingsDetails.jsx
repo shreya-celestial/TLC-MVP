@@ -62,7 +62,7 @@ function MeetingsDetails() {
   const [enrollmentsRowData, setEnrollmentsRowData] = useState([]);
   const [workshopOptions, setWorkshopOptions] = useState([]);
 
-  const [meetingType, setMeetingType] = useState('none');
+  const [meetingType, setMeetingType] = useState('None');
   const [workshop, setWorkshop] = useState();
   const [date, setDate] = useState('');
   const [venue, setVenue] = useState('');
@@ -120,6 +120,7 @@ function MeetingsDetails() {
   }, [filters]);
 
   const meeting = data?.data;
+  console.log(data);
 
   const [alertType, setAlertType] = useState();
 
@@ -128,7 +129,9 @@ function MeetingsDetails() {
   };
 
   const closePopupAndSetRows = function (data, mode) {
-    if (mode === 'Participants') {
+    setOpenPopup(false);
+
+    if (mode === 'Participants' && data) {
       const isEvery = compareTwoArrays(enrollmentsRowData, data, 'email');
 
       if (!isEvery) {
@@ -146,8 +149,7 @@ function MeetingsDetails() {
       setOpenPopup(false);
     }
 
-    if (mode === 'Volunteers') {
-      console.log(volunteersRowData, data);
+    if (mode === 'Volunteers' && data) {
       const isEvery = compareTwoArrays(volunteersRowData, data, 'email');
 
       if (!isEvery) {
@@ -169,7 +171,7 @@ function MeetingsDetails() {
   const [editingWorkshop, setEditingWorkshop] = useState(false);
 
   useEffect(() => {
-    setMeetingType(meeting?.type?.trim() || 'none');
+    setMeetingType(meeting?.type?.trim() || 'None');
     setWorkshop(meeting?.workshop);
     setVenue(meeting?.venue || '');
     setVenueCity(meeting?.venue_city || '');
@@ -177,6 +179,7 @@ function MeetingsDetails() {
 
     if (!editingWorkshop) {
       setWorkshopOptions([meeting?.workshop || { types: 'none' }]);
+      setSelectedWorkshop(meeting?.workshop);
     }
 
     if (viewType !== 'create') {
@@ -297,7 +300,7 @@ function MeetingsDetails() {
                         },
                       }}
                     >
-                      <MenuItem value="none">None</MenuItem>
+                      <MenuItem value="None">None</MenuItem>
                       <MenuItem value="Meeting Type 1">Meeting Type 1</MenuItem>
                       <MenuItem value="Meeting Type 2">Meeting Type 2</MenuItem>
                       <MenuItem value="Meeting Type 3">Meeting Type 3</MenuItem>

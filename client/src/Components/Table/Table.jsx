@@ -3,6 +3,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { useStyles } from './Table.styles';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const Table = ({
   data,
@@ -74,6 +75,27 @@ const Table = ({
     );
   };
 
+  // const [orderBy, setOrderBy] = useState('none');
+
+  // const handleHeaderClick = function (columnName) {
+  //   updateSort({ sortBy: columnName, orderBy });
+  //   if (orderBy === 'asc') setOrderBy('desc');
+  //   if (orderBy === 'desc') setOrderBy('none');
+  //   if (orderBy === 'none') setOrderBy('asc');
+  // };
+
+  // const CustomHeaderComponent = (params) => {
+  //   return (
+  //     <Typography
+  //       component="body1"
+  //       className="ag-header-cell-text"
+  //       onClick={() => handleHeaderClick(params.column.colId)}
+  //     >
+  //       {params.displayName}
+  //     </Typography>
+  //   );
+  // };
+
   const modifiedColumnDefs = colDefs.map((colDef) => {
     if (colDef.field === 'isAdminVerified') {
       colDef.cellRenderer = IsAdminVerifiedComp;
@@ -88,6 +110,8 @@ const Table = ({
     if (colDef.field === 'enrollments') colDef.cellRenderer = InfoTable;
 
     if (colDef.field === 'children') colDef.cellRenderer = InfoTable;
+
+    // colDef.headerComponent = CustomHeaderComponent;
 
     return colDef;
   });
