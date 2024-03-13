@@ -20,6 +20,7 @@ import { useMutation } from '@tanstack/react-query';
 import { updateProfile } from '../../apis/user';
 import { useNavigate } from "react-router-dom"
 import AlertReact from '../../Components/Alert/AlertReact';
+import profileValidator from '../../utils/profileValidator';
 
 function EditPage() {
   const { user, setUser } = useContext(UserContext)
@@ -96,6 +97,14 @@ function EditPage() {
       pincode: +data?.postalcode,
       yearOfJoining: +data?.joinYear
     }
+
+    const check = profileValidator(body);
+    if (check?.type === 'error') {
+      return setAlertType({
+        type: 'error',
+        message: check?.message,
+      });
+    }
     mutate({ mail, body })
   }
 
@@ -126,6 +135,7 @@ function EditPage() {
                 <TextField
                   id="fullNameField"
                   placeholder="Enter Your Full Name"
+                  required
                   name="name"
                   value={data.name}
                   onChange={(e) => setData((prev) => ({ ...prev, name: e.target.value }))}
@@ -171,7 +181,7 @@ function EditPage() {
                   dateAdapter={AdapterDayjs}
                   className={classes.datepicker}
                 >
-                  <DatePicker name="dob" value={dayjs(data.dob)} onChange={(date) => setData((prev) => ({ ...prev, dob: (new Date(date)).toLocaleDateString() }))} />
+                  <DatePicker required name="dob" value={dayjs(data.dob)} onChange={(date) => setData((prev) => ({ ...prev, dob: (new Date(date)).toLocaleDateString() }))} />
                 </LocalizationProvider>
               </FormControl>
               <FormControl className={classes.formControl}>
@@ -179,6 +189,7 @@ function EditPage() {
                 <Select
                   id="genderSelectBox"
                   name="gender"
+                  required
                   value={data.gender}
                   onChange={(e) => setData((prev) => ({ ...prev, gender: e.target.value }))}
                   IconComponent={ExpandMoreOutlinedIcon}
@@ -212,6 +223,7 @@ function EditPage() {
                   id="yearSelectBox"
                   name="yearOfJoining"
                   value={data.joinYear}
+                  required
                   onChange={(e) => setData((prev) => ({ ...prev, joinYear: e.target.value }))}
                   IconComponent={ExpandMoreOutlinedIcon}
                   className={classes.selectBox}
@@ -269,7 +281,8 @@ function EditPage() {
             </FormControl>
             {/* city and state */}
             <Box className={classes.formElementBox}>
-              <FormControl className={classes.formControl}>
+              <FormControl className={`${classes.formControl} ${!data.city && 'emptyField'
+                }`} required>
                 <FormLabel htmlFor="cityField">City</FormLabel>
                 <TextField
                   id="cityField"
@@ -280,12 +293,14 @@ function EditPage() {
                   onChange={(e) => setData((prev) => ({ ...prev, city: e.target.value }))}
                 />
               </FormControl>
-              <FormControl className={classes.formControl}>
+              <FormControl className={`${classes.formControl} ${!data.state && 'emptyField'
+                }`} required>
                 <FormLabel htmlFor="stateField">State</FormLabel>
                 <TextField
                   id="stateField"
                   placeholder="Enter Your State"
                   name="state"
+                  required
                   value={data.state}
                   onChange={(e) => setData((prev) => ({ ...prev, state: e.target.value }))}
                 />
