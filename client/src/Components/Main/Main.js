@@ -47,7 +47,7 @@ function Main() {
       }
       setError(() => {
         localStorage.clear()
-        return userData?.message
+        return typeof (userData?.message) === 'string' ? userData?.message : 'Something went wrong.. Please try again later!'
       })
     }
     if (SESSIONUSER) {
