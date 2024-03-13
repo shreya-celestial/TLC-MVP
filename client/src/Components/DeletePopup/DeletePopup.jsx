@@ -24,6 +24,7 @@ function DeletePopup({
   hideDeleteModal,
   hideDeleteModalAndShowSuccess,
   type,
+  updateSelectedRows,
 }) {
   const classes = useStyles();
   const [open, SetOpen] = useState(true);
@@ -46,6 +47,7 @@ function DeletePopup({
         });
       } else {
         hideDeleteModalAndShowSuccess();
+        updateSelectedRows([]);
       }
     },
     onError: (error) => {
@@ -137,7 +139,10 @@ function DeletePopup({
         <Button
           className="cancelBtn"
           disableRipple
-          onClick={() => SetOpen(false)}
+          onClick={() => {
+            hideDeleteModal();
+            SetOpen(false);
+          }}
         >
           Cancel
         </Button>

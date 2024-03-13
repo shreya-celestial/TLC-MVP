@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -28,12 +28,22 @@ function AddChildPopup({
   openChild,
   handleCloseOpenChild,
   closePopupAndSetRows,
+  childData,
+  updateChildAndClosePopup,
 }) {
   const classes = useStyles();
 
   const [name, setName] = useState();
   const [gender, setGender] = useState('male');
-  const [dob, setDob] = useState();
+  const [dob, setDob] = useState('');
+
+  useEffect(() => {
+    if (childData) {
+      setName(childData.name);
+      setGender(childData.gender);
+      setDob(childData.dob);
+    }
+  }, [childData]);
 
   return (
     <Dialog open={openChild} className={classes.Dialog}>
@@ -113,13 +123,17 @@ function AddChildPopup({
         <Button
           className="doneBtn"
           disableRipple
-          onClick={() =>
-            closePopupAndSetRows({
-              name,
-              gender,
-              dob,
-            })
-          }
+          onClick={() => {
+            if (childData) {
+              updateChildAndClosePopup({ name, gender, dob }, childData.id);
+            } else {
+              closePopupAndSetRows({
+                name,
+                gender,
+                dob,
+              });
+            }
+          }}
         >
           Done
         </Button>

@@ -14,7 +14,7 @@ import validator from 'validator';
 
 function Signup() {
   const location = useLocation();
-  const nav = useNavigate()
+  const nav = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get('for');
   const classes = useStyles();
@@ -33,18 +33,19 @@ function Signup() {
         message: data.message,
       });
       if (email) {
-        nav('/')
+        nav('/');
       }
     },
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
 
   const handleSubmit = async (e) => {
+    console.log(e);
     e.preventDefault();
     const token = queryParams.get('token');
     const email = queryParams.get('for');
@@ -56,8 +57,7 @@ function Signup() {
       if (!validator.isEmail(email)) {
         return setAlertType('please provide valid email');
       }
-    }
-    else {
+    } else {
       if (!validator.isEmail(e.target.elements.email.value)) {
         return setAlertType('please provide valid email');
       }
@@ -67,7 +67,7 @@ function Signup() {
       email: email || e.target.elements.email.value,
       password: e.target.elements.password.value,
       name: e.target.elements.name.value,
-      dob: (new Date(e.target.elements.dob.value)).toLocaleDateString(),
+      dob: new Date(e.target.elements.dob.value).toLocaleDateString(),
       gender: e.target.elements.gender.value,
       phoneNumber: e.target.elements.phone.value,
       yearOfJoining: +e.target.elements.yearOfJoining.value,
@@ -99,7 +99,11 @@ function Signup() {
         <img className={classes.logo} src={logo} alt="The Last Center Logo" />
         <Typography className={classes.header}>Create an account</Typography>
         <Box className={classes.signupWrapper}>
-          <VolunteerForm submit={handleSubmit} isPending={isPending} isEmail={email} />
+          <VolunteerForm
+            submit={handleSubmit}
+            isPending={isPending}
+            isEmail={email}
+          />
           <Box className={classes.signUpBtn_loginLink}>
             <Typography className={classes.loginLink}>
               Already have an account?{' '}

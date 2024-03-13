@@ -161,4 +161,18 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loader: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& svg': {
+      color: theme.palette.primaryGreen,
+    },
+    '& .errorMessage': {
+      color: '#6C6C6C',
+      fontSize: '14px',
+      fontWeight: '500',
+    },
+  },
 }));

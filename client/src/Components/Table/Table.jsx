@@ -10,6 +10,8 @@ const Table = ({
   updateSelectedRows,
   showVerifyStatus,
   colDefs,
+  showDetails,
+  isError,
 }) => {
   let rowData;
   if (data) rowData = data;
@@ -60,10 +62,32 @@ const Table = ({
     );
   };
 
+  const InfoTable = (params) => {
+    const classes = useStyles();
+
+    return (
+      <>
+        <p className={classes.count} onClick={() => showDetails(params)}>
+          {params.value}
+        </p>
+      </>
+    );
+  };
+
   const modifiedColumnDefs = colDefs.map((colDef) => {
-    if (colDef.headerName === 'Status' && true) {
+    if (colDef.field === 'isAdminVerified') {
       colDef.cellRenderer = IsAdminVerifiedComp;
     }
+    if (colDef.field === 'lead_volunteers_count')
+      colDef.cellRenderer = InfoTable;
+
+    if (colDef.field === 'volunteers_count') colDef.cellRenderer = InfoTable;
+    if (colDef.field === 'participants_count') colDef.cellRenderer = InfoTable;
+
+    if (colDef.field === 'volunteers') colDef.cellRenderer = InfoTable;
+    if (colDef.field === 'enrollments') colDef.cellRenderer = InfoTable;
+
+    if (colDef.field === 'children') colDef.cellRenderer = InfoTable;
 
     return colDef;
   });
@@ -73,6 +97,13 @@ const Table = ({
       {isPending && (
         <Box className={classes.tableSkeleton}>
           <CircularProgress className="circularProgress" />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.tableSkeleton}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
         </Box>
       )}
       {data && (

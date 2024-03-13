@@ -18,9 +18,11 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerDetails.styles';
 import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
-import { meetingRowData, workShopRowData } from './DummyHistoryData';
-import { workShopColDef, meetingColDef } from '../coldefs/coldefs';
 import { useParams, useNavigate } from 'react-router-dom';
+import {
+  workshopColDefVolunteersPage,
+  meetingsColDefVolunteersPage,
+} from '../coldefs/coldefs';
 
 import { getVolunteer } from '../../../apis/volunteers';
 import { useReactQuery } from '../../../hooks/useReactQuery';
@@ -33,21 +35,24 @@ import UserContext from '../../../store/userContext';
 
 function VolunteerDetails() {
   const classes = useStyles();
-  let isView;
+  const [isView, setIsView] = useState();
 
   const isAdmin = true;
-  const { user } = useContext(UserContext)
-  const nav = useNavigate()
+  const { user } = useContext(UserContext);
+  const nav = useNavigate();
 
   const { email, type } = useParams();
 
-  if (type === 'edit') isView = false;
-  if (type === 'view') isView = true;
+  useEffect(() => {
+    if (type === 'edit') {
+      setIsView(false);
+    }
+    if (type === 'view') {
+      setIsView(true);
+    }
+  }, [type]);
 
-  const { data, isPending, isError, error } = useReactQuery(
-    [email],
-    getVolunteer
-  );
+  const { data, isPending, isError } = useReactQuery([email], getVolunteer);
 
   const [role, setRole] = useState(
     data?.user?.isAdmin === true ? 'admin' : 'volunteer'
@@ -77,7 +82,7 @@ function VolunteerDetails() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -86,20 +91,45 @@ function VolunteerDetails() {
     mutate({ email, isAdmin: role === 'admin' ? 'true' : 'false' });
   };
 
+  const [historyLeadRowData, setHistoryLeadRowData] = useState([]);
+  const [historyRowData, setHistoryRowData] = useState([]);
+  const [MeetingHistoryRowData, setMeetingHistoryRowData] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setHistoryLeadRowData(
+        data?.user?.workshop_lead_volunteers.map((v) => {
+          v.workshop.role = 'Lead Volunteer';
+          return v.workshop;
+        })
+      );
+      setHistoryRowData(
+        data?.user?.workshop_volunteers.map((v) => {
+          v.workshop.role = 'Volunteer';
+          return v.workshop;
+        })
+      );
+
+      setMeetingHistoryRowData(
+        data?.user?.meetings_volunteers.map((m) => m.meeting)
+      );
+    }
+  }, [data]);
+
   useEffect(() => {
     if (type !== 'edit' && type !== 'view') {
       nav('/volunteers');
     }
     if (type === 'view') {
-      isView = true;
+      setIsView(true);
     }
   }, [type]);
 
   useEffect(() => {
     if (!user?.isAdmin && type !== 'view') {
-      nav('/volunteers')
+      nav('/volunteers');
     }
-  }, [user, type])
+  }, [user, type]);
 
   if (type !== 'edit' && type !== 'view') {
     return;
@@ -114,6 +144,13 @@ function VolunteerDetails() {
       {isPending && (
         <Box className={classes.loader}>
           <CircularProgress />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.loader}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
         </Box>
       )}
       {data && (
@@ -133,8 +170,8 @@ function VolunteerDetails() {
                 type === 'edit'
                   ? 'Edit Volunteer'
                   : type === 'view'
-                    ? 'View Volunteer'
-                    : ''
+                  ? 'View Volunteer'
+                  : ''
               }
               prevPage={'volunteers'}
               path={'volunteers'}
@@ -319,9 +356,10 @@ function VolunteerDetails() {
                 Workshop History
               </Typography>
               <AccordionTable
-                columnDefs={workShopColDef}
-                rowData={workShopRowData}
-                headingName={'workshops'}
+                columnDefs={workshopColDefVolunteersPage}
+                rowData={[...historyLeadRowData, ...historyRowData]}
+                headingName={'Workshops'}
+                isView={true}
               />
             </Box>
             <Box className={classes.VolunteerHistory}>
@@ -329,32 +367,39 @@ function VolunteerDetails() {
                 Meeting History
               </Typography>
               <AccordionTable
-                columnDefs={meetingColDef}
-                rowData={meetingRowData}
+                columnDefs={meetingsColDefVolunteersPage}
+                rowData={MeetingHistoryRowData}
                 headingName={'Meetings'}
+                isView={true}
               />
             </Box>
           </Box>
 
           {/* action bar  */}
-          {user?.isAdmin && <Box className={classes.actionBar}>
-            <Button disableTouchRipple className="cancelBtn">
-              Cancel
-            </Button>
-            {isView ? (
-              <Button disableTouchRipple className="editBtn">
-                Edit
+          {user?.isAdmin && (
+            <Box className={classes.actionBar}>
+              <Button disableTouchRipple className="cancelBtn">
+                Cancel
               </Button>
-            ) : (
-              <Button
-                disableTouchRipple
-                className="saveBtn"
-                onClick={saveVolunteer}
-              >
-                {isPendingMutation ? 'Loading...' : 'Save'}
-              </Button>
-            )}
-          </Box>}
+              {isView ? (
+                <Button
+                  disableTouchRipple
+                  className="editBtn"
+                  onClick={() => setIsView(false)}
+                >
+                  Edit
+                </Button>
+              ) : (
+                <Button
+                  disableTouchRipple
+                  className="saveBtn"
+                  onClick={saveVolunteer}
+                >
+                  {isPendingMutation ? 'Loading...' : 'Save'}
+                </Button>
+              )}
+            </Box>
+          )}
         </Box>
       )}
     </>

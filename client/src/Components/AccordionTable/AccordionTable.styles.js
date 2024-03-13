@@ -95,4 +95,34 @@ export const useStyles = makeStyles((theme) => ({
       fontWeight: '500',
     },
   },
+  DeletBtn: {
+    '&.MuiIconButton-root': {
+      padding: '0px',
+      marginTop: '-5px',
+    },
+    '& svg': {
+      fontSize: '20px',
+      color: '#C1423F',
+    },
+  },
+  BtnWrapper: {
+    display: 'flex',
+    gap: '10px',
+    alignItems: 'center',
+    height: '100%',
+  },
+  childActionBtn: {
+    '&.MuiIconButton-root': {
+      padding: '0px',
+    },
+    '& svg': {
+      fontSize: '20px',
+    },
+    '&.childEditIcon': {
+      color: theme.palette.primaryBlue,
+    },
+    '&.childDeleteIcon': {
+      color: theme.palette.primaryRed,
+    },
+  },
 }));

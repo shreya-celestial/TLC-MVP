@@ -76,7 +76,7 @@ const Volunteers = () => {
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -109,6 +109,7 @@ const Volunteers = () => {
     setGenderDropdown('all');
     setStatusDropdown('all');
   };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.HeadingAndActionBtn}>
@@ -178,6 +179,7 @@ const Volunteers = () => {
         <DeletePopup
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          updateSelectedRows={updateSelectedRows}
           hideDeleteModal={hideDeleteModal}
         />
       )}
@@ -299,6 +301,7 @@ const Volunteers = () => {
             updateSelectedRows={updateSelectedRows}
             data={data?.data?.users}
             isPending={isPending}
+            isError={isError}
             showVerifyStatus={showVerifyStatus}
           />
         </Box>

@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   IconButton,
-  InputLabel,
   Menu,
   MenuItem,
   Select,
@@ -28,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
 
-import { workshopsColDef } from './coldefs/coldefs';
+import colDefs from './coldefs/coldefs';
 import { workshops } from '../../apis/workshops';
 import DeletePopup from '../../Components/DeletePopup/DeletePopup';
 import dayjs from 'dayjs';
@@ -44,7 +43,6 @@ const Workshops = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [filters, setFilters] = useState({});
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -73,8 +71,9 @@ const Workshops = () => {
   const [endDate, setEndDate] = useState('');
   const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
   const [debouncedSearch, setDebouncedValue] = useState('');
+  const [clickedCountDetails, setClickedCountDetails] = useState();
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -96,6 +95,25 @@ const Workshops = () => {
 
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
+  };
+
+  const showDetails = function (params) {
+    if (params.value > 0)
+      setClickedCountDetails({
+        id: params.data.id,
+        field: params.colDef.field,
+      });
+  };
+
+  const hideInfoTable = function () {
+    setClickedCountDetails(null);
+  };
+
+  const handleReset = () => {
+    setEndDate('');
+    setStartDate('');
+    setPastOrUpcoming('upcoming');
+    setSearchValue('');
   };
 
   return (
@@ -149,7 +167,6 @@ const Workshops = () => {
           )}
         </Box>
       </Box>
-
       {alertType && (
         <AlertReact
           removeAlertType={removeAlertType}
@@ -162,6 +179,14 @@ const Workshops = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          updateSelectedRows={updateSelectedRows}
+          type="workshops"
+        />
+      )}
+      {clickedCountDetails && (
+        <InfoTable
+          clickedCountDetails={clickedCountDetails}
+          hideInfoTable={hideInfoTable}
           type="workshops"
         />
       )}
@@ -248,10 +273,7 @@ const Workshops = () => {
               <Button
                 disableRipple
                 className={classes.resetFilterBtn}
-                onClick={() => {
-                  setFilters({});
-                  setCurrentPage(1);
-                }}
+                onClick={handleReset}
               >
                 Reset
               </Button>
@@ -260,12 +282,14 @@ const Workshops = () => {
         </Box>
         <Box className={classes.tableContainer}>
           <Table
-            colDefs={workshopsColDef}
+            colDefs={colDefs}
             key={rowChanged}
             updateSelectedRows={updateSelectedRows}
             data={data?.data?.workshops}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
+            showDetails={showDetails}
+            isError={isError}
           />
         </Box>
         <PaginationComp

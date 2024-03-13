@@ -1,5 +1,3 @@
-import { useStyles } from '../../../Components/Table/Table.styles';
-
 const IsAdminComp = (params) => {
   if (!params.data.isAdminVerified) return `-`;
   return `${params.value ? 'Admin' : 'Volunteer'}`;
@@ -86,10 +84,24 @@ const colDefs = [
 ];
 
 export const workShopColDef = [
-  { field: 'workshop', headerName: 'Workshop Name' },
+  { field: 'types', headerName: 'Workshop Name' },
   { field: 'role', headerName: 'Role' },
-  { field: 'startDate', headerName: 'Start Date' },
-  { field: 'endDate', headerName: 'End Date' },
+  { field: 'start_date', headerName: 'Start Date' },
+  { field: 'end_date', headerName: 'End Date' },
+];
+
+export const workshopColDefVolunteersPage = [
+  { field: 'types', headerName: 'Workshop Name' },
+  { field: 'role', headerName: 'Role' },
+  { field: 'start_date', headerName: 'Start Date' },
+  { field: 'end_date', headerName: 'End Date' },
+];
+
+export const meetingsColDefVolunteersPage = [
+  { field: 'type', headerName: 'Meeting Type' },
+  { field: 'date', headerName: 'Date' },
+  { field: 'venue', headerName: 'Venue' },
+  { field: 'venue_city', headerName: 'Venue City' },
 ];
 
 export const meetingColDef = [

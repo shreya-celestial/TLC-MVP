@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
   Button,
+  CircularProgress,
 } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -16,14 +17,6 @@ import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { useStyles } from './WorkshopsDetails.styles';
 import LeadVolunteerPopup from '../LeadVolunteerPopup/LeadVolunteerPopup';
 
-import {
-  MeetingColDef,
-  VolunteersColDef,
-  LeadVolunteersColDef,
-  ParticipantColDef,
-} from '../coldefs/coldefs';
-
-import { DeleteButtonCell } from '../../../Components/DeleteButtonCell/DeleteButtonCell';
 import AutocompletePopup from '../../../Components/AutocompletePopup/AutocompletePopup';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getWorkshop } from '../../../apis/workshops';
@@ -40,8 +33,8 @@ import UserContext from '../../../store/userContext';
 function WorkshopsDetails() {
   let { id, type } = useParams();
 
-  const nav = useNavigate()
-  const { user } = useContext(UserContext)
+  const nav = useNavigate();
+  const { user } = useContext(UserContext);
 
   const [isView, setIsView] = useState(type === 'view' ? true : false);
   const [viewType, setViewType] = useState(type);
@@ -51,53 +44,12 @@ function WorkshopsDetails() {
     setAlertType(undefined);
   };
 
-  // custom column def for showing delete icon in edit mode
-  const volunteerCustomDef = [
-    ...VolunteersColDef,
-    !isView
-      ? {
-        headerName: 'Actions',
-        cellRenderer: DeleteButtonCell,
-      }
-      : undefined,
-  ].filter(Boolean);
-
-  const LeadvolunteerCustomDef = [
-    ...LeadVolunteersColDef,
-    !isView
-      ? {
-        headerName: 'Actions',
-        cellRenderer: DeleteButtonCell,
-      }
-      : undefined,
-  ].filter(Boolean);
-
-  const ParticipantCustomDef = [
-    ...ParticipantColDef,
-    !isView
-      ? {
-        headerName: 'Actions',
-        cellRenderer: DeleteButtonCell,
-      }
-      : undefined,
-  ].filter(Boolean);
-
-  const MeetingCustomColDef = [
-    ...MeetingColDef,
-    !isView
-      ? {
-        headerName: 'Actions',
-        cellRenderer: DeleteButtonCell,
-      }
-      : undefined,
-  ].filter(Boolean);
-
   const classes = useStyles();
   const [openLeadPopup, setOpenLeadPopup] = useState(false);
   const [openPopup, setopenPopup] = useState(false);
   const [mode, setMode] = useState('');
 
-  const { data, isLoading, isError, error } = useReactQuery([id], getWorkshop, {
+  const { data, isPending, isError } = useReactQuery([id], getWorkshop, {
     enabled: viewType !== 'create',
   });
 
@@ -115,7 +67,11 @@ function WorkshopsDetails() {
   const [endDate, setEndDate] = useState('');
   const [concludingDate, setConcludingDate] = useState('');
 
-  const { mutate, isPending: isPendingMutation } = useMutation({
+  const {
+    mutate,
+    isPending: isPendingMutation,
+    isError: isErrorMutation,
+  } = useMutation({
     mutationFn: type === 'create' ? createWorkshop : updateWorkshop,
     onSuccess: (data) => {
       if (data.status === 'error') {
@@ -133,7 +89,7 @@ function WorkshopsDetails() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -155,7 +111,6 @@ function WorkshopsDetails() {
 
   const closeLeadPopupAndSetRows = (data, role) => {
     const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];
-    console.log(combinedArray, data);
     const isEvery = compareTwoArrays(combinedArray, data, 'email');
 
     if (!isEvery) {
@@ -182,7 +137,6 @@ function WorkshopsDetails() {
   const closePopupAndSetRows = function (data, mode) {
     setOpenLeadPopup(false);
     if (mode === 'Meetings') {
-      console.log(meetingsRowData, data);
       const isEvery = compareTwoArrays(meetingsRowData, data, 'id');
 
       if (!isEvery) {
@@ -247,9 +201,11 @@ function WorkshopsDetails() {
   };
 
   const mutateWorkshopHandler = function () {
-    const modifiedStartDate = (new Date(startDate)).toLocaleDateString();
-    const modifiedEndDate = (new Date(endDate)).toLocaleDateString();
-    const modifiedConcludingDate = (new Date(concludingDate)).toLocaleDateString();
+    const modifiedStartDate = new Date(startDate).toLocaleDateString();
+    const modifiedEndDate = new Date(endDate).toLocaleDateString();
+    const modifiedConcludingDate = new Date(
+      concludingDate
+    ).toLocaleDateString();
 
     const body = {
       types: workshopType,
@@ -270,6 +226,25 @@ function WorkshopsDetails() {
     mutate({ body, id });
   };
 
+  const handleDeleteRow = function ({ email, row, id }) {
+    if (row === 'Volunteers') {
+      const updatedRow = volunteersRowData.filter((v) => v.email !== email);
+      setVolunteersRowData(updatedRow);
+    }
+    if (row === 'Lead Volunteers') {
+      const updatedRow = leadVolunteersRowData.filter((v) => v.email !== email);
+      setLeadVolunteersRowData(updatedRow);
+    }
+    if (row === 'Participants') {
+      const updatedRow = participantsRowData.filter((p) => p.email !== email);
+      setParticipantsRowData(updatedRow);
+    }
+    if (row === 'Meetings') {
+      const updatedRow = meetingsRowData.filter((m) => m.id !== id);
+      setMeetingsRowData(updatedRow);
+    }
+  };
+
   useEffect(() => {
     if (type !== 'create' && type !== 'edit' && type !== 'view') {
       nav('/workshops');
@@ -281,9 +256,9 @@ function WorkshopsDetails() {
 
   useEffect(() => {
     if (!user?.isAdmin && type !== 'view') {
-      nav('/workshops')
+      nav('/workshops');
     }
-  }, [user, type])
+  }, [user, type]);
 
   if (type !== 'create' && type !== 'edit' && type !== 'view') {
     return;
@@ -295,14 +270,25 @@ function WorkshopsDetails() {
 
   return (
     <>
-      {isLoading && <Box className={classes.flex}>Loading....</Box>}
-      {
+      {isPending && viewType !== 'create' && (
+        <Box className={classes.loader}>
+          <CircularProgress />
+        </Box>
+      )}
+      {isError && (
+        <Box className={classes.loader}>
+          <Typography className="errorMessage">
+            Something went wrong while fetching data.
+          </Typography>
+        </Box>
+      )}
+      {(viewType === 'create' || data) && (
         <Box className={classes.root}>
           {alertType && (
             <AlertReact
               removeAlertType={removeAlertType}
               type={alertType.type}
-              message={alertType.message}
+              message={alertType.message || 'Something went wrong'}
             />
           )}
           <Box className={classes.HeaderMainContent}>
@@ -311,8 +297,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                    ? 'Edit Workshop'
-                    : 'Create Workshop'
+                  ? 'Edit Workshop'
+                  : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}
@@ -419,22 +405,26 @@ function WorkshopsDetails() {
                     Add
                   </Button>
                 )}
-                <LeadVolunteerPopup
-                  closeLeadPopupAndSetRows={closeLeadPopupAndSetRows}
-                  openLeadPopup={openLeadPopup}
-                  closeLeadPopup={closeLeadPopup}
-                />
+                {openLeadPopup && (
+                  <LeadVolunteerPopup
+                    closeLeadPopupAndSetRows={closeLeadPopupAndSetRows}
+                    openLeadPopup={openLeadPopup}
+                    closeLeadPopup={closeLeadPopup}
+                  />
+                )}
               </Box>
               <Box className={classes.AccordionContainer}>
                 <AccordionTable
-                  columnDefs={volunteerCustomDef}
                   rowData={volunteersRowData}
                   headingName={'Volunteers'}
+                  isView={isView}
+                  handleDeleteRow={handleDeleteRow}
                 />
                 <AccordionTable
-                  columnDefs={LeadvolunteerCustomDef}
                   rowData={leadVolunteersRowData}
                   headingName={'Lead Volunteers'}
+                  isView={isView}
+                  handleDeleteRow={handleDeleteRow}
                 />
               </Box>
             </Box>
@@ -455,9 +445,10 @@ function WorkshopsDetails() {
 
               <Box className={classes.AccordionContainer}>
                 <AccordionTable
-                  columnDefs={ParticipantCustomDef}
                   rowData={participantsRowData}
                   headingName={'Participants'}
+                  isView={isView}
+                  handleDeleteRow={handleDeleteRow}
                 />
               </Box>
             </Box>
@@ -477,23 +468,26 @@ function WorkshopsDetails() {
               </Box>
               <Box className={classes.AccordionContainer}>
                 <AccordionTable
-                  columnDefs={MeetingCustomColDef}
                   rowData={meetingsRowData}
                   headingName={'Meetings'}
+                  isView={isView}
+                  handleDeleteRow={handleDeleteRow}
                 />
               </Box>
             </Box>
             {/* popup for adding participant and meetings  */}
-            <AutocompletePopup
-              mode={mode}
-              openPopup={openPopup}
-              closeOpenPopup={closeOpenPopup}
-              closePopupAndSetRows={closePopupAndSetRows}
-            />
+            {openPopup && (
+              <AutocompletePopup
+                mode={mode}
+                openPopup={openPopup}
+                closeOpenPopup={closeOpenPopup}
+                closePopupAndSetRows={closePopupAndSetRows}
+              />
+            )}
           </Box>
 
           {/* action bar  */}
-          {user?.isAdmin &&
+          {user?.isAdmin && (
             <Box className={classes.actionBar}>
               <Button disableTouchRipple className="cancelBtn">
                 Cancel
@@ -524,9 +518,9 @@ function WorkshopsDetails() {
                 </Button>
               )}
             </Box>
-          }
+          )}
         </Box>
-      }
+      )}
     </>
   );
 }

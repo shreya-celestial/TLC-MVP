@@ -105,4 +105,21 @@ export const useStyles = makeStyles((theme) => ({
       fontWeight: '500',
     },
   },
+  loader: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& svg': {
+      color: theme.palette.primaryGreen,
+    },
+    '& .errorMessage': {
+      color: '#6C6C6C',
+      fontSize: '14px',
+      fontWeight: '500',
+    },
+  },
+  errorBox: {
+    height: '123px',
+  },
 }));

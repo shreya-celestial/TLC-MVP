@@ -54,7 +54,7 @@ function Login() {
     onError: (error) => {
       setAlertType({
         type: 'error',
-        message: error.info.message,
+        message: error?.info?.message || 'Something Went Wrong',
       });
     },
   });

@@ -5,8 +5,6 @@ import {
   FormLabel,
   IconButton,
   Menu,
-  MenuItem,
-  Select,
   TextField,
   ThemeProvider,
   Typography,
@@ -27,13 +25,13 @@ import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { FilterTheme } from '../Workshops/FilterTheme';
+import InfoTable from '../../Components/InfoTable/InfoTable';
 
 const Meetings = () => {
   const classes = useStyles();
@@ -60,7 +58,6 @@ const Meetings = () => {
     alertType,
     rowChanged,
     selectedUser,
-    setShowInviteModal,
     setShowDeleteModal,
   } = useAlerts();
 
@@ -74,13 +71,11 @@ const Meetings = () => {
 
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
-  const [statusDropdown, setStatusDropdown] = useState('all');
-  const [roleDropdown, setRoleDropdown] = useState('all');
-  const [genderDropdown, setGenderDropdown] = useState('all');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [clickedCountDetails, setClickedCountDetails] = useState();
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
       rowsPerPage,
@@ -111,6 +106,19 @@ const Meetings = () => {
   const handleReset = () => {
     setEndDate('');
     setStartDate('');
+  };
+
+  const showDetails = function (params) {
+    console.log(params.value);
+    if (params.value > 0)
+      setClickedCountDetails({
+        id: params.data.id,
+        field: params.colDef.field,
+      });
+  };
+
+  const hideInfoTable = function () {
+    setClickedCountDetails(null);
   };
 
   return (
@@ -184,6 +192,7 @@ const Meetings = () => {
           selectedRows={selectedRows}
           hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
           hideDeleteModal={hideDeleteModal}
+          updateSelectedRows={updateSelectedRows}
         />
       )}
       {alertType && (
@@ -191,6 +200,13 @@ const Meetings = () => {
           removeAlertType={removeAlertType}
           type={alertType.type}
           message={alertType.message}
+        />
+      )}
+      {clickedCountDetails && (
+        <InfoTable
+          clickedCountDetails={clickedCountDetails}
+          hideInfoTable={hideInfoTable}
+          type="meetings"
         />
       )}
       <Box className={classes.headerTablePagination}>
@@ -268,6 +284,8 @@ const Meetings = () => {
             data={data?.data?.meetings}
             isPending={isPending}
             showVerifyStatus={showVerifyStatus}
+            showDetails={showDetails}
+            isError={isError}
           />
         </Box>
         <PaginationComp
