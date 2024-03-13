@@ -18,14 +18,11 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerDetails.styles';
 import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
-import { meetingRowData, workShopRowData } from './DummyHistoryData';
-import { workShopColDef, meetingColDef } from '../coldefs/coldefs';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   workshopColDefVolunteersPage,
   meetingsColDefVolunteersPage,
 } from '../coldefs/coldefs';
-import { useParams } from 'react-router-dom';
 
 import { getVolunteer } from '../../../apis/volunteers';
 import { useReactQuery } from '../../../hooks/useReactQuery';
@@ -48,11 +45,9 @@ function VolunteerDetails() {
 
   useEffect(() => {
     if (type === 'edit') {
-      console.log('setting edit');
       setIsView(false);
     }
     if (type === 'view') {
-      console.log('seting view');
       setIsView(true);
     }
   }, [type]);
@@ -126,7 +121,7 @@ function VolunteerDetails() {
       nav('/volunteers');
     }
     if (type === 'view') {
-      isView = true;
+      setIsView(true);
     }
   }, [type]);
 
