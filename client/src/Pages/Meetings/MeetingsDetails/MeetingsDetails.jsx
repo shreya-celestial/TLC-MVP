@@ -63,7 +63,6 @@ function MeetingsDetails() {
   const [workshopOptions, setWorkshopOptions] = useState([]);
 
   const [meetingType, setMeetingType] = useState('None');
-  const [workshop, setWorkshop] = useState();
   const [date, setDate] = useState('');
   const [venue, setVenue] = useState('');
   const [venueCity, setVenueCity] = useState('');
@@ -71,7 +70,7 @@ function MeetingsDetails() {
 
   const [viewType, setViewType] = useState(type);
 
-  const { data, isPending, isError, error } = useReactQuery([id], getMeeting, {
+  const { data, isPending, isError } = useReactQuery([id], getMeeting, {
     enabled: viewType !== 'create',
   });
 
@@ -87,7 +86,7 @@ function MeetingsDetails() {
   });
 
   const { mutate, isPending: isPendingMutation } = useMutation({
-    mutationFn: type === 'create' ? createMeeting : updateMeeting,
+    mutationFn: viewType === 'create' ? createMeeting : updateMeeting,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -95,10 +94,12 @@ function MeetingsDetails() {
           message: data.message,
         });
       } else {
-        setAlertType({
-          type: data.status,
-          message: data.message,
-        });
+        if (viewType === 'create') nav('/meetings/success');
+        else
+          setAlertType({
+            type: data.status,
+            message: data.message,
+          });
       }
     },
     onError: (error) => {
@@ -120,7 +121,6 @@ function MeetingsDetails() {
   }, [filters]);
 
   const meeting = data?.data;
-  console.log(data);
 
   const [alertType, setAlertType] = useState();
 
@@ -172,7 +172,6 @@ function MeetingsDetails() {
 
   useEffect(() => {
     setMeetingType(meeting?.type?.trim() || 'None');
-    setWorkshop(meeting?.workshop);
     setVenue(meeting?.venue || '');
     setVenueCity(meeting?.venue_city || '');
     setDate(meeting?.date || '');
@@ -192,7 +191,7 @@ function MeetingsDetails() {
 
   useEffect(() => {
     if (editingWorkshop) {
-      setWorkshopOptions(workshopsData?.data?.workshops || []);
+      setWorkshopOptions(workshopsData?.data?.workshops || [{ types: 'none' }]);
     }
   }, [workshopsData, isView, meeting, editingWorkshop]);
 
@@ -274,8 +273,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                    ? 'Edit Meeting'
-                    : 'Create Meeting'
+                  ? 'Edit Meeting'
+                  : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}
@@ -473,7 +472,11 @@ function MeetingsDetails() {
 
           {/* action bar  */}
           <Box className={classes.actionBar}>
-            <Button disableTouchRipple className="cancelBtn">
+            <Button
+              disableTouchRipple
+              className="cancelBtn"
+              onClick={() => nav('/meetings')}
+            >
               Cancel
             </Button>
             {viewType === 'view' ? (

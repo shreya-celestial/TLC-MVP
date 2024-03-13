@@ -72,7 +72,7 @@ function WorkshopsDetails() {
     isPending: isPendingMutation,
     isError: isErrorMutation,
   } = useMutation({
-    mutationFn: type === 'create' ? createWorkshop : updateWorkshop,
+    mutationFn: viewType === 'create' ? createWorkshop : updateWorkshop,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -80,10 +80,12 @@ function WorkshopsDetails() {
           message: data.message,
         });
       } else {
-        setAlertType({
-          type: data.status,
-          message: data.message,
-        });
+        if (viewType === 'create') nav('/workshops/success');
+        else
+          setAlertType({
+            type: data.status,
+            message: data.message,
+          });
       }
     },
     onError: (error) => {
@@ -297,8 +299,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                    ? 'Edit Workshop'
-                    : 'Create Workshop'
+                  ? 'Edit Workshop'
+                  : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}
@@ -389,7 +391,9 @@ function WorkshopsDetails() {
                       disabled={isView}
                       value={dayjs(concludingDate)}
                       disablePast={type === 'create' ? true : false}
-                      minDate={endDate ? dayjs(endDate) : (startDate && dayjs(startDate))}
+                      minDate={
+                        endDate ? dayjs(endDate) : startDate && dayjs(startDate)
+                      }
                       onChange={(date) => setConcludingDate(new Date(date))}
                     />
                   </LocalizationProvider>
@@ -494,7 +498,11 @@ function WorkshopsDetails() {
           {/* action bar  */}
           {user?.isAdmin && (
             <Box className={classes.actionBar}>
-              <Button disableTouchRipple className="cancelBtn">
+              <Button
+                disableTouchRipple
+                className="cancelBtn"
+                onClick={() => nav('/workshops')}
+              >
                 Cancel
               </Button>
               {viewType === 'view' ? (

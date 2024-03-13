@@ -121,10 +121,12 @@ function EnrollmentsDetails() {
           message: data.message,
         });
       } else {
-        setAlertType({
-          type: data.status,
-          message: data.message,
-        });
+        if (viewType === 'create') nav('/enrollments/success');
+        else
+          setAlertType({
+            type: data.status,
+            message: data.message,
+          });
       }
     },
     onError: (error) => {
@@ -176,8 +178,6 @@ function EnrollmentsDetails() {
     setIsView(false);
     setViewType('edit');
   };
-
-  console.log(childrenRowData);
 
   const mutateEnrollmentHandler = function (type) {
     const body = {
@@ -471,7 +471,11 @@ function EnrollmentsDetails() {
 
           {/* action bar  */}
           <Box className={classes.actionBar}>
-            <Button disableTouchRipple className="cancelBtn">
+            <Button
+              disableTouchRipple
+              className="cancelBtn"
+              onClick={() => nav('/enrollments')}
+            >
               Cancel
             </Button>
             {viewType === 'view' ? (

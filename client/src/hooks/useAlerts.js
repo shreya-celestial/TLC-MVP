@@ -67,6 +67,7 @@ export function useAlerts(queryKey, fetchFn) {
     showDeleteModal,
     showVerifyStatusModal,
     alertType,
+    setAlertType,
     rowChanged,
     selectedUser,
     setShowDeleteModal,
