@@ -72,6 +72,8 @@ const Volunteers = () => {
   const [statusDropdown, setStatusDropdown] = useState('all');
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
+  const [sortDropdown, setSortDropdown] = useState('none');
+  const [sort, setSort] = useState({});
 
   const { data, isPending, isError } = useReactQuery(
     [
@@ -82,6 +84,7 @@ const Volunteers = () => {
         status: statusDropdown,
         role: roleDropdown,
         gender: genderDropdown,
+        sort,
       },
       rowChanged,
     ],
@@ -278,6 +281,29 @@ const Volunteers = () => {
                   <MenuItem value="all">All</MenuItem>
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl className={classes.formControl}>
+                <FormLabel id="sort-label">Sort by</FormLabel>
+                <Select
+                  label="Sort"
+                  labelId="sort-label"
+                  value={sortDropdown}
+                  onChange={(e) => {
+                    setSortDropdown(e.target.value);
+                  }}
+                  IconComponent={ExpandMoreOutlinedIcon}
+                  className={classes.selectBox}
+                  MenuProps={{
+                    classes: {
+                      paper: classes.selectDropdownMenu,
+                    },
+                  }}
+                >
+                  <MenuItem value="none">None</MenuItem>
+                  <MenuItem value="ascending">Ascending</MenuItem>
+                  <MenuItem value="female">Descending</MenuItem>
                 </Select>
               </FormControl>
 

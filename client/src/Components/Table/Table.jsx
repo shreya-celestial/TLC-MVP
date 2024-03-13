@@ -3,6 +3,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { useStyles } from './Table.styles';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const Table = ({
   data,
@@ -74,6 +75,14 @@ const Table = ({
     );
   };
 
+  const CustomHeaderComponent = (params) => {
+    return (
+      <Typography component="body1" className={classes.customHeaderText}>
+        {params.displayName}
+      </Typography>
+    );
+  };
+
   const modifiedColumnDefs = colDefs.map((colDef) => {
     if (colDef.field === 'isAdminVerified') {
       colDef.cellRenderer = IsAdminVerifiedComp;
@@ -89,8 +98,19 @@ const Table = ({
 
     if (colDef.field === 'children') colDef.cellRenderer = InfoTable;
 
+    colDef.headerComponent = CustomHeaderComponent;
+
     return colDef;
   });
+  const handleSortChanged = function (params) {
+    console.log();
+    // rowData = null;
+    // console.log(params.columns.at(-1).colId);
+    // console.log(params.columns.at(-1).sort);
+    // handleSort(params.columns.at(-1).colId, params.columns.at(-1).sort);
+    // params.columns.at(-1).sort = null;
+    // params.columns.at(-1).colId;
+  };
 
   return (
     <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
@@ -108,6 +128,7 @@ const Table = ({
       )}
       {data && (
         <AgGridReact
+          onSortChanged={handleSortChanged}
           className={classes.AgGridMain}
           rowData={rowData}
           defaultColDef={defaultColDef}

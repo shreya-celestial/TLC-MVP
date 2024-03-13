@@ -11,6 +11,10 @@ const LocationComp = (params) => {
   );
 };
 
+const CustomHeaderComponent = (params) => {
+  return <p>{params.displayName}</p>;
+};
+
 const colDefs = [
   {
     headerCheckboxSelection: true,
@@ -25,6 +29,8 @@ const colDefs = [
     editable: false,
     minWidth: 160,
     headerName: 'Name',
+    headerComponent: CustomHeaderComponent,
+    // sortable: false,
   },
   {
     field: 'email',
@@ -80,6 +86,7 @@ const colDefs = [
       alignItems: 'center',
     },
     minWidth: 120,
+    pinned: 'right',
   },
 ];
 

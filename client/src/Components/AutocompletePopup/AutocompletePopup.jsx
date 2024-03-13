@@ -49,7 +49,7 @@ function AutocompletePopup({
       ? volunteers
       : participants;
 
-  const { data, isPending, isError, error } = useReactQuery(
+  const { data, isPending, isError } = useReactQuery(
     [1, 10, { ...debouncedFilters }, mode],
     fetchFn,
     {

@@ -1,13 +1,15 @@
 const BASEURL = 'https://tlc-two.vercel.app/volunteers';
 
 export const volunteers = async function ({ signal, queryKey }) {
-  const [page, noOfRecords, filters] = queryKey;
+  const [page, noOfRecords, filters, sort] = queryKey;
 
   for (const key in filters) {
     if (filters[key] === 'all' || filters[key] === '') {
       delete filters[key];
     }
   }
+
+  console.log(sort);
 
   let pageParam = page ? `?page=${page}` : `?page=1`;
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
