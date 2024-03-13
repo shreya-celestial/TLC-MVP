@@ -120,6 +120,7 @@ function MeetingsDetails() {
   }, [filters]);
 
   const meeting = data?.data;
+  console.log(data);
 
   const [alertType, setAlertType] = useState();
 
@@ -177,6 +178,7 @@ function MeetingsDetails() {
 
     if (!editingWorkshop) {
       setWorkshopOptions([meeting?.workshop || { types: 'none' }]);
+      setSelectedWorkshop(meeting?.workshop);
     }
 
     if (viewType !== 'create') {
@@ -297,7 +299,7 @@ function MeetingsDetails() {
                         },
                       }}
                     >
-                      <MenuItem value="none">None</MenuItem>
+                      <MenuItem value="None">None</MenuItem>
                       <MenuItem value="Meeting Type 1">Meeting Type 1</MenuItem>
                       <MenuItem value="Meeting Type 2">Meeting Type 2</MenuItem>
                       <MenuItem value="Meeting Type 3">Meeting Type 3</MenuItem>

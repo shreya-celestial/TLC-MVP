@@ -12,8 +12,14 @@ import { useReactQuery } from '../../hooks/useReactQuery';
 import { dashboardDetails, dashboardWorkshops } from '../../apis/dashboard';
 
 const Dashboard = () => {
-  const { data, isPending } = useReactQuery([(new Date()).getSeconds()], dashboardDetails)
-  const { data: wkshps, isPending: isLoading } = useReactQuery([(new Date()).getSeconds() + 'wkshps'], dashboardWorkshops)
+  const { data, isPending } = useReactQuery(
+    [new Date().getSeconds()],
+    dashboardDetails
+  );
+  const { data: wkshps, isPending: isLoading } = useReactQuery(
+    [new Date().getSeconds() + 'wkshps'],
+    dashboardWorkshops
+  );
   const classes = useStyles();
   const smallCardData = [
     {
@@ -78,17 +84,20 @@ const Dashboard = () => {
         <Box className={classes.bigCard}>
           <Typography className="bigCardHeading">Upcoming Workshops</Typography>
           <Box className={classes.upcominWorkshops}>
-            {!isLoading && (wkshps?.data?.workshops?.length > 0 ?
-              wkshps?.data?.workshops?.map((workshop) => (
-                <UpcomingWorkshop
-                  key={workshop?.id}
-                  title={workshop?.types}
-                  startDate={workshop?.start_date}
-                  endDate={workshop?.end_date}
-                  location={workshop?.venue_city}
-                />
-              )) :
-              <p>No Upcoming workshops!</p>)}
+            {!isLoading &&
+              (wkshps?.data?.workshops?.length > 0 ? (
+                wkshps?.data?.workshops?.map((workshop) => (
+                  <UpcomingWorkshop
+                    key={workshop?.id}
+                    title={workshop?.types}
+                    startDate={workshop?.start_date}
+                    endDate={workshop?.end_date}
+                    location={workshop?.venue_city}
+                  />
+                ))
+              ) : (
+                <p>No Upcoming workshops!</p>
+              ))}
             {!wkshps && isLoading && <p>Loading...</p>}
           </Box>
         </Box>

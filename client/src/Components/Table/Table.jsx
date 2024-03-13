@@ -75,13 +75,26 @@ const Table = ({
     );
   };
 
-  const CustomHeaderComponent = (params) => {
-    return (
-      <Typography component="body1" className={classes.customHeaderText}>
-        {params.displayName}
-      </Typography>
-    );
-  };
+  // const [orderBy, setOrderBy] = useState('none');
+
+  // const handleHeaderClick = function (columnName) {
+  //   updateSort({ sortBy: columnName, orderBy });
+  //   if (orderBy === 'asc') setOrderBy('desc');
+  //   if (orderBy === 'desc') setOrderBy('none');
+  //   if (orderBy === 'none') setOrderBy('asc');
+  // };
+
+  // const CustomHeaderComponent = (params) => {
+  //   return (
+  //     <Typography
+  //       component="body1"
+  //       className="ag-header-cell-text"
+  //       onClick={() => handleHeaderClick(params.column.colId)}
+  //     >
+  //       {params.displayName}
+  //     </Typography>
+  //   );
+  // };
 
   const modifiedColumnDefs = colDefs.map((colDef) => {
     if (colDef.field === 'isAdminVerified') {
@@ -98,19 +111,10 @@ const Table = ({
 
     if (colDef.field === 'children') colDef.cellRenderer = InfoTable;
 
-    colDef.headerComponent = CustomHeaderComponent;
+    // colDef.headerComponent = CustomHeaderComponent;
 
     return colDef;
   });
-  const handleSortChanged = function (params) {
-    console.log();
-    // rowData = null;
-    // console.log(params.columns.at(-1).colId);
-    // console.log(params.columns.at(-1).sort);
-    // handleSort(params.columns.at(-1).colId, params.columns.at(-1).sort);
-    // params.columns.at(-1).sort = null;
-    // params.columns.at(-1).colId;
-  };
 
   return (
     <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
@@ -128,7 +132,6 @@ const Table = ({
       )}
       {data && (
         <AgGridReact
-          onSortChanged={handleSortChanged}
           className={classes.AgGridMain}
           rowData={rowData}
           defaultColDef={defaultColDef}

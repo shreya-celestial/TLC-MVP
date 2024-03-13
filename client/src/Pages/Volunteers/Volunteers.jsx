@@ -35,7 +35,7 @@ const Volunteers = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
@@ -76,7 +76,7 @@ const Volunteers = () => {
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
   const [sortDropdown, setSortDropdown] = useState('none');
-  const [sort, setSort] = useState({});
+  // const [sort, setSort] = useState('');
 
   const { data, isPending, isError } = useReactQuery(
     [
@@ -87,7 +87,6 @@ const Volunteers = () => {
         status: statusDropdown,
         role: roleDropdown,
         gender: genderDropdown,
-        sort,
       },
       rowChanged,
     ],
@@ -107,11 +106,15 @@ const Volunteers = () => {
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
-  const handleReset = () => {
+  const handleReset = function () {
     setRoleDropdown('all');
     setGenderDropdown('all');
     setStatusDropdown('all');
   };
+
+  // const updateSort = function (data) {
+  //   setSort(data);
+  // };
 
   return (
     <Box className={classes.root}>
@@ -132,15 +135,19 @@ const Volunteers = () => {
           )}
           {selectedRows.length === 1 && (
             <>
-              {user?.isAdmin && <Button
-                className="editBtn"
-                disableRipple
-                onClick={() => {
-                  navigate(`/volunteers/detail/${selectedRows[0].email}/edit`);
-                }}
-              >
-                Edit
-              </Button>}
+              {user?.isAdmin && (
+                <Button
+                  className="editBtn"
+                  disableRipple
+                  onClick={() => {
+                    navigate(
+                      `/volunteers/detail/${selectedRows[0].email}/edit`
+                    );
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
               <Button
                 className="viewBtn"
                 disableRipple
@@ -284,29 +291,6 @@ const Volunteers = () => {
                   <MenuItem value="all">All</MenuItem>
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
-                </Select>
-              </FormControl>
-
-              <FormControl className={classes.formControl}>
-                <FormLabel id="sort-label">Sort by</FormLabel>
-                <Select
-                  label="Sort"
-                  labelId="sort-label"
-                  value={sortDropdown}
-                  onChange={(e) => {
-                    setSortDropdown(e.target.value);
-                  }}
-                  IconComponent={ExpandMoreOutlinedIcon}
-                  className={classes.selectBox}
-                  MenuProps={{
-                    classes: {
-                      paper: classes.selectDropdownMenu,
-                    },
-                  }}
-                >
-                  <MenuItem value="none">None</MenuItem>
-                  <MenuItem value="ascending">Ascending</MenuItem>
-                  <MenuItem value="female">Descending</MenuItem>
                 </Select>
               </FormControl>
 

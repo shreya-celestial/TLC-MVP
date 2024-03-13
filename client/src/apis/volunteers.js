@@ -1,15 +1,17 @@
 const BASEURL = 'https://tlc-two.vercel.app/volunteers';
 
 export const volunteers = async function ({ signal, queryKey }) {
-  const [page, noOfRecords, filters, sort] = queryKey;
+  const [page, noOfRecords, filters] = queryKey;
 
   for (const key in filters) {
-    if (filters[key] === 'all' || filters[key] === '') {
+    if (
+      filters[key] === 'all' ||
+      filters[key] === '' ||
+      filters[key]?.orderBy === 'none'
+    ) {
       delete filters[key];
     }
   }
-
-  console.log(sort);
 
   let pageParam = page ? `?page=${page}` : `?page=1`;
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
@@ -21,9 +23,12 @@ export const volunteers = async function ({ signal, queryKey }) {
   let isAdminVerifiedParam = filters?.status
     ? `&isAdminVerified=${filters.status === 'verified' ? 'true' : 'false'}`
     : '';
+  let sortParam = filters?.sort
+    ? `&sort_by=${filters.sort.sortBy}&order_of_sort=${filters.sort.orderBy}`
+    : '';
 
   const res = await fetch(
-    `${BASEURL}/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}`,
+    `${BASEURL}/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}${sortParam}`,
     signal
   );
 
