@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyAndUpdateKey = exports.updateStatus = exports.VerifyAndUpdatePass = exports.CheckAndUpdateToken = exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
+exports.updateUserByEmail = exports.verifyAndUpdateKey = exports.updateStatus = exports.VerifyAndUpdatePass = exports.CheckAndUpdateToken = exports.VerifyTokenAndUpdate = exports.DeleteUserByEmail = exports.InsertUserMutation = void 0;
 exports.InsertUserMutation = `
   mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!,
     $phoneNumber: String!,  $yearOfJoining: Int!, 
@@ -84,6 +84,13 @@ exports.verifyAndUpdateKey = `
         dob
         pincode
       }
+    }
+  }
+`;
+exports.updateUserByEmail = `
+  mutation MyMutation($email: String!, $city: String!, $dob: date!, $gender: String!, $location: String!, $name: String!, $phoneNumber: String!, $pincode: Int!, $yearOfJoining: Int!, $state: String!) {
+    update_users(where: {email: {_eq: $email}, isVerified: {_eq: true}, isAdminVerified: {_eq: true}}, _set: {city: $city, dob: $dob, gender: $gender, location: $location, name: $name, phoneNumber: $phoneNumber, pincode: $pincode, yearOfJoining: $yearOfJoining, state: $state}) {
+      affected_rows
     }
   }
 `;

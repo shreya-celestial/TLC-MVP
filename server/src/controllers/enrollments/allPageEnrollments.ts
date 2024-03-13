@@ -96,6 +96,11 @@ const allPageEnrollments = async (req: Request, res: Response) => {
           mobile_number: {
             _like: `${phone}%`
           }
+        },
+        {
+          state: {
+            _like: `${name}%`
+          }
         }
       ]
     }

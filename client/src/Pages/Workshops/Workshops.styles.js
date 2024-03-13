@@ -176,6 +176,18 @@ export const useStyles = makeStyles((theme) => ({
           fontSize: '16px',
           color: '#2F2F2F',
         },
+        '& .MuiTouchRipple-root': {
+          display: 'none',
+        },
+      },
+      '&.Mui-disabled': {
+        background: '#E0E0E0 !important',
+        '& input.Mui-disabled': {
+          '-webkit-text-fill-color': '#696969',
+        },
+        '& .MuiInputAdornment-root button svg': {
+          color: '#696969',
+        },
       },
     },
   },

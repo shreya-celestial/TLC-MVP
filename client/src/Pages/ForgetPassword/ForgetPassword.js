@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -15,32 +15,87 @@ import validator from 'validator';
 import AlertReact from '../../Components/Alert/AlertReact';
 function ForgetPassword() {
   const classes = useStyles();
-  const [isFound, setIsFound] = useState(true);
 
   const [alertType, setAlertType] = useState();
+  const [isThrottle, setIsThrottle] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [msg, setMsg] = useState('');
+
+  const [timer, setTimer] = useState(0);
+  useEffect(() => {
+    let intervalId;
+
+    if (timer > 0 && disableBtn) {
+      intervalId = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+    if (timer === 0) {
+      setDisableBtn(false);
+      setIsThrottle(false);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [timer]);
 
   const removeAlertType = function () {
     setAlertType(undefined);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const body = {
-      email: e.target.elements.email.value,
+  function verifyEmail(e) {
+    const verify = async (e) => {
+      const body = {
+        email: e.target.elements.email.value,
+      };
+
+      if (!validator.isEmail(body.email)) {
+        return setAlertType({
+          type: 'error',
+          message: 'Please enter a valid email.',
+        });
+      }
+      setStatus('Loading')
+      const data = await forgotPass(body);
+      if (data?.status === 'error') {
+        setAlertType({
+          type: 'error',
+          message: data.message,
+        });
+        setTimer(0)
+      }
+      if (data?.status === 'success') {
+        setAlertType({
+          type: 'success',
+          message: data.message,
+        });
+      }
+      setStatus(null)
     };
+    verify(e);
+  }
 
-    if (!validator.isEmail(body.email)) {
-      return setAlertType({
-        type: 'error',
-        message: 'Please enter a valid email.',
-      });
-    }
+  function Throttle(e, fun, delay) {
+    return () => {
+      if (isThrottle) {
+        return;
+      }
+      setIsThrottle(true);
+      fun(e);
+      setTimer(20);
+      setDisableBtn(true);
 
-    const data = await forgotPass(body);
-    if (data?.status === 'error') {
-      setIsFound(false);
-    }
-  };
+      setTimeout(() => {
+        setIsThrottle(false);
+      }, delay);
+    };
+  }
+  function verifySubmit(e) {
+    e.preventDefault();
+    Throttle(e, verifyEmail, 20000)();
+  }
 
   return (
     <Box className={classes.root}>
@@ -55,7 +110,7 @@ function ForgetPassword() {
         <img className={classes.logo} src={logo} alt="The Last Center Logo" />
         <Typography className={classes.header}>Forgot Password</Typography>
 
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <form className={classes.form} onSubmit={verifySubmit}>
           <Box className={classes.FormElementInBox}>
             <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="emailField">Email Address</FormLabel>
@@ -67,16 +122,16 @@ function ForgetPassword() {
                 name="email"
               />
             </FormControl>
-            {!isFound && (
-              <Typography className="emailNotFound">
-                We cannot find your email
-              </Typography>
-            )}
           </Box>
 
           <Box className={classes.FormElementInBox}>
-            <Button type="submit" disableRipple className={classes.verifyBtn}>
-              Verify
+            <Button
+              type="submit"
+              disableRipple
+              className={classes.verifyBtn}
+              disabled={disableBtn}
+            >
+              {status ? 'Loading...' : disableBtn ? `Resend in ${timer} seconds` : 'Verify'}
             </Button>
 
             <Link to={'/'} className="backToLogin">

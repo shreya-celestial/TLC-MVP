@@ -1,15 +1,54 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Box,useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useStyles } from './DoughnutChart.styles';
 
-const DoughnutChart = () => {
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec'
+]
+
+const DoughnutChart = ({ data }) => {
   const isSmScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const chartRef = useRef(null);
+  const [dataObj, setDataObj] = useState({})
   const [chartInstance, setChartInstance] = useState(null);
+  const date = new Date((new Date()).setMonth((new Date()).getMonth() - 5))
+
+  useEffect(() => {
+    if (data) {
+      const obj = {}
+      for (let i = date.getMonth(); i < date.getMonth() + 6; i++) {
+        let comp;
+        if (i > 12) {
+          comp = i - 12
+        }
+        else {
+          comp = i
+        }
+        const count = data?.data?.past_six_months_enrollments?.filter((enrollment) => {
+          const date = new Date(enrollment?.created_at)
+          return (date.getMonth() + 1) === comp
+        })
+        obj[`${MONTHS[comp - 1]}`] = count?.length
+      }
+      setDataObj(() => obj)
+    }
+  }, [data])
+
   // chart labels and data
-  const label = ['January', 'Febuary', 'March', 'April', 'May', 'June'];
-  const chartData = [10, 20, 30, 40, 50, 60];
+  const label = Object.keys(dataObj);
+  const chartData = Object.values(dataObj)
 
   useEffect(() => {
     if (chartInstance) {
@@ -88,7 +127,7 @@ const DoughnutChart = () => {
         datasets: [
           {
             label: 'Enrollments',
-            data: chartData,
+            data: chartData?.length ? chartData : [0, 0, 0, 0, 0, 0],
             backgroundColor: [
               '#4CB140',
               '#14B8A6',
@@ -99,7 +138,6 @@ const DoughnutChart = () => {
             ],
 
             cutout: '75%',
-            borderRadius: 10,
           },
         ],
       },
@@ -124,8 +162,9 @@ const DoughnutChart = () => {
         newChartInstance.destroy();
       }
     };
-  }, []);
+  }, [dataObj]);
   const classes = useStyles();
+
   return (
     <Box className={classes.root}>
       <Box className={classes.chart}>

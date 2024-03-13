@@ -22,9 +22,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerForm.styles';
 import { getLocationData } from '../../apis/global';
 
-import { getCookie } from '../../utils/utils';
-
-function VolunteerForm({ submit, isRole = false, isPending }) {
+function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
   const currentYear = new Date().getFullYear();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -63,8 +61,6 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
     };
   }, [pincode]);
 
-  const email = getCookie('email')?.replace('%40', '@');
-
   useEffect(() => {
     if (cities) {
       const data = cities.find((pincodeCity) => pincodeCity.city === city);
@@ -93,14 +89,14 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
           </FormControl>
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
-            <TextField
+            {isEmail && <Typography variant={'body2'} className={classes.borderClass}>{isEmail}</Typography>}
+            {!isEmail && <TextField
               type="email"
               id="emailField"
               placeholder="Enter Your Email Address"
               required
               name="email"
-              className={email ? classes.disabled : false}
-            />
+            />}
           </FormControl>
         </Box>
 
@@ -167,7 +163,7 @@ function VolunteerForm({ submit, isRole = false, isPending }) {
         </Box>
         {/* phone number and  date picker-DOB */}
         <Box className={classes.formElementBox}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
             <TextField
               id="phoneNumberField"

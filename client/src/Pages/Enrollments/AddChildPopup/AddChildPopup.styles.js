@@ -2,8 +2,6 @@ import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme) => ({
   Dialog: {
-
-
     '& .MuiDialog-paper': {
       boxShadow: 'none',
       borderRadius: '5px',
@@ -106,6 +104,9 @@ export const useStyles = makeStyles((theme) => ({
           width: '20px',
           height: '20px',
           color: '#2F2F2F',
+        },
+        '& .MuiTouchRipple-root': {
+          display: 'none',
         },
       },
     },

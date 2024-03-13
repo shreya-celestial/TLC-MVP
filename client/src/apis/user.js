@@ -59,3 +59,23 @@ export const resetPass = async (body) => {
   });
   return await response.json();
 };
+
+export const logStatus = async (body) => {
+  try {
+    const url = `${BASE_URL}/updateLogStatus`;
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    return await response.json();
+  }
+  catch (err) {
+    return {
+      status: 'error',
+      message: err
+    }
+  }
+}

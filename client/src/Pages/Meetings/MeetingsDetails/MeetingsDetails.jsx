@@ -24,7 +24,7 @@ import AutocompletePopup from '../../../Components/AutocompletePopup/Autocomplet
 
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getMeeting } from '../../../apis/meetings';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchRowDataMeeting, validateMeeting } from '../../../utils/utils';
 import dayjs from 'dayjs';
 import { compareTwoArrays } from '../../../utils/utils';
@@ -38,6 +38,7 @@ function MeetingsDetails() {
   const classes = useStyles();
   const [openPopup, setOpenPopup] = useState(false);
   const [mode, setMode] = useState('');
+  const nav = useNavigate();
 
   const { id, type } = useParams();
 
@@ -193,9 +194,7 @@ function MeetingsDetails() {
   }, [workshopsData, isView, meeting, editingWorkshop]);
 
   const mutateMeetingHandler = function (type) {
-    let modifiedDate = date;
-    if (type === 'create' && date)
-      modifiedDate = date.toISOString().split('T')[0];
+    const modifiedDate = new Date(date).toLocaleDateString();
 
     const body = {
       date: modifiedDate,
@@ -217,6 +216,19 @@ function MeetingsDetails() {
     setIsView(false);
     setViewType('edit');
   };
+
+  useEffect(() => {
+    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+      nav('/meetings');
+    }
+    if (type === 'view') {
+      setIsView(true);
+    }
+  }, [type]);
+
+  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    return;
+  }
 
   const handleDeleteRow = function ({ email, row, id }) {
     if (row === 'Volunteers') {

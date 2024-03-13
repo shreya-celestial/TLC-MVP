@@ -159,7 +159,7 @@ function EnrollmentsDetails() {
 
   useEffect(() => {
     if (type !== 'create' && type !== 'edit' && type !== 'view') {
-      nav('/dashboard');
+      nav('/enrollments');
     }
     if (type === 'view') {
       setIsView(true);
@@ -180,7 +180,7 @@ function EnrollmentsDetails() {
       name,
       email,
       mobile_number: phone,
-      dob,
+      dob: new Date(dob).toLocaleDateString(),
       gender,
       address,
       city,
@@ -246,6 +246,7 @@ function EnrollmentsDetails() {
                   : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
+              path={'enrollments'}
             />
             <Box className={classes.mainContent}>
               {/*  PERSONAL INFORMATION*/}

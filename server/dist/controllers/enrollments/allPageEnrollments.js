@@ -87,6 +87,11 @@ const allPageEnrollments = (req, res) => __awaiter(void 0, void 0, void 0, funct
                     mobile_number: {
                         _like: `${phone}%`
                     }
+                },
+                {
+                    state: {
+                        _like: `${name}%`
+                    }
                 }
             ] });
     }

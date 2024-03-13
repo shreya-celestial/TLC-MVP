@@ -23,7 +23,7 @@ const resetPass = async (req: Request, res: Response) => {
   }
   if(!data?.data?.update_users?.affected_rows)
   {
-    return res.status(400).json({
+    return res.status(404).json({
       status: 'error',
       message: 'User not found!',
     });

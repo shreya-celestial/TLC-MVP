@@ -138,7 +138,7 @@ const Enrollments = () => {
                 className="editBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/enrollmentdetails/${selectedRows[0].id}/edit`);
+                  navigate(`/enrollments/details/${selectedRows[0].id}/edit`);
                 }}
               >
                 Edit
@@ -147,7 +147,7 @@ const Enrollments = () => {
                 className="viewBtn"
                 disableRipple
                 onClick={() => {
-                  navigate(`/enrollmentdetails/${selectedRows[0].id}/view`);
+                  navigate(`/enrollments/details/${selectedRows[0].id}/view`);
                 }}
               >
                 View
@@ -156,10 +156,10 @@ const Enrollments = () => {
           )}
           {selectedRows.length === 0 && (
             <Button
-              className="inviteBtn"
+              className="createEnrollBtn"
               disableRipple
               onClick={() => {
-                navigate(`/enrollmentdetails/create`);
+                navigate(`/enrollments/details/create`);
               }}
             >
               Create Enrollment
