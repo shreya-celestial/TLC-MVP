@@ -274,8 +274,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                  ? 'Edit Meeting'
-                  : 'Create Meeting'
+                    ? 'Edit Meeting'
+                    : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}
@@ -384,6 +384,7 @@ function MeetingsDetails() {
                       name="date"
                       disabled={isView}
                       value={dayjs(date)}
+                      disablePast={type === 'create' ? true : false}
                       onChange={(date) => setDate(new Date(date))}
                     />
                   </LocalizationProvider>

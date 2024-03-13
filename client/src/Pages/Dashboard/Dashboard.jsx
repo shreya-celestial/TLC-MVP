@@ -10,6 +10,7 @@ import UpcomingWorkshop from '../../Components/UpcomingWorkshop/UpcomingWorkshop
 import DoughnutChart from './Charts/DonutChart/DoughnutChart';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { dashboardDetails, dashboardWorkshops } from '../../apis/dashboard';
+import Loader from '../../Components/Loader/Loader';
 
 const Dashboard = () => {
   const { data, isPending } = useReactQuery(
@@ -53,39 +54,40 @@ const Dashboard = () => {
   ];
 
   return (
-    <Box className={classes.root}>
-      <Box className={classes.smallCardContainer}>
-        {smallCardData.map((item) => (
-          <Stack
-            key={item.id}
-            className={`${classes.smallCard} ${item.class}`}
-            divider={<Divider orientation="vertical" flexItem />}
-            direction={'row'}
-          >
-            {item.icon}
-            <Box className={classes.titleAndValue}>
-              <Typography className="cardValue">
-                {item.value.toLocaleString()}
-              </Typography>
-              <Typography className="cardTitle">{item.title}</Typography>
-            </Box>
-          </Stack>
-        ))}
-      </Box>
-      <Box className={classes.bigCardContainer}>
-        <Box className={classes.bigCard}>
-          <Typography className="bigCardHeading">
-            Last 6 Months Enrollments
-          </Typography>
-          <Box className={classes.chartMain}>
-            <DoughnutChart data={data} />
-          </Box>
+    <>
+      {isPending && isLoading && <Loader />}
+      <Box className={classes.root}>
+        <Box className={classes.smallCardContainer}>
+          {smallCardData.map((item) => (
+            <Stack
+              key={item.id}
+              className={`${classes.smallCard} ${item.class}`}
+              divider={<Divider orientation="vertical" flexItem />}
+              direction={'row'}
+            >
+              {item.icon}
+              <Box className={classes.titleAndValue}>
+                <Typography className="cardValue">
+                  {item.value.toLocaleString()}
+                </Typography>
+                <Typography className="cardTitle">{item.title}</Typography>
+              </Box>
+            </Stack>
+          ))}
         </Box>
-        <Box className={classes.bigCard}>
-          <Typography className="bigCardHeading">Upcoming Workshops</Typography>
-          <Box className={classes.upcominWorkshops}>
-            {!isLoading &&
-              (wkshps?.data?.workshops?.length > 0 ? (
+        <Box className={classes.bigCardContainer}>
+          <Box className={classes.bigCard}>
+            <Typography className="bigCardHeading">
+              Last 6 Months Enrollments
+            </Typography>
+            <Box className={classes.chartMain}>
+              <DoughnutChart data={data} />
+            </Box>
+          </Box>
+          <Box className={classes.bigCard}>
+            <Typography className="bigCardHeading">Upcoming Workshops</Typography>
+            <Box className={classes.upcominWorkshops}>
+              {!isLoading && (wkshps?.data?.workshops?.length > 0 ?
                 wkshps?.data?.workshops?.map((workshop) => (
                   <UpcomingWorkshop
                     key={workshop?.id}
@@ -94,15 +96,14 @@ const Dashboard = () => {
                     endDate={workshop?.end_date}
                     location={workshop?.venue_city}
                   />
-                ))
-              ) : (
-                <p>No Upcoming workshops!</p>
-              ))}
-            {!wkshps && isLoading && <p>Loading...</p>}
+                )) :
+                <p>No Upcoming workshops!</p>)}
+              {!wkshps && isLoading && <p>Loading...</p>}
+            </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

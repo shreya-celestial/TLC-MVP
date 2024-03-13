@@ -23,6 +23,7 @@ import UserContext from '../../store/userContext';
 import { logStatus } from '../../apis/user';
 import ErrorPage from '../../Pages/ErrorPage/ErrorPage';
 import Loader from '../Loader/Loader';
+import EditPage from '../../Pages/EditPage/EditPage';
 
 let SESSIONUSER = localStorage.getItem('keys');
 SESSIONUSER = SESSIONUSER ? JSON.parse(SESSIONUSER) : null
@@ -46,7 +47,7 @@ function Main() {
       }
       setError(() => {
         localStorage.clear()
-        return userData?.message
+        return typeof (userData?.message) === 'string' ? userData?.message : 'Something went wrong.. Please try again later!'
       })
     }
     if (SESSIONUSER) {
@@ -72,6 +73,7 @@ function Main() {
             {loader && !error && <Route exact path='*' element={<Loader />} />}
             {loader && error && <Route exact path='*' element={<ErrorPage>{error}</ErrorPage>} />}
             {user && !loader && <Route exact path="/" element={<Dashboard />} />}
+            {user && !loader && <Route exact path="/editprofile" element={<EditPage />} />}
             {user && !loader && <Route exact path="/dashboard" element={<Dashboard />} />}
             {user && !loader && <Route exact path="/volunteers" element={<Volunteers />} />}
             {user && !loader && <Route

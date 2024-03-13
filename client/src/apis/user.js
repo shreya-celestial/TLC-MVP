@@ -79,3 +79,23 @@ export const logStatus = async (body) => {
     }
   }
 }
+
+export const updateProfile = async (data) => {
+  try {
+    const url = `${BASE_URL}/${data?.mail}/update`;
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data?.body),
+    });
+    return await response.json();
+  }
+  catch (err) {
+    return {
+      status: 'error',
+      message: err?.message
+    }
+  }
+}

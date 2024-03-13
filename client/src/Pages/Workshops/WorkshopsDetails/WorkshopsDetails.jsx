@@ -297,8 +297,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                  ? 'Edit Workshop'
-                  : 'Create Workshop'
+                    ? 'Edit Workshop'
+                    : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}
@@ -354,6 +354,7 @@ function WorkshopsDetails() {
                     <DatePicker
                       name="startDate"
                       disabled={isView}
+                      disablePast={type === 'create' ? true : false}
                       value={dayjs(startDate)}
                       onChange={(date) => setStartDate(new Date(date))}
                     />
@@ -370,6 +371,8 @@ function WorkshopsDetails() {
                       name="endtDate"
                       disabled={isView}
                       value={dayjs(endDate)}
+                      disablePast={type === 'create' ? true : false}
+                      minDate={startDate && dayjs(startDate)}
                       onChange={(date) => setEndDate(new Date(date))}
                     />
                   </LocalizationProvider>
@@ -385,6 +388,8 @@ function WorkshopsDetails() {
                       name="concludingSessionDate"
                       disabled={isView}
                       value={dayjs(concludingDate)}
+                      disablePast={type === 'create' ? true : false}
+                      minDate={endDate ? dayjs(endDate) : (startDate && dayjs(startDate))}
                       onChange={(date) => setConcludingDate(new Date(date))}
                     />
                   </LocalizationProvider>
