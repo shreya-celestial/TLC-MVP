@@ -8,7 +8,7 @@ const verifyReset = async (req: Request, res: Response) => {
       token: req.params.token
     })
     if(data?.data?.users?.length){
-      return res.redirect(303, `http://localhost:3000/resetPass?reset=${req?.params?.token}`)
+      return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${req?.params?.token}`)
     }
     return res.status(400).send('Error! Something went wrong. Please try again later.')
   }

@@ -32,7 +32,7 @@ const verifyInvite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (diffDays >= 5) {
             return res.status(404).send('Invitation expired!');
         }
-        return res.redirect(303, `http://localhost:3000/signup?token=${token}&for=${(_g = (_f = data === null || data === void 0 ? void 0 : data.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.email}`);
+        return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/signup?token=${token}&for=${(_g = (_f = data === null || data === void 0 ? void 0 : data.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.email}`);
     }
     return res.status(404).send('Error! Page not found.');
 });

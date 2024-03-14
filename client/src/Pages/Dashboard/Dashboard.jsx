@@ -105,7 +105,9 @@ const Dashboard = () => {
                     No Upcoming workshops!
                   </Typography>
                 ))}
-              {!wkshps && isLoading && <Typography className='upcomingLoading'>Loading...</Typography>}
+              {!wkshps && isLoading && (
+                <Typography className="upcomingLoading">Loading...</Typography>
+              )}
             </Box>
           </Box>
         </Box>
