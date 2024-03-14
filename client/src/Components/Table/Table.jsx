@@ -3,7 +3,8 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { useStyles } from './Table.styles';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import UserContext from '../../store/userContext';
 
 const Table = ({
   data,
@@ -18,6 +19,7 @@ const Table = ({
   if (data) rowData = data;
 
   const classes = useStyles();
+  const { user } = useContext(UserContext)
 
   const onSelectionChanged = () => {
     const selectedNodes = gridApi.getSelectedNodes();
@@ -53,7 +55,10 @@ const Table = ({
         ) : (
           <Button
             className={classes.pending}
-            onClick={() => handleClickInColumn(params)}
+            onClick={user?.isAdmin ? () => handleClickInColumn(params) : () => { }}
+            sx={{
+              cursor: user?.isAdmin ? 'pointer' : 'default'
+            }}
             disableRipple
           >
             Pending
