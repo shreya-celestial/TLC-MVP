@@ -53,66 +53,67 @@ const Dashboard = () => {
     },
   ];
 
+  if (isPending || isLoading) {
+    return <Loader />
+  }
+
   return (
-    <>
-      {isPending && isLoading && <Loader />}
-      <Box className={classes.root}>
-        <Box className={classes.smallCardContainer}>
-          {smallCardData.map((item) => (
-            <Stack
-              key={item.id}
-              className={`${classes.smallCard} ${item.class}`}
-              divider={<Divider orientation="vertical" flexItem />}
-              direction={'row'}
-            >
-              {item.icon}
-              <Box className={classes.titleAndValue}>
-                <Typography className="cardValue">
-                  {item.value.toLocaleString()}
-                </Typography>
-                <Typography className="cardTitle">{item.title}</Typography>
-              </Box>
-            </Stack>
-          ))}
-        </Box>
-        <Box className={classes.bigCardContainer}>
-          <Box className={classes.bigCard}>
-            <Typography className="bigCardHeading">
-              Last 6 Months Enrollments
-            </Typography>
-            <Box className={classes.chartMain}>
-              <DoughnutChart data={data} />
+    <Box className={classes.root}>
+      <Box className={classes.smallCardContainer}>
+        {smallCardData.map((item) => (
+          <Stack
+            key={item.id}
+            className={`${classes.smallCard} ${item.class}`}
+            divider={<Divider orientation="vertical" flexItem />}
+            direction={'row'}
+          >
+            {item.icon}
+            <Box className={classes.titleAndValue}>
+              <Typography className="cardValue">
+                {item.value.toLocaleString()}
+              </Typography>
+              <Typography className="cardTitle">{item.title}</Typography>
             </Box>
+          </Stack>
+        ))}
+      </Box>
+      <Box className={classes.bigCardContainer}>
+        <Box className={classes.bigCard}>
+          <Typography className="bigCardHeading">
+            Last 6 Months Enrollments
+          </Typography>
+          <Box className={classes.chartMain}>
+            <DoughnutChart data={data} />
           </Box>
-          <Box className={classes.bigCard}>
-            <Typography className="bigCardHeading">
-              Upcoming Workshops
-            </Typography>
-            <Box className={classes.upcominWorkshops}>
-              {!isLoading &&
-                (wkshps?.data?.workshops?.length > 0 ? (
-                  wkshps?.data?.workshops?.map((workshop) => (
-                    <UpcomingWorkshop
-                      key={workshop?.id}
-                      title={workshop?.types}
-                      startDate={workshop?.start_date}
-                      endDate={workshop?.end_date}
-                      location={workshop?.venue_city}
-                    />
-                  ))
-                ) : (
-                  <Typography className="noWorkshop">
-                    No Upcoming workshops!
-                  </Typography>
-                ))}
-              {!wkshps && isLoading && (
-                <Typography className="upcomingLoading">Loading...</Typography>
-              )}
-            </Box>
+        </Box>
+        <Box className={classes.bigCard}>
+          <Typography className="bigCardHeading">
+            Upcoming Workshops
+          </Typography>
+          <Box className={classes.upcominWorkshops}>
+            {!isLoading &&
+              (wkshps?.data?.workshops?.length > 0 ? (
+                wkshps?.data?.workshops?.map((workshop) => (
+                  <UpcomingWorkshop
+                    key={workshop?.id}
+                    title={workshop?.types}
+                    startDate={workshop?.start_date}
+                    endDate={workshop?.end_date}
+                    location={workshop?.venue_city}
+                  />
+                ))
+              ) : (
+                <Typography className="noWorkshop">
+                  No Upcoming workshops!
+                </Typography>
+              ))}
+            {!wkshps && isLoading && (
+              <Typography className="upcomingLoading">Loading...</Typography>
+            )}
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
