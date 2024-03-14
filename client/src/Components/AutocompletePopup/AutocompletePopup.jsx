@@ -20,7 +20,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useStyles } from './AutocompletePopup.styles';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { enrollments as participants } from '../../apis/enrollments';
+import { enrollments } from '../../apis/enrollments';
 import { meetings } from '../../apis/meetings';
 import { volunteers } from '../../apis/volunteers';
 
@@ -47,7 +47,7 @@ function AutocompletePopup({
       ? meetings
       : mode === 'Volunteers'
       ? volunteers
-      : participants;
+      : enrollments;
 
   const { data, isPending, isError } = useReactQuery(
     [1, 10, { ...debouncedFilters }, mode],
@@ -96,7 +96,7 @@ function AutocompletePopup({
       if (mode === 'Meetings') {
         setMeetingsOptions(filtered);
       }
-      if (mode === 'Participants') {
+      if (mode === 'Participants' || mode === 'Enrollments') {
         setParticipantsOptions(filtered);
       }
       if (mode === 'Volunteers') {
@@ -149,7 +149,7 @@ function AutocompletePopup({
                 setSelectedMeetings((prev) => selectedElements);
               if (mode === 'Volunteers')
                 setSelectedVolunteers((prev) => selectedElements);
-              if (mode === 'Participants')
+              if (mode === 'Participants' || mode === 'Enrollments')
                 setSelectedParticipants((prev) => selectedElements);
             }}
             renderInput={(params) => (

@@ -77,6 +77,8 @@ const Volunteers = () => {
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
 
+  console.log(roleDropdown);
+
   const { data, isPending, isError } = useReactQuery(
     [
       currentPage,
