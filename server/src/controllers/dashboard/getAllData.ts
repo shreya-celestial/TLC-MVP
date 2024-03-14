@@ -4,7 +4,7 @@ import { getDashboardData } from "../../gql/dashboard/queries";
 
 const getAllData = async (req: Request, res: Response) => {
   let date = new Date();
-  date.setMonth(date.getMonth() - 6)
+  date.setMonth(date.getMonth() - 7)
   const data = await getData(getDashboardData, {
     compareDate: date
   })
