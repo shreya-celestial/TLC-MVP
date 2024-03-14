@@ -17,7 +17,7 @@ const queries_1 = require("../../gql/dashboard/queries");
 const getAllData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
     let date = new Date();
-    date.setMonth(date.getMonth() - 6);
+    date.setMonth(date.getMonth() - 7);
     const data = yield (0, getData_1.default)(queries_1.getDashboardData, {
         compareDate: date
     });
