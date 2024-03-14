@@ -71,6 +71,11 @@ const Volunteers = () => {
     setRowsPerPage(val);
   };
 
+  const confirmDeleteAndChangePage = function () {
+    hideDeleteModalAndShowSuccess();
+    setCurrentPage(1);
+  };
+
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
   const [statusDropdown, setStatusDropdown] = useState('all');
@@ -192,7 +197,7 @@ const Volunteers = () => {
       {showDeleteModal && (
         <DeletePopup
           selectedRows={selectedRows}
-          hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          hideDeleteModalAndShowSuccess={confirmDeleteAndChangePage}
           updateSelectedRows={updateSelectedRows}
           hideDeleteModal={hideDeleteModal}
         />

@@ -60,6 +60,11 @@ const Workshops = () => {
     setShowDeleteModal,
   } = useAlerts();
 
+  const confirmDeleteAndChangePage = function () {
+    hideDeleteModalAndShowSuccess();
+    setCurrentPage(1);
+  };
+
   const updateCurrentPage = (val) => {
     setCurrentPage(val);
   };
@@ -203,7 +208,7 @@ const Workshops = () => {
       {showDeleteModal && (
         <DeletePopup
           selectedRows={selectedRows}
-          hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          hideDeleteModalAndShowSuccess={confirmDeleteAndChangePage}
           hideDeleteModal={hideDeleteModal}
           updateSelectedRows={updateSelectedRows}
           type="workshops"

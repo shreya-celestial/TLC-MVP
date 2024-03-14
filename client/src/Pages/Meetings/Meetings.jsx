@@ -101,6 +101,11 @@ const Meetings = () => {
     };
   }, [searchValue]);
 
+  const confirmDeleteAndChangePage = function () {
+    hideDeleteModalAndShowSuccess();
+    setCurrentPage(1);
+  };
+
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
@@ -213,7 +218,7 @@ const Meetings = () => {
         <DeletePopup
           type="meetings"
           selectedRows={selectedRows}
-          hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          hideDeleteModalAndShowSuccess={confirmDeleteAndChangePage}
           hideDeleteModal={hideDeleteModal}
           updateSelectedRows={updateSelectedRows}
         />
