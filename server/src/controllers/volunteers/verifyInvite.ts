@@ -13,7 +13,7 @@ const verifyInvite = async (req: Request, res: Response) => {
     }
     if(!data?.data?.Invitations?.length)
     {
-      return res.status(404).send('Something went wrong! Please try again!')
+      return res.status(404).send('Your link maybe broken or has already been used. Please try again sometime later or try logging in!')
     }
 
     const created = new Date(data?.data?.Invitations[0]?.created_at)
