@@ -16,10 +16,10 @@ export const workshops = async function ({ signal, queryKey }) {
     ? `&pastOrUpcoming=${filters.pastOrUpcoming}`
     : '';
   let startDateParam = filters.startDate
-    ? `&start_date=${filters.startDate.toISOString().split('T')[0]}`
+    ? `&start_date=${(new Date(filters.startDate)).toLocaleDateString()}`
     : '';
   let endDateParam = filters.endDate
-    ? `&end_date=${filters.endDate.toISOString().split('T')[0]}`
+    ? `&end_date=${(new Date(filters.endDate)).toLocaleDateString()}`
     : '';
 
   const res = await fetch(
