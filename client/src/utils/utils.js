@@ -71,7 +71,7 @@ export const fetchRowDataEnrollment = function (enrollment) {
 };
 
 export const validateEnrollment = function (body) {
-  if (body.name.length < 6) {
+  if (body.name.length < 3) {
     return {
       type: 'error',
       message: 'Name must be at least 3 characters long',
@@ -139,13 +139,13 @@ export const validateMeeting = function (body) {
   if (!body.venue_city)
     return {
       type: 'error',
-      message: 'Please provide your city',
+      message: 'Please provide a city',
     };
 
   if (!body.venue) {
     return {
       type: 'error',
-      message: 'Please provide your venue',
+      message: 'Please provide a venue',
     };
   }
 
@@ -193,7 +193,7 @@ export const validateWorkshop = function (body) {
 };
 
 export const validateInvite = function (body) {
-  if (body.name.length < 6)
+  if (body.name.length < 3)
     return {
       type: 'error',
       message: 'Name must be at least 3 characters long',

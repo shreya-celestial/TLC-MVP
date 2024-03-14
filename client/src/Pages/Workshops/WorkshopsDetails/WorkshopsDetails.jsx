@@ -75,10 +75,13 @@ function WorkshopsDetails() {
     mutationFn: viewType === 'create' ? createWorkshop : updateWorkshop,
     onSuccess: (data) => {
       if (data.status === 'error') {
-        setAlertType({
+        // if(data.message.includes('Uniqueness violation'))
+        let obj = {
           type: data.status,
           message: data.message,
-        });
+        };
+        // obj = {};
+        setAlertType(obj);
       } else {
         if (viewType === 'create') nav('/workshops/success');
         else
@@ -89,9 +92,13 @@ function WorkshopsDetails() {
       }
     },
     onError: (error) => {
+      let msg;
+      if (error?.info?.message.includes('Uniqueness violation')) {
+        msg = 'Workshop already exists';
+      }
       setAlertType({
         type: 'error',
-        message: error?.info?.message || 'Something Went Wrong',
+        message: msg || error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -201,7 +208,11 @@ function WorkshopsDetails() {
     setViewType('edit');
   };
 
+  const [alertKey, setAlertKey] = useState(true);
+
   const mutateWorkshopHandler = function () {
+    setAlertKey((prev) => !prev);
+
     const modifiedStartDate = new Date(startDate).toLocaleDateString();
     const modifiedEndDate = new Date(endDate).toLocaleDateString();
     const modifiedConcludingDate = new Date(
@@ -290,6 +301,7 @@ function WorkshopsDetails() {
               removeAlertType={removeAlertType}
               type={alertType.type}
               message={alertType.message || 'Something went wrong'}
+              alertKey={alertKey}
             />
           )}
           <Box className={classes.HeaderMainContent}>
@@ -335,7 +347,7 @@ function WorkshopsDetails() {
                   <FormLabel htmlFor="worskhopVenueCity">Venue City</FormLabel>
                   <TextField
                     id="worskhopVenueCity"
-                    placeholder="Enter Workshop Venue"
+                    placeholder="Enter Workshop Venue City"
                     name="venueCity"
                     disabled={isView}
                     value={venueCity}

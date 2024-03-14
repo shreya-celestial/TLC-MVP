@@ -96,6 +96,10 @@ function VolunteerDetails() {
   const [MeetingHistoryRowData, setMeetingHistoryRowData] = useState([]);
 
   useEffect(() => {
+    setRole(data?.user?.isAdmin === true ? 'admin' : 'volunteer');
+  }, [data]);
+
+  useEffect(() => {
     if (data) {
       setHistoryLeadRowData(
         data?.user?.workshop_lead_volunteers.map((v) => {
@@ -267,7 +271,6 @@ function VolunteerDetails() {
                     <Select
                       id="roleSelectBox"
                       value={role}
-                      // isAdmin: role === 'admin' ? 'true' : 'false'
                       onChange={(e) => setRole(e.target.value)}
                       name="role"
                       disabled={isView ? true : !isView && !isAdmin}
