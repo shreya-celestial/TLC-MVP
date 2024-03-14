@@ -55,11 +55,17 @@ function Signup() {
 
     if (email) {
       if (!validator.isEmail(email)) {
-        return setAlertType('please provide valid email');
+        return setAlertType({
+          type: 'error',
+          message: 'please provide valid email',
+        });
       }
     } else {
       if (!validator.isEmail(e.target.elements.email.value)) {
-        return setAlertType('please provide valid email');
+        return setAlertType({
+          type: 'error',
+          message: 'please provide valid email',
+        });
       }
     }
 
