@@ -97,10 +97,10 @@ export const ParticipantColDef = [
 ];
 
 export const MeetingColDef = [
-  { field: 'type', headerName: 'Type' },
-  { field: 'date', headerName: 'Date' },
-  { field: 'venue', headerName: 'Venue' },
-  { field: 'venue_city', headerName: 'Venue City' },
+  { field: 'type', headerName: 'Type', minWidth: 180 },
+  { field: 'date', headerName: 'Date', minWidth: 120 },
+  { field: 'venue', headerName: 'Venue', minWidth: 250 },
+  { field: 'venue_city', headerName: 'Venue City', minWidth: 150 },
 ];
 
 export const LeadVolunteersPopupColDef = [
