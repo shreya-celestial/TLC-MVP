@@ -54,7 +54,7 @@ const Dashboard = () => {
   ];
 
   if (isPending || isLoading) {
-    return <Loader />
+    return <Loader isDashboard={true} />
   }
 
   return (
