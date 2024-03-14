@@ -184,6 +184,7 @@ function EditPage() {
                   <DatePicker
                     required
                     name="dob"
+                    disableFuture={true}
                     value={dayjs(data.dob)}
                     onChange={(date) =>
                       setData((prev) => ({
@@ -279,7 +280,7 @@ function EditPage() {
             </FormControl>
             {/* postal code */}
             <FormControl
-             className={classes.formControl}
+              className={classes.formControl}
               required
             >
               <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
