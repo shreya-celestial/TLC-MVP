@@ -7,9 +7,9 @@ export const meetings = async function ({ signal, queryKey }) {
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
   let startDateParam = filters.startDate
-    ? `&start_date=${filters.startDate}`
+    ? `&start_date=${(new Date(filters.startDate)).toLocaleDateString()}`
     : '';
-  let endDateParam = filters.endDate ? `&end_date=${filters.endDate}` : '';
+  let endDateParam = filters.endDate ? `&end_date=${(new Date(filters.endDate)).toLocaleDateString()}` : '';
   let isNullParam = mode === 'Meetings' ? '&isNull=true' : '';
 
   const res = await fetch(
