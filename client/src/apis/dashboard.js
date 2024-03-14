@@ -13,7 +13,7 @@ export const dashboardDetails = async () => {
 export const dashboardWorkshops = async () => {
   try {
     const response = await fetch(
-      'https://tlc-two.vercel.app/workshops?pastOrUpcoming=upcoming'
+      'https://tlc-two.vercel.app/workshops?pastOrUpcoming=upcoming&sort_by=start_date'
     );
     return await response.json();
   } catch (err) {

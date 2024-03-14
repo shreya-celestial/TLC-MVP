@@ -172,13 +172,13 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
               name="phone"
             />
           </FormControl>
-          <FormControl className={classes.formControl } required>
+          <FormControl className={classes.formControl} required>
             <FormLabel>Date of Birth</FormLabel>
             <LocalizationProvider
               dateAdapter={AdapterDayjs}
               className={classes.datepicker}
             >
-              <DatePicker name="dob" required />
+              <DatePicker name="dob" required disableFuture={true} />
             </LocalizationProvider>
           </FormControl>
         </Box>

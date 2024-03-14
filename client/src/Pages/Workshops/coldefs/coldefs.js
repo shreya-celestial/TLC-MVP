@@ -1,3 +1,13 @@
+const dateFormatter = (params) => {
+  const date = new Date(params?.value);
+  const dateNumber = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+  let monthNumber = +date.getMonth() + 1
+  monthNumber = monthNumber < 10 ? `0${monthNumber}` : monthNumber
+  const formattedDate = dateNumber + '-' + monthNumber + '-' + date.getFullYear()
+  return formattedDate
+}
+
+
 const colDefs = [
   {
     headerCheckboxSelection: true,
@@ -18,6 +28,7 @@ const colDefs = [
     editable: false,
     minWidth: 120,
     headerName: 'Start Date',
+    cellRenderer: dateFormatter
   },
   {
     field: 'end_date',
@@ -25,6 +36,7 @@ const colDefs = [
     editable: false,
     minWidth: 120,
     headerName: 'End Date',
+    cellRenderer: dateFormatter
   },
   {
     field: 'concluding_date',
@@ -32,6 +44,7 @@ const colDefs = [
     editable: false,
     minWidth: 200,
     headerName: 'Concluding Session Date',
+    cellRenderer: dateFormatter
   },
   {
     field: 'venue',

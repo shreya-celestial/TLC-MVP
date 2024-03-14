@@ -250,8 +250,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                  ? 'Edit Enrollment'
-                  : 'Create Enrollment'
+                    ? 'Edit Enrollment'
+                    : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}
@@ -309,6 +309,7 @@ function EnrollmentsDetails() {
                       <DatePicker
                         name="dob"
                         disabled={isView}
+                        disableFuture={true}
                         value={dayjs(dob)}
                         onChange={(date) => setDob(new Date(date))}
                       />
