@@ -16,9 +16,13 @@ export const useStyles = makeStyles((theme) => ({
       width: 'calc(100vw - 16%)',
       marginTop: '64px',
       marginLeft: '16%',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#F2F3F4',
       '& svg': {
         color: '#259311',
+      },
+      [theme.breakpoints.down('md')]: {
+        width: '100%',
+        marginLeft: '0px',
       },
     },
   },

@@ -94,17 +94,17 @@ export const workShopColDef = [
 ];
 
 export const workshopColDefVolunteersPage = [
-  { field: 'types', headerName: 'Workshop Name' },
-  { field: 'role', headerName: 'Role' },
-  { field: 'start_date', headerName: 'Start Date' },
-  { field: 'end_date', headerName: 'End Date' },
+  { field: 'types', headerName: 'Workshop Name',minWidth: 180 },
+  { field: 'role', headerName: 'Role',minWidth: 150 },
+  { field: 'start_date', headerName: 'Start Date',minWidth: 120 },
+  { field: 'end_date', headerName: 'End Date',minWidth: 120 },
 ];
 
 export const meetingsColDefVolunteersPage = [
-  { field: 'type', headerName: 'Meeting Type' },
-  { field: 'date', headerName: 'Date' },
-  { field: 'venue', headerName: 'Venue' },
-  { field: 'venue_city', headerName: 'Venue City' },
+  { field: 'type', headerName: 'Meeting Type',minWidth: 180 },
+  { field: 'date', headerName: 'Date',minWidth: 120 },
+  { field: 'venue', headerName: 'Venue',minWidth: 250 },
+  { field: 'venue_city', headerName: 'Venue City',minWidth: 150 },
 ];
 
 export const meetingColDef = [
