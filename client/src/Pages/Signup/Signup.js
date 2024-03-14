@@ -33,7 +33,7 @@ function Signup() {
         type: data.status,
         message: data.message,
       });
-      if (email) {
+      if (email && data?.status === 'success') {
         nav('/');
       }
     },

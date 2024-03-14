@@ -90,6 +90,17 @@ const inviteVolunteer = async (req: Request, res: Response) => {
     })
   }
 
+  const created = new Date(isEmailAvailable?.data?.Invitations[0]?.created_at).toLocaleDateString();
+  const today = new Date().toLocaleDateString();
+
+  if(created === today)
+  {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invitation has already been sent today!'
+    })
+  }
+
   const token = jwt.sign({tempKey: email}, process.env.JWT_SECRET_KEY || '')
   const variables = {
     email: email.toLowerCase(),

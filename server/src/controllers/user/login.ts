@@ -55,10 +55,8 @@ const login = async (req: Request, res: Response) => {
         'Your account is not verified yet. Please contact your admin for more details.',
     });
   }
-  let userToSend: any = {};
-  for (let keys in user) {
-    if (keys !== 'password') userToSend[keys] = user[keys];
-  }
+  let userToSend: any = JSON.parse(JSON.stringify(user));
+  delete userToSend?.password
   const encryptKey = CryptoJS.AES.encrypt(email, process.env.LOGIN_KEY || '')
   const updateUserStatus = await getData(updateStatus, {
     email, isLoggedIn: encryptKey.toString()

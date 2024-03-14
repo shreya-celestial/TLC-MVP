@@ -14,14 +14,20 @@ import Loader from '../../Components/Loader/Loader';
 
 const Dashboard = () => {
   const { data, isPending } = useReactQuery(
-    [new Date().getSeconds()],
+    ['dashboard'],
     dashboardDetails
   );
   const { data: wkshps, isPending: isLoading } = useReactQuery(
-    [new Date().getSeconds() + 'wkshps'],
+    ['wkshps'],
     dashboardWorkshops
   );
+
   const classes = useStyles();
+
+  if (isPending || isLoading) {
+    return <Loader isDashboard={true} />
+  }
+
   const smallCardData = [
     {
       id: 0,
@@ -53,9 +59,6 @@ const Dashboard = () => {
     },
   ];
 
-  if (isPending || isLoading) {
-    return <Loader isDashboard={true} />
-  }
 
   return (
     <Box className={classes.root}>
@@ -91,24 +94,20 @@ const Dashboard = () => {
             Upcoming Workshops
           </Typography>
           <Box className={classes.upcominWorkshops}>
-            {!isLoading &&
-              (wkshps?.data?.workshops?.length > 0 ? (
-                wkshps?.data?.workshops?.map((workshop) => (
-                  <UpcomingWorkshop
-                    key={workshop?.id}
-                    title={workshop?.types}
-                    startDate={workshop?.start_date}
-                    endDate={workshop?.end_date}
-                    location={workshop?.venue_city}
-                  />
-                ))
-              ) : (
-                <Typography className="noWorkshop">
-                  No Upcoming workshops!
-                </Typography>
-              ))}
-            {!wkshps && isLoading && (
-              <Typography className="upcomingLoading">Loading...</Typography>
+            {wkshps?.data?.workshops?.length > 0 ? (
+              wkshps?.data?.workshops?.map((workshop) => (
+                <UpcomingWorkshop
+                  key={workshop?.id}
+                  title={workshop?.types}
+                  startDate={workshop?.start_date}
+                  endDate={workshop?.end_date}
+                  location={workshop?.venue_city}
+                />
+              ))
+            ) : (
+              <Typography className="noWorkshop">
+                No Upcoming workshops!
+              </Typography>
             )}
           </Box>
         </Box>

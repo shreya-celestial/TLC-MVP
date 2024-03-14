@@ -55,11 +55,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: 'Your account is not verified yet. Please contact your admin for more details.',
         });
     }
-    let userToSend = {};
-    for (let keys in user) {
-        if (keys !== 'password')
-            userToSend[keys] = user[keys];
-    }
+    let userToSend = JSON.parse(JSON.stringify(user));
+    userToSend === null || userToSend === void 0 ? true : delete userToSend.password;
     const encryptKey = crypto_js_1.default.AES.encrypt(email, process.env.LOGIN_KEY || '');
     const updateUserStatus = yield (0, getData_1.default)(mutations_1.updateStatus, {
         email, isLoggedIn: encryptKey.toString()

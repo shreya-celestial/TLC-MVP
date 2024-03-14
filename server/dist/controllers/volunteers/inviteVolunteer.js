@@ -20,7 +20,7 @@ const global_1 = require("../../utils/global");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
 const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     const { email, name, isAdmin } = req.body;
     const isEmailAvailable = yield (0, getData_1.default)(queries_1.checkEmailAvailability, { email });
     if (isEmailAvailable === null || isEmailAvailable === void 0 ? void 0 : isEmailAvailable.errors) {
@@ -85,6 +85,14 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
             message: "Something went wrong! Please try again!"
         });
     }
+    const created = new Date((_k = (_j = isEmailAvailable === null || isEmailAvailable === void 0 ? void 0 : isEmailAvailable.data) === null || _j === void 0 ? void 0 : _j.Invitations[0]) === null || _k === void 0 ? void 0 : _k.created_at).toLocaleDateString();
+    const today = new Date().toLocaleDateString();
+    if (created === today) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Invitation has already been sent today!'
+        });
+    }
     const token = jsonwebtoken_1.default.sign({ tempKey: email }, process.env.JWT_SECRET_KEY || '');
     const variables = {
         email: email.toLowerCase(),
@@ -94,10 +102,10 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_j = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _j === void 0 ? void 0 : _j.message
+            message: (_l = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _l === void 0 ? void 0 : _l.message
         });
     }
-    if ((_l = (_k = data === null || data === void 0 ? void 0 : data.data) === null || _k === void 0 ? void 0 : _k.update_Invitations) === null || _l === void 0 ? void 0 : _l.affected_rows) {
+    if ((_o = (_m = data === null || data === void 0 ? void 0 : data.data) === null || _m === void 0 ? void 0 : _m.update_Invitations) === null || _o === void 0 ? void 0 : _o.affected_rows) {
         const body = "TLC invites you to be a volunteer for TLC.";
         const mailOptions = {
             from: 'infotech@thelastcentre.com',

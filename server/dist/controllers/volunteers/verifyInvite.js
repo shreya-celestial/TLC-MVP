@@ -23,7 +23,7 @@ const verifyInvite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(404).send((_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message);
         }
         if (!((_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.Invitations) === null || _c === void 0 ? void 0 : _c.length)) {
-            return res.status(404).send('Something went wrong! Please try again!');
+            return res.status(404).send('Your link maybe broken or has already been used. Please try again sometime later or try logging in!');
         }
         const created = new Date((_e = (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.Invitations[0]) === null || _e === void 0 ? void 0 : _e.created_at);
         const now = new Date();
