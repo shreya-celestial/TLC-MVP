@@ -98,6 +98,11 @@ const Enrollments = () => {
     };
   }, [searchValue]);
 
+  const confirmDeleteAndChangePage = function () {
+    hideDeleteModalAndShowSuccess();
+    setCurrentPage(1);
+  };
+
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
@@ -206,7 +211,7 @@ const Enrollments = () => {
       {showDeleteModal && (
         <DeletePopup
           selectedRows={selectedRows}
-          hideDeleteModalAndShowSuccess={hideDeleteModalAndShowSuccess}
+          hideDeleteModalAndShowSuccess={confirmDeleteAndChangePage}
           hideDeleteModal={hideDeleteModal}
           updateSelectedRows={updateSelectedRows}
           type="enrollments"
