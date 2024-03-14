@@ -106,6 +106,7 @@ const Enrollments = () => {
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
+
   const handleReset = () => {
     setGenderDropdown('all');
   };
