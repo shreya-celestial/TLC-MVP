@@ -54,25 +54,25 @@ export const ChildrenColDef = [
   {
     field: 'name',
     headerName: 'Name',
-    minWidth:150
+    minWidth: 150,
   },
   {
     field: 'gender',
     headerName: 'Gender',
-    minWidth: 100
+    minWidth: 100,
   },
   {
     field: 'dob',
     headerName: 'Date of Birth',
-    minWidth: 120
+    minWidth: 120,
   },
 ];
 
 export const enrollPageWorkshopColDEf = [
-  { field: 'types', headerName: 'Workshop Name',minWidth: 200 },
-  { field: 'venue', headerName: 'Venue',minWidth: 250 },
-  { field: 'start_date', headerName: 'Start Date',minWidth: 120 },
-  { field: 'end_date', headerName: 'End Date',minWidth: 120 },
+  { field: 'types', headerName: 'Workshop Name', minWidth: 200 },
+  { field: 'venue', headerName: 'Venue', minWidth: 250 },
+  { field: 'start_date', headerName: 'Start Date', minWidth: 120 },
+  { field: 'end_date', headerName: 'End Date', minWidth: 120 },
 ];
 
 export const ChildrenPopupColdef = [

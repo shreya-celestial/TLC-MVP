@@ -4,7 +4,6 @@ import { useStyles } from './Login.styles';
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   FormLabel,
   IconButton,
@@ -12,7 +11,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { ReactComponent as GoogleIcon } from '../../assets/Icons/google.svg';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { login } from '../../apis/user';
@@ -27,27 +25,30 @@ function Login() {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [alertType, setAlertType] = useState();
-  const { setUser } = useContext(UserContext)
+  const { setUser } = useContext(UserContext);
 
   const removeAlertType = function () {
     setAlertType(undefined);
   };
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      if (data.status === 'error' || data?.message === 'Please provide email and password!') {
+      if (
+        data.status === 'error' ||
+        data?.message === 'Please provide email and password!'
+      ) {
         setAlertType({
           type: data.status || 'error',
           message: data.message,
         });
       } else {
-        setUser(data?.user)
+        setUser(data?.user);
         const keys = {
           id: data?.user?.email,
-          key: data?.user?.key
-        }
-        localStorage.setItem('keys', JSON.stringify(keys))
+          key: data?.user?.key,
+        };
+        localStorage.setItem('keys', JSON.stringify(keys));
         navigate('/dashboard');
       }
     },

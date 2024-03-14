@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   MenuItem,
@@ -136,7 +136,6 @@ function MeetingsDetails() {
 
   const closePopupAndSetRows = function (data, mode) {
     setOpenPopup(false);
-    console.log(data);
 
     if (mode === 'Enrollments' && data) {
       const isEvery = compareTwoArrays(

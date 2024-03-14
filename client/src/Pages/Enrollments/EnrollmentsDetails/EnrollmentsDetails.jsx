@@ -395,7 +395,6 @@ function EnrollmentsDetails() {
                         name="city"
                         value={city}
                         onChange={(e) => {
-                          console.log('doing city onchange');
                           setCity(e.target.value);
                         }}
                         disabled={isView}
