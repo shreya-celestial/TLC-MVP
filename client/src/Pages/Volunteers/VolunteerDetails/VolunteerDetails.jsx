@@ -167,8 +167,6 @@ function VolunteerDetails() {
             />
           )}
           <Box className={classes.HeaderMainContent}>
-            {/* page header with breadcrumbs.pass the prev page path as prop and handle in pageHeader */}
-
             <PageHeader
               currentPage={
                 type === 'edit'

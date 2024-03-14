@@ -57,8 +57,6 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
       : getEnrollment
   );
 
-  console.log(isError);
-
   let title;
   if (field === 'lead_volunteers_count') title = 'Lead Volunteers';
   if (field === 'volunteers_count') title = 'Volunteers';

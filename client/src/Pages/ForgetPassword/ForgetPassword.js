@@ -20,7 +20,6 @@ function ForgetPassword() {
   const [isThrottle, setIsThrottle] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
   const [status, setStatus] = useState(null);
-  const [msg, setMsg] = useState('');
 
   const [timer, setTimer] = useState(0);
   useEffect(() => {
@@ -57,14 +56,14 @@ function ForgetPassword() {
           message: 'Please enter a valid email.',
         });
       }
-      setStatus('Loading')
+      setStatus('Loading');
       const data = await forgotPass(body);
       if (data?.status === 'error') {
         setAlertType({
           type: 'error',
           message: data.message,
         });
-        setTimer(0)
+        setTimer(0);
       }
       if (data?.status === 'success') {
         setAlertType({
@@ -72,7 +71,7 @@ function ForgetPassword() {
           message: data.message,
         });
       }
-      setStatus(null)
+      setStatus(null);
     };
     verify(e);
   }
@@ -131,7 +130,11 @@ function ForgetPassword() {
               className={classes.verifyBtn}
               disabled={disableBtn}
             >
-              {status ? 'Loading...' : disableBtn ? `Resend in ${timer} seconds` : 'Verify'}
+              {status
+                ? 'Loading...'
+                : disableBtn
+                ? `Resend in ${timer} seconds`
+                : 'Verify'}
             </Button>
 
             <Link to={'/'} className="backToLogin">

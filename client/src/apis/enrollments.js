@@ -87,7 +87,6 @@ export const updateEnrollment = async function (data) {
 };
 
 export const deleteEnrollments = async function (data) {
-  console.log(JSON.stringify({ ids: data }));
   const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),

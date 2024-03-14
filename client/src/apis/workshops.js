@@ -2,7 +2,6 @@ const BASEURL = 'https://tlc-two.vercel.app/workshops';
 
 export const workshops = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters] = queryKey;
-  console.log(filters);
 
   for (const key in filters) {
     if (filters[key] === 'all' || filters[key] === '') {
@@ -22,10 +21,10 @@ export const workshops = async function ({ signal, queryKey }) {
     : '';
 
   let startDateParam = filters.startDate
-    ? `&start_date=${(new Date(filters.startDate)).toLocaleDateString()}`
+    ? `&start_date=${new Date(filters.startDate).toLocaleDateString()}`
     : '';
   let endDateParam = filters.endDate
-    ? `&end_date=${(new Date(filters.endDate)).toLocaleDateString()}`
+    ? `&end_date=${new Date(filters.endDate).toLocaleDateString()}`
     : '';
 
   const res = await fetch(
@@ -100,7 +99,6 @@ export const createWorkshop = async function (data) {
 };
 
 export const updateWorkshop = async function (data) {
-  console.log(data);
   const res = await fetch(`${BASEURL}/${data.id}/update`, {
     method: 'PUT',
     body: JSON.stringify(data.body),

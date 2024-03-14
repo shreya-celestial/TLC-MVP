@@ -11,7 +11,6 @@ const PaginationComp = ({
   currentPage,
   isPending,
 }) => {
-  console.log(isPending);
   const classes = useStyles();
 
   return (

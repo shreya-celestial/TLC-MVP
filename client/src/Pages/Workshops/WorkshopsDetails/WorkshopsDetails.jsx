@@ -75,12 +75,10 @@ function WorkshopsDetails() {
     mutationFn: viewType === 'create' ? createWorkshop : updateWorkshop,
     onSuccess: (data) => {
       if (data.status === 'error') {
-        // if(data.message.includes('Uniqueness violation'))
         let obj = {
           type: data.status,
           message: data.message,
         };
-        // obj = {};
         setAlertType(obj);
       } else {
         if (viewType === 'create') nav('/workshops/success');
