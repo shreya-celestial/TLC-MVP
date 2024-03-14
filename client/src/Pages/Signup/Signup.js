@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { useStyles } from './Signup.styles';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
@@ -45,7 +44,6 @@ function Signup() {
   });
 
   const handleSubmit = async (e) => {
-    console.log(e);
     e.preventDefault();
     const token = queryParams.get('token');
     const email = queryParams.get('for');

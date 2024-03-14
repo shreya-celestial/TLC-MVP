@@ -53,7 +53,7 @@ function AddChildPopup({
   };
 
   const updateChild = function (data, id) {
-    if (!data.name || !data.dob || !data.gender) {
+    if (!data?.name || !data?.dob || !data?.gender) {
       return setAlertType({
         type: 'error',
         message: 'Please provide all details',
@@ -63,7 +63,7 @@ function AddChildPopup({
   };
 
   const createChild = function (data) {
-    if (!data.name || !data.dob || !data.gender) {
+    if (!data?.name || !data?.dob || !data?.gender) {
       return setAlertType({
         type: 'error',
         message: 'Please provide all details',
@@ -139,7 +139,7 @@ function AddChildPopup({
                   name="dateofbirth"
                   value={dob ? dayjs(dob) : ''}
                   onChange={(date) =>
-                    setDob((new Date(date)).toLocaleDateString())
+                    setDob(new Date(date).toLocaleDateString())
                   }
                 />
               </LocalizationProvider>

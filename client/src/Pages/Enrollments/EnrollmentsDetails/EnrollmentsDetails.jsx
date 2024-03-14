@@ -79,7 +79,7 @@ function EnrollmentsDetails() {
         clearTimeout(timer);
       };
     }
-  }, [pincode, viewType]);
+  }, [pincode]);
 
   useEffect(() => {
     if (cities && viewType !== 'view') {
@@ -121,10 +121,12 @@ function EnrollmentsDetails() {
           message: data.message,
         });
       } else {
-        setAlertType({
-          type: data.status,
-          message: data.message,
-        });
+        if (viewType === 'create') nav('/enrollments/success');
+        else
+          setAlertType({
+            type: data.status,
+            message: data.message,
+          });
       }
     },
     onError: (error) => {
@@ -160,15 +162,15 @@ function EnrollmentsDetails() {
   };
 
   useEffect(() => {
-    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
       nav('/enrollments');
     }
-    if (type === 'view') {
+    if (viewType === 'view') {
       setIsView(true);
     }
-  }, [type]);
+  }, [viewType]);
 
-  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+  if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
     return;
   }
 
@@ -383,7 +385,10 @@ function EnrollmentsDetails() {
                         placeholder="Enter Your City"
                         name="city"
                         value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) => {
+                          console.log('doing city onchange');
+                          setCity(e.target.value);
+                        }}
                         disabled={isView}
                         required
                       />
@@ -470,7 +475,11 @@ function EnrollmentsDetails() {
 
           {/* action bar  */}
           <Box className={classes.actionBar}>
-            <Button disableTouchRipple className="cancelBtn">
+            <Button
+              disableTouchRipple
+              className="cancelBtn"
+              onClick={() => nav('/enrollments')}
+            >
               Cancel
             </Button>
             {viewType === 'view' ? (

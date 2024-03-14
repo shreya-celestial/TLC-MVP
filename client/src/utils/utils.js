@@ -74,54 +74,55 @@ export const validateEnrollment = function (body) {
   if (body.name.length < 6) {
     return {
       type: 'error',
-      message: 'Name must be at least 6 char long',
+      message: 'Name must be at least 3 characters long',
     };
   }
 
   if (!body.dob)
     return {
       type: 'error',
-      message: 'Please Provide Date of Birth',
+      message: 'Please provide your date of birth',
     };
 
   if (!validator.isMobilePhone(body.mobile_number)) {
     return {
       type: 'error',
-      message: 'Please provide valid mobile number',
+      message: 'Please provide a valid mobile number',
     };
   }
 
   if (!validator.isEmail(body.email)) {
     return {
       type: 'error',
-      message: 'Please provide valid email',
+      message: 'Please provide a valid email',
     };
   }
 
-  if (body.address.length < 10) {
+  if (!body.address.length) {
     return {
       type: 'error',
-      message: 'Please provide valid address',
+      message: 'Please provide your address',
     };
   }
+
   if (!body.pincode) {
     return {
       type: 'error',
-      message: 'Please provide a pincode',
+      message: 'Please provide your pincode',
     };
   }
 
   if (!body.city) {
     return {
       type: 'error',
-      message: 'Please provide a city',
+      message: 'Please provide your city',
     };
   }
 
   if (!body.state) {
     return {
       type: 'error',
-      message: 'Please provide a state',
+      message: 'Please provide your state',
     };
   }
 
@@ -129,22 +130,22 @@ export const validateEnrollment = function (body) {
 };
 
 export const validateMeeting = function (body) {
-  if (!body.date)
+  if (!body.date || body.date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please Provide a Date.',
+      message: 'Please provide a date',
     };
 
   if (!body.venue_city)
     return {
       type: 'error',
-      message: 'Please Provide a City.',
+      message: 'Please provide your city',
     };
 
   if (!body.venue) {
     return {
       type: 'error',
-      message: 'Please provide a venue.',
+      message: 'Please provide your venue',
     };
   }
 
@@ -155,37 +156,37 @@ export const validateWorkshop = function (body) {
   if (body.types.length < 6)
     return {
       type: 'error',
-      message: 'Workshop type must be at least 6 characters long.',
+      message: 'Workshop type must be at least 6 characters long',
     };
 
   if (!body.venue)
     return {
       type: 'error',
-      message: 'Please Provide a Venue.',
+      message: 'Please provide a venue',
     };
 
   if (!body.venue_city)
     return {
       type: 'error',
-      message: 'Please Provide a Venue city.',
+      message: 'Please provide a venue city',
     };
 
-  if (!body.start_date)
+  if (!body.start_date || body.start_date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide a start date.',
+      message: 'Please provide a start date',
     };
 
-  if (!body.end_date)
+  if (!body.end_date || body.end_date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide an end date.',
+      message: 'Please provide an end date',
     };
 
-  if (!body.concluding_date)
+  if (!body.concluding_date || body.concluding_date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide a concluding date.',
+      message: 'Please provide a concluding date',
     };
 
   return true;
@@ -195,30 +196,30 @@ export const validateInvite = function (body) {
   if (body.name.length < 6)
     return {
       type: 'error',
-      message: 'Name must be at least 6 characters long.',
+      message: 'Name must be at least 3 characters long',
     };
 
   if (!validator.isEmail(body.email))
     return {
       type: 'error',
-      message: 'Please provide a valid email.',
+      message: 'Please provide a valid email',
     };
 
   return true;
 };
 
 export const validateSignup = function (data) {
-  if (!data.dob.value) {
+  if (!data.dob.value || data.dob.value === 'Invalid Date') {
     return {
       type: 'error',
-      message: 'Please enter your Date of birth',
+      message: 'Please provide your date of birth',
     };
   }
 
   if (!validator.isMobilePhone(data.phone.value)) {
     return {
       type: 'error',
-      message: 'please provide valid mobile number',
+      message: 'please provide a valid mobile number',
     };
   }
 
@@ -234,7 +235,7 @@ export const validateSignup = function (data) {
     return {
       type: 'error',
       message:
-        'Password must be 8 characters long and contain alphanumeric values',
+        'Password must be at least 8 characters long and contain alphanumeric values',
     };
   }
 

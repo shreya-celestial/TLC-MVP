@@ -5,7 +5,13 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import { useStyles } from './PaginationComp.styles';
 import { Box, IconButton, Typography } from '@mui/material';
 
-const PaginationComp = ({ updateCurrentPage, totalPages, currentPage }) => {
+const PaginationComp = ({
+  updateCurrentPage,
+  totalPages,
+  currentPage,
+  isPending,
+}) => {
+  console.log(isPending);
   const classes = useStyles();
 
   return (
@@ -32,14 +38,14 @@ const PaginationComp = ({ updateCurrentPage, totalPages, currentPage }) => {
       <IconButton
         className={classes.pageBtn}
         onClick={() => updateCurrentPage(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || isPending}
       >
         <ChevronRightIcon />
       </IconButton>
       <IconButton
         className={classes.pageBtn}
         onClick={() => updateCurrentPage(totalPages)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || isPending}
       >
         <LastPageIcon />
       </IconButton>

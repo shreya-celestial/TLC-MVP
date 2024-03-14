@@ -72,7 +72,7 @@ function WorkshopsDetails() {
     isPending: isPendingMutation,
     isError: isErrorMutation,
   } = useMutation({
-    mutationFn: type === 'create' ? createWorkshop : updateWorkshop,
+    mutationFn: viewType === 'create' ? createWorkshop : updateWorkshop,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -80,10 +80,12 @@ function WorkshopsDetails() {
           message: data.message,
         });
       } else {
-        setAlertType({
-          type: data.status,
-          message: data.message,
-        });
+        if (viewType === 'create') nav('/workshops/success');
+        else
+          setAlertType({
+            type: data.status,
+            message: data.message,
+          });
       }
     },
     onError: (error) => {
@@ -110,28 +112,31 @@ function WorkshopsDetails() {
   };
 
   const closeLeadPopupAndSetRows = (data, role) => {
-    const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];
-    const isEvery = compareTwoArrays(combinedArray, data, 'email');
-
-    if (!isEvery) {
-      setAlertType({
-        type: 'error',
-        message: 'Some Users are already existing',
-      });
-      setOpenLeadPopup(false);
-      return;
-    }
-
     setOpenLeadPopup(false);
-    if (role === 'volunteer' && data)
-      setVolunteersRowData((prev) => {
-        return [...prev, ...data];
-      });
 
-    if (role === 'leadvolunteer' && data)
-      setLeadVolunteersRowData((prev) => {
-        return [...prev, ...data];
-      });
+    if (data) {
+      const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];
+      const isEvery = compareTwoArrays(combinedArray, data, 'email');
+
+      if (!isEvery) {
+        setAlertType({
+          type: 'error',
+          message: 'Some Users are already existing',
+        });
+        setOpenLeadPopup(false);
+        return;
+      }
+
+      if (role === 'volunteer')
+        setVolunteersRowData((prev) => {
+          return [...prev, ...data];
+        });
+
+      if (role === 'leadvolunteer')
+        setLeadVolunteersRowData((prev) => {
+          return [...prev, ...data];
+        });
+    }
   };
 
   const closePopupAndSetRows = function (data, mode) {
@@ -144,14 +149,12 @@ function WorkshopsDetails() {
           type: 'error',
           message: 'Some Meetings are already existing',
         });
-        setopenPopup(false);
         return;
       }
 
       setMeetingsRowData((prev) => {
         return [...prev, ...data];
       });
-      setopenPopup(false);
     }
 
     if (mode === 'Participants' && data) {
@@ -162,14 +165,12 @@ function WorkshopsDetails() {
           type: 'error',
           message: 'Some Participants are already existing',
         });
-        setopenPopup(false);
         return;
       }
 
       setParticipantsRowData((prev) => {
         return [...prev, ...data];
       });
-      setopenPopup(false);
     }
   };
 
@@ -246,25 +247,25 @@ function WorkshopsDetails() {
   };
 
   useEffect(() => {
-    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
       nav('/workshops');
     }
-    if (type === 'view') {
+    if (viewType === 'view') {
       setIsView(true);
     }
-  }, [type]);
+  }, [viewType]);
 
   useEffect(() => {
-    if (!user?.isAdmin && type !== 'view') {
+    if (!user?.isAdmin && viewType !== 'view') {
       nav('/workshops');
     }
-  }, [user, type]);
+  }, [user, viewType]);
 
-  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+  if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
     return;
   }
 
-  if (!user?.isAdmin && type !== 'view') {
+  if (!user?.isAdmin && viewType !== 'view') {
     return;
   }
 
@@ -496,7 +497,11 @@ function WorkshopsDetails() {
           {/* action bar  */}
           {user?.isAdmin && (
             <Box className={classes.actionBar}>
-              <Button disableTouchRipple className="cancelBtn">
+              <Button
+                disableTouchRipple
+                className="cancelBtn"
+                onClick={() => nav('/workshops')}
+              >
                 Cancel
               </Button>
               {viewType === 'view' ? (

@@ -22,7 +22,7 @@ import InvitePopup from '../Volunteers/InvitePopup/InvitePopup';
 import DeletePopup from './../../Components/DeletePopup/DeletePopup';
 import VerifyPopup from '../Volunteers/VerifyPopup/VerifyPopup';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -34,6 +34,7 @@ import InfoTable from '../../Components/InfoTable/InfoTable';
 const Enrollments = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { createSuccess } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
@@ -54,6 +55,7 @@ const Enrollments = () => {
     showDeleteModal,
     showVerifyStatusModal,
     alertType,
+    setAlertType,
     rowChanged,
     selectedUser,
     setShowInviteModal,
@@ -115,8 +117,30 @@ const Enrollments = () => {
     setClickedCountDetails(null);
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, genderDropdown]);
+
+  useEffect(() => {
+    if (createSuccess === 'success') {
+      setAlertType({
+        type: 'success',
+        message: 'Enrollment Created Successfully',
+      });
+      const url = window.location.pathname.replace('/success', '');
+      window.history.replaceState({}, document.title, url);
+    }
+  }, [createSuccess]);
+
   return (
     <Box className={classes.root}>
+      {alertType && (
+        <AlertReact
+          removeAlertType={removeAlertType}
+          type={alertType.type}
+          message={alertType.message}
+        />
+      )}
       <Box className={classes.HeadingAndActionBtn}>
         <Typography component="h1">Enrollments</Typography>
         <Box className={classes.ActionBtn}>
@@ -280,6 +304,7 @@ const Enrollments = () => {
           totalPages={data?.data?.total_pages}
           updateRowsPerPage={updateRowsPerPage}
           currentPage={currentPage}
+          isPending={isPending}
         />
       </Box>
     </Box>

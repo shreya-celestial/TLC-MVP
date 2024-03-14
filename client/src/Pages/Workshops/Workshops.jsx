@@ -23,7 +23,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import PaginationComp from '../../Components/Table/PaginationComp';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import { useAlerts } from '../../hooks/useAlerts';
 
@@ -38,6 +38,7 @@ import UserContext from '../../store/userContext';
 const Workshops = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { createSuccess } = useParams();
 
   const { user } = useContext(UserContext);
 
@@ -54,6 +55,7 @@ const Workshops = () => {
     hideDeleteModalAndShowSuccess,
     showDeleteModal,
     alertType,
+    setAlertType,
     rowChanged,
     setShowDeleteModal,
   } = useAlerts();
@@ -116,8 +118,30 @@ const Workshops = () => {
     setSearchValue('');
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, pastOrUpcoming, startDate, endDate]);
+
+  useEffect(() => {
+    if (createSuccess === 'success') {
+      setAlertType({
+        type: 'success',
+        message: 'Workshop Created Successfully',
+      });
+      const url = window.location.pathname.replace('/success', '');
+      window.history.replaceState({}, document.title, url);
+    }
+  }, [createSuccess]);
+
   return (
     <Box className={classes.root}>
+      {alertType && (
+        <AlertReact
+          removeAlertType={removeAlertType}
+          type={alertType.type}
+          message={alertType.message}
+        />
+      )}
       <Box className={classes.HeadingAndActionBtn}>
         <Typography component="h1">Workshops</Typography>
         <Box className={classes.ActionBtn}>
@@ -299,6 +323,7 @@ const Workshops = () => {
           totalPages={data?.data?.total_pages}
           updateRowsPerPage={updateRowsPerPage}
           currentPage={currentPage}
+          isPending={isPending}
         />
       </Box>
     </Box>

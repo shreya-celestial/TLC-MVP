@@ -52,6 +52,7 @@ const Volunteers = () => {
     hideInviteModalAndShowSuccess,
     hideDeleteModalAndShowSuccess,
     hideVerifyModalAndShowSuccess,
+    hideVerifyModalAndShowDelete,
     showInviteModal,
     showDeleteModal,
     showVerifyStatusModal,
@@ -75,8 +76,6 @@ const Volunteers = () => {
   const [statusDropdown, setStatusDropdown] = useState('all');
   const [roleDropdown, setRoleDropdown] = useState('all');
   const [genderDropdown, setGenderDropdown] = useState('all');
-  const [sortDropdown, setSortDropdown] = useState('none');
-  // const [sort, setSort] = useState('');
 
   const { data, isPending, isError } = useReactQuery(
     [
@@ -111,6 +110,10 @@ const Volunteers = () => {
     setGenderDropdown('all');
     setStatusDropdown('all');
   };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, statusDropdown, roleDropdown, genderDropdown]);
 
   // const updateSort = function (data) {
   //   setSort(data);
@@ -183,6 +186,7 @@ const Volunteers = () => {
           selectedUser={selectedUser}
           hideVerifyStatus={hideVerifyStatus}
           hideVerifyModalAndShowSuccess={hideVerifyModalAndShowSuccess}
+          hideVerifyModalAndShowDelete={hideVerifyModalAndShowDelete}
         />
       )}
       {showDeleteModal && (
@@ -320,6 +324,7 @@ const Volunteers = () => {
           totalPages={data?.data?.total_pages}
           updateRowsPerPage={updateRowsPerPage}
           currentPage={currentPage}
+          isPending={isPending}
         />
       </Box>
     </Box>
