@@ -17,13 +17,14 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VerifyPopup.styles';
 import { useMutation } from '@tanstack/react-query';
-import { verifyVolunteer } from '../../../apis/volunteers';
+import { deleteVolunteers, verifyVolunteer } from '../../../apis/volunteers';
 import AlertReact from '../../../Components/Alert/AlertReact';
 
 function VerifyPopup({
   hideVerifyStatus,
   selectedUser,
   hideVerifyModalAndShowSuccess,
+  hideVerifyModalAndShowDelete,
 }) {
   const classes = useStyles();
   const [open, SetOpen] = useState(true);
@@ -34,7 +35,7 @@ function VerifyPopup({
     setAlertType(undefined);
   };
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: verifyMutation, isPending } = useMutation({
     mutationFn: verifyVolunteer,
     onSuccess: (data) => {
       if (data.status === 'error') {
@@ -54,11 +55,35 @@ function VerifyPopup({
     },
   });
 
+  const { mutate: deleteMutation, isPending: isPendingDelete } = useMutation({
+    mutationFn: deleteVolunteers,
+    onSuccess: (data) => {
+      if (data.status === 'error') {
+        setAlertType({
+          type: data.status,
+          message: data.message,
+        });
+      } else {
+        hideVerifyModalAndShowDelete();
+      }
+    },
+    onError: (error) => {
+      setAlertType({
+        type: 'error',
+        message: error?.info?.message || 'Something Went Wrong',
+      });
+    },
+  });
+
   const verifyUser = function () {
-    mutate({
+    verifyMutation({
       isAdmin: role === 'admin' ? 'true' : 'false',
       email: selectedUser,
     });
+  };
+
+  const deleteUser = function () {
+    deleteMutation([selectedUser]);
   };
 
   return (
@@ -121,11 +146,11 @@ function VerifyPopup({
         >
           Cancel
         </Button>
-        <Button className="rejectBtn" disableRipple>
-          Reject
+        <Button className="rejectBtn" disableRipple onClick={deleteUser}>
+          {isPendingDelete ? 'Loading...' : 'Reject'}
         </Button>
         <Button className="verifyBtn" disableRipple onClick={verifyUser}>
-          {isPending ? 'Loadin...' : 'Verify'}
+          {isPending ? 'Loading...' : 'Verify'}
         </Button>
       </DialogActions>
     </Dialog>

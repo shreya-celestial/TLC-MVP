@@ -54,6 +54,15 @@ export function useAlerts(queryKey, fetchFn) {
     setRowChanged((prev) => !prev);
   };
 
+  const hideVerifyModalAndShowDelete = function () {
+    setShowVerifyStatusModal(false);
+    setAlertType({
+      type: 'success',
+      message: 'User Deleted Successfully',
+    });
+    setRowChanged((prev) => !prev);
+  };
+
   return {
     removeAlertType,
     hideInviteModal,
@@ -63,6 +72,7 @@ export function useAlerts(queryKey, fetchFn) {
     hideInviteModalAndShowSuccess,
     hideDeleteModalAndShowSuccess,
     hideVerifyModalAndShowSuccess,
+    hideVerifyModalAndShowDelete,
     showInviteModal,
     showDeleteModal,
     showVerifyStatusModal,

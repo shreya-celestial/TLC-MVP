@@ -139,14 +139,12 @@ function MeetingsDetails() {
           type: 'error',
           message: 'Some Participants are already existing',
         });
-        setOpenPopup(false);
         return;
       }
 
       setEnrollmentsRowData((prev) => {
         return [...prev, ...data];
       });
-      setOpenPopup(false);
     }
 
     if (mode === 'Volunteers' && data) {
@@ -157,14 +155,12 @@ function MeetingsDetails() {
           type: 'error',
           message: 'Some Volunteers are already existing',
         });
-        setOpenPopup(false);
         return;
       }
 
       setVolunteersRowData((prev) => {
         return [...prev, ...data];
       });
-      setOpenPopup(false);
     }
   };
 
@@ -222,15 +218,15 @@ function MeetingsDetails() {
   };
 
   useEffect(() => {
-    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
       nav('/meetings');
     }
-    if (type === 'view') {
+    if (viewType === 'view') {
       setIsView(true);
     }
-  }, [type]);
+  }, [viewType]);
 
-  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+  if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
     return;
   }
 

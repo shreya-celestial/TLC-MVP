@@ -52,6 +52,7 @@ const Volunteers = () => {
     hideInviteModalAndShowSuccess,
     hideDeleteModalAndShowSuccess,
     hideVerifyModalAndShowSuccess,
+    hideVerifyModalAndShowDelete,
     showInviteModal,
     showDeleteModal,
     showVerifyStatusModal,
@@ -185,6 +186,7 @@ const Volunteers = () => {
           selectedUser={selectedUser}
           hideVerifyStatus={hideVerifyStatus}
           hideVerifyModalAndShowSuccess={hideVerifyModalAndShowSuccess}
+          hideVerifyModalAndShowDelete={hideVerifyModalAndShowDelete}
         />
       )}
       {showDeleteModal && (

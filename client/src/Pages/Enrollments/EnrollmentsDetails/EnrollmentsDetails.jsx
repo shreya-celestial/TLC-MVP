@@ -162,15 +162,15 @@ function EnrollmentsDetails() {
   };
 
   useEffect(() => {
-    if (type !== 'create' && type !== 'edit' && type !== 'view') {
+    if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
       nav('/enrollments');
     }
-    if (type === 'view') {
+    if (viewType === 'view') {
       setIsView(true);
     }
-  }, [type]);
+  }, [viewType]);
 
-  if (type !== 'create' && type !== 'edit' && type !== 'view') {
+  if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
     return;
   }
 
