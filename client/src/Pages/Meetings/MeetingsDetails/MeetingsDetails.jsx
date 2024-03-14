@@ -205,7 +205,6 @@ function MeetingsDetails() {
       enrollments: enrollmentsRowData.map((enrollment) => enrollment.id),
       volunteers: volunteersRowData.map((volunteer) => volunteer.email),
     };
-    console.log(body.date === 'Invalid Date');
 
     const isValid = validateMeeting(body);
     if (isValid.type) return setAlertType(isValid);

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { useStyles } from './Signup.styles';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';

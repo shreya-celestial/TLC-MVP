@@ -23,7 +23,7 @@ export const workshops = async function ({ signal, queryKey }) {
     : '';
 
   const res = await fetch(
-    `${BASEURL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}`,
+    `${BASEURL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}&sort_by=start_date&order_of_sort=asc`,
     signal
   );
 
