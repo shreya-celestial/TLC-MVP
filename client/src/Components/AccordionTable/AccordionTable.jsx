@@ -131,6 +131,7 @@ function AccordionTable({
       ? {
           headerName: 'Actions',
           cellRenderer: DeleteButtonCell,
+          minWidth: 100,
         }
       : undefined,
   ].filter(Boolean);
@@ -141,6 +142,7 @@ function AccordionTable({
       ? {
           headerName: 'Actions',
           cellRenderer: DeleteButtonCell,
+          minWidth: 100,
         }
       : undefined,
   ].filter(Boolean);
@@ -151,6 +153,7 @@ function AccordionTable({
       ? {
           headerName: 'Actions',
           cellRenderer: DeleteButtonCell,
+          minWidth: 100,
         }
       : undefined,
   ].filter(Boolean);
@@ -161,6 +164,7 @@ function AccordionTable({
       ? {
           headerName: 'Actions',
           cellRenderer: DeleteButtonCell,
+          minWidth: 100,
         }
       : undefined,
   ].filter(Boolean);
@@ -170,6 +174,7 @@ function AccordionTable({
     !isView && {
       field: 'Actions',
       cellRenderer: DeleteEditButtonCell,
+      minWidth: 100,
     },
   ].filter(Boolean);
 
@@ -178,6 +183,7 @@ function AccordionTable({
     !isView && {
       field: 'Actions',
       cellRenderer: DeleteButtonCell,
+      minWidth: 100,
     },
   ].filter(Boolean);
 

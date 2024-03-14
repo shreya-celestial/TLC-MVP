@@ -96,7 +96,7 @@ function AddChildPopup({
           />
         )}
         <Box className={classes.formElementBox}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="fullNameField">Name</FormLabel>
             <TextField
               id="fullNameField"
@@ -109,7 +109,7 @@ function AddChildPopup({
         </Box>
         {/* gender and DOB */}
         <Box className={classes.formElementBox}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
             <Select
               id="genderSelectBox"
@@ -129,7 +129,7 @@ function AddChildPopup({
             </Select>
           </FormControl>
           <ThemeProvider theme={ChildTheme}>
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} required>
               <FormLabel>Date of Birth</FormLabel>
               <LocalizationProvider
                 dateAdapter={AdapterDayjs}

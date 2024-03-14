@@ -104,7 +104,6 @@ const Enrollments = () => {
   };
 
   const showDetails = function (params) {
-    console.log(params.value);
     if (params.value > 0)
       setClickedCountDetails({
         id: params.data.id,

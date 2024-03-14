@@ -177,8 +177,6 @@ function EnrollmentsDetails() {
     setViewType('edit');
   };
 
-  console.log(childrenRowData);
-
   const mutateEnrollmentHandler = function (type) {
     const body = {
       name,
@@ -267,7 +265,7 @@ function EnrollmentsDetails() {
 
                 {/* name */}
                 <Box className={classes.formElementBox}>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="fullNameField">Name</FormLabel>
                     <TextField
                       id="fullNameField"
@@ -282,7 +280,7 @@ function EnrollmentsDetails() {
 
                 {/* gender and DOB */}
                 <Box className={classes.formElementBox}>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="genderSelectBox">Gender</FormLabel>
                     <Select
                       id="genderSelectBox"
@@ -302,7 +300,7 @@ function EnrollmentsDetails() {
                       <MenuItem value="female">Female</MenuItem>
                     </Select>
                   </FormControl>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel>Date of Birth</FormLabel>
                     <LocalizationProvider
                       dateAdapter={AdapterDayjs}
@@ -319,7 +317,7 @@ function EnrollmentsDetails() {
                 </Box>
                 {/* phone number and email address */}
                 <Box className={classes.formElementBox}>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="phoneNumberField">
                       Phone Number
                     </FormLabel>
@@ -332,7 +330,7 @@ function EnrollmentsDetails() {
                       onChange={(e) => setPhone(e.target.value)}
                     />
                   </FormControl>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="emailField">Email Address</FormLabel>
                     <TextField
                       type="email"
@@ -351,7 +349,7 @@ function EnrollmentsDetails() {
                 <Typography className="heading">Address Information</Typography>
 
                 {/* location */}
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="locationField">Address</FormLabel>
                   <TextField
                     id="locationField"
@@ -364,7 +362,7 @@ function EnrollmentsDetails() {
                 </FormControl>
                 {/* postal code, city and state */}
                 <Box className={classes.formElementBox}>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
                     <TextField
                       id="postalCodeField"
@@ -376,7 +374,7 @@ function EnrollmentsDetails() {
                       disabled={isView}
                     />
                   </FormControl>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="citySelectBox">City</FormLabel>
                     {!cities && (
                       <TextField
@@ -412,7 +410,7 @@ function EnrollmentsDetails() {
                       </Select>
                     )}
                   </FormControl>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="stateField">State</FormLabel>
                     <TextField
                       id="stateField"

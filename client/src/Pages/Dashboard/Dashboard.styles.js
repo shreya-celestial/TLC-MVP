@@ -112,6 +112,10 @@ export const useStyles = makeStyles((theme) => ({
     '&::-webkit-scrollbar': {
       display: 'none',
     },
+    '& .noWorkshop, .upcomingLoading': {
+      fontSize: '12px',
+      fontWeight: '500',
+    },
   },
 
   chartMain: {
@@ -119,6 +123,5 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
 }));

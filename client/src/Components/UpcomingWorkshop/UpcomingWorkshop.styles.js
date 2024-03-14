@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
 
   card: {
     backgroundColor: '#7eaa55',
-    width: '60px',
+    minWidth: '60px',
     height: '60px',
     display: 'flex',
     flexDirection: 'column',
@@ -27,6 +27,7 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
       fontWeight: '500',
       marginBottom: '5px',
+      lineHeight: '20px',
     },
   },
   Info: {

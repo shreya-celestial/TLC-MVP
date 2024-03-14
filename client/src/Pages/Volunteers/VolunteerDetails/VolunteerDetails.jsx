@@ -262,7 +262,7 @@ function VolunteerDetails() {
 
                 {/* role and year of joining */}
                 <Box className={classes.formElementBox}>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                     <FormLabel htmlFor="roleSelectBox">Role</FormLabel>
                     <Select
                       id="roleSelectBox"

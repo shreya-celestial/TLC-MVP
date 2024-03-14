@@ -97,7 +97,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
           )}
           {/* name */}
           <Box className={classes.formElementBox}>
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="fullNameField">Name</FormLabel>
               <TextField
                 id="fullNameField"
@@ -112,7 +112,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
           </Box>
           <Box className={classes.formElementBox}>
             {/* email address */}
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="emailField">Email</FormLabel>
               <TextField
                 type="email"
@@ -126,7 +126,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
               />
             </FormControl>
             {/* role */}
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="roleSelectBox">Role</FormLabel>
               <Select
                 id="roleSelectBox"

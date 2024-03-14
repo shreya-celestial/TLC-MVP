@@ -15,40 +15,41 @@ const MONTHS = [
   'Sept',
   'Oct',
   'Nov',
-  'Dec'
-]
+  'Dec',
+];
 
 const DoughnutChart = ({ data }) => {
   const isSmScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const chartRef = useRef(null);
-  const [dataObj, setDataObj] = useState({})
+  const [dataObj, setDataObj] = useState({});
   const [chartInstance, setChartInstance] = useState(null);
-  const date = new Date((new Date()).setMonth((new Date()).getMonth() - 5))
+  const date = new Date(new Date().setMonth(new Date().getMonth() - 5));
 
   useEffect(() => {
     if (data) {
-      const obj = {}
+      const obj = {};
       for (let i = date.getMonth(); i < date.getMonth() + 6; i++) {
         let comp;
         if (i > 12) {
-          comp = i - 12
+          comp = i - 12;
+        } else {
+          comp = i;
         }
-        else {
-          comp = i
-        }
-        const count = data?.data?.past_six_months_enrollments?.filter((enrollment) => {
-          const date = new Date(enrollment?.created_at)
-          return (date.getMonth() + 1) === comp
-        })
-        obj[`${MONTHS[comp - 1]}`] = count?.length
+        const count = data?.data?.past_six_months_enrollments?.filter(
+          (enrollment) => {
+            const date = new Date(enrollment?.created_at);
+            return date.getMonth() + 1 === comp;
+          }
+        );
+        obj[`${MONTHS[comp - 1]}`] = count?.length;
       }
-      setDataObj(() => obj)
+      setDataObj(() => obj);
     }
-  }, [data])
+  }, [data]);
 
   // chart labels and data
   const label = Object.keys(dataObj);
-  const chartData = Object.values(dataObj)
+  const chartData = Object.values(dataObj);
 
   useEffect(() => {
     if (chartInstance) {
@@ -72,22 +73,24 @@ const DoughnutChart = ({ data }) => {
 
           meta.data.forEach((element, index) => {
             const value = dataset.data[index];
-            const arc = element;
+            if (value !== 0) {
+              const arc = element;
 
-            const centerX = arc.x;
-            const centerY = arc.y;
-            const startAngle = arc.startAngle;
-            const endAngle = arc.endAngle;
-            const innerRadius = arc.innerRadius;
-            const outerRadius = arc.outerRadius;
-            const middleAngle = (startAngle + endAngle) / 2;
+              const centerX = arc.x;
+              const centerY = arc.y;
+              const startAngle = arc.startAngle;
+              const endAngle = arc.endAngle;
+              const innerRadius = arc.innerRadius;
+              const outerRadius = arc.outerRadius;
+              const middleAngle = (startAngle + endAngle) / 2;
 
-            const xOffset =
-              (Math.cos(middleAngle) * (innerRadius + outerRadius)) / 2;
-            const yOffset =
-              (Math.sin(middleAngle) * (innerRadius + outerRadius)) / 2;
+              const xOffset =
+                (Math.cos(middleAngle) * (innerRadius + outerRadius)) / 2;
+              const yOffset =
+                (Math.sin(middleAngle) * (innerRadius + outerRadius)) / 2;
 
-            ctx.fillText(value, centerX + xOffset, centerY + yOffset);
+              ctx.fillText(value, centerX + xOffset, centerY + yOffset);
+            }
           });
         });
       },
