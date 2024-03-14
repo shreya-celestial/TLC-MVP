@@ -79,7 +79,7 @@ function EnrollmentsDetails() {
         clearTimeout(timer);
       };
     }
-  }, [pincode, viewType]);
+  }, [pincode]);
 
   useEffect(() => {
     if (cities && viewType !== 'view') {
@@ -384,7 +384,10 @@ function EnrollmentsDetails() {
                         placeholder="Enter Your City"
                         name="city"
                         value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) => {
+                          console.log('doing city onchange');
+                          setCity(e.target.value);
+                        }}
                         disabled={isView}
                         required
                       />

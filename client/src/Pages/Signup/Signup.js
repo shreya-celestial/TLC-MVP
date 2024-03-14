@@ -45,7 +45,6 @@ function Signup() {
   });
 
   const handleSubmit = async (e) => {
-    console.log(e);
     e.preventDefault();
     const token = queryParams.get('token');
     const email = queryParams.get('for');
