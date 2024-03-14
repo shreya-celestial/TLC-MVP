@@ -130,9 +130,13 @@ function EnrollmentsDetails() {
       }
     },
     onError: (error) => {
+      let msg;
+      if (error?.info?.message.includes('Uniqueness violation')) {
+        msg = 'Workshop already exists';
+      }
       setAlertType({
         type: 'error',
-        message: error?.info?.message || 'Something Went Wrong',
+        message: msg || error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -147,6 +151,8 @@ function EnrollmentsDetails() {
   const removeAlertType = function () {
     setAlertType(undefined);
   };
+
+  const [alertKey, setAlertKey] = useState(true);
 
   const handleCloseOpenChild = () => {
     setOpenChild(false);
@@ -180,6 +186,8 @@ function EnrollmentsDetails() {
   };
 
   const mutateEnrollmentHandler = function (type) {
+    setAlertKey((prev) => !prev);
+
     const body = {
       name,
       email,
@@ -244,6 +252,7 @@ function EnrollmentsDetails() {
               removeAlertType={removeAlertType}
               type={alertType.type}
               message={alertType.message}
+              alertKey={alertKey}
             />
           )}
           <Box className={classes.HeaderMainContent}>
@@ -252,8 +261,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                    ? 'Edit Enrollment'
-                    : 'Create Enrollment'
+                  ? 'Edit Enrollment'
+                  : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}

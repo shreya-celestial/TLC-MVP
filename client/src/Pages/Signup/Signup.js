@@ -24,6 +24,8 @@ function Signup() {
     setAlertType(undefined);
   };
 
+  const [alertKey, setAlertKey] = useState(true);
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: signupType === 'normal' ? signup : signupInvite,
     onSuccess: (data) => {
@@ -45,6 +47,8 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAlertKey((prev) => !prev);
+
     const token = queryParams.get('token');
     const email = queryParams.get('for');
 
@@ -97,6 +101,7 @@ function Signup() {
           removeAlertType={removeAlertType}
           type={alertType.type}
           message={alertType.message}
+          alertKey={alertKey}
         />
       )}
       <Box className={classes.mainWrapper}>

@@ -2,6 +2,7 @@ const BASEURL = 'https://tlc-two.vercel.app/workshops';
 
 export const workshops = async function ({ signal, queryKey }) {
   const [page, noOfRecords, filters] = queryKey;
+  console.log(filters);
 
   for (const key in filters) {
     if (filters[key] === 'all' || filters[key] === '') {
@@ -13,8 +14,13 @@ export const workshops = async function ({ signal, queryKey }) {
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
   let pastOrUpcomingParam = filters.pastOrUpcoming
-    ? `&pastOrUpcoming=${filters.pastOrUpcoming}`
+    ? `&pastOrUpcoming=${filters.pastOrUpcoming}${
+        filters.pastOrUpcoming === 'upcoming'
+          ? '&sort_by=start_date&order_of_sort=asc'
+          : ''
+      }`
     : '';
+
   let startDateParam = filters.startDate
     ? `&start_date=${(new Date(filters.startDate)).toLocaleDateString()}`
     : '';
@@ -23,7 +29,7 @@ export const workshops = async function ({ signal, queryKey }) {
     : '';
 
   const res = await fetch(
-    `${BASEURL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}&sort_by=start_date&order_of_sort=asc`,
+    `${BASEURL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}`,
     signal
   );
 

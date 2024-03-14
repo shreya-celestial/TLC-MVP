@@ -55,7 +55,7 @@ function MeetingsDetails() {
 
   const handleEnrollmentMode = () => {
     setOpenPopup(true);
-    setMode('Participants');
+    setMode('Enrollments');
   };
 
   const [volunteersRowData, setVolunteersRowData] = useState([]);
@@ -103,9 +103,13 @@ function MeetingsDetails() {
       }
     },
     onError: (error) => {
+      let msg;
+      if (error?.info?.message.includes('Uniqueness violation')) {
+        msg = 'Workshop already exists';
+      }
       setAlertType({
         type: 'error',
-        message: error?.info?.message || 'Something Went Wrong',
+        message: msg || error?.info?.message || 'Something Went Wrong',
       });
     },
   });
@@ -128,16 +132,23 @@ function MeetingsDetails() {
     setAlertType(undefined);
   };
 
+  const [alertKey, setAlertKey] = useState(true);
+
   const closePopupAndSetRows = function (data, mode) {
     setOpenPopup(false);
+    console.log(data);
 
-    if (mode === 'Participants' && data) {
-      const isEvery = compareTwoArrays(enrollmentsRowData, data, 'email');
+    if (mode === 'Enrollments' && data) {
+      const isEvery = compareTwoArrays(
+        enrollmentsRowData,
+        data,
+        'mobile_number'
+      );
 
       if (!isEvery) {
         setAlertType({
           type: 'error',
-          message: 'Some Participants are already existing',
+          message: 'Some Enrollments are already existing',
         });
         return;
       }
@@ -194,6 +205,7 @@ function MeetingsDetails() {
   }, [workshopsData, isView, meeting, editingWorkshop]);
 
   const mutateMeetingHandler = function (type) {
+    setAlertKey((prev) => !prev);
     const modifiedDate = new Date(date).toLocaleDateString();
 
     const body = {
@@ -236,7 +248,7 @@ function MeetingsDetails() {
       setVolunteersRowData(updatedRow);
     }
 
-    if (row === 'Participants') {
+    if (row === 'Enrollments') {
       const updatedRow = enrollmentsRowData.filter((e) => e.email !== email);
       setEnrollmentsRowData(updatedRow);
     }
@@ -263,6 +275,7 @@ function MeetingsDetails() {
               removeAlertType={removeAlertType}
               type={alertType.type}
               message={alertType.message}
+              alertKey={alertKey}
             />
           )}
           <Box className={classes.HeaderMainContent}>
@@ -438,7 +451,7 @@ function MeetingsDetails() {
             {/* add enrollments and accordion table  */}
             <Box className={classes.HeaderAndAccordionBox}>
               <Box className={classes.HeaderAndBtn}>
-                <Typography>Add Participants</Typography>
+                <Typography>Add Enrollments</Typography>
                 {!isView && (
                   <Button
                     className={classes.addBtn}
@@ -452,7 +465,7 @@ function MeetingsDetails() {
 
               <AccordionTable
                 rowData={enrollmentsRowData}
-                headingName={'Participants'}
+                headingName={'Enrollments'}
                 handleDeleteRow={handleDeleteRow}
                 isView={isView}
               />

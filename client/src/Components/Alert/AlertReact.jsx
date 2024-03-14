@@ -44,7 +44,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const AlertReact = ({ type, message, removeAlertType, componentType }) => {
+const AlertReact = ({
+  type,
+  message,
+  removeAlertType,
+  componentType,
+  alertKey,
+}) => {
   const [isVisible, setIsVisible] = useState(true);
   const classes = useStyles();
 
@@ -57,7 +63,7 @@ const AlertReact = ({ type, message, removeAlertType, componentType }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [alertKey]);
 
   return (
     <>
