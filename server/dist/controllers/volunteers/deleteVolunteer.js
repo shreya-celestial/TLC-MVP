@@ -14,10 +14,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/volunteers/mutations");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const deleteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
+    const { authorization } = req === null || req === void 0 ? void 0 : req.headers;
     const { emails } = req.body;
-    const volunteers = emails.map((email) => {
+    let token;
+    try {
+        let authToken = authorization;
+        authToken = authToken.split('Bearer ');
+        authToken = authToken[1];
+        token = jsonwebtoken_1.default.verify(authToken, process.env.JWT_SECRET_KEY || '');
+    }
+    catch (err) {
+        return res.status(401).json({
+            status: 'error',
+            message: 'Token expired! Please login again.'
+        });
+    }
+    const emailsToDel = emails.filter((email) => (token === null || token === void 0 ? void 0 : token.email) !== email);
+    if ((emailsToDel === null || emailsToDel === void 0 ? void 0 : emailsToDel.length) === 0) {
+        return res.status(403).json({
+            status: 'error',
+            message: 'You cannot delete yourself!'
+        });
+    }
+    const volunteers = emailsToDel.map((email) => {
         return {
             email: {
                 _eq: email
