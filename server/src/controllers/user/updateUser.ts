@@ -2,9 +2,34 @@ import { Request, Response } from "express";
 import { capitaliseStr, formatDate } from "../../utils/global";
 import getData from "../../utils/getData";
 import { updateUserByEmail } from "../../gql/user/mutations";
+import jwt from "jsonwebtoken";
 
 const updateUser = async (req: Request, res: Response) => {
+  const {authorization} = req?.headers
+  let token: any;
+  try{
+    let authToken: any = authorization
+    authToken = authToken.split('Bearer ');
+    authToken = authToken[1];
+    token = jwt.verify(authToken, process.env.JWT_SECRET_KEY || '')
+  }
+  catch(err)
+  {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Token expired! Please login again.'
+    })
+  }
+
   const { email } = req?.params
+
+  if(token?.email !== email)
+  {
+    return res.status(403).json({
+      status: 'error',
+      message: 'You are not allowed to update user details!'
+    })
+  }
 
   const variables = {
     ...req?.body,

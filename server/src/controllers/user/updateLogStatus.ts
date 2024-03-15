@@ -2,28 +2,64 @@ import { Request, Response } from "express";
 import CryptoJS from 'crypto-js';
 import getData from "../../utils/getData";
 import { verifyAndUpdateKey } from "../../gql/user/mutations";
+import jwt from "jsonwebtoken";
 
 const updateLogStatus = async (req: Request, res: Response) => {
-  const {email, key, isLoggingOut} = req?.body
-
-  if(!key || key === 'null' || key === 'NULL')
+  const {authorization} = req?.headers
+  let token: any;
+  if(!authorization)
   {
-    return res.status(400).json({
+    return res.status(401).json({
       status: 'error',
-      message: 'Provide a valid key!'
+      message: 'Please provide an authorization token!'
+    })
+  }
+  let authToken: any = authorization.split('Bearer ');
+  if(authToken?.length<=1)
+  {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Please provide a valid authorization token!'
+    })
+  }
+
+  authToken = authToken[1];
+  try{
+    token = jwt.verify(authToken, process.env.JWT_SECRET_KEY || '')
+  }
+  catch(err)
+  {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Token expired! Please login again.'
     })
   }
   
-  const newKey = CryptoJS.AES.encrypt(email, process.env.LOGIN_KEY || '')
-  let isLoggedIn: string | null = newKey.toString();
-
+  let updatedToken: any;
+  if((new Date(token?.exp).getSeconds() - (new Date()).getSeconds()) > 30*1000)
+  {
+    updatedToken = authToken
+  }
+  else {
+    const tokenObj = {
+      email: token?.email,
+      isAdmin: token?.isAdmin
+    }
+    updatedToken = jwt.sign(tokenObj, process.env.JWT_SECRET_KEY || '', {
+      expiresIn: '24h'
+    })
+  }
+  
+  let isLoggedIn:any = updatedToken
+  
+  const { isLoggingOut } = req?.body
   if(isLoggingOut)
   {
     isLoggedIn = null;
   }
 
   const data = await getData(verifyAndUpdateKey, {
-    email, key, isLoggedIn
+    email: token?.email, key: authToken, isLoggedIn
   })
 
   if(data?.errors)
@@ -52,7 +88,7 @@ const updateLogStatus = async (req: Request, res: Response) => {
 
   let userToSend = {
     ...data?.data?.update_users?.returning[0],
-    key: newKey.toString()
+    key: updatedToken
   }
 
   return res.status(200).json({

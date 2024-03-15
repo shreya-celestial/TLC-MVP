@@ -3,6 +3,7 @@ import CryptoJS from 'crypto-js';
 import getData from '../../utils/getData';
 import { getUserByEmail } from '../../gql/user/queries';
 import { updateStatus } from '../../gql/user/mutations';
+import jwt from 'jsonwebtoken';
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -57,13 +58,21 @@ const login = async (req: Request, res: Response) => {
   }
   let userToSend: any = JSON.parse(JSON.stringify(user));
   delete userToSend?.password
-  const encryptKey = CryptoJS.AES.encrypt(email, process.env.LOGIN_KEY || '')
+  
+  const tokenObj = {
+    email,
+    isAdmin: user?.isAdmin
+  }
+  const token = jwt.sign(tokenObj, process.env.JWT_SECRET_KEY || '', {
+    expiresIn: '24h'
+  })
+
   const updateUserStatus = await getData(updateStatus, {
-    email, isLoggedIn: encryptKey.toString()
+    email, isLoggedIn: token
   })
   userToSend = {
     ...userToSend,
-    key: encryptKey.toString()
+    key: token
   }
   if(updateUserStatus?.data?.update_users?.affected_rows)
   {

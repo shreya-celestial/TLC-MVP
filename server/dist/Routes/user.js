@@ -12,6 +12,7 @@ const verifyReset_1 = __importDefault(require("../controllers/user/verifyReset")
 const resetPass_1 = __importDefault(require("../controllers/user/resetPass"));
 const updateLogStatus_1 = __importDefault(require("../controllers/user/updateLogStatus"));
 const updateUser_1 = __importDefault(require("../controllers/user/updateUser"));
+const auth_1 = __importDefault(require("../middlewares/auth"));
 const router = express_1.default.Router();
 router.post('/signup', signup_1.default);
 router.post('/login', login_1.default);
@@ -20,5 +21,5 @@ router.post('/forgotPass', forgotPass_1.default);
 router.get('/verifyReset/:token', verifyReset_1.default);
 router.post('/resetPass', resetPass_1.default);
 router.put('/updateLogStatus', updateLogStatus_1.default);
-router.put('/:email/update', updateUser_1.default);
+router.put('/:email/update', auth_1.default, updateUser_1.default);
 exports.default = router;
