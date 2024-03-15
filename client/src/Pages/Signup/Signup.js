@@ -29,18 +29,27 @@ function Signup() {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: signupType === 'normal' ? signup : signupInvite,
     onSuccess: (data) => {
+      let msg;
+      if (data?.message.includes('Uniqueness violation')) {
+        msg = 'User already exists';
+      }
       setAlertType({
         type: data.status,
-        message: data.message,
+        message: msg || data.message,
       });
       if (email) {
         nav('/');
       }
     },
     onError: (error) => {
+      console.log(error);
+      let msg;
+      if (error?.info?.message.includes('Uniqueness violation')) {
+        msg = 'Workshop already exists';
+      }
       setAlertType({
         type: 'error',
-        message: error?.info?.message || 'Something Went Wrong',
+        message: msg || error?.info?.message || 'Something Went Wrong',
       });
     },
   });
