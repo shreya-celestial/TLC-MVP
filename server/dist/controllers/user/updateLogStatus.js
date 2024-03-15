@@ -43,7 +43,7 @@ const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     let updatedToken;
-    if ((new Date(token === null || token === void 0 ? void 0 : token.exp).getSeconds() - (new Date()).getSeconds()) > 30 * 1000) {
+    if (((token === null || token === void 0 ? void 0 : token.exp) - (new Date()).getSeconds()) > 30 * 1000) {
         updatedToken = authToken;
     }
     else {
