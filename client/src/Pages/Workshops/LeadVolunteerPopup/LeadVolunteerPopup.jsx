@@ -96,7 +96,7 @@ function LeadVolunteerPopup({
             </Typography>
           )}
           <Autocomplete
-            loading={isPending}
+            loading={isPending && debouncedFilters?.search !== undefined}
             options={volunteersList}
             getOptionLabel={(option) => `${option.name} (${option.email})`}
             onChange={(event, selectedElements) => {
@@ -109,6 +109,9 @@ function LeadVolunteerPopup({
                 placeholder="Search to add"
                 {...params}
                 onChange={(e) => setFilters({ search: e.target.value })}
+                onBlur={(e) => {
+                  setFilters({ search: '' });
+                }}
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (

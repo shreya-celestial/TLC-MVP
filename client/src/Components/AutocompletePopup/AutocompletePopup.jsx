@@ -129,7 +129,7 @@ function AutocompletePopup({
             </Typography>
           )}
           <Autocomplete
-            loading={isPending}
+            loading={isPending && debouncedFilters?.search !== undefined}
             options={
               mode === 'Meetings'
                 ? meetingsOptions
@@ -156,7 +156,12 @@ function AutocompletePopup({
               <TextField
                 className={classes.autocompleteTextField}
                 placeholder="Search to add"
-                onChange={(e) => setFilters({ search: e.target.value })}
+                onChange={(e) => {
+                  setFilters({ search: e.target.value });
+                }}
+                onBlur={(e) => {
+                  setFilters({ search: '' });
+                }}
                 {...params}
                 InputProps={{
                   ...params.InputProps,
