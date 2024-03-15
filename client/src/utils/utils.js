@@ -201,7 +201,7 @@ export const validateWorkshop = function (body) {
       message: 'Please provide an end date',
     };
 
-  if (new Date(body.end_date) < new Date())
+  if (new Date(body.end_date) < new Date(body.start_date))
     return {
       type: 'error',
       message: 'End date must be after start date',
@@ -213,7 +213,7 @@ export const validateWorkshop = function (body) {
       message: 'Please provide a concluding date',
     };
 
-  if (new Date(body.concluding_date) < new Date())
+  if (new Date(body.concluding_date) < new Date(body.end_date))
     return {
       type: 'error',
       message: 'Concluding date must be after end date',

@@ -1,6 +1,6 @@
 const BASE_URL = 'https://tlc-two.vercel.app/enrollments';
 
-export const enrollments = async function ({ signal, queryKey }) {
+export const enrollments = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;
 
   for (const key in filters) {
@@ -16,6 +16,12 @@ export const enrollments = async function ({ signal, queryKey }) {
 
   const res = await fetch(
     `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${genderParam}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
     signal
   );
 
@@ -30,10 +36,19 @@ export const enrollments = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const getEnrollment = async function ({ signal, queryKey }) {
+export const getEnrollment = async function ({ signal, queryKey, user }) {
   const [id] = queryKey;
 
-  const res = await fetch(`${BASE_URL}/${id}/details`, signal);
+  const res = await fetch(
+    `${BASE_URL}/${id}/details`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
+    signal
+  );
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -46,12 +61,13 @@ export const getEnrollment = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const createEnrollment = async function (data) {
+export const createEnrollment = async function ({ body, key }) {
   const res = await fetch(`${BASE_URL}`, {
     method: 'POST',
-    body: JSON.stringify(data.body),
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -66,12 +82,13 @@ export const createEnrollment = async function (data) {
   return resData;
 };
 
-export const updateEnrollment = async function (data) {
-  const res = await fetch(`${BASE_URL}/${data.id}/edit`, {
+export const updateEnrollment = async function ({ body, id, key }) {
+  const res = await fetch(`${BASE_URL}/${id}/edit`, {
     method: 'PUT',
-    body: JSON.stringify(data.body),
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -86,12 +103,13 @@ export const updateEnrollment = async function (data) {
   return resData;
 };
 
-export const deleteEnrollments = async function (data) {
+export const deleteEnrollments = async function ({ data, key }) {
   const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 

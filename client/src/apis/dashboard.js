@@ -1,6 +1,11 @@
 export const dashboardDetails = async ({ user }) => {
   try {
-    const response = await fetch('https://tlc-two.vercel.app/dashboard');
+    const response = await fetch('https://tlc-two.vercel.app/dashboard', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    });
     return await response.json();
   } catch (err) {
     return {
@@ -10,10 +15,16 @@ export const dashboardDetails = async ({ user }) => {
   }
 };
 
-export const dashboardWorkshops = async () => {
+export const dashboardWorkshops = async ({ user }) => {
   try {
     const response = await fetch(
-      'https://tlc-two.vercel.app/workshops?pastOrUpcoming=upcoming&sort_by=start_date'
+      'https://tlc-two.vercel.app/workshops?pastOrUpcoming=upcoming&sort_by=start_date',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${user.key}`,
+        },
+      }
     );
     return await response.json();
   } catch (err) {
