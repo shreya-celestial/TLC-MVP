@@ -1,6 +1,6 @@
 const BASE_URL = 'https://tlc-two.vercel.app/meetings';
 
-export const meetings = async function ({ signal, queryKey }) {
+export const meetings = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters, mode] = queryKey;
 
   let pageParam = page ? `?page=${page}` : `?page=${1}`;
@@ -16,6 +16,12 @@ export const meetings = async function ({ signal, queryKey }) {
 
   const res = await fetch(
     `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${startDateParam}${endDateParam}${isNullParam}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
     signal
   );
 
@@ -30,10 +36,19 @@ export const meetings = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const getMeeting = async function ({ signal, queryKey }) {
+export const getMeeting = async function ({ signal, queryKey, user }) {
   const [id] = queryKey;
 
-  const res = await fetch(`${BASE_URL}/${id}/details`, signal);
+  const res = await fetch(
+    `${BASE_URL}/${id}/details`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
+    signal
+  );
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -46,12 +61,13 @@ export const getMeeting = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const createMeeting = async function (data) {
+export const createMeeting = async function ({ body, key }) {
   const res = await fetch(`${BASE_URL}`, {
     method: 'POST',
-    body: JSON.stringify(data.body),
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -66,12 +82,13 @@ export const createMeeting = async function (data) {
   return resData;
 };
 
-export const updateMeeting = async function (data) {
-  const res = await fetch(`${BASE_URL}/${data.id}/edit`, {
+export const updateMeeting = async function ({ body, id, key }) {
+  const res = await fetch(`${BASE_URL}/${id}/edit`, {
     method: 'PUT',
-    body: JSON.stringify(data.body),
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -86,12 +103,13 @@ export const updateMeeting = async function (data) {
   return resData;
 };
 
-export const deleteMeetings = async function (data) {
+export const deleteMeetings = async function ({ data, key }) {
   const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 

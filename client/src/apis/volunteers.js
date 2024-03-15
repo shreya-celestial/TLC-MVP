@@ -1,6 +1,6 @@
 const BASEURL = 'https://tlc-two.vercel.app/volunteers';
 
-export const volunteers = async function ({ signal, queryKey }) {
+export const volunteers = async function ({ signal, queryKey, user }) {
   let [page, noOfRecords, filters] = queryKey;
 
   for (const key in filters) {
@@ -29,6 +29,12 @@ export const volunteers = async function ({ signal, queryKey }) {
 
   const res = await fetch(
     `${BASEURL}/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}${sortParam}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
     signal
   );
 
@@ -43,12 +49,13 @@ export const volunteers = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const inviteVolunteer = async function (data) {
+export const inviteVolunteer = async function ({ data, key }) {
   const res = await fetch(`${BASEURL}/invite`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -63,10 +70,19 @@ export const inviteVolunteer = async function (data) {
   return resData;
 };
 
-export const getVolunteer = async function ({ signal, queryKey }) {
+export const getVolunteer = async function ({ signal, queryKey, user }) {
   const [email] = queryKey;
 
-  const res = await fetch(`${BASEURL}/${email}/details`, signal);
+  const res = await fetch(
+    `${BASEURL}/${email}/details`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
+    signal
+  );
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -79,12 +95,13 @@ export const getVolunteer = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const updateVolunteerRole = async function (data) {
+export const updateVolunteerRole = async function ({ email, isAdmin, key }) {
   const res = await fetch(`${BASEURL}/updateRole`, {
     method: 'PUT',
-    body: JSON.stringify(data),
+    body: JSON.stringify({ email: email, isAdmin: isAdmin }),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -99,12 +116,13 @@ export const updateVolunteerRole = async function (data) {
   return resData;
 };
 
-export const deleteVolunteers = async function (data) {
+export const deleteVolunteers = async function ({ key, data }) {
   const res = await fetch(`${BASEURL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ emails: data }),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -119,12 +137,13 @@ export const deleteVolunteers = async function (data) {
   return resData;
 };
 
-export const verifyVolunteer = async function (data) {
+export const verifyVolunteer = async function ({ data, key }) {
   const res = await fetch(`${BASEURL}/adminVerified`, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 

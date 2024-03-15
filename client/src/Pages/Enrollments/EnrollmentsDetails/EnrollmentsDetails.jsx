@@ -58,9 +58,10 @@ function EnrollmentsDetails() {
 
   const [isView, setIsView] = useState(type === 'view' ? true : false);
   const [viewType, setViewType] = useState(type);
+  const [cityFocus, setCityFocus] = useState(false);
 
   useEffect(() => {
-    if (viewType !== 'view') {
+    if (viewType !== 'view' && cityFocus) {
       let timer;
       timer = setTimeout(async () => {
         if (pincode) {
@@ -113,7 +114,7 @@ function EnrollmentsDetails() {
     }
   }, [enrollment, viewType, isView]);
 
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
   const { mutate, isPending: isPendingMutation } = useMutation({
     mutationFn: type === 'create' ? createEnrollment : updateEnrollment,
     onSuccess: (data) => {
@@ -263,8 +264,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                    ? 'Edit Enrollment'
-                    : 'Create Enrollment'
+                  ? 'Edit Enrollment'
+                  : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}
@@ -385,6 +386,7 @@ function EnrollmentsDetails() {
                       type="number"
                       value={pincode}
                       onChange={(e) => setPincode(e.target.value)}
+                      onFocus={(e) => setCityFocus(true)}
                       disabled={isView}
                     />
                   </FormControl>
@@ -399,6 +401,7 @@ function EnrollmentsDetails() {
                         onChange={(e) => {
                           setCity(e.target.value);
                         }}
+                        onFocus={(e) => setCityFocus(true)}
                         disabled={isView}
                         required
                       />
@@ -409,6 +412,7 @@ function EnrollmentsDetails() {
                         name="city"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
+                        onFocus={(e) => setCityFocus(true)}
                         IconComponent={ExpandMoreOutlinedIcon}
                         className={classes.selectBox}
                         disabled={isView}

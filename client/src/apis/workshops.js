@@ -1,6 +1,6 @@
 const BASEURL = 'https://tlc-two.vercel.app/workshops';
 
-export const workshops = async function ({ signal, queryKey }) {
+export const workshops = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;
 
   for (const key in filters) {
@@ -29,6 +29,12 @@ export const workshops = async function ({ signal, queryKey }) {
 
   const res = await fetch(
     `${BASEURL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
     signal
   );
 
@@ -43,9 +49,18 @@ export const workshops = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const getWorkshop = async function ({ signal, queryKey }) {
+export const getWorkshop = async function ({ signal, queryKey, user }) {
   const [id] = queryKey;
-  const res = await fetch(`${BASEURL}/${id}/details`, signal);
+  const res = await fetch(
+    `${BASEURL}/${id}/details`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
+    signal
+  );
 
   if (!res.ok) {
     const error = new Error('An error occured while fetching the data');
@@ -58,12 +73,13 @@ export const getWorkshop = async function ({ signal, queryKey }) {
   return resData;
 };
 
-export const deleteWorkshops = async function (data) {
+export const deleteWorkshops = async function ({ data, key }) {
   const res = await fetch(`${BASEURL}`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -78,12 +94,13 @@ export const deleteWorkshops = async function (data) {
   return resData;
 };
 
-export const createWorkshop = async function (data) {
+export const createWorkshop = async function ({ body, key }) {
   const res = await fetch(`${BASEURL}`, {
     method: 'POST',
-    body: JSON.stringify(data.body),
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
@@ -98,12 +115,13 @@ export const createWorkshop = async function (data) {
   return resData;
 };
 
-export const updateWorkshop = async function (data) {
-  const res = await fetch(`${BASEURL}/${data.id}/update`, {
+export const updateWorkshop = async function ({ body, id, key }) {
+  const res = await fetch(`${BASEURL}/${id}/update`, {
     method: 'PUT',
-    body: JSON.stringify(data.body),
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
   });
 
