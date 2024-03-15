@@ -84,6 +84,12 @@ export const validateEnrollment = function (body) {
       message: 'Please provide your date of birth',
     };
 
+  if (new Date(body.dob) > new Date())
+    return {
+      type: 'error',
+      message: 'Date of birth must be in past',
+    };
+
   if (!validator.isMobilePhone(body.mobile_number)) {
     return {
       type: 'error',
@@ -136,6 +142,12 @@ export const validateMeeting = function (body) {
       message: 'Please provide a date',
     };
 
+  if (new Date(body.date) < new Date())
+    return {
+      type: 'error',
+      message: 'Date must be in future',
+    };
+
   if (!body.venue_city)
     return {
       type: 'error',
@@ -177,16 +189,34 @@ export const validateWorkshop = function (body) {
       message: 'Please provide a start date',
     };
 
+  if (new Date(body.start_date) < new Date())
+    return {
+      type: 'error',
+      message: 'Start date must be in future',
+    };
+
   if (!body.end_date || body.end_date === 'Invalid Date')
     return {
       type: 'error',
       message: 'Please provide an end date',
     };
 
+  if (new Date(body.end_date) < new Date())
+    return {
+      type: 'error',
+      message: 'End date must be after start date',
+    };
+
   if (!body.concluding_date || body.concluding_date === 'Invalid Date')
     return {
       type: 'error',
       message: 'Please provide a concluding date',
+    };
+
+  if (new Date(body.concluding_date) < new Date())
+    return {
+      type: 'error',
+      message: 'Concluding date must be after end date',
     };
 
   return true;
@@ -215,6 +245,12 @@ export const validateSignup = function (data) {
       message: 'Please provide your date of birth',
     };
   }
+
+  if (new Date(data.dob.value) > new Date())
+    return {
+      type: 'error',
+      message: 'Date of birth must be in past',
+    };
 
   if (!validator.isMobilePhone(data.phone.value)) {
     return {
