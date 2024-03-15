@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -33,6 +33,7 @@ import dayjs from 'dayjs';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { useMutation } from '@tanstack/react-query';
 import { createEnrollment, updateEnrollment } from '../../../apis/enrollments';
+import UserContext from '../../../store/userContext';
 
 const city = ['Bangalore', 'Dehradun', 'Noida', 'Gurgaon'];
 
@@ -112,6 +113,7 @@ function EnrollmentsDetails() {
     }
   }, [enrollment, viewType, isView]);
 
+  const { user } = useContext(UserContext)
   const { mutate, isPending: isPendingMutation } = useMutation({
     mutationFn: type === 'create' ? createEnrollment : updateEnrollment,
     onSuccess: (data) => {
@@ -210,7 +212,7 @@ function EnrollmentsDetails() {
     const isValid = validateEnrollment(body);
     if (isValid.type) return setAlertType(isValid);
 
-    mutate({ body, id });
+    mutate({ body, id, key: user?.key });
   };
 
   const handleDeleteRow = function ({ email, row, id }) {
@@ -261,8 +263,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                  ? 'Edit Enrollment'
-                  : 'Create Enrollment'
+                    ? 'Edit Enrollment'
+                    : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}

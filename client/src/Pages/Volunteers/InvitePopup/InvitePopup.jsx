@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -21,6 +21,7 @@ import AlertReact from '../../../Components/Alert/AlertReact';
 import { inviteVolunteer } from '../../../apis/volunteers';
 import { useMutation } from '@tanstack/react-query';
 import { validateInvite } from '../../../utils/utils';
+import UserContext from '../../../store/userContext';
 
 function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
   const classes = useStyles();
@@ -35,6 +36,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
     setAlertType(undefined);
   };
 
+  const { user } = useContext(UserContext)
   const { mutate, isPending } = useMutation({
     mutationFn: inviteVolunteer,
     onSuccess: (data) => {
@@ -66,7 +68,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
     const isValid = validateInvite(body);
     if (isValid.type) return setAlertType(isValid);
 
-    mutate(body);
+    mutate({ data: body, key: user?.key });
   };
 
   return (

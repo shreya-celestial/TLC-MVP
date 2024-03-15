@@ -233,7 +233,7 @@ function WorkshopsDetails() {
     const isValid = validateWorkshop(body);
     if (isValid.type) return setAlertType(isValid);
 
-    mutate({ body, id });
+    mutate({ body, id, key: user?.key });
   };
 
   const handleDeleteRow = function ({ email, row, id }) {
@@ -308,8 +308,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                  ? 'Edit Workshop'
-                  : 'Create Workshop'
+                    ? 'Edit Workshop'
+                    : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}
