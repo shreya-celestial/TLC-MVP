@@ -1,7 +1,6 @@
-import validator from "validator"
+import validator from 'validator';
 
 const profileValidator = (body) => {
-
   if (!body.name) {
     return {
       type: 'error',
@@ -20,6 +19,12 @@ const profileValidator = (body) => {
     return {
       type: 'error',
       message: 'Please Provide your Date of Birth',
+    };
+
+  if (new Date(body.dob) > new Date())
+    return {
+      type: 'error',
+      message: 'Date of birth must be in past',
     };
 
   if (!validator.isMobilePhone(body.phoneNumber)) {
@@ -64,6 +69,6 @@ const profileValidator = (body) => {
   }
 
   return true;
-}
+};
 
-export default profileValidator
+export default profileValidator;
