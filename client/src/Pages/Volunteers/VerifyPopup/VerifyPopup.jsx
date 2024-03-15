@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -19,6 +19,7 @@ import { useStyles } from './VerifyPopup.styles';
 import { useMutation } from '@tanstack/react-query';
 import { deleteVolunteers, verifyVolunteer } from '../../../apis/volunteers';
 import AlertReact from '../../../Components/Alert/AlertReact';
+import UserContext from '../../../store/userContext';
 
 function VerifyPopup({
   hideVerifyStatus,
@@ -35,6 +36,7 @@ function VerifyPopup({
     setAlertType(undefined);
   };
 
+  const { user } = useContext(UserContext)
   const { mutate: verifyMutation, isPending } = useMutation({
     mutationFn: verifyVolunteer,
     onSuccess: (data) => {
@@ -79,11 +81,12 @@ function VerifyPopup({
     verifyMutation({
       isAdmin: role === 'admin' ? 'true' : 'false',
       email: selectedUser,
+      key: user?.key
     });
   };
 
   const deleteUser = function () {
-    deleteMutation([selectedUser]);
+    deleteMutation({ data: [selectedUser], key: user?.key });
   };
 
   return (

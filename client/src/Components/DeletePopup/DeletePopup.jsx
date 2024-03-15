@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useStyles } from './DeletePopup.styles';
 import {
   Button,
@@ -18,6 +18,7 @@ import { deleteWorkshops } from '../../apis/workshops';
 import AlertReact from '../Alert/AlertReact';
 import { deleteMeetings } from '../../apis/meetings';
 import { deleteEnrollments } from '../../apis/enrollments';
+import UserContext from '../../store/userContext';
 
 function DeletePopup({
   selectedRows,
@@ -29,16 +30,17 @@ function DeletePopup({
   const classes = useStyles();
   const [open, SetOpen] = useState(true);
   const [alertType, setAlertType] = useState();
+  const { user } = useContext(UserContext)
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn:
       type === 'workshops'
         ? deleteWorkshops
         : type === 'meetings'
-        ? deleteMeetings
-        : type === 'enrollments'
-        ? deleteEnrollments
-        : deleteVolunteers,
+          ? deleteMeetings
+          : type === 'enrollments'
+            ? deleteEnrollments
+            : deleteVolunteers,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -62,28 +64,28 @@ function DeletePopup({
     const emailsOfDeleteVolunteers = selectedRows.map(
       (selectedRow) => selectedRow.email
     );
-    mutate(emailsOfDeleteVolunteers);
+    mutate({ data: emailsOfDeleteVolunteers, key: user?.key });
   };
 
   const deleteWorkshopsHandler = function () {
     const idsOfDeleteWorkshops = selectedRows.map(
       (selectedRow) => selectedRow.id
     );
-    mutate(idsOfDeleteWorkshops);
+    mutate({ data: idsOfDeleteWorkshops, key: user?.key });
   };
 
   const deleteMeetingsHandler = function () {
     const idsOfDeleteMeetings = selectedRows.map(
       (selectedRow) => selectedRow.id
     );
-    mutate(idsOfDeleteMeetings);
+    mutate({ data: idsOfDeleteMeetings, key: user?.key });
   };
 
   const deleteEnrollmentsHandler = function () {
     const idsOfDeleteEnrollments = selectedRows.map(
       (selectedRow) => selectedRow.id
     );
-    mutate(idsOfDeleteEnrollments);
+    mutate({ data: idsOfDeleteEnrollments, key: user?.key });
   };
 
   const removeAlertType = function () {
@@ -125,10 +127,10 @@ function DeletePopup({
               {type === 'workshops'
                 ? item.types
                 : type === 'meetings'
-                ? item.type
-                : type === 'enrollments'
-                ? item.name
-                : item.name}
+                  ? item.type
+                  : type === 'enrollments'
+                    ? item.name
+                    : item.name}
               ',{' '}
             </span>
           ))}
@@ -153,10 +155,10 @@ function DeletePopup({
             type === 'workshops'
               ? deleteWorkshopsHandler
               : type === 'meetings'
-              ? deleteMeetingsHandler
-              : type === 'enrollments'
-              ? deleteEnrollmentsHandler
-              : deleteVolunteersHandler
+                ? deleteMeetingsHandler
+                : type === 'enrollments'
+                  ? deleteEnrollmentsHandler
+                  : deleteVolunteersHandler
           }
         >
           {isPending ? 'Loading...' : 'Delete'}

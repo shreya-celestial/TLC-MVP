@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   MenuItem,
@@ -33,6 +33,7 @@ import { workshops } from '../../../apis/workshops';
 import { createMeeting, updateMeeting } from '../../../apis/meetings';
 
 import { useMutation } from '@tanstack/react-query';
+import UserContext from '../../../store/userContext';
 
 function MeetingsDetails() {
   const classes = useStyles();
@@ -85,6 +86,7 @@ function MeetingsDetails() {
     enabled: debouncedFilters?.search !== undefined,
   });
 
+  const { user } = useContext(UserContext)
   const { mutate, isPending: isPendingMutation } = useMutation({
     mutationFn: viewType === 'create' ? createMeeting : updateMeeting,
     onSuccess: (data) => {
@@ -220,7 +222,7 @@ function MeetingsDetails() {
     const isValid = validateMeeting(body);
     if (isValid.type) return setAlertType(isValid);
 
-    mutate({ body, id });
+    mutate({ body, id, key: user?.key });
   };
 
   const editHandler = function () {
@@ -283,8 +285,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                  ? 'Edit Meeting'
-                  : 'Create Meeting'
+                    ? 'Edit Meeting'
+                    : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}
