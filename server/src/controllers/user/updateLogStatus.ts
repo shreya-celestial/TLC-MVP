@@ -36,7 +36,7 @@ const updateLogStatus = async (req: Request, res: Response) => {
   }
   
   let updatedToken: any;
-  if((new Date(token?.exp).getSeconds() - (new Date()).getSeconds()) > 30*1000)
+  if((token?.exp - (new Date()).getSeconds()) > 30*1000)
   {
     updatedToken = authToken
   }
