@@ -69,7 +69,9 @@ export const logStatus = async (body) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${body?.key}`
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        isLoggingOut: body?.isLoggingOut
+      }),
     });
     return await response.json();
   }
