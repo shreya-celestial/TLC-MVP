@@ -1,4 +1,4 @@
-export const dashboardDetails = async () => {
+export const dashboardDetails = async ({ user }) => {
   try {
     const response = await fetch('https://tlc-two.vercel.app/dashboard');
     return await response.json();

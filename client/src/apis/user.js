@@ -67,6 +67,7 @@ export const logStatus = async (body) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${body?.key}`
       },
       body: JSON.stringify(body),
     });
@@ -87,6 +88,7 @@ export const updateProfile = async (data) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${data?.user?.key}`
       },
       body: JSON.stringify(data?.body),
     });

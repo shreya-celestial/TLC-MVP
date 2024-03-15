@@ -54,7 +54,7 @@ function Main() {
     };
     if (SESSIONUSER) {
       const { id: email, key } = SESSIONUSER;
-      data({ email, key });
+      data({ email, key, isLoggingOut: false });
     }
   }, []);
 
