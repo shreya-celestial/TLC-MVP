@@ -105,7 +105,7 @@ function EditPage() {
         message: check?.message,
       });
     }
-    mutate({ mail, body });
+    mutate({ mail, body, user });
   };
 
   return (
