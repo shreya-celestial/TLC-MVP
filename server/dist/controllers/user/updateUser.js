@@ -15,9 +15,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const global_1 = require("../../utils/global");
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
+    const { authorization } = req === null || req === void 0 ? void 0 : req.headers;
+    let token;
+    try {
+        let authToken = authorization;
+        authToken = authToken.split('Bearer ');
+        authToken = authToken[1];
+        token = jsonwebtoken_1.default.verify(authToken, process.env.JWT_SECRET_KEY || '');
+    }
+    catch (err) {
+        return res.status(401).json({
+            status: 'error',
+            message: 'Token expired! Please login again.'
+        });
+    }
     const { email } = req === null || req === void 0 ? void 0 : req.params;
+    if ((token === null || token === void 0 ? void 0 : token.email) !== email) {
+        return res.status(403).json({
+            status: 'error',
+            message: 'You are not allowed to update user details!'
+        });
+    }
     const variables = Object.assign(Object.assign({}, req === null || req === void 0 ? void 0 : req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: email.toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob) });
     const data = yield (0, getData_1.default)(mutations_1.updateUserByEmail, variables);
     if (data === null || data === void 0 ? void 0 : data.errors) {

@@ -9,17 +9,19 @@ import adminVerified from "../controllers/volunteers/adminVerified";
 import getSingleVolunteer from "../controllers/volunteers/getSingleVolunteer";
 import verifyInvite from "../controllers/volunteers/verifyInvite";
 import inviteSignup from '../controllers/volunteers/inviteSignup';
+import auth from "../middlewares/auth";
+import adminAuth from "../middlewares/adminAuth";
 
 const router = express.Router();
 
-router.get('/', getAllVolunteers)
-router.get('/:email/details', getSingleVolunteer)
+// router.get('/', getAllVolunteers)
 // router.get('/filters', getFilteredVolunteers)
-router.put('/updateRole', updateRole)
-router.delete('/', deleteVolunteer)
-router.get('/searchAndFilter', searchAndFilterVolunteer)
-router.post('/invite', inviteVolunteer)
-router.put('/adminVerified', adminVerified)
+router.get('/:email/details', auth, getSingleVolunteer)
+router.get('/searchAndFilter', auth, searchAndFilterVolunteer)
+router.put('/updateRole', adminAuth, updateRole)
+router.delete('/', adminAuth, deleteVolunteer)
+router.put('/adminVerified', adminAuth, adminVerified)
+router.post('/invite', adminAuth, inviteVolunteer)
 router.get('/verifyInvite/:token', verifyInvite)
 router.post('/inviteSignup', inviteSignup)
 

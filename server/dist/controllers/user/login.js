@@ -16,6 +16,7 @@ const crypto_js_1 = __importDefault(require("crypto-js"));
 const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/user/queries");
 const mutations_1 = require("../../gql/user/mutations");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { email, password } = req.body;
@@ -57,11 +58,17 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     let userToSend = JSON.parse(JSON.stringify(user));
     userToSend === null || userToSend === void 0 ? true : delete userToSend.password;
-    const encryptKey = crypto_js_1.default.AES.encrypt(email, process.env.LOGIN_KEY || '');
-    const updateUserStatus = yield (0, getData_1.default)(mutations_1.updateStatus, {
-        email, isLoggedIn: encryptKey.toString()
+    const tokenObj = {
+        email,
+        isAdmin: user === null || user === void 0 ? void 0 : user.isAdmin
+    };
+    const token = jsonwebtoken_1.default.sign(tokenObj, process.env.JWT_SECRET_KEY || '', {
+        expiresIn: '24h'
     });
-    userToSend = Object.assign(Object.assign({}, userToSend), { key: encryptKey.toString() });
+    const updateUserStatus = yield (0, getData_1.default)(mutations_1.updateStatus, {
+        email, isLoggedIn: token
+    });
+    userToSend = Object.assign(Object.assign({}, userToSend), { key: token });
     if ((_b = (_a = updateUserStatus === null || updateUserStatus === void 0 ? void 0 : updateUserStatus.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.affected_rows) {
         return res.status(200).json({ status: 'success', user: userToSend });
     }
