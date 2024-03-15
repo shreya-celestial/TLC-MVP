@@ -1,12 +1,13 @@
 const dateFormatter = (params) => {
   const date = new Date(params?.value);
-  const dateNumber = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
-  let monthNumber = +date.getMonth() + 1
-  monthNumber = monthNumber < 10 ? `0${monthNumber}` : monthNumber
-  const formattedDate = dateNumber + '-' + monthNumber + '-' + date.getFullYear()
-  return formattedDate
-}
-
+  const dateNumber =
+    date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  let monthNumber = +date.getMonth() + 1;
+  monthNumber = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+  const formattedDate =
+    dateNumber + '-' + monthNumber + '-' + date.getFullYear();
+  return formattedDate;
+};
 
 const colDefs = [
   {
@@ -36,7 +37,7 @@ const colDefs = [
     editable: false,
     minWidth: 120,
     headerName: 'Date',
-    cellRenderer: dateFormatter
+    cellRenderer: dateFormatter,
   },
   {
     field: 'venue',
