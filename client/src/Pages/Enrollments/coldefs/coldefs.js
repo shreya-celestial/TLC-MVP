@@ -33,6 +33,7 @@ const colDefs = [
     editable: false,
     minWidth: 250,
     headerName: 'Email ID',
+    cellStyle: { textTransform: 'lowercase' },
   },
   {
     field: 'mobile_number',

@@ -10,6 +10,10 @@ const LocationComp = (params) => {
     </p>
   );
 };
+const EmailComp = (params) => {
+  console.log(params.data.email);
+  return <p>{params.data.email.toLowerCase()}</p>;
+};
 
 const colDefs = [
   {
@@ -25,7 +29,6 @@ const colDefs = [
     editable: false,
     minWidth: 160,
     headerName: 'Name',
-    // sortable: false,
   },
   {
     field: 'email',
@@ -33,6 +36,7 @@ const colDefs = [
     editable: false,
     minWidth: 250,
     headerName: 'Email ID',
+    cellStyle: { textTransform: 'lowercase' },
   },
   {
     field: 'phoneNumber',
@@ -82,7 +86,7 @@ const colDefs = [
     },
     width: 100,
     pinned: 'right',
-    resizable:false
+    resizable: false,
   },
 ];
 
@@ -94,17 +98,17 @@ export const workShopColDef = [
 ];
 
 export const workshopColDefVolunteersPage = [
-  { field: 'types', headerName: 'Workshop Name',minWidth: 180 },
-  { field: 'role', headerName: 'Role',minWidth: 150 },
-  { field: 'start_date', headerName: 'Start Date',minWidth: 120 },
-  { field: 'end_date', headerName: 'End Date',minWidth: 120 },
+  { field: 'types', headerName: 'Workshop Name', minWidth: 180 },
+  { field: 'role', headerName: 'Role', minWidth: 150 },
+  { field: 'start_date', headerName: 'Start Date', minWidth: 120 },
+  { field: 'end_date', headerName: 'End Date', minWidth: 120 },
 ];
 
 export const meetingsColDefVolunteersPage = [
-  { field: 'type', headerName: 'Meeting Type',minWidth: 180 },
-  { field: 'date', headerName: 'Date',minWidth: 120 },
-  { field: 'venue', headerName: 'Venue',minWidth: 250 },
-  { field: 'venue_city', headerName: 'Venue City',minWidth: 150 },
+  { field: 'type', headerName: 'Meeting Type', minWidth: 180 },
+  { field: 'date', headerName: 'Date', minWidth: 120 },
+  { field: 'venue', headerName: 'Venue', minWidth: 250 },
+  { field: 'venue_city', headerName: 'Venue City', minWidth: 150 },
 ];
 
 export const meetingColDef = [

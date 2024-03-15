@@ -42,7 +42,6 @@ function Signup() {
       }
     },
     onError: (error) => {
-      console.log(error);
       let msg;
       if (error?.info?.message.includes('Uniqueness violation')) {
         msg = 'Workshop already exists';
