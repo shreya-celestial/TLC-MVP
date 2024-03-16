@@ -44,7 +44,7 @@ function Signup() {
     onError: (error) => {
       let msg;
       if (error?.info?.message.includes('Uniqueness violation')) {
-        msg = 'Workshop already exists';
+        msg = 'User already exists';
       }
       setAlertType({
         type: 'error',
