@@ -3,9 +3,12 @@ import getData from "../../utils/getData"
 import { VerifyTokenAndUpdate } from "../../gql/user/mutations"
 
 const verifyUser = async (req: Request, res: Response) => {
-  if(req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL'){
+  const { token: invite } = req?.query
+  let token: any = invite
+  token = token?.replaceAll(' ', '+')
+  if(token && token !== 'null' && token !== 'NULL'){
     const data = await getData(VerifyTokenAndUpdate, {
-      token: req.params.token,
+      token: token,
       updatedToken: null,
       isVerified: true
     })

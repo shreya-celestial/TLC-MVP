@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import CryptoJS from 'crypto-js';
-import jwt from 'jsonwebtoken';
 import getData from '../../utils/getData';
 import { DeleteUserByEmail, InsertUserMutation } from '../../gql/user/mutations';
 import generateEmail from '../../utils/generateMail';
@@ -13,6 +12,8 @@ const signup = async (req: Request, res: Response) => {
     req.body.password,
     process.env.CRYPTO_HASH_KEY || ''
   );
+  let token: any = CryptoJS.AES.encrypt(req?.body?.email, process.env.CRYPTO_TICKET || '')
+  token = token.toString();
 
   const variables = {
     ...req.body,
@@ -24,10 +25,7 @@ const signup = async (req: Request, res: Response) => {
     dob: formatDate(req.body.dob),
     password: encryptPass.toString(),
     isVerified: false,
-    token: jwt.sign(
-      { tempKey: encryptPass.toString() },
-      process.env.JWT_SECRET_KEY || ''
-    ),
+    token,
   };
 
   const data = await getData(mutation, variables);
@@ -38,7 +36,7 @@ const signup = async (req: Request, res: Response) => {
       subject: 'Verification of TLC Email',
       text: '',
       html: generateEmail(
-        `https://tlc-two.vercel.app/user/verifyUser/${variables.token}`,
+        `https://tlc-two.vercel.app/user/verifyUser?token=${variables.token}`,
         capitaliseStr(req.body.name)
       ),
     };

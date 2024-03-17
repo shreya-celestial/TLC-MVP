@@ -16,9 +16,12 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
 const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
-    if (req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL') {
+    const { token: invite } = req === null || req === void 0 ? void 0 : req.query;
+    let token = invite;
+    token = token === null || token === void 0 ? void 0 : token.replaceAll(' ', '+');
+    if (token && token !== 'null' && token !== 'NULL') {
         const data = yield (0, getData_1.default)(mutations_1.VerifyTokenAndUpdate, {
-            token: req.params.token,
+            token: token,
             updatedToken: null,
             isVerified: true
         });

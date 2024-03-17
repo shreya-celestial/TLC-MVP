@@ -22,7 +22,7 @@ router.put('/updateRole', adminAuth, updateRole)
 router.delete('/', adminAuth, deleteVolunteer)
 router.put('/adminVerified', adminAuth, adminVerified)
 router.post('/invite', adminAuth, inviteVolunteer)
-router.get('/verifyInvite/:token', verifyInvite)
+router.get('/verifyInvite', verifyInvite)
 router.post('/inviteSignup', inviteSignup)
 
 export default router

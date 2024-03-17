@@ -3,12 +3,15 @@ import getData from "../../utils/getData"
 import { verifyResetQuery } from "../../gql/user/queries"
 
 const verifyReset = async (req: Request, res: Response) => {
-  if(req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL'){
+  const { token: invite } = req?.query
+  let token: any = invite
+  token = token?.replaceAll(' ', '+')
+  if(token && token !== 'null' && token !== 'NULL'){
     const data = await getData(verifyResetQuery, {
-      token: req.params.token
+      token: token
     })
     if(data?.data?.users?.length){
-      return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${req?.params?.token}`)
+      return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${token}`)
     }
     return res.status(400).send('Error! Something went wrong. Please try again later.')
   }

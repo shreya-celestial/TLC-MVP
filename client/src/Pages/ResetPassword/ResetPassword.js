@@ -21,7 +21,8 @@ import AlertReact from '../../Components/Alert/AlertReact';
 function ResetPassword() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('reset');
+  let token = queryParams.get('reset');
+  token = token?.replaceAll(' ', '+')
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMatch, setIsMatch] = useState(true);

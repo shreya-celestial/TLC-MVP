@@ -57,7 +57,8 @@ function Signup() {
     e.preventDefault();
     setAlertKey((prev) => !prev);
 
-    const token = queryParams.get('token');
+    let token = queryParams.get('ticket');
+    token = token?.replaceAll(' ', '+')
     const email = queryParams.get('for');
 
     const isValid = validateSignup(e.target.elements);

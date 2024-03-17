@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const crypto_js_1 = __importDefault(require("crypto-js"));
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
@@ -20,7 +20,8 @@ const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
 const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
     const { email } = req.body;
-    const token = jsonwebtoken_1.default.sign({ tempKey: email }, process.env.JWT_SECRET_KEY || '');
+    let token = crypto_js_1.default.AES.encrypt(email, process.env.CRYPTO_TICKET || '');
+    token = token.toString();
     const data = yield (0, getData_1.default)(mutations_1.CheckAndUpdateToken, {
         email: email,
         isVerified: true,
@@ -36,7 +37,7 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             to: email,
             subject: 'Reset Password Link',
             text: '',
-            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/user/verifyReset/${token}`, name, 'Reset Password', body)
+            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/user/verifyReset?token=${token}`, name, 'Reset Password', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => {
             if (!err) {
