@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken"
+import CryptoJS from "crypto-js"
 import getData from "../../utils/getData";
 import { CheckAndUpdateToken } from "../../gql/user/mutations";
 import generateEmail from "../../utils/generateMail";
@@ -7,7 +7,8 @@ import transporter from "../../utils/nodeMailer";
 
 const forgotPass = async (req: Request, res: Response) => {
   const {email} = req.body;
-  const token = jwt.sign({tempKey: email}, process.env.JWT_SECRET_KEY || '')
+  let token: any = CryptoJS.AES.encrypt(email, process.env.CRYPTO_TICKET || '')
+  token = token.toString();
 
   const data = await getData(CheckAndUpdateToken, {
     email: email,
@@ -26,7 +27,7 @@ const forgotPass = async (req: Request, res: Response) => {
       to: email,
       subject: 'Reset Password Link',
       text: '',
-      html: generateEmail(`https://tlc-two.vercel.app/user/verifyReset/${token}`, name, 'Reset Password', body)
+      html: generateEmail(`https://tlc-two.vercel.app/user/verifyReset?token=${token}`, name, 'Reset Password', body)
     };
 
     transporter.sendMail(mailOptions, (err) => {

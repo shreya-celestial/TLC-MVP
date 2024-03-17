@@ -15,13 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/user/queries");
 const verifyReset = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
-    if (req.params.token && req.params.token !== 'null' && req.params.token !== 'NULL') {
+    var _a, _b;
+    const { token: invite } = req === null || req === void 0 ? void 0 : req.query;
+    let token = invite;
+    token = token === null || token === void 0 ? void 0 : token.replaceAll(' ', '+');
+    if (token && token !== 'null' && token !== 'NULL') {
         const data = yield (0, getData_1.default)(queries_1.verifyResetQuery, {
-            token: req.params.token
+            token: token
         });
         if ((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.users) === null || _b === void 0 ? void 0 : _b.length) {
-            return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${(_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.token}`);
+            return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${token}`);
         }
         return res.status(400).send('Error! Something went wrong. Please try again later.');
     }

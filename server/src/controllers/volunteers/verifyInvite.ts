@@ -3,7 +3,9 @@ import getData from "../../utils/getData"
 import { verifyVolunteerInvite } from "../../gql/volunteers/queries"
 
 const verifyInvite = async (req: Request, res: Response) => {
-  const { token } = req.params
+  const { invite } = req.query
+  let token: any = invite
+  token = token?.replaceAll(' ', '+')
   if(token && token !== 'null' && token !== 'NULL'){
     const data = await getData(verifyVolunteerInvite, {token})
 
@@ -25,7 +27,7 @@ const verifyInvite = async (req: Request, res: Response) => {
     {
       return res.status(404).send('Invitation expired!')
     }
-    return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/signup?token=${token}&for=${data?.data?.Invitations[0]?.email}`)
+    return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/signup?ticket=${token}&for=${data?.data?.Invitations[0]?.email}`)
   }
   return res.status(404).send('Error! Page not found.')
 }

@@ -23,6 +23,6 @@ router.put('/updateRole', adminAuth_1.default, updateRole_1.default);
 router.delete('/', adminAuth_1.default, deleteVolunteer_1.default);
 router.put('/adminVerified', adminAuth_1.default, adminVerified_1.default);
 router.post('/invite', adminAuth_1.default, inviteVolunteer_1.default);
-router.get('/verifyInvite/:token', verifyInvite_1.default);
+router.get('/verifyInvite', verifyInvite_1.default);
 router.post('/inviteSignup', inviteSignup_1.default);
 exports.default = router;

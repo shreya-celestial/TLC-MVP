@@ -13,17 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_js_1 = __importDefault(require("crypto-js"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
 const global_1 = require("../../utils/global");
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     const mutation = mutations_1.InsertUserMutation;
     const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
-    const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isVerified: false, token: jsonwebtoken_1.default.sign({ tempKey: encryptPass.toString() }, process.env.JWT_SECRET_KEY || '') });
+    let token = crypto_js_1.default.AES.encrypt((_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.email, process.env.CRYPTO_TICKET || '');
+    token = token.toString();
+    const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isVerified: false, token });
     const data = yield (0, getData_1.default)(mutation, variables);
     if (!data.errors) {
         const mailOptions = {
@@ -31,7 +32,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             to: req.body.email,
             subject: 'Verification of TLC Email',
             text: '',
-            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/user/verifyUser/${variables.token}`, (0, global_1.capitaliseStr)(req.body.name)),
+            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/user/verifyUser?token=${variables.token}`, (0, global_1.capitaliseStr)(req.body.name)),
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {
@@ -52,7 +53,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return res.status(400).json({
         status: 'error',
-        message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message,
+        message: (_b = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _b === void 0 ? void 0 : _b.message,
     });
 });
 exports.default = signup;

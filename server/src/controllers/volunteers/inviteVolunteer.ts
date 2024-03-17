@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import getData from "../../utils/getData"
 import { checkEmailAvailability } from "../../gql/volunteers/queries"
-import jwt from "jsonwebtoken"
+import CryptoJS from "crypto-js"
 import { deleteInvite, newInvite, resendInvite } from "../../gql/volunteers/mutations"
 import { capitaliseStr } from "../../utils/global"
 import generateEmail from "../../utils/generateMail"
@@ -30,7 +30,8 @@ const inviteVolunteer = async (req: Request, res: Response) => {
 
   if(!isEmailAvailable?.data?.Invitations?.length)
   {
-    const token = jwt.sign({tempKey: email}, process.env.JWT_SECRET_KEY || '')
+    let token: any = CryptoJS.AES.encrypt(email, process.env.CRYPTO_TICKET || '')
+    token = token.toString();
     const variables = {
       name: capitaliseStr(name),
       email: email.toLowerCase(),
@@ -55,7 +56,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
         to: email,
         subject: 'TLC Invitation',
         text: '',
-        html: generateEmail(`https://tlc-two.vercel.app/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
+        html: generateEmail(`https://tlc-two.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
       };
 
       transporter.sendMail(mailOptions, async (err)=> {
@@ -101,7 +102,8 @@ const inviteVolunteer = async (req: Request, res: Response) => {
     })
   }
 
-  const token = jwt.sign({tempKey: email}, process.env.JWT_SECRET_KEY || '')
+  let token: any = CryptoJS.AES.encrypt(email, process.env.CRYPTO_TICKET || '')
+  token = token.toString();
   const variables = {
     email: email.toLowerCase(),
     token
@@ -122,7 +124,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
       to: email,
       subject: 'TLC Invitation',
       text: '',
-      html: generateEmail(`https://tlc-two.vercel.app/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
+      html: generateEmail(`https://tlc-two.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
     };
 
     transporter.sendMail(mailOptions, async (err)=> {
