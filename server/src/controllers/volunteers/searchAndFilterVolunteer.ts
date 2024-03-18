@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { capitaliseStr } from "../../utils/global";
 import getData from "../../utils/getData";
 import { searchAndFilterVolunteers } from "../../gql/volunteers/queries";
-import jwt from "jsonwebtoken";
 
 const searchAndFilterVolunteer = async (req: Request, res: Response) => {
   const {
@@ -125,32 +124,7 @@ const searchAndFilterVolunteer = async (req: Request, res: Response) => {
       ]
     }
   }
-
-  const { authorization } : any = req?.headers
-  let authToken: any = authorization.split('Bearer ');
-  authToken = authToken[1];
-  let token: any;
-  try{
-    token = jwt.verify(authToken, process.env.JWT_SECRET_KEY || '')
-  }
-  catch(err)
-  {
-    return res.status(401).json({
-      status: 'error',
-      message: 'Token expired! Please login again.'
-    })
-  }
   
-  if(token)
-  {
-    filters = {
-      ...filters,
-      email: {
-        _neq: token?.email?.toLowerCase()
-      }
-    }
-  }
-
   const variables = {
     offset: (page-1)*no_of_records,
     limit: no_of_records,
