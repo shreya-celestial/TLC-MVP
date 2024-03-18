@@ -43,6 +43,8 @@ const Volunteers = () => {
 
   const [selectedRows, setSelectedRows] = useState([]);
 
+  console.log(selectedRows);
+
   const {
     removeAlertType,
     hideInviteModal,
@@ -110,6 +112,16 @@ const Volunteers = () => {
   const updateSelectedRows = function (data) {
     setSelectedRows(data);
   };
+  const hideVerifySuccessModalAndUnselectRow = function () {
+    hideVerifyModalAndShowSuccess();
+    setSelectedRows([]);
+  };
+
+  const hideVerifyDeleteModalAndUnselectRow = function () {
+    hideVerifyModalAndShowDelete();
+    setSelectedRows([]);
+  };
+
   const handleReset = function () {
     setRoleDropdown('all');
     setGenderDropdown('all');
@@ -190,8 +202,8 @@ const Volunteers = () => {
         <VerifyPopup
           selectedUser={selectedUser}
           hideVerifyStatus={hideVerifyStatus}
-          hideVerifyModalAndShowSuccess={hideVerifyModalAndShowSuccess}
-          hideVerifyModalAndShowDelete={hideVerifyModalAndShowDelete}
+          hideVerifyModalAndShowSuccess={hideVerifySuccessModalAndUnselectRow}
+          hideVerifyModalAndShowDelete={hideVerifyDeleteModalAndUnselectRow}
         />
       )}
       {showDeleteModal && (
