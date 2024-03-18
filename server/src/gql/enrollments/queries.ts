@@ -16,6 +16,11 @@ export const allEnrollments = `
           count
         }
       }
+      enrollment_done_by {
+        email
+        name
+        phoneNumber
+      }
     }
     enrollments_aggregate(where: $where) {
       aggregate {
@@ -64,6 +69,11 @@ export const enrollmentByPK = `
           venue_city
           id
         }
+      }
+      enrollment_done_by {
+        email
+        name
+        phoneNumber
       }
     }
   }
