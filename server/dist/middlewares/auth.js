@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
             catch (err) {
                 return res.status(401).json({
                     status: 'error',
-                    message: 'Token expired!'
+                    message: 'Token expired! Please login again!'
                 });
             }
         }
