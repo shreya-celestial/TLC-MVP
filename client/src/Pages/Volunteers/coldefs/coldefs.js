@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 const IsAdminComp = (params) => {
   if (!params.data.isAdminVerified) return `-`;
   return `${params.value ? 'Admin' : 'Volunteer'}`;
@@ -10,9 +12,12 @@ const LocationComp = (params) => {
     </p>
   );
 };
-const EmailComp = (params) => {
-  console.log(params.data.email);
-  return <p>{params.data.email.toLowerCase()}</p>;
+
+const CheckBoxComp = (params) => {
+  // console.log(params);
+  if (params.data.email === 'gauravyadav.mern@gmail.com') {
+    // params.colDef.checkboxSelection = () => false;
+  }
 };
 
 const colDefs = [
@@ -22,6 +27,9 @@ const colDefs = [
     headerName: '',
     minWidth: 50,
     resizable: false,
+    showDisabledCheckboxes: true,
+
+    cellRenderer: CheckBoxComp,
   },
   {
     field: 'name',
