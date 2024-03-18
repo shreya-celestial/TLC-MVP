@@ -46,8 +46,17 @@ const colDefs = [
     field: 'state',
     filter: false,
     editable: false,
-    minWidth: 200,
+    minWidth: 150,
     headerName: 'Location',
+  },
+  {
+    field: 'enrollment_volunteer',
+    filter: false,
+    editable: false,
+    minWidth: 230,
+    valueGetter: (params) => params.data.enrollment_volunteer?.email || '-',
+    cellStyle: { textTransform: 'lowercase' },
+    headerName: 'Enrolled By',
   },
 ];
 

@@ -135,7 +135,7 @@ function EnrollmentsDetails() {
     onError: (error) => {
       let msg;
       if (error?.info?.message.includes('Uniqueness violation')) {
-        msg = 'Workshop already exists';
+        msg = 'Enrollment already exists';
       }
       setAlertType({
         type: 'error',
