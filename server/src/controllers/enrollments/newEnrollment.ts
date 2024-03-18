@@ -14,6 +14,8 @@ const newEnrollment = async (req: Request, res: Response) => {
 
   const variables = {
     ...req?.body,
+    enrolled_by: req?.body?.enrolled_by?.toLowerCase(),
+    state: capitaliseStr(req?.body?.state),
     name: capitaliseStr(req?.body?.name),
     email: req?.body?.email?.toLowerCase(),
     children

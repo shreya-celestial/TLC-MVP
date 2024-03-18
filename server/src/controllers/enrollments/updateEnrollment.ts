@@ -15,6 +15,7 @@ const updateEnrollment = async (req: Request, res: Response) => {
   })
   const variables = {
     ...req?.body,
+    state: capitaliseStr(req?.body?.state),
     name: capitaliseStr(req?.body?.name),
     email: req?.body?.email?.toLowerCase(),
     children, 

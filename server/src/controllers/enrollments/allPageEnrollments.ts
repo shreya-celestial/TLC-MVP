@@ -10,6 +10,7 @@ const allPageEnrollments = async (req: Request, res: Response) => {
     sort_by,
     order_of_sort,
     gender,
+    enrolled_is_null,
     value 
   } = req?.query
 
@@ -101,8 +102,23 @@ const allPageEnrollments = async (req: Request, res: Response) => {
           state: {
             _like: `${name}%`
           }
+        }, 
+        {
+          enrolled_by: {
+            _like: `${email}%`
+          }
         }
       ]
+    }
+  }
+
+  if(enrolled_is_null)
+  {
+    filters = {
+      ...filters,
+      enrolled_by: {
+        _is_null: enrolled_is_null === 'true' ? true : false
+      }
     }
   }
 
@@ -134,7 +150,8 @@ const allPageEnrollments = async (req: Request, res: Response) => {
       name: enrl?.name,
       pincode: enrl?.pincode,
       state: enrl?.state,
-      children: enrl?.children_aggregate?.aggregate?.count
+      children: enrl?.children_aggregate?.aggregate?.count,
+      enrollment_volunteer: enrl?.enrollment_done_by
     }
   })
 

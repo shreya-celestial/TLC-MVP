@@ -17,7 +17,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/enrollments/queries");
 const allPageEnrollments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
-    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, gender, value } = req === null || req === void 0 ? void 0 : req.query;
+    const { page: reqPage, no_of_records: reqRecords, sort_by, order_of_sort, gender, enrolled_is_null, value } = req === null || req === void 0 ? void 0 : req.query;
     let order = {
         id: "desc"
     };
@@ -92,8 +92,18 @@ const allPageEnrollments = (req, res) => __awaiter(void 0, void 0, void 0, funct
                     state: {
                         _like: `${name}%`
                     }
+                },
+                {
+                    enrolled_by: {
+                        _like: `${email}%`
+                    }
                 }
             ] });
+    }
+    if (enrolled_is_null) {
+        filters = Object.assign(Object.assign({}, filters), { enrolled_by: {
+                _is_null: enrolled_is_null === 'true' ? true : false
+            } });
     }
     const variables = {
         offset: (page - 1) * no_of_records,
@@ -121,7 +131,8 @@ const allPageEnrollments = (req, res) => __awaiter(void 0, void 0, void 0, funct
             name: enrl === null || enrl === void 0 ? void 0 : enrl.name,
             pincode: enrl === null || enrl === void 0 ? void 0 : enrl.pincode,
             state: enrl === null || enrl === void 0 ? void 0 : enrl.state,
-            children: (_b = (_a = enrl === null || enrl === void 0 ? void 0 : enrl.children_aggregate) === null || _a === void 0 ? void 0 : _a.aggregate) === null || _b === void 0 ? void 0 : _b.count
+            children: (_b = (_a = enrl === null || enrl === void 0 ? void 0 : enrl.children_aggregate) === null || _a === void 0 ? void 0 : _a.aggregate) === null || _b === void 0 ? void 0 : _b.count,
+            enrollment_volunteer: enrl === null || enrl === void 0 ? void 0 : enrl.enrollment_done_by
         };
     });
     return res.status(200).json({
