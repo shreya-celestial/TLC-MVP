@@ -37,10 +37,10 @@ function LeadVolunteerPopup({
 
   const { data, isPending, isError } = useReactQuery(
     [1, 10, { ...debouncedFilters }],
-    volunteers,
-    {
-      enabled: debouncedFilters?.search !== undefined,
-    }
+    volunteers
+    // {
+    //   enabled: debouncedFilters?.search !== undefined,
+    // }
   );
 
   useEffect(() => {
@@ -96,7 +96,7 @@ function LeadVolunteerPopup({
             </Typography>
           )}
           <Autocomplete
-            loading={isPending && debouncedFilters?.search !== undefined}
+            loading={isPending}
             options={volunteersList}
             getOptionLabel={(option) => `${option.name} (${option.email})`}
             onChange={(event, selectedElements) => {

@@ -51,10 +51,10 @@ function AutocompletePopup({
 
   const { data, isPending, isError } = useReactQuery(
     [1, 10, { ...debouncedFilters }, mode],
-    fetchFn,
-    {
-      enabled: debouncedFilters?.search !== undefined,
-    }
+    fetchFn
+    // {
+    //   enabled: debouncedFilters?.search !== undefined,
+    // }
   );
 
   useEffect(() => {
