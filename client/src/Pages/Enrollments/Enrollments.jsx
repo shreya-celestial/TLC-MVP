@@ -73,6 +73,7 @@ const Enrollments = () => {
   const [searchValue, setSearchValue] = useState('');
   const [debouncedSearch, setDebouncedValue] = useState('');
   const [genderDropdown, setGenderDropdown] = useState('all');
+  const [enrolledDropdown, setEnrolledDropdown] = useState('all');
   const [clickedCountDetails, setClickedCountDetails] = useState();
 
   const { data, isPending, isError } = useReactQuery(
@@ -82,6 +83,7 @@ const Enrollments = () => {
       {
         search: debouncedSearch,
         gender: genderDropdown,
+        enrolledBy: enrolledDropdown,
       },
       rowChanged,
     ],
@@ -109,6 +111,7 @@ const Enrollments = () => {
 
   const handleReset = () => {
     setGenderDropdown('all');
+    setEnrolledDropdown('others');
   };
 
   const showDetails = function (params) {
@@ -280,6 +283,29 @@ const Enrollments = () => {
                   <MenuItem value="all">All</MenuItem>
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl className={classes.formControl}>
+                <FormLabel id="enrolled-label">Enrolled By</FormLabel>
+                <Select
+                  label="Enrolled By"
+                  labelId="enrolled-label"
+                  value={enrolledDropdown}
+                  onChange={(e) => {
+                    setEnrolledDropdown(e.target.value);
+                  }}
+                  IconComponent={ExpandMoreOutlinedIcon}
+                  className={classes.selectBox}
+                  MenuProps={{
+                    classes: {
+                      paper: classes.selectDropdownMenu,
+                    },
+                  }}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="self">Self</MenuItem>
+                  <MenuItem value="others">Others</MenuItem>
                 </Select>
               </FormControl>
 

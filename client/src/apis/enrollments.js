@@ -13,9 +13,15 @@ export const enrollments = async function ({ signal, queryKey, user }) {
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
   let genderParam = filters.gender ? `&gender=${filters.gender}` : '';
+  let enrolledParam =
+    filters.enrolledBy === 'self'
+      ? `&enrolled_is_null=true`
+      : filters.enrolledBy === 'others'
+      ? `&enrolled_is_null=false`
+      : ``;
 
   const res = await fetch(
-    `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${genderParam}`,
+    `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${enrolledParam}`,
     {
       method: 'GET',
       headers: {

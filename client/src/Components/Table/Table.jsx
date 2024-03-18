@@ -3,7 +3,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { useStyles } from './Table.styles';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import UserContext from '../../store/userContext';
 
 const Table = ({
@@ -19,7 +19,7 @@ const Table = ({
   if (data) rowData = data;
 
   const classes = useStyles();
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const onSelectionChanged = () => {
     const selectedNodes = gridApi.getSelectedNodes();
@@ -45,6 +45,7 @@ const Table = ({
   const handleClickInColumn = function (params) {
     showVerifyStatus(params.data.email);
   };
+  console.log(user);
 
   const IsAdminVerifiedComp = (params) => {
     const classes = useStyles();
@@ -55,9 +56,11 @@ const Table = ({
         ) : (
           <Button
             className={classes.pending}
-            onClick={user?.isAdmin ? () => handleClickInColumn(params) : () => { }}
+            onClick={
+              user?.isAdmin ? () => handleClickInColumn(params) : () => {}
+            }
             sx={{
-              cursor: user?.isAdmin ? 'pointer' : 'default'
+              cursor: user?.isAdmin ? 'pointer' : 'default',
             }}
             disableRipple
           >
@@ -117,9 +120,28 @@ const Table = ({
     if (colDef.field === 'children') colDef.cellRenderer = InfoTable;
 
     // colDef.headerComponent = CustomHeaderComponent;
+    // colDef
 
     return colDef;
   });
+
+  // const onFirstDataRendered = useCallback((params) => {
+  //   const nodesToSelect = [];
+  //   params.api.forEachNode((node) => {
+  //     // console.log(node);
+  //     if (node.data && node.data.email === 'gauravyadav.mern@gmail.com') {
+  //       // node.selectable = false;
+  //       nodesToSelect.push(node);
+  //     }
+  //   });
+  //   params.api.setNodesSelected({ nodes: nodesToSelect, newValue: true });
+  // }, []);
+
+  const isRowSelectable = useMemo(() => {
+    return (params) => {
+      return !!params.data && params.data.email !== user.email;
+    };
+  }, [user]);
 
   return (
     <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
@@ -143,7 +165,7 @@ const Table = ({
           columnDefs={modifiedColumnDefs}
           gridOptions={gridOptions}
           onGridReady={(params) => (gridApi = params.api)}
-          suppressRowClickSelection
+          isRowSelectable={isRowSelectable}
         ></AgGridReact>
       )}
     </Box>
