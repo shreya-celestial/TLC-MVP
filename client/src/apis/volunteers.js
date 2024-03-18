@@ -137,10 +137,10 @@ export const deleteVolunteers = async function ({ key, data }) {
   return resData;
 };
 
-export const verifyVolunteer = async function ({ data, key }) {
+export const verifyVolunteer = async function ({ isAdmin, email, key }) {
   const res = await fetch(`${BASEURL}/adminVerified`, {
     method: 'PUT',
-    body: JSON.stringify(data),
+    body: JSON.stringify({ isAdmin, email }),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${key}`,
