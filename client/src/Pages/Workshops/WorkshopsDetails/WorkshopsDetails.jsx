@@ -230,7 +230,11 @@ function WorkshopsDetails() {
       meetings: meetingsRowData.map((meeting) => meeting.id),
     };
 
-    const isValid = validateWorkshop(body);
+    let isValid
+    if (viewType === 'create')
+      isValid = validateWorkshop(body);
+    else if (viewType === 'edit')
+      isValid = validateWorkshop(body, false);
     if (isValid.type) return setAlertType(isValid);
 
     mutate({ body, id, key: user?.key });

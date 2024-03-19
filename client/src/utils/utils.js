@@ -135,14 +135,14 @@ export const validateEnrollment = function (body) {
   return true;
 };
 
-export const validateMeeting = function (body) {
+export const validateMeeting = function (body, isCreate = true) {
   if (!body.date || body.date === 'Invalid Date')
     return {
       type: 'error',
       message: 'Please provide a date',
     };
 
-  if (new Date(body.date) < new Date())
+  if (new Date(body.date) < new Date() && isCreate)
     return {
       type: 'error',
       message: 'Date must be in future',
@@ -164,7 +164,7 @@ export const validateMeeting = function (body) {
   return true;
 };
 
-export const validateWorkshop = function (body) {
+export const validateWorkshop = function (body, isCreate = true) {
   if (body.types.length < 6)
     return {
       type: 'error',
@@ -189,7 +189,7 @@ export const validateWorkshop = function (body) {
       message: 'Please provide a start date',
     };
 
-  if (new Date(body.start_date) < new Date())
+  if (new Date(body.start_date) < new Date() && isCreate)
     return {
       type: 'error',
       message: 'Start date must be in future',

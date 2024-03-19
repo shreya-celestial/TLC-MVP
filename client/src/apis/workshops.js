@@ -13,18 +13,17 @@ export const workshops = async function ({ signal, queryKey, user }) {
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
   let pastOrUpcomingParam = filters.pastOrUpcoming
-    ? `&pastOrUpcoming=${filters.pastOrUpcoming}${
-        filters.pastOrUpcoming === 'upcoming'
-          ? '&sort_by=start_date&order_of_sort=asc'
-          : ''
-      }`
+    ? `&pastOrUpcoming=${filters.pastOrUpcoming}${filters.pastOrUpcoming === 'upcoming'
+      ? '&sort_by=start_date&order_of_sort=asc'
+      : ''
+    }`
     : '';
 
   let startDateParam = filters.startDate
-    ? `&start_date=${new Date(filters.startDate).toLocaleDateString()}`
+    ? `&start=${new Date(filters.startDate).toLocaleDateString()}`
     : '';
   let endDateParam = filters.endDate
-    ? `&end_date=${new Date(filters.endDate).toLocaleDateString()}`
+    ? `&end=${new Date(filters.endDate).toLocaleDateString()}`
     : '';
 
   const res = await fetch(

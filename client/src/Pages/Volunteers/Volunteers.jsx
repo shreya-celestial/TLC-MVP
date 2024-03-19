@@ -43,8 +43,6 @@ const Volunteers = () => {
 
   const [selectedRows, setSelectedRows] = useState([]);
 
-  console.log(selectedRows);
-
   const {
     removeAlertType,
     hideInviteModal,
