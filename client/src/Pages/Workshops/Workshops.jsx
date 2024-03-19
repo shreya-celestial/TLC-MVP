@@ -281,6 +281,7 @@ const Workshops = () => {
                       disabled={pastOrUpcoming !== 'all' ? true : false}
                       name="startDate"
                       value={dayjs(startDate)}
+                      maxDate={endDate && dayjs(endDate)}
                       onChange={(date) => setStartDate(new Date(date))}
                     />
                   </LocalizationProvider>
@@ -296,6 +297,7 @@ const Workshops = () => {
                       disabled={pastOrUpcoming !== 'all' ? true : false}
                       name="endtDate"
                       value={dayjs(endDate)}
+                      minDate={startDate && dayjs(startDate)}
                       onChange={(date) => setEndDate(new Date(date))}
                     />
                   </LocalizationProvider>
