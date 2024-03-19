@@ -32,8 +32,6 @@ const Table = ({
     onSelectionChanged: onSelectionChanged,
     rowHeight: 30,
     headerHeight: 30,
-    suppressHorizontalScroll: true,
-    domLayout: 'autoHeight',
     overlayNoRowsTemplate: 'No Records Found',
   };
   const defaultColDef = {

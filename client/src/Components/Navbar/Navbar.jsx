@@ -23,16 +23,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../../store/userContext';
 import { logStatus } from '../../apis/user';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-const Navbar = ({ handleSidebarOpen }) => {
+const Navbar = ({ handleSidebarOpen, isSidebarOpen }) => {
   const { user, setUser } = useContext(UserContext);
   const nav = useNavigate();
   const isLargerScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
-  const [isSidebarOpen, setIsSideBarOpen] = useState(false);
   const [profileAnchorEL, setProfileAnchorEl] = useState(null);
   const classes = useStyles();
   const handleSidebar = () => {
     handleSidebarOpen();
-    setIsSideBarOpen(!isSidebarOpen);
   };
 
   const handleLogout = async (e) => {
@@ -70,7 +68,15 @@ const Navbar = ({ handleSidebarOpen }) => {
               {!isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
             </IconButton>
           )}
-          <img src={logo} loading="lazy" alt="The Last Center" style={{ cursor: 'pointer' }} onClick={() => { nav('/dashboard') }} />
+          <img
+            src={logo}
+            loading="lazy"
+            alt="The Last Center"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              nav('/dashboard');
+            }}
+          />
         </Box>
         <Box className={classes.profile}>
           <Avatar>{userName}</Avatar>
@@ -96,7 +102,12 @@ const Navbar = ({ handleSidebarOpen }) => {
             className={classes.profileDropdown}
           >
             <ListItem>
-              <ListItemButton LinkComponent={Link} to={'/editprofile'} disableRipple onClick={() => setProfileAnchorEl(null)}>
+              <ListItemButton
+                LinkComponent={Link}
+                to={'/editprofile'}
+                disableRipple
+                onClick={() => setProfileAnchorEl(null)}
+              >
                 <ListItemIcon>
                   <EditOutlinedIcon />
                 </ListItemIcon>

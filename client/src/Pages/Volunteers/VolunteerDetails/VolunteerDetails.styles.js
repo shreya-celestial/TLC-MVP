@@ -9,13 +9,10 @@ export const useStyles = makeStyles((theme) => ({
   HeaderMainContent: {
     padding: '20px',
     height: 'calc(100% - 45px )',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
     [theme.breakpoints.down('sm')]: {
       padding: '10px',
     },
