@@ -107,7 +107,7 @@ function MeetingsDetails() {
     onError: (error) => {
       let msg;
       if (error?.info?.message.includes('Uniqueness violation')) {
-        msg = 'Workshop already exists';
+        msg = 'Meeting already exists';
       }
       setAlertType({
         type: 'error',
@@ -219,11 +219,9 @@ function MeetingsDetails() {
       volunteers: volunteersRowData.map((volunteer) => volunteer.email),
     };
 
-    let isValid
-    if (viewType === 'create')
-      isValid = validateMeeting(body);
-    else if (viewType === 'edit')
-      isValid = validateMeeting(body, false);
+    let isValid;
+    if (viewType === 'create') isValid = validateMeeting(body);
+    else if (viewType === 'edit') isValid = validateMeeting(body, false);
     if (isValid.type) return setAlertType(isValid);
 
     mutate({ body, id, key: user?.key });
@@ -289,8 +287,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                    ? 'Edit Meeting'
-                    : 'Create Meeting'
+                  ? 'Edit Meeting'
+                  : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}
