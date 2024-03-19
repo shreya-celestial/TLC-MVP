@@ -4,6 +4,7 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     position: 'relative',
+    backgroundColor: '#F2F3F4',
   },
 
   HeaderMainContent: {
@@ -165,6 +166,7 @@ export const useStyles = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
+    backgroundColor: '#F2F3F4',
     alignItems: 'center',
     '& svg': {
       color: theme.palette.primaryGreen,

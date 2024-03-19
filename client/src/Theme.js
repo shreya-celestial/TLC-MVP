@@ -8,7 +8,6 @@ export const Theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          background: '#F2F3F4',
           '&::-webkit-scrollbar': {
             display: 'none',
           },

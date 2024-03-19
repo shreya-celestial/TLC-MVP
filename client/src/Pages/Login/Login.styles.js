@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: '100vh',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -21,8 +21,7 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: '50px 8px',
       width: '100%',
-      minHeight: '100vh',
-      justifyContent: 'flex-start',
+      boxShadow: 'none',
     },
   },
   logo: {
