@@ -4,6 +4,7 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     position: 'relative',
+    background: '#F2F3F4',
   },
 
   HeaderMainContent: {

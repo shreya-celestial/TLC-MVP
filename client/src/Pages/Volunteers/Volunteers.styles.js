@@ -7,6 +7,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '20px',
     height: '100%',
+    background: '#F2F3F4',
     [theme.breakpoints.down('sm')]: {
       padding: '8px',
     },
