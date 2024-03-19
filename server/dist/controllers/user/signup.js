@@ -18,13 +18,14 @@ const mutations_1 = require("../../gql/user/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
 const global_1 = require("../../utils/global");
+const bcrypt_1 = require("bcrypt");
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const mutation = mutations_1.InsertUserMutation;
-    const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
+    const encryptPass = yield (0, bcrypt_1.hash)(req.body.password, 12);
     let token = crypto_js_1.default.AES.encrypt((_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.email, process.env.CRYPTO_TICKET || '');
     token = token.toString();
-    const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isVerified: false, token });
+    const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass, isVerified: false, token });
     const data = yield (0, getData_1.default)(mutation, variables);
     if (!data.errors) {
         const mailOptions = {

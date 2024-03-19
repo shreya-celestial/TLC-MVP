@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const crypto_js_1 = __importDefault(require("crypto-js"));
 const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/user/queries");
 const mutations_1 = require("../../gql/user/mutations");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = require("bcrypt");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { email, password } = req.body;
@@ -24,26 +24,26 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!email || !password) {
         return res
             .status(400)
-            .json({ message: 'Please provide email and password!' });
+            .json({ message: 'Please provide email and password!', status: 'error' });
     }
     const query = queries_1.getUserByEmail;
     const variables = {
         email,
     };
     const data = yield (0, getData_1.default)(query, variables);
-    const user = data === null || data === void 0 ? void 0 : data.data.users[0];
     if (!(data === null || data === void 0 ? void 0 : data.data.users.length)) {
         return res
-            .status(401)
-            .json({ status: 'error', message: 'Invalid Credentials' });
+            .status(400)
+            .json({ status: 'error', message: 'User does not exists!' });
     }
-    const decryptPass = crypto_js_1.default.AES.decrypt(user === null || user === void 0 ? void 0 : user.password, process.env.CRYPTO_HASH_KEY || '');
-    const decryptedPass = decryptPass.toString(crypto_js_1.default.enc.Utf8);
-    if (decryptedPass !== password)
+    const user = data === null || data === void 0 ? void 0 : data.data.users[0];
+    const decryptedPass = yield (0, bcrypt_1.compare)(password, user === null || user === void 0 ? void 0 : user.password);
+    if (!decryptedPass) {
         return res.status(401).json({
             status: 'error',
             message: 'Invalid Credentials',
         });
+    }
     if (!user.isVerified) {
         return res.status(401).json({
             status: 'error',

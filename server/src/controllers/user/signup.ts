@@ -5,13 +5,11 @@ import { DeleteUserByEmail, InsertUserMutation } from '../../gql/user/mutations'
 import generateEmail from '../../utils/generateMail';
 import transporter from '../../utils/nodeMailer';
 import { capitaliseStr, formatDate } from '../../utils/global';
+import { hash } from 'bcrypt';
 
 const signup = async (req: Request, res: Response) => {
   const mutation = InsertUserMutation;
-  const encryptPass = CryptoJS.AES.encrypt(
-    req.body.password,
-    process.env.CRYPTO_HASH_KEY || ''
-  );
+  const encryptPass = await hash(req.body.password, 12)
   let token: any = CryptoJS.AES.encrypt(req?.body?.email, process.env.CRYPTO_TICKET || '')
   token = token.toString();
 
@@ -23,7 +21,7 @@ const signup = async (req: Request, res: Response) => {
     city: capitaliseStr(req.body.city),
     email: (req.body.email).toLowerCase(),
     dob: formatDate(req.body.dob),
-    password: encryptPass.toString(),
+    password: encryptPass,
     isVerified: false,
     token,
   };
