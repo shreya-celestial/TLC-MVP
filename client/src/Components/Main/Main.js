@@ -45,6 +45,11 @@ function Main() {
         localStorage.setItem('keys', JSON.stringify(keys));
         return;
       }
+      if (userData?.message?.includes('expire')) {
+        localStorage.clear();
+        window.location.href = '/'
+        return
+      }
       setError(() => {
         localStorage.clear();
         return typeof userData?.message === 'string'

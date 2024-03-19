@@ -1,14 +1,14 @@
 import { Request, Response } from "express"
-import CryptoJS from "crypto-js";
+import { hash } from 'bcrypt';
 import getData from "../../utils/getData";
 import { VerifyAndUpdatePass } from "../../gql/user/mutations";
 
 const resetPass = async (req: Request, res: Response) => {
 
-  const password = CryptoJS.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '')
+  const encryptPass = await hash(req.body.password, 12)
   const variables = {
     token: req?.body?.token,
-    password: password.toString(),
+    password: encryptPass,
     tokenUpdated: null,
     isPassToBeReset: false
   }

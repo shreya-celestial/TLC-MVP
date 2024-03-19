@@ -4,6 +4,7 @@ import getData from '../../utils/getData';
 import { getUserByEmail } from '../../gql/user/queries';
 import { updateStatus } from '../../gql/user/mutations';
 import jwt from 'jsonwebtoken';
+import { compare } from 'bcrypt';
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -12,7 +13,7 @@ const login = async (req: Request, res: Response) => {
   if (!email || !password) {
     return res
       .status(400)
-      .json({ message: 'Please provide email and password!' });
+      .json({ message: 'Please provide email and password!', status: 'error' });
   }
 
   const query = getUserByEmail;
@@ -21,27 +22,21 @@ const login = async (req: Request, res: Response) => {
   };
 
   const data = await getData(query, variables);
-  const user = data?.data.users[0];
-
+  
   if (!data?.data.users.length) {
     return res
-      .status(401)
-      .json({ status: 'error', message: 'Invalid Credentials' });
+    .status(400)
+    .json({ status: 'error', message: 'User does not exists!' });
   }
-
-  const decryptPass = CryptoJS.AES.decrypt(
-    user?.password,
-    process.env.CRYPTO_HASH_KEY || ''
-  );
-
-  const decryptedPass = decryptPass.toString(CryptoJS.enc.Utf8);
-
-  if (decryptedPass !== password)
+  
+  const user = data?.data.users[0];
+  const decryptedPass = await compare(password, user?.password)
+  if (!decryptedPass){  
     return res.status(401).json({
       status: 'error',
       message: 'Invalid Credentials',
     });
-
+  }
   if (!user.isVerified) {
     return res.status(401).json({
       status: 'error',

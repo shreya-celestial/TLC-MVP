@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
 import { capitaliseStr, formatDate } from "../../utils/global";
-import CryptoJS from 'crypto-js';
 import getData from "../../utils/getData";
 import { verifyVolunteerInvite } from "../../gql/volunteers/queries";
 import { signupInvitation } from "../../gql/volunteers/mutations";
+import { hash } from 'bcrypt';
 
 const inviteSignup = async (req: Request, res: Response) => {
   
@@ -32,10 +32,8 @@ const inviteSignup = async (req: Request, res: Response) => {
       })
     }
   
-    const encryptPass = CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.CRYPTO_HASH_KEY || ''
-    );
+    const encryptPass = await hash(req.body.password, 12)
+    
     const variables = {
       ...req.body,
       isAdmin: verifyEmail?.data?.Invitations[0]?.isAdmin,
@@ -45,7 +43,7 @@ const inviteSignup = async (req: Request, res: Response) => {
       city: capitaliseStr(req.body.city),
       email: (req.body.email.replace('%40', '@')).toLowerCase(),
       dob: formatDate(req.body.dob),
-      password: encryptPass.toString(),
+      password: encryptPass,
       isAdminVerified: true,
       isVerified: true,
       token: null,

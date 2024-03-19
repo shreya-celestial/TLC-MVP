@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const global_1 = require("../../utils/global");
-const crypto_js_1 = __importDefault(require("crypto-js"));
 const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/volunteers/queries");
 const mutations_1 = require("../../gql/volunteers/mutations");
+const bcrypt_1 = require("bcrypt");
 const inviteSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
     if (req.body.token && req.body.token !== 'null' && req.body.token !== 'NULL') {
@@ -39,8 +39,8 @@ const inviteSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 message: "Invitation doesn't exist for the given email."
             });
         }
-        const encryptPass = crypto_js_1.default.AES.encrypt(req.body.password, process.env.CRYPTO_HASH_KEY || '');
-        const variables = Object.assign(Object.assign({}, req.body), { isAdmin: (_g = (_f = verifyEmail === null || verifyEmail === void 0 ? void 0 : verifyEmail.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.isAdmin, name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email.replace('%40', '@')).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass.toString(), isAdminVerified: true, isVerified: true, token: null, isAccepted: true });
+        const encryptPass = yield (0, bcrypt_1.hash)(req.body.password, 12);
+        const variables = Object.assign(Object.assign({}, req.body), { isAdmin: (_g = (_f = verifyEmail === null || verifyEmail === void 0 ? void 0 : verifyEmail.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.isAdmin, name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email.replace('%40', '@')).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass, isAdminVerified: true, isVerified: true, token: null, isAccepted: true });
         const data = yield (0, getData_1.default)(mutations_1.signupInvitation, variables);
         if (data === null || data === void 0 ? void 0 : data.errors) {
             return res.status(400).json({
