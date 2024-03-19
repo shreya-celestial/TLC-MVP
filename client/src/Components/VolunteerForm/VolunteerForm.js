@@ -54,7 +54,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
         setCity(null);
         setState('');
       }
-    }, 500);
+    }, 300);
 
     return () => {
       clearTimeout(timer);

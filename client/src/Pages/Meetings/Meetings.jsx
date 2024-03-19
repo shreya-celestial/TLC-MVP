@@ -95,7 +95,7 @@ const Meetings = () => {
     let timer;
     timer = setTimeout(() => {
       setDebouncedValue(searchValue);
-    }, 1000);
+    }, 300);
     return () => {
       clearTimeout(timer);
     };

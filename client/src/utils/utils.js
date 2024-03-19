@@ -78,10 +78,23 @@ export const validateEnrollment = function (body) {
     };
   }
 
+  if (body.name.length > 60) {
+    return {
+      type: 'error',
+      message: 'Name must be less than 60 characters',
+    };
+  }
+
   if (!body.dob)
     return {
       type: 'error',
       message: 'Please provide your date of birth',
+    };
+
+  if (body.dob === 'Invalid Date')
+    return {
+      type: 'error',
+      message: 'Please provide a valid date of birth',
     };
 
   if (new Date(body.dob) > new Date())
@@ -108,6 +121,13 @@ export const validateEnrollment = function (body) {
     return {
       type: 'error',
       message: 'Please provide your address',
+    };
+  }
+
+  if (body.name.length > 60) {
+    return {
+      type: 'error',
+      message: 'Address must be less than 60 characters',
     };
   }
 
@@ -139,7 +159,7 @@ export const validateMeeting = function (body, isCreate = true) {
   if (!body.date || body.date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide a date',
+      message: 'Please provide a valid date',
     };
 
   if (new Date(body.date) < new Date() && isCreate)
@@ -154,12 +174,24 @@ export const validateMeeting = function (body, isCreate = true) {
       message: 'Please provide a city',
     };
 
+  if (body.venue_city.length > 60)
+    return {
+      type: 'error',
+      message: 'Venue city must be less than 60 characters',
+    };
+
   if (!body.venue) {
     return {
       type: 'error',
       message: 'Please provide a venue',
     };
   }
+
+  if (body.venue.length > 60)
+    return {
+      type: 'error',
+      message: 'Venue must be less than 60 characters',
+    };
 
   return true;
 };
@@ -171,10 +203,22 @@ export const validateWorkshop = function (body, isCreate = true) {
       message: 'Workshop type must be at least 6 characters long',
     };
 
+  if (body.types.length > 60)
+    return {
+      type: 'error',
+      message: 'Workshop type must be less than 60 characters',
+    };
+
   if (!body.venue)
     return {
       type: 'error',
       message: 'Please provide a venue',
+    };
+
+  if (body.venue.length > 60)
+    return {
+      type: 'error',
+      message: 'Venue must be less than 60 characters',
     };
 
   if (!body.venue_city)
@@ -183,10 +227,16 @@ export const validateWorkshop = function (body, isCreate = true) {
       message: 'Please provide a venue city',
     };
 
+  if (body.venue_city.length > 60)
+    return {
+      type: 'error',
+      message: 'Venue city must be less than 60 characters',
+    };
+
   if (!body.start_date || body.start_date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide a start date',
+      message: 'Please provide a valid start date',
     };
 
   if (new Date(body.start_date) < new Date() && isCreate)
@@ -198,7 +248,7 @@ export const validateWorkshop = function (body, isCreate = true) {
   if (!body.end_date || body.end_date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide an end date',
+      message: 'Please provide a valid end date',
     };
 
   if (new Date(body.end_date) < new Date(body.start_date))
@@ -210,7 +260,7 @@ export const validateWorkshop = function (body, isCreate = true) {
   if (!body.concluding_date || body.concluding_date === 'Invalid Date')
     return {
       type: 'error',
-      message: 'Please provide a concluding date',
+      message: 'Please provide a valid concluding date',
     };
 
   if (new Date(body.concluding_date) < new Date(body.end_date))
@@ -239,10 +289,24 @@ export const validateInvite = function (body) {
 };
 
 export const validateSignup = function (data) {
-  if (!data.dob.value || data.dob.value === 'Invalid Date') {
+  if (data.name.value.length > 60) {
+    return {
+      type: 'error',
+      message: 'Name must be less than 60 characters',
+    };
+  }
+
+  if (!data.dob.value) {
     return {
       type: 'error',
       message: 'Please provide your date of birth',
+    };
+  }
+
+  if (data.dob.value === 'Invalid Date') {
+    return {
+      type: 'error',
+      message: 'Please provide valid date of birth',
     };
   }
 
@@ -279,6 +343,13 @@ export const validateSignup = function (data) {
     return {
       type: 'error',
       message: 'Passwords must match',
+    };
+  }
+
+  if (data.address.value.length > 100) {
+    return {
+      type: 'error',
+      message: 'Address must be less than 100 characters',
     };
   }
 

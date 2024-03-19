@@ -94,7 +94,7 @@ const Enrollments = () => {
     let timer;
     timer = setTimeout(() => {
       setDebouncedValue(searchValue);
-    }, 1000);
+    }, 300);
     return () => {
       clearTimeout(timer);
     };
@@ -111,7 +111,7 @@ const Enrollments = () => {
 
   const handleReset = () => {
     setGenderDropdown('all');
-    setEnrolledDropdown('others');
+    setEnrolledDropdown('all');
   };
 
   const showDetails = function (params) {
