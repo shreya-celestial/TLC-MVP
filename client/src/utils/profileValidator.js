@@ -8,6 +8,13 @@ const profileValidator = (body) => {
     };
   }
 
+  if (body.name.length > 60) {
+    return {
+      type: 'error',
+      message: 'Name must be less than 60 characters',
+    };
+  }
+
   if (!body?.yearOfJoining) {
     return {
       type: 'error',
@@ -47,6 +54,14 @@ const profileValidator = (body) => {
       message: 'Please provide your address',
     };
   }
+
+  if (body.location.length > 100) {
+    return {
+      type: 'error',
+      message: 'Address must be less than 100 characters',
+    };
+  }
+
   if (!body.pincode) {
     return {
       type: 'error',

@@ -61,7 +61,7 @@ function AutocompletePopup({
     let timer;
     timer = setTimeout(() => {
       setDebouncedFilters(filters);
-    }, 1000);
+    }, 300);
     return () => {
       clearTimeout(timer);
     };
