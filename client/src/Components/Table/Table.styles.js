@@ -40,8 +40,6 @@ export const useStyles = makeStyles((theme) => ({
   AgGridMain: {
     '& .ag-root-wrapper': {
       borderRadius: '0px',
-      border: '0px',
-      minHeight: '390px',
     },
     '& .ag-header': {
       backgroundColor: '#FFFFFF',
@@ -53,9 +51,9 @@ export const useStyles = makeStyles((theme) => ({
         fontWeight: '500',
         cursor: 'pointer',
       },
-      "& .ag-pinned-right-header":{
-        borderLeft:"1px solid #C6C6C6"
-      }
+      '& .ag-pinned-right-header': {
+        borderLeft: '1px solid #C6C6C6',
+      },
     },
     '& .ag-header-cell-resize': {
       right: '10px',
@@ -96,9 +94,9 @@ export const useStyles = makeStyles((theme) => ({
         color: 'rgba(108,108,108, .5)',
       },
     },
-    "& .ag-pinned-right-cols-container":{
-      borderLeft:"1px solid #C6C6C6"
-    }
+    '& .ag-pinned-right-cols-container': {
+      borderLeft: '1px solid #C6C6C6',
+    },
   },
   count: {
     color: '#4e73be',

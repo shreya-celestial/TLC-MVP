@@ -6,11 +6,13 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
+    height: '100%',
     [theme.breakpoints.down('sm')]: {
       padding: '8px',
     },
     '& .ag-theme-quartz': {
       '--ag-active-color': theme.palette.primaryGreen,
+      height: '100%',
     },
   },
 
@@ -24,6 +26,7 @@ export const useStyles = makeStyles((theme) => ({
     '& h1': {
       fontSize: '18px',
       fontWeight: '600',
+      height: '30px',
     },
   },
   ActionBtn: {
@@ -67,9 +70,6 @@ export const useStyles = makeStyles((theme) => ({
     height: 'calc(100% - 80px)',
     overflow: 'auto',
     background: '#FFFFFF',
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
   },
   tableHeader: {
     borderBottom: `1px solid ${theme.palette.primaryGreen}`,
@@ -80,7 +80,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     gap: '10px',
-   
+
     '& .MuiIconButton-root': {
       padding: '0px',
     },
@@ -192,7 +192,6 @@ export const useStyles = makeStyles((theme) => ({
       padding: '2px',
       height: '28px',
       border: '1px solid #6C6C6C',
-
     },
   },
 }));

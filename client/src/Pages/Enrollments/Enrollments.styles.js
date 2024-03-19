@@ -6,11 +6,13 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
+    height: '100%',
     [theme.breakpoints.down('sm')]: {
       padding: '8px',
     },
     '& .ag-theme-quartz': {
       '--ag-active-color': theme.palette.primaryGreen,
+      height: '100%',
     },
   },
 
@@ -24,6 +26,7 @@ export const useStyles = makeStyles((theme) => ({
     '& h1': {
       fontSize: '18px',
       fontWeight: '600',
+      height: '30px',
     },
   },
   ActionBtn: {

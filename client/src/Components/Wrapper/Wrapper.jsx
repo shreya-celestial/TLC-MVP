@@ -5,17 +5,24 @@ import { useStyles } from './Wrapper.styles';
 import { useContext, useState } from 'react';
 import UserContext from '../../store/userContext';
 const Wrapper = ({ children }) => {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
   const [open, setOpen] = useState(false);
+  const [isSidebarOpen, setIsSideBarOpen] = useState(false);
   const classes = useStyles();
   const handleSidebarOpen = () => {
     setOpen(!open);
+    setIsSideBarOpen(!isSidebarOpen);
   };
 
   return (
     <Box className={classes.root}>
-      {user && <Navbar handleSidebarOpen={handleSidebarOpen} />}
-      {user && <Sidebar open={open} />}
+      {user && (
+        <Navbar
+          handleSidebarOpen={handleSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+      )}
+      {user && <Sidebar open={open} handleSidebarOpen={handleSidebarOpen} />}
       {user && <Box className={classes.main}>{children}</Box>}
       {!user && <Box>{children}</Box>}
     </Box>

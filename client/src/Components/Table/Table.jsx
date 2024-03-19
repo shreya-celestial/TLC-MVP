@@ -19,7 +19,7 @@ const Table = ({
   if (data) rowData = data;
 
   const classes = useStyles();
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const onSelectionChanged = () => {
     const selectedNodes = gridApi.getSelectedNodes();
@@ -32,8 +32,6 @@ const Table = ({
     onSelectionChanged: onSelectionChanged,
     rowHeight: 30,
     headerHeight: 30,
-    suppressHorizontalScroll: true,
-    domLayout: 'autoHeight',
     overlayNoRowsTemplate: 'No Records Found',
   };
   const defaultColDef = {
@@ -55,9 +53,11 @@ const Table = ({
         ) : (
           <Button
             className={classes.pending}
-            onClick={user?.isAdmin ? () => handleClickInColumn(params) : () => { }}
+            onClick={
+              user?.isAdmin ? () => handleClickInColumn(params) : () => {}
+            }
             sx={{
-              cursor: user?.isAdmin ? 'pointer' : 'default'
+              cursor: user?.isAdmin ? 'pointer' : 'default',
             }}
             disableRipple
           >
