@@ -274,6 +274,7 @@ const Meetings = () => {
                     <DatePicker
                       name="startDate"
                       value={dayjs(startDate)}
+                      maxDate={endDate && dayjs(endDate)}
                       onChange={(date) => setStartDate(new Date(date))}
                     />
                   </LocalizationProvider>
@@ -288,6 +289,7 @@ const Meetings = () => {
                     <DatePicker
                       name="endtDate"
                       value={dayjs(endDate)}
+                      minDate={startDate && dayjs(startDate)}
                       onChange={(date) => setEndDate(new Date(date))}
                     />
                   </LocalizationProvider>
