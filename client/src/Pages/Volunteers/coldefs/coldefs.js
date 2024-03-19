@@ -13,13 +13,6 @@ const LocationComp = (params) => {
   );
 };
 
-const CheckBoxComp = (params) => {
-  // console.log(params);
-  if (params.data.email === 'gauravyadav.mern@gmail.com') {
-    // params.colDef.checkboxSelection = () => false;
-  }
-};
-
 const colDefs = [
   {
     headerCheckboxSelection: true,
@@ -28,8 +21,6 @@ const colDefs = [
     minWidth: 50,
     resizable: false,
     showDisabledCheckboxes: true,
-
-    cellRenderer: CheckBoxComp,
   },
   {
     field: 'name',

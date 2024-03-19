@@ -219,7 +219,11 @@ function MeetingsDetails() {
       volunteers: volunteersRowData.map((volunteer) => volunteer.email),
     };
 
-    const isValid = validateMeeting(body);
+    let isValid
+    if (viewType === 'create')
+      isValid = validateMeeting(body);
+    else if (viewType === 'edit')
+      isValid = validateMeeting(body, false);
     if (isValid.type) return setAlertType(isValid);
 
     mutate({ body, id, key: user?.key });
@@ -285,8 +289,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                  ? 'Edit Meeting'
-                  : 'Create Meeting'
+                    ? 'Edit Meeting'
+                    : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}
