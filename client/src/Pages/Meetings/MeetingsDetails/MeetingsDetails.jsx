@@ -83,10 +83,10 @@ function MeetingsDetails() {
     isPending: isPendingWorkshops,
     isError: isErrorWorkshops,
   } = useReactQuery([1, 10, { ...debouncedFilters }], workshops, {
-    enabled: debouncedFilters?.search !== undefined,
+    // enabled: debouncedFilters?.search !== undefined,
   });
 
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
   const { mutate, isPending: isPendingMutation } = useMutation({
     mutationFn: viewType === 'create' ? createMeeting : updateMeeting,
     onSuccess: (data) => {
@@ -285,8 +285,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                    ? 'Edit Meeting'
-                    : 'Create Meeting'
+                  ? 'Edit Meeting'
+                  : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}

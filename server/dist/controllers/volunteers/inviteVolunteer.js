@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/volunteers/queries");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const crypto_js_1 = __importDefault(require("crypto-js"));
 const mutations_1 = require("../../gql/volunteers/mutations");
 const global_1 = require("../../utils/global");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
@@ -36,7 +36,8 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     if (!((_e = (_d = isEmailAvailable === null || isEmailAvailable === void 0 ? void 0 : isEmailAvailable.data) === null || _d === void 0 ? void 0 : _d.Invitations) === null || _e === void 0 ? void 0 : _e.length)) {
-        const token = jsonwebtoken_1.default.sign({ tempKey: email }, process.env.JWT_SECRET_KEY || '');
+        let token = crypto_js_1.default.AES.encrypt(email, process.env.CRYPTO_TICKET || '');
+        token = token.toString();
         const variables = {
             name: (0, global_1.capitaliseStr)(name),
             email: email.toLowerCase(),
@@ -57,7 +58,7 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
                 to: email,
                 subject: 'TLC Invitation',
                 text: '',
-                html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
+                html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
             };
             nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
                 if (!err) {
@@ -93,7 +94,8 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
             message: 'Invitation has already been sent today!'
         });
     }
-    const token = jsonwebtoken_1.default.sign({ tempKey: email }, process.env.JWT_SECRET_KEY || '');
+    let token = crypto_js_1.default.AES.encrypt(email, process.env.CRYPTO_TICKET || '');
+    token = token.toString();
     const variables = {
         email: email.toLowerCase(),
         token
@@ -112,7 +114,7 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
             to: email,
             subject: 'TLC Invitation',
             text: '',
-            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/volunteers/verifyInvite/${token}`, name, 'Accept Invitation', body)
+            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {

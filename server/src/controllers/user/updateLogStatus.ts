@@ -86,9 +86,60 @@ const updateLogStatus = async (req: Request, res: Response) => {
     })
   }
 
+  let updateTokenObj: any 
+  try{
+    updateTokenObj = jwt.verify(updatedToken, process.env.JWT_SECRET_KEY || '')
+  }
+  catch(err)
+  {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Token expired! Please login again.'
+    })
+  }
+  if(data?.data?.update_users?.returning[0]?.isAdmin === updateTokenObj?.isAdmin)
+  {
+    let userToSend = {
+      ...data?.data?.update_users?.returning[0],
+      key: updatedToken
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'User still logged in!',
+      user: userToSend
+    })
+  }
+
+  const tokenObj = {
+    email: updateTokenObj?.email,
+    isAdmin: data?.data?.update_users?.returning[0]?.isAdmin
+  }
+  const updatedRoleToken = jwt.sign(tokenObj, process.env.JWT_SECRET_KEY || '', {
+    expiresIn: '24h'
+  })
+  const roleData = await getData(verifyAndUpdateKey, {
+    email: updateTokenObj?.email, key: updatedToken, isLoggedIn: updatedRoleToken
+  })
+  if(roleData?.errors)
+  {
+    return res.status(400).json({
+      status: 'error',
+      message: roleData?.errors[0]?.message
+    })
+  }
+
+  if(!roleData?.data?.update_users?.affected_rows)
+  {
+    return res.status(404).json({
+      status: 'error',
+      message: 'User not found at this moment. Please try logging in again!'
+    })
+  }
+
   let userToSend = {
-    ...data?.data?.update_users?.returning[0],
-    key: updatedToken
+    ...roleData?.data?.update_users?.returning[0],
+    key: updatedRoleToken
   }
 
   return res.status(200).json({
@@ -96,6 +147,7 @@ const updateLogStatus = async (req: Request, res: Response) => {
     message: 'User still logged in!',
     user: userToSend
   })
+
 }
 
 export default updateLogStatus

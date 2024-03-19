@@ -44,7 +44,7 @@ function Signup() {
     onError: (error) => {
       let msg;
       if (error?.info?.message.includes('Uniqueness violation')) {
-        msg = 'Workshop already exists';
+        msg = 'User already exists';
       }
       setAlertType({
         type: 'error',
@@ -57,7 +57,8 @@ function Signup() {
     e.preventDefault();
     setAlertKey((prev) => !prev);
 
-    const token = queryParams.get('token');
+    let token = queryParams.get('ticket');
+    token = token?.replaceAll(' ', '+')
     const email = queryParams.get('for');
 
     const isValid = validateSignup(e.target.elements);

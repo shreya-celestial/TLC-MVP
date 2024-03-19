@@ -16,7 +16,9 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/volunteers/queries");
 const verifyInvite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
-    const { token } = req.params;
+    const { invite } = req.query;
+    let token = invite;
+    token = token === null || token === void 0 ? void 0 : token.replaceAll(' ', '+');
     if (token && token !== 'null' && token !== 'NULL') {
         const data = yield (0, getData_1.default)(queries_1.verifyVolunteerInvite, { token });
         if (data === null || data === void 0 ? void 0 : data.errors) {
@@ -32,7 +34,7 @@ const verifyInvite = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (diffDays >= 5) {
             return res.status(404).send('Invitation expired!');
         }
-        return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/signup?token=${token}&for=${(_g = (_f = data === null || data === void 0 ? void 0 : data.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.email}`);
+        return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/signup?ticket=${token}&for=${(_g = (_f = data === null || data === void 0 ? void 0 : data.data) === null || _f === void 0 ? void 0 : _f.Invitations[0]) === null || _g === void 0 ? void 0 : _g.email}`);
     }
     return res.status(404).send('Error! Page not found.');
 });

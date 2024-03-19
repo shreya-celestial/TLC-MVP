@@ -135,7 +135,7 @@ function EnrollmentsDetails() {
     onError: (error) => {
       let msg;
       if (error?.info?.message.includes('Uniqueness violation')) {
-        msg = 'Workshop already exists';
+        msg = 'Enrollment already exists';
       }
       setAlertType({
         type: 'error',
@@ -191,7 +191,7 @@ function EnrollmentsDetails() {
   const mutateEnrollmentHandler = function (type) {
     setAlertKey((prev) => !prev);
 
-    const body = {
+    let body = {
       name,
       email,
       mobile_number: phone,
@@ -209,6 +209,13 @@ function EnrollmentsDetails() {
         };
       }),
     };
+
+    if (viewType === 'create') {
+      body = {
+        ...body,
+        enrolled_by: user?.email
+      }
+    }
 
     const isValid = validateEnrollment(body);
     if (isValid.type) return setAlertType(isValid);
@@ -264,8 +271,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                  ? 'Edit Enrollment'
-                  : 'Create Enrollment'
+                    ? 'Edit Enrollment'
+                    : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}

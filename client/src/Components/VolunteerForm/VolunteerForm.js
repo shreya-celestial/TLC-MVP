@@ -89,14 +89,20 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
           </FormControl>
           <FormControl className={classes.formControl} required>
             <FormLabel htmlFor="emailField">Email Address</FormLabel>
-            {isEmail && <Typography variant={'body2'} className={classes.borderClass}>{isEmail}</Typography>}
-            {!isEmail && <TextField
-              type="email"
-              id="emailField"
-              placeholder="Enter Your Email Address"
-              required
-              name="email"
-            />}
+            {isEmail && (
+              <Typography variant={'body2'} className={classes.borderClass}>
+                {isEmail}
+              </Typography>
+            )}
+            {!isEmail && (
+              <TextField
+                type="email"
+                id="emailField"
+                placeholder="Enter Your Email Address"
+                required
+                name="email"
+              />
+            )}
           </FormControl>
         </Box>
 
