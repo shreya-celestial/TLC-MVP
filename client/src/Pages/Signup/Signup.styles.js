@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '40px 0px',
+    width: '100%',
     [theme.breakpoints.down('sm')]: {
       padding: '0px',
     },
@@ -25,7 +26,7 @@ export const useStyles = makeStyles((theme) => ({
       width: '90%',
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '50px 8px',
+      padding: '50px 0px',
       width: '100%',
     },
   },

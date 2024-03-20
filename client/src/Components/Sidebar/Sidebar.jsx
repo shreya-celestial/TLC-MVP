@@ -19,6 +19,7 @@ import { ReactComponent as WorkshopIcon } from '../.././assets/Icons/workshopIco
 const Sidebar = ({ open, handleSidebarOpen }) => {
   const classes = useStyles();
   const isLargerScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const belowMedium = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const sideBarRoute = [
     { id: 0, path: 'dashboard', name: 'Dashboard', icon: <DashboardIcon /> },
     { id: 1, path: 'volunteers', name: 'Volunteers', icon: <VolunteerIcon /> },
@@ -34,9 +35,10 @@ const Sidebar = ({ open, handleSidebarOpen }) => {
 
   return (
     <Drawer
-      variant="persistent"
+      variant={belowMedium ? 'temporary' : 'persistent'}
       open={isLargerScreen ? true : open}
       className={classes.root}
+      onClose={() => handleSidebarOpen()}
     >
       <Toolbar />
       {sideBarRoute.map((links) => (

@@ -86,6 +86,7 @@ export const useStyles = makeStyles((theme) => ({
       color: '#2F2F2F',
       width: '20px',
       height: '20px',
+      top: '25%',
     },
   },
   selectDropdownMenu: {

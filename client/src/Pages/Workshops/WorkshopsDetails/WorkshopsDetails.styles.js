@@ -1,12 +1,14 @@
 import { makeStyles } from '@mui/styles';
-
 export const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     position: 'relative',
     backgroundColor: '#F2F3F4',
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: '5px',
+      minHeight: '100vh',
+    },
   },
-
   HeaderMainContent: {
     padding: '20px',
     height: 'calc(100% - 45px )',
@@ -16,6 +18,7 @@ export const useStyles = makeStyles((theme) => ({
     gap: '20px',
     [theme.breakpoints.down('sm')]: {
       padding: '10px',
+      height: 'auto',
     },
   },
   actionBar: {
@@ -30,8 +33,14 @@ export const useStyles = makeStyles((theme) => ({
     padding: '0 25px',
     gap: '15px',
     zIndex: '1250',
-
     boxShadow: '-4px 0px 5px 0px rgba(0, 0, 0, 0.25)',
+    [theme.breakpoints.down('sm')]: {
+      position: 'static',
+      boxShadow: 'none',
+      background: 'none',
+      justifyContent: 'flex-start',
+      padding: '10px',
+    },
     '& button': {
       height: '30px',
       minWidth: '75px',
@@ -61,7 +70,9 @@ export const useStyles = makeStyles((theme) => ({
     gap: '30px',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
+      gap: '20px',
     },
+    marginBottom: '10px',
   },
 
   formElementBox: {
@@ -69,6 +80,7 @@ export const useStyles = makeStyles((theme) => ({
     gap: '20px',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
+      gap: '15px',
     },
   },
   formControl: {
@@ -127,7 +139,7 @@ export const useStyles = makeStyles((theme) => ({
   HeaderAndAccordionBox: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
+    gap: '10px',
   },
   HeaderAndBtn: {
     height: '30px',
@@ -156,14 +168,8 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: '10px',
   },
-  flex: {
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   loader: {
-    height: '100%',
+    height: 'calc(100vh - 64px)',
     display: 'flex',
     justifyContent: 'center',
     backgroundColor: '#F2F3F4',
