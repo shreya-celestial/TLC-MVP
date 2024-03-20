@@ -196,25 +196,25 @@ function EnrollmentsDetails() {
         setAlertType({
           type: 'error',
           message: 'Please provide valid date of birth of your children',
-        })
-        return false
+        });
+        return false;
       }
-      return true
-    })
+      return true;
+    });
 
     if (validChild.length !== childrenRowData?.length) {
-      return
+      return;
     }
 
     let body = {
-      name,
+      name: name.trim(),
       email,
-      mobile_number: phone,
+      mobile_number: phone.trim(),
       dob: moment(dob).format('MM/DD/YYYY'),
       gender,
-      address,
-      city,
-      state,
+      address: address.trim(),
+      city: city.trim(),
+      state: state.trim(),
       pincode,
       children: childrenRowData.map((cr) => {
         return {
@@ -285,8 +285,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                    ? 'Edit Enrollment'
-                    : 'Create Enrollment'
+                  ? 'Edit Enrollment'
+                  : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}

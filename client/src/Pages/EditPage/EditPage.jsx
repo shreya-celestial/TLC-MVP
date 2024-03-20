@@ -88,7 +88,7 @@ function EditPage() {
   const handleSubmit = () => {
     const mail = user?.email;
     const body = {
-      name: data?.name,
+      name: data?.name.trim(),
       dob: moment(data?.dob).format('MM/DD/YYYY'),
       city: data?.city,
       state: data?.state,
@@ -151,10 +151,7 @@ function EditPage() {
                   {data.email}
                 </Typography>
               </FormControl>
-              <FormControl
-                className={classes.formControl}
-                required
-              >
+              <FormControl className={classes.formControl} required>
                 <FormLabel htmlFor="phoneNumberField">Phone Number</FormLabel>
                 <TextField
                   id="phoneNumberField"
@@ -173,10 +170,7 @@ function EditPage() {
             </Box>
             {/* date picker-DOB and Gender */}
             <Box className={classes.formElementBox}>
-              <FormControl
-                className={classes.formControl}
-                required
-              >
+              <FormControl className={classes.formControl} required>
                 <FormLabel>Date of Birth</FormLabel>
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
@@ -263,10 +257,7 @@ function EditPage() {
             <Typography className="heading">Address Information</Typography>
 
             {/* location */}
-            <FormControl
-              className={classes.formControl}
-              required
-            >
+            <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="locationField">Address</FormLabel>
               <TextField
                 id="locationField"
@@ -280,10 +271,7 @@ function EditPage() {
               />
             </FormControl>
             {/* postal code */}
-            <FormControl
-              className={classes.formControl}
-              required
-            >
+            <FormControl className={classes.formControl} required>
               <FormLabel htmlFor="postalCodeField">Postal Code</FormLabel>
               <TextField
                 id="postalCodeField"
@@ -299,10 +287,7 @@ function EditPage() {
             </FormControl>
             {/* city and state */}
             <Box className={classes.formElementBox}>
-              <FormControl
-                className={classes.formControl}
-                required
-              >
+              <FormControl className={classes.formControl} required>
                 <FormLabel htmlFor="cityField">City</FormLabel>
                 <TextField
                   id="cityField"
@@ -315,10 +300,7 @@ function EditPage() {
                   }
                 />
               </FormControl>
-              <FormControl
-                className={classes.formControl}
-                required
-              >
+              <FormControl className={classes.formControl} required>
                 <FormLabel htmlFor="stateField">State</FormLabel>
                 <TextField
                   id="stateField"

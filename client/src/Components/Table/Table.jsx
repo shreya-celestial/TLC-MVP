@@ -54,7 +54,7 @@ const Table = ({
           <Button
             className={classes.pending}
             onClick={
-              user?.isAdmin ? () => handleClickInColumn(params) : () => { }
+              user?.isAdmin ? () => handleClickInColumn(params) : () => {}
             }
             sx={{
               cursor: user?.isAdmin ? 'pointer' : 'default',
@@ -104,6 +104,14 @@ const Table = ({
     };
   }, [user]);
 
+  const getRowStyle = (params) => {
+    console.log(params.data.email === user.email);
+    if (params.data.email === user.email) {
+      return { background: '#f5f5f5', fontWeight: 'bold' }; // Apply specific styles to the row
+    }
+    return null; // Return null to apply default styles
+  };
+
   return (
     <Box className={`ag-theme-quartz ${classes.gridContainer}`}>
       {isPending && (
@@ -127,6 +135,7 @@ const Table = ({
           gridOptions={gridOptions}
           onGridReady={(params) => (gridApi = params.api)}
           isRowSelectable={isRowSelectable}
+          getRowStyle={getRowStyle}
         ></AgGridReact>
       )}
     </Box>

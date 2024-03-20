@@ -61,7 +61,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
     e.preventDefault();
     const body = {
       isAdmin: roleDropdown === 'admin' ? 'true' : 'false',
-      name: fullName,
+      name: fullName.trim(),
       email,
     };
 
