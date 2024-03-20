@@ -191,6 +191,21 @@ function EnrollmentsDetails() {
   const mutateEnrollmentHandler = function (type) {
     setAlertKey((prev) => !prev);
 
+    const validChild = childrenRowData?.filter((cr) => {
+      if (moment(cr.dob).format('MM/DD/YYYY') === 'Invalid date') {
+        setAlertType({
+          type: 'error',
+          message: 'Please provide valid date of birth of your children',
+        })
+        return false
+      }
+      return true
+    })
+
+    if (validChild.length !== childrenRowData?.length) {
+      return
+    }
+
     let body = {
       name,
       email,

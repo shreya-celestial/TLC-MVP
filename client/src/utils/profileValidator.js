@@ -1,3 +1,4 @@
+import moment from 'moment';
 import validator from 'validator';
 
 const profileValidator = (body) => {
@@ -27,6 +28,14 @@ const profileValidator = (body) => {
       type: 'error',
       message: 'Please Provide your Date of Birth',
     };
+
+  if (moment(body.dob).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid date of birth',
+    };
+  }
+
 
   if (new Date(body.dob) > new Date())
     return {
