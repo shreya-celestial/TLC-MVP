@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
     height: '100%',
     backgroundColor: '#F2F3F4',
     [theme.breakpoints.down('sm')]: {
-      padding: '8px',
+      padding: '13px 8px',
     },
     '& .ag-theme-quartz': {
       '--ag-active-color': theme.palette.primaryGreen,
@@ -20,10 +20,6 @@ export const useStyles = makeStyles((theme) => ({
   HeadingAndActionBtn: {
     display: 'flex',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-      gap: '10px',
-    },
     '& h1': {
       fontSize: '18px',
       fontWeight: '600',
@@ -35,6 +31,7 @@ export const useStyles = makeStyles((theme) => ({
     gap: '15px',
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'flex-end',
+      gap: '6px',
     },
     '& button': {
       height: '30px',
@@ -44,6 +41,9 @@ export const useStyles = makeStyles((theme) => ({
       textTransform: 'capitalize',
       fontSize: '12px',
       color: '#FFFFFF',
+      [theme.breakpoints.down('sm')]: {
+        minWidth: '70px',
+      },
     },
     '& button.viewBtn': {
       background: `${theme.palette.primaryOrange}`,
@@ -63,9 +63,9 @@ export const useStyles = makeStyles((theme) => ({
     boxShadow: '0px 4px 10px 0px rgba(109, 109, 109, 0.25)',
     borderRadius: '5px',
     overflowX: 'hidden',
-    height: 'calc(100vh - 150px)',
+    height: '100%',
     [theme.breakpoints.down('sm')]: {
-      height: 'calc(100vh - 180px)',
+      height: '100vh',
     },
   },
   tableContainer: {

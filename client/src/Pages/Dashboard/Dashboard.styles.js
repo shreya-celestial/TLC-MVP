@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     gap: '20px',
     background: '#F2F3F4',
     [theme.breakpoints.down('sm')]: {
-      padding: '8px',
+      padding: '20px 8px 13px 8px',
     },
   },
   smallCardContainer: {
@@ -18,7 +18,8 @@ export const useStyles = makeStyles((theme) => ({
       flexWrap: 'wrap',
     },
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
+      flexWrap: 'wrap',
+      gap: '10px',
     },
   },
   smallCard: {
@@ -50,12 +51,17 @@ export const useStyles = makeStyles((theme) => ({
       height: '35px',
       borderColor: '#6C6C6C',
       borderWidth: '1px',
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
     },
     [theme.breakpoints.between('sm', 'md')]: {
       width: 'calc(50% - 10px)',
     },
     [theme.breakpoints.down('sm')]: {
       width: '100%',
+      width: 'calc(50% - 5px)',
+      gap: '15px',
     },
   },
   titleAndValue: {
@@ -73,6 +79,7 @@ export const useStyles = makeStyles((theme) => ({
       fontWeight: '500',
       color: '#6C6C6C',
       lineHeight: 'normal',
+      textAlign: 'center',
     },
   },
   // big cards

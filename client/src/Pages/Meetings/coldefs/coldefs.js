@@ -78,12 +78,12 @@ export const MeetingPageVolunteersColDef = [
 ];
 
 export const MeetingPageEnrollmentsColDef = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'gender', headerName: 'Gender' },
-  { field: 'children', headerName: 'Children' },
-  { field: 'mobile_number', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
-  { field: 'city', headerName: 'City' },
+  { field: 'name', headerName: 'Name', minWidth: 150 },
+  { field: 'gender', headerName: 'Gender', minWidth: 100 },
+  { field: 'children', headerName: 'Children', minWidth: 100 },
+  { field: 'mobile_number', headerName: 'Phone Number', minWidth: 150 },
+  { field: 'email', headerName: 'Email ID', minWidth: 250 },
+  { field: 'city', headerName: 'City', minWidth: 150 },
 ];
 
 export const VolunteersPopupMeetingColDef = [
