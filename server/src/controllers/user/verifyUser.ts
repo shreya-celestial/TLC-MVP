@@ -15,15 +15,15 @@ const verifyUser = async (req: Request, res: Response) => {
     
     if(data?.errors)
     {
-      return res.status(400).send('Error! Please try again later.')
+      return res.status(400).send('Error! Please try again later. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
     }
     if(data?.data?.update_users?.returning?.length === 0)
     {
-      return res.status(100).send('It seems that your link has been used. Please login and continue.')
+      return res.status(100).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
     }
     return res.redirect(303,'https://tlc-mvp-app-amber.vercel.app/')
   }
-  return res.status(404).send('Error! Page not found.')
+  return res.status(404).send('Error! Page not found. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
 }
 
 export default verifyUser
