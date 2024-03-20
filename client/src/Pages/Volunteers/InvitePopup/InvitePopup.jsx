@@ -36,7 +36,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
     setAlertType(undefined);
   };
 
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
   const { mutate, isPending } = useMutation({
     mutationFn: inviteVolunteer,
     onSuccess: (data) => {
@@ -67,7 +67,6 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
 
     const isValid = validateInvite(body);
     if (isValid.type) return setAlertType(isValid);
-
     mutate({ data: body, key: user?.key });
   };
 
