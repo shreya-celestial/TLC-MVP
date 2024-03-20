@@ -12,7 +12,7 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
-
+import moment from 'moment'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -207,7 +207,7 @@ function MeetingsDetails() {
 
   const mutateMeetingHandler = function (type) {
     setAlertKey((prev) => !prev);
-    const modifiedDate = new Date(date).toLocaleDateString();
+    const modifiedDate = moment(date).format('MM/DD/YYYY');
 
     const body = {
       date: modifiedDate,
@@ -287,8 +287,8 @@ function MeetingsDetails() {
                 viewType === 'view'
                   ? 'View Meeting'
                   : viewType === 'edit'
-                  ? 'Edit Meeting'
-                  : 'Create Meeting'
+                    ? 'Edit Meeting'
+                    : 'Create Meeting'
               }
               prevPage={'Meetings'}
               path={'meetings'}

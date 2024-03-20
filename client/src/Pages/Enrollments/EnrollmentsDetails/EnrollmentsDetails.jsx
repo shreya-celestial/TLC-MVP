@@ -20,7 +20,7 @@ import { useStyles } from './EnrollmentsDetails.styles';
 import AddChildPopup from '../AddChildPopup/AddChildPopup';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { useParams, useNavigate } from 'react-router-dom';
-
+import moment from 'moment';
 import { enrollPageWorkshopColDEf } from '../coldefs/coldefs';
 import { getLocationData } from '../../../apis/global';
 import { useReactQuery } from '../../../hooks/useReactQuery';
@@ -191,11 +191,26 @@ function EnrollmentsDetails() {
   const mutateEnrollmentHandler = function (type) {
     setAlertKey((prev) => !prev);
 
+    const validChild = childrenRowData?.filter((cr) => {
+      if (moment(cr.dob).format('MM/DD/YYYY') === 'Invalid date') {
+        setAlertType({
+          type: 'error',
+          message: 'Please provide valid date of birth of your children',
+        });
+        return false;
+      }
+      return true;
+    });
+
+    if (validChild.length !== childrenRowData?.length) {
+      return;
+    }
+
     let body = {
       name: name.trim(),
       email,
       mobile_number: phone.trim(),
-      dob: new Date(dob).toLocaleDateString(),
+      dob: moment(dob).format('MM/DD/YYYY'),
       gender,
       address: address.trim(),
       city: city.trim(),
@@ -205,7 +220,7 @@ function EnrollmentsDetails() {
         return {
           name: cr.name,
           gender: cr.gender,
-          dob: cr.dob,
+          dob: moment(cr.dob).format('MM/DD/YYYY'),
         };
       }),
     };

@@ -16,7 +16,7 @@ import PageHeader from '../../../Components/PageHeader/PageHeader';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { useStyles } from './WorkshopsDetails.styles';
 import LeadVolunteerPopup from '../LeadVolunteerPopup/LeadVolunteerPopup';
-
+import moment from 'moment';
 import AutocompletePopup from '../../../Components/AutocompletePopup/AutocompletePopup';
 import { useReactQuery } from '../../../hooks/useReactQuery';
 import { getWorkshop } from '../../../apis/workshops';
@@ -211,11 +211,9 @@ function WorkshopsDetails() {
   const mutateWorkshopHandler = function () {
     setAlertKey((prev) => !prev);
 
-    const modifiedStartDate = new Date(startDate).toLocaleDateString();
-    const modifiedEndDate = new Date(endDate).toLocaleDateString();
-    const modifiedConcludingDate = new Date(
-      concludingDate
-    ).toLocaleDateString();
+    const modifiedStartDate = moment(startDate).format('MM/DD/YYYY')
+    const modifiedEndDate = moment(endDate).format('MM/DD/YYYY')
+    const modifiedConcludingDate = moment(concludingDate).format('MM/DD/YYYY')
 
     const body = {
       types: workshopType.trim(),

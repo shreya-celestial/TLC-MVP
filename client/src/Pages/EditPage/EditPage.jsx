@@ -21,6 +21,7 @@ import { updateProfile } from '../../apis/user';
 import { useNavigate } from 'react-router-dom';
 import AlertReact from '../../Components/Alert/AlertReact';
 import profileValidator from '../../utils/profileValidator';
+import moment from 'moment';
 
 function EditPage() {
   const { user, setUser } = useContext(UserContext);
@@ -88,7 +89,7 @@ function EditPage() {
     const mail = user?.email;
     const body = {
       name: data?.name.trim(),
-      dob: data?.dob,
+      dob: moment(data?.dob).format('MM/DD/YYYY'),
       city: data?.city,
       state: data?.state,
       location: data?.address,
@@ -183,7 +184,7 @@ function EditPage() {
                     onChange={(date) =>
                       setData((prev) => ({
                         ...prev,
-                        dob: new Date(date).toLocaleDateString(),
+                        dob: new Date(date),
                       }))
                     }
                   />

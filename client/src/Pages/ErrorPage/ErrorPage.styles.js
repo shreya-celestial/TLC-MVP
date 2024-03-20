@@ -1,12 +1,16 @@
 import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     gap: '40px',
+    [theme.breakpoints.down('sm')]: {
+      background: '#fff',
+      marginTop: '50px',
+    },
   },
   errorHeadingText: {
     textAlign: 'center',

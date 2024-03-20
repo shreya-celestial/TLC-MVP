@@ -1,3 +1,4 @@
+import moment from 'moment';
 import validator from 'validator';
 
 export function getCookie(name) {
@@ -98,6 +99,12 @@ export const validateEnrollment = function (body) {
       message: 'Please provide your date of birth',
     };
 
+  if (moment(body?.dob).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid date of birth',
+    };
+  }
   if (body.dob === 'Invalid Date')
     return {
       type: 'error',
@@ -163,14 +170,18 @@ export const validateEnrollment = function (body) {
 };
 
 export const validateMeeting = function (body, isCreate = true) {
-  //
-
   if (!body.date || body.date === 'Invalid Date')
     return {
       type: 'error',
       message: 'Please provide a valid date',
     };
 
+  if (moment(body?.date).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid date',
+    };
+  }
   if (new Date(body.date) < new Date() && isCreate)
     return {
       type: 'error',
@@ -282,6 +293,13 @@ export const validateWorkshop = function (body, isCreate = true) {
       message: 'Please provide a valid start date',
     };
 
+  if (moment(body.start_date).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid start date',
+    };
+  }
+
   if (new Date(body.start_date) < new Date() && isCreate)
     return {
       type: 'error',
@@ -294,6 +312,13 @@ export const validateWorkshop = function (body, isCreate = true) {
       message: 'Please provide a valid end date',
     };
 
+  if (moment(body.end_date).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid end date',
+    };
+  }
+
   if (new Date(body.end_date) < new Date(body.start_date))
     return {
       type: 'error',
@@ -305,6 +330,13 @@ export const validateWorkshop = function (body, isCreate = true) {
       type: 'error',
       message: 'Please provide a valid concluding date',
     };
+
+  if (moment(body.concluding_date).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid concluding date',
+    };
+  }
 
   if (new Date(body.concluding_date) < new Date(body.end_date))
     return {
@@ -365,14 +397,24 @@ export const validateSignup = function (data) {
       message: 'Name must be less than 60 characters',
     };
   }
-
   if (!data.dob.value) {
     return {
       type: 'error',
       message: 'Please provide your date of birth',
     };
   }
-
+  if (data?.dob?.value?.substring(6, 10) === '0000') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid year of birth',
+    };
+  }
+  if (moment(data?.dob?.value).format('MM/DD/YYYY') === 'Invalid date') {
+    return {
+      type: 'error',
+      message: 'Please provide a valid date of birth',
+    };
+  }
   if (data.dob.value === 'Invalid Date') {
     return {
       type: 'error',

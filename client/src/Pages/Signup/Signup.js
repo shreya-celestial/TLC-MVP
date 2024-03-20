@@ -10,6 +10,7 @@ import { validateSignup } from '../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import logo from '../../assets/Icons/tlcLogo.png';
 import validator from 'validator';
+import moment from 'moment';
 
 function Signup() {
   const location = useLocation();
@@ -84,7 +85,7 @@ function Signup() {
       email: email || e.target.elements.email.value,
       password: e.target.elements.password.value,
       name: e.target.elements.name.value,
-      dob: new Date(e.target.elements.dob.value).toLocaleDateString(),
+      dob: moment(e.target.elements.dob.value).format('MM/DD/YYYY'),
       gender: e.target.elements.gender.value,
       phoneNumber: e.target.elements.phone.value,
       yearOfJoining: +e.target.elements.yearOfJoining.value,
