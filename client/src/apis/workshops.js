@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const BASEURL = 'https://tlc-two.vercel.app/workshops';
 
 export const workshops = async function ({ signal, queryKey, user }) {
@@ -20,10 +22,10 @@ export const workshops = async function ({ signal, queryKey, user }) {
     : '';
 
   let startDateParam = filters.startDate
-    ? `&start=${new Date(filters.startDate).toLocaleDateString()}`
+    ? `&start=${moment(filters.startDate).format('MM/DD/YYYY')}`
     : '';
   let endDateParam = filters.endDate
-    ? `&end=${new Date(filters.endDate).toLocaleDateString()}`
+    ? `&end=${moment(filters.endDate).format('MM/DD/YYYY')}`
     : '';
 
   const res = await fetch(

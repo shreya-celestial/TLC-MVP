@@ -139,7 +139,7 @@ function AddChildPopup({
                   name="dateofbirth"
                   value={dob ? dayjs(dob) : ''}
                   onChange={(date) =>
-                    setDob(new Date(date).toLocaleDateString())
+                    setDob(new Date(date))
                   }
                 />
               </LocalizationProvider>
