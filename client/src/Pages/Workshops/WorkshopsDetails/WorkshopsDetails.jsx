@@ -218,9 +218,9 @@ function WorkshopsDetails() {
     ).toLocaleDateString();
 
     const body = {
-      types: workshopType,
-      venue,
-      venue_city: venueCity,
+      types: workshopType.trim(),
+      venue: venue.trim(),
+      venue_city: venueCity.trim(),
       start_date: modifiedStartDate,
       end_date: modifiedEndDate,
       concluding_date: modifiedConcludingDate,
@@ -230,11 +230,9 @@ function WorkshopsDetails() {
       meetings: meetingsRowData.map((meeting) => meeting.id),
     };
 
-    let isValid
-    if (viewType === 'create')
-      isValid = validateWorkshop(body);
-    else if (viewType === 'edit')
-      isValid = validateWorkshop(body, false);
+    let isValid;
+    if (viewType === 'create') isValid = validateWorkshop(body);
+    else if (viewType === 'edit') isValid = validateWorkshop(body, false);
     if (isValid.type) return setAlertType(isValid);
 
     mutate({ body, id, key: user?.key });
@@ -312,8 +310,8 @@ function WorkshopsDetails() {
                 viewType === 'view'
                   ? 'View Workshop'
                   : viewType === 'edit'
-                    ? 'Edit Workshop'
-                    : 'Create Workshop'
+                  ? 'Edit Workshop'
+                  : 'Create Workshop'
               }
               prevPage={'workshops'}
               path={'workshops'}

@@ -71,6 +71,13 @@ export const fetchRowDataEnrollment = function (enrollment) {
 };
 
 export const validateEnrollment = function (body) {
+  if (!body.name.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'Name must not contain symbols',
+    };
+  }
+
   if (body.name.length < 3) {
     return {
       type: 'error',
@@ -156,6 +163,8 @@ export const validateEnrollment = function (body) {
 };
 
 export const validateMeeting = function (body, isCreate = true) {
+  //
+
   if (!body.date || body.date === 'Invalid Date')
     return {
       type: 'error',
@@ -174,6 +183,13 @@ export const validateMeeting = function (body, isCreate = true) {
       message: 'Please provide a city',
     };
 
+  if (!body.venue_city.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'Venue city must not contain symbols',
+    };
+  }
+
   if (body.venue_city.length > 60)
     return {
       type: 'error',
@@ -184,6 +200,12 @@ export const validateMeeting = function (body, isCreate = true) {
     return {
       type: 'error',
       message: 'Please provide a venue',
+    };
+  }
+  if (!body.venue.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'Venue must not contain symbols',
     };
   }
 
@@ -197,6 +219,13 @@ export const validateMeeting = function (body, isCreate = true) {
 };
 
 export const validateWorkshop = function (body, isCreate = true) {
+  if (!body.types.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'Workshop type must not contain symbols',
+    };
+  }
+
   if (body.types.length < 6)
     return {
       type: 'error',
@@ -209,6 +238,13 @@ export const validateWorkshop = function (body, isCreate = true) {
       message: 'Workshop type must be less than 60 characters',
     };
 
+  if (!body.venue.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'venue must not contain symbols',
+    };
+  }
+
   if (!body.venue)
     return {
       type: 'error',
@@ -220,6 +256,13 @@ export const validateWorkshop = function (body, isCreate = true) {
       type: 'error',
       message: 'Venue must be less than 60 characters',
     };
+
+  if (!body.venue_city.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'venue city must not contain symbols',
+    };
+  }
 
   if (!body.venue_city)
     return {
@@ -273,6 +316,13 @@ export const validateWorkshop = function (body, isCreate = true) {
 };
 
 export const validateInvite = function (body) {
+  if (!body.name.match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'Name must not contain symbols',
+    };
+  }
+
   if (body.name.length < 3)
     return {
       type: 'error',
@@ -295,7 +345,21 @@ export const validateInvite = function (body) {
 };
 
 export const validateSignup = function (data) {
-  if (data.name.value.length > 60) {
+  if (!data.name.value.trim().match(/^[a-zA-Z0-9 ]*$/)) {
+    return {
+      type: 'error',
+      message: 'Name must not contain symbols',
+    };
+  }
+
+  if (data.name.value.trim().length < 3) {
+    return {
+      type: 'error',
+      message: 'Name must be at least 3 characters',
+    };
+  }
+
+  if (data.name.value.trim().length > 60) {
     return {
       type: 'error',
       message: 'Name must be less than 60 characters',
@@ -341,7 +405,7 @@ export const validateSignup = function (data) {
     return {
       type: 'error',
       message:
-        'Password must be at least 8 characters long and contain alphanumeric values',
+        'Password must be at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number and a symbol',
     };
   }
 

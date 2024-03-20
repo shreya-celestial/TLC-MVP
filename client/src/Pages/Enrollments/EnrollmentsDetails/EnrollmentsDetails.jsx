@@ -192,14 +192,14 @@ function EnrollmentsDetails() {
     setAlertKey((prev) => !prev);
 
     let body = {
-      name,
+      name: name.trim(),
       email,
-      mobile_number: phone,
+      mobile_number: phone.trim(),
       dob: new Date(dob).toLocaleDateString(),
       gender,
-      address,
-      city,
-      state,
+      address: address.trim(),
+      city: city.trim(),
+      state: state.trim(),
       pincode,
       children: childrenRowData.map((cr) => {
         return {

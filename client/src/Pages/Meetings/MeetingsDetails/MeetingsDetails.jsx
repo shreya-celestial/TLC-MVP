@@ -212,8 +212,8 @@ function MeetingsDetails() {
     const body = {
       date: modifiedDate,
       type: meetingType,
-      venue,
-      venue_city: venueCity,
+      venue: venue.trim(),
+      venue_city: venueCity.trim(),
       workshop_id: selectedWorkshop?.id,
       enrollments: enrollmentsRowData.map((enrollment) => enrollment.id),
       volunteers: volunteersRowData.map((volunteer) => volunteer.email),
