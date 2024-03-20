@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const BASE_URL = 'https://tlc-two.vercel.app/meetings';
 
 export const meetings = async function ({ signal, queryKey, user }) {
@@ -7,10 +9,10 @@ export const meetings = async function ({ signal, queryKey, user }) {
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
   let startDateParam = filters.startDate
-    ? `&start_date=${new Date(filters.startDate).toLocaleDateString()}`
+    ? `&start_date=${moment(filters.startDate).format('MM/DD/YYYY')}`
     : '';
   let endDateParam = filters.endDate
-    ? `&end_date=${new Date(filters.endDate).toLocaleDateString()}`
+    ? `&end_date=${moment(filters.endDate).format('MM/DD/YYYY')}`
     : '';
   let isNullParam = mode === 'Meetings' ? '&isNull=true' : '';
 

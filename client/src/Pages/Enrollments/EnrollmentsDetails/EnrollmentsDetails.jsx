@@ -20,7 +20,7 @@ import { useStyles } from './EnrollmentsDetails.styles';
 import AddChildPopup from '../AddChildPopup/AddChildPopup';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
 import { useParams, useNavigate } from 'react-router-dom';
-
+import moment from 'moment';
 import { enrollPageWorkshopColDEf } from '../coldefs/coldefs';
 import { getLocationData } from '../../../apis/global';
 import { useReactQuery } from '../../../hooks/useReactQuery';
@@ -195,7 +195,7 @@ function EnrollmentsDetails() {
       name,
       email,
       mobile_number: phone,
-      dob: new Date(dob).toLocaleDateString(),
+      dob: moment(dob).format('MM/DD/YYYY'),
       gender,
       address,
       city,
@@ -205,7 +205,7 @@ function EnrollmentsDetails() {
         return {
           name: cr.name,
           gender: cr.gender,
-          dob: cr.dob,
+          dob: moment(cr.dob).format('MM/DD/YYYY'),
         };
       }),
     };
@@ -270,8 +270,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                  ? 'Edit Enrollment'
-                  : 'Create Enrollment'
+                    ? 'Edit Enrollment'
+                    : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}

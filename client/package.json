@@ -21,6 +21,7 @@
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-chartjs-2": "^5.2.0",
