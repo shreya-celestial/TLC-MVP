@@ -279,6 +279,12 @@ export const validateInvite = function (body) {
       message: 'Name must be at least 3 characters long',
     };
 
+  if (body.name.length > 60)
+    return {
+      type: 'error',
+      message: 'Name must be less than 60 characters',
+    };
+
   if (!validator.isEmail(body.email))
     return {
       type: 'error',
