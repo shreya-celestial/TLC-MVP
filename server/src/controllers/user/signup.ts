@@ -34,7 +34,7 @@ const signup = async (req: Request, res: Response) => {
       subject: 'Verification of TLC Email',
       text: '',
       html: generateEmail(
-        `https://tlc-two.vercel.app/user/verifyUser?token=${variables.token}`,
+        `https://tlc-mvp-server.vercel.app/user/verifyUser?token=${variables.token}`,
         capitaliseStr(req.body.name)
       ),
     };
