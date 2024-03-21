@@ -1,6 +1,6 @@
-import moment from "moment";
+import moment from 'moment';
 
-const BASEURL = 'https://tlc-two.vercel.app/workshops';
+const BASEURL = 'https://tlc-mvp-server.vercel.app/workshops';
 
 export const workshops = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;
@@ -15,10 +15,11 @@ export const workshops = async function ({ signal, queryKey, user }) {
   let noOfRecordsParam = noOfRecords ? `&no_of_records=${noOfRecords}` : '';
   let searchParam = filters.search ? `&value=${filters.search}` : '';
   let pastOrUpcomingParam = filters.pastOrUpcoming
-    ? `&pastOrUpcoming=${filters.pastOrUpcoming}${filters.pastOrUpcoming === 'upcoming'
-      ? '&sort_by=start_date&order_of_sort=asc'
-      : ''
-    }`
+    ? `&pastOrUpcoming=${filters.pastOrUpcoming}${
+        filters.pastOrUpcoming === 'upcoming'
+          ? '&sort_by=start_date&order_of_sort=asc'
+          : ''
+      }`
     : '';
 
   let startDateParam = filters.startDate

@@ -1,4 +1,4 @@
-const BASE_URL = 'https://tlc-two.vercel.app/user';
+const BASE_URL = 'https://tlc-mvp-server.vercel.app/user';
 
 export const signup = async ({ body }) => {
   const url = `${BASE_URL}/signup`;
@@ -13,7 +13,7 @@ export const signup = async ({ body }) => {
 };
 
 export const signupInvite = async (body) => {
-  const url = `https://tlc-two.vercel.app/volunteers/inviteSignup`;
+  const url = `https://tlc-mvp-server.vercel.app/volunteers/inviteSignup`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -67,21 +67,20 @@ export const logStatus = async (body) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${body?.key}`
+        Authorization: `Bearer ${body?.key}`,
       },
       body: JSON.stringify({
-        isLoggingOut: body?.isLoggingOut
+        isLoggingOut: body?.isLoggingOut,
       }),
     });
     return await response.json();
-  }
-  catch (err) {
+  } catch (err) {
     return {
       status: 'error',
-      message: err
-    }
+      message: err,
+    };
   }
-}
+};
 
 export const updateProfile = async (data) => {
   try {
@@ -90,16 +89,15 @@ export const updateProfile = async (data) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${data?.user?.key}`
+        Authorization: `Bearer ${data?.user?.key}`,
       },
       body: JSON.stringify(data?.body),
     });
     return await response.json();
-  }
-  catch (err) {
+  } catch (err) {
     return {
       status: 'error',
-      message: err?.message
-    }
+      message: err?.message,
+    };
   }
-}
+};
