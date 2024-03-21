@@ -11,11 +11,11 @@ const verifyReset = async (req: Request, res: Response) => {
       token: token
     })
     if(data?.data?.users?.length){
-      return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${token}`)
+      return res.redirect(303, `https://tlc-mvp-app.vercel.app/resetPass?reset=${token}`)
     }
-    return res.status(400).send('Error! Something went wrong. Please try again later. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
+    return res.status(400).send('Error! Something went wrong. Please try again later. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>')
   }
-  return res.status(404).send('Error! Page not found. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
+  return res.status(404).send('Error! Page not found. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>')
 }
 
 export default verifyReset
