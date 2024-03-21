@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   tableSkeleton: {
-    minHeight: '390px',
+    minHeight: '100%',
     backgroundColor: 'white',
     display: 'flex',
     justifyContent: 'center',

@@ -1,10 +1,13 @@
 import { makeStyles } from '@mui/styles';
-
 export const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     position: 'relative',
     background: '#F2F3F4',
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: '5px',
+      minHeight: '100vh',
+    },
   },
 
   HeaderMainContent: {
@@ -16,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
     gap: '20px',
     [theme.breakpoints.down('sm')]: {
       padding: '10px',
+      height: 'auto',
     },
   },
   actionBar: {
@@ -30,6 +34,13 @@ export const useStyles = makeStyles((theme) => ({
     padding: '0 25px',
     gap: '15px',
     boxShadow: '-4px 0px 5px 0px rgba(0, 0, 0, 0.25)',
+    [theme.breakpoints.down('sm')]: {
+      position: 'static',
+      boxShadow: 'none',
+      background: 'none',
+      justifyContent: 'flex-start',
+      padding: '10px',
+    },
     '& button': {
       height: '30px',
       minWidth: '75px',
@@ -64,6 +75,7 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
       fontWeight: '600',
     },
+    marginBottom: '10px',
   },
   HeadingAndElementBox: {
     display: 'flex',
@@ -76,6 +88,7 @@ export const useStyles = makeStyles((theme) => ({
     gap: '20px',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
+      gap: '15px',
     },
   },
   formControl: {
@@ -144,7 +157,7 @@ export const useStyles = makeStyles((theme) => ({
     maxHeight: '200px !important',
     borderRadius: '5px !important',
     [theme.breakpoints.down('sm')]: {
-      transform: 'translateX(-8px) !important',
+      transform: 'translateX(-6px) !important',
     },
 
     '& ul': {
@@ -166,11 +179,11 @@ export const useStyles = makeStyles((theme) => ({
     '& .historyHeading': {
       fontSize: '14px',
       fontWeight: '600',
-      marginBottom: '20px',
+      marginBottom: '15px',
     },
   },
   loader: {
-    height: '100%',
+    height: 'calc(100vh - 64px)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

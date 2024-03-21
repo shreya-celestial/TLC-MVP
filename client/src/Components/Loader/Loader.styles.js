@@ -12,9 +12,8 @@ export const useStyles = makeStyles((theme) => ({
   },
   dashboardLoader: {
     '&.MuiBackdrop-root': {
-      height: 'calc(100vh - 64px)',
+      height: '100vh',
       width: 'calc(100vw - 16%)',
-      marginTop: '64px',
       marginLeft: '16%',
       backgroundColor: '#F2F3F4',
       '& svg': {
