@@ -1,6 +1,6 @@
-import moment from "moment";
+import moment from 'moment';
 
-const BASE_URL = 'https://tlc-two.vercel.app/meetings';
+const BASE_URL = 'https://tlc-mvp-server.vercel.app/meetings';
 
 export const meetings = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters, mode] = queryKey;
