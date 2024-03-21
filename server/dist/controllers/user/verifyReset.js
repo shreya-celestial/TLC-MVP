@@ -24,10 +24,10 @@ const verifyReset = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             token: token
         });
         if ((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.users) === null || _b === void 0 ? void 0 : _b.length) {
-            return res.redirect(303, `https://tlc-mvp-app-amber.vercel.app/resetPass?reset=${token}`);
+            return res.redirect(303, `https://tlc-mvp-app.vercel.app/resetPass?reset=${token}`);
         }
-        return res.status(400).send('Error! Something went wrong. Please try again later. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
+        return res.status(400).send('Error! Something went wrong. Please try again later. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>');
     }
-    return res.status(404).send('Error! Page not found. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
+    return res.status(404).send('Error! Page not found. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>');
 });
 exports.default = verifyReset;
