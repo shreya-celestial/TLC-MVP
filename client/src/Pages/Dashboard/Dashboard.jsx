@@ -1,7 +1,7 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './Dashboard.styles';
-
+import { useNavigate } from 'react-router-dom'
 import { ReactComponent as EnrollmentColorIcon } from '../.././assets/Icons/enrollmentsColorIcon.svg';
 import { ReactComponent as VolunteerColorIcon } from '../.././assets/Icons/volunteerColorIcon.svg';
 import { ReactComponent as MeetingsColorIcon } from '../.././assets/Icons/meetingsColorIcon.svg';
@@ -13,6 +13,7 @@ import { dashboardDetails, dashboardWorkshops } from '../../apis/dashboard';
 import Loader from '../../Components/Loader/Loader';
 
 const Dashboard = () => {
+  const nav = useNavigate()
   const { data, isPending } = useReactQuery(
     ['dashboard'],
     dashboardDetails
@@ -35,6 +36,7 @@ const Dashboard = () => {
       value: data?.data?.volunteers || 0,
       icon: <VolunteerColorIcon />,
       class: 'volunteer',
+      click: () => nav('/volunteers'),
     },
     {
       id: 1,
@@ -42,6 +44,7 @@ const Dashboard = () => {
       value: data?.data?.workshops || 0,
       icon: <WorkshopColorIcon />,
       class: 'workshop',
+      click: () => nav('/workshops'),
     },
     {
       id: 2,
@@ -49,6 +52,7 @@ const Dashboard = () => {
       value: data?.data?.enrollments || 0,
       icon: <EnrollmentColorIcon />,
       class: 'enrollment',
+      click: () => nav('/enrollments'),
     },
     {
       id: 3,
@@ -56,6 +60,7 @@ const Dashboard = () => {
       value: data?.data?.meetings || 0,
       icon: <MeetingsColorIcon />,
       class: 'meeting',
+      click: () => nav('/meetings'),
     },
   ];
 
@@ -69,6 +74,10 @@ const Dashboard = () => {
             className={`${classes.smallCard} ${item.class}`}
             divider={<Divider orientation="vertical" flexItem />}
             direction={'row'}
+            sx={{
+              cursor: 'pointer'
+            }}
+            onClick={item?.click}
           >
             {item.icon}
             <Box className={classes.titleAndValue}>
