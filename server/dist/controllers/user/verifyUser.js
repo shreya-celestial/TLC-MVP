@@ -29,7 +29,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(400).send('Error! Please try again later. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
         }
         if (!((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.affected_rows)) {
-            return res.status(100).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
+            return res.status(400).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
         }
         return res.redirect(303, 'https://tlc-mvp-app-amber.vercel.app/');
     }
