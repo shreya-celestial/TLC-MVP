@@ -33,7 +33,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             to: req.body.email,
             subject: 'Verification of TLC Email',
             text: '',
-            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/user/verifyUser?token=${variables.token}`, (0, global_1.capitaliseStr)(req.body.name)),
+            html: (0, generateMail_1.default)(`https://tlc-mvp-server.vercel.app/user/verifyUser?token=${variables.token}`, (0, global_1.capitaliseStr)(req.body.name)),
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {
