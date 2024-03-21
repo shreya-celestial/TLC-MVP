@@ -36,6 +36,7 @@ exports.VerifyTokenAndUpdate = `
         password
         token
       }
+      affected_rows
     }
   }
 `;

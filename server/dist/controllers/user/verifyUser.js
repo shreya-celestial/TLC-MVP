@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
 const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _a, _b;
     const { token: invite } = req === null || req === void 0 ? void 0 : req.query;
     let token = invite;
     token = token === null || token === void 0 ? void 0 : token.replaceAll(' ', '+');
@@ -28,7 +28,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (data === null || data === void 0 ? void 0 : data.errors) {
             return res.status(400).send('Error! Please try again later. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
         }
-        if (((_c = (_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.returning) === null || _c === void 0 ? void 0 : _c.length) === 0) {
+        if (!((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.affected_rows)) {
             return res.status(100).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>');
         }
         return res.redirect(303, 'https://tlc-mvp-app-amber.vercel.app/');

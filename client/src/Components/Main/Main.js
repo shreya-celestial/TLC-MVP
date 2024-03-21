@@ -84,7 +84,7 @@ function Main() {
               <Route exact path="/resetPass" element={<ResetPassword />} />
             )}
             {!user && !loader && (
-              <Route exact path="*" element={<ErrorPage />} />
+              <Route exact path="*" element={<Login />} />
             )}
             {loader && !error && <Route exact path="*" element={<Loader />} />}
             {loader && error && (

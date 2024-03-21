@@ -12,12 +12,11 @@ const verifyUser = async (req: Request, res: Response) => {
       updatedToken: null,
       isVerified: true
     })
-    
     if(data?.errors)
     {
       return res.status(400).send('Error! Please try again later. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
     }
-    if(data?.data?.update_users?.returning?.length === 0)
+    if(!data?.data?.update_users?.affected_rows)
     {
       return res.status(100).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
     }

@@ -35,6 +35,7 @@ export const VerifyTokenAndUpdate = `
         password
         token
       }
+      affected_rows
     }
   }
 `;
