@@ -50,7 +50,7 @@ function AutocompletePopup({
       : enrollments;
 
   const { data, isPending, isError } = useReactQuery(
-    [1, 10, { ...debouncedFilters }, mode],
+    [1, 10, { ...debouncedFilters, status: 'verified' }, mode],
     fetchFn
     // {
     //   enabled: debouncedFilters?.search !== undefined,

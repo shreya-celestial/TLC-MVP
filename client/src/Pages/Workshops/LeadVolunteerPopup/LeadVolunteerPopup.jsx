@@ -36,7 +36,7 @@ function LeadVolunteerPopup({
   const [debouncedFilters, setDebouncedFilters] = useState();
 
   const { data, isPending, isError } = useReactQuery(
-    [1, 10, { ...debouncedFilters }],
+    [1, 10, { ...debouncedFilters, status: 'verified' }],
     volunteers
     // {
     //   enabled: debouncedFilters?.search !== undefined,
