@@ -54,7 +54,7 @@ const Table = ({
           <Button
             className={classes.pending}
             onClick={
-              user?.isAdmin ? () => handleClickInColumn(params) : () => {}
+              user?.isAdmin ? () => handleClickInColumn(params) : () => { }
             }
             sx={{
               cursor: user?.isAdmin ? 'pointer' : 'default',
@@ -105,7 +105,6 @@ const Table = ({
   }, [user]);
 
   const getRowStyle = (params) => {
-    console.log(params.data.email === user.email);
     if (params.data.email === user.email) {
       return { background: '#f5f5f5', fontWeight: 'bold' }; // Apply specific styles to the row
     }
