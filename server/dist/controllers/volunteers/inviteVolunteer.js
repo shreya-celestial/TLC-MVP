@@ -58,7 +58,7 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
                 to: email,
                 subject: 'TLC Invitation',
                 text: '',
-                html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
+                html: (0, generateMail_1.default)(`https://tlc-mvp-server.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
             };
             nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
                 if (!err) {
@@ -114,7 +114,7 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
             to: email,
             subject: 'TLC Invitation',
             text: '',
-            html: (0, generateMail_1.default)(`https://tlc-two.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
+            html: (0, generateMail_1.default)(`https://tlc-mvp-server.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err) {
