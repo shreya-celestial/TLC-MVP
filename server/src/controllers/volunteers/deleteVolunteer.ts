@@ -22,22 +22,25 @@ const deleteVolunteer = async (req: Request, res: Response) => {
     })
   }
 
-  const emailsToDel = emails.filter((email: string)=>token?.email!==email);
-  if(emailsToDel?.length === 0)
+  const volunteers = emails?.reduce((current: any, email: string)=>{
+    if(token?.email !== email)
+    {
+      current.push({
+        email: {
+          _eq: email
+        }
+      })
+    }
+    return current
+  },[])
+  
+  if(volunteers?.length === 0)
   {
     return res.status(403).json({
       status: 'error',
       message: 'You cannot delete yourself!'
     })
   }
-
-  const volunteers = emailsToDel.map((email: string)=>{
-    return {
-      email: {
-        _eq: email
-      }
-    }
-  })
 
   const variables = {
     where: {

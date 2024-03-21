@@ -32,20 +32,22 @@ const deleteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
             message: 'Token expired! Please login again.'
         });
     }
-    const emailsToDel = emails.filter((email) => (token === null || token === void 0 ? void 0 : token.email) !== email);
-    if ((emailsToDel === null || emailsToDel === void 0 ? void 0 : emailsToDel.length) === 0) {
+    const volunteers = emails === null || emails === void 0 ? void 0 : emails.reduce((current, email) => {
+        if ((token === null || token === void 0 ? void 0 : token.email) !== email) {
+            current.push({
+                email: {
+                    _eq: email
+                }
+            });
+        }
+        return current;
+    }, []);
+    if ((volunteers === null || volunteers === void 0 ? void 0 : volunteers.length) === 0) {
         return res.status(403).json({
             status: 'error',
             message: 'You cannot delete yourself!'
         });
     }
-    const volunteers = emailsToDel.map((email) => {
-        return {
-            email: {
-                _eq: email
-            }
-        };
-    });
     const variables = {
         where: {
             _or: [...volunteers],
