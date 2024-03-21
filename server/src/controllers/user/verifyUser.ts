@@ -18,7 +18,7 @@ const verifyUser = async (req: Request, res: Response) => {
     }
     if(!data?.data?.update_users?.affected_rows)
     {
-      return res.status(100).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
+      return res.status(400).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app-amber.vercel.app">Go to safety!</a>')
     }
     return res.redirect(303,'https://tlc-mvp-app-amber.vercel.app/')
   }
