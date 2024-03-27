@@ -337,17 +337,6 @@ function WorkshopsDetails() {
             <Box className={classes.mainContent}>
               {/* workshop type */}
               <Box className={classes.formElementBox}>
-                {/* <FormControl className={classes.formControl} required>
-                  <FormLabel htmlFor="worskhopType">Workshop Type</FormLabel>
-                  <TextField
-                    id="worskhopType"
-                    placeholder="Enter Workshop Type"
-                    name="worskhoptype"
-                    disabled={isView}
-                    value={workshopType}
-                    onChange={(e) => setWorkshopType(e.target.value)}
-                  />
-                </FormControl> */}
                 <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="worskhopType">Workshop Type</FormLabel>
                   <Select
