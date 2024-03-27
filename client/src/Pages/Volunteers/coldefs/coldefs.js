@@ -1,4 +1,13 @@
-import { useCallback } from 'react';
+const dateFormatter = (params) => {
+  const date = new Date(params?.value);
+  const dateNumber =
+    date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  let monthNumber = +date.getMonth() + 1;
+  monthNumber = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+  const formattedDate =
+    dateNumber + '-' + monthNumber + '-' + date.getFullYear();
+  return formattedDate;
+};
 
 const IsAdminComp = (params) => {
   if (!params.data.isAdminVerified) return `-`;
@@ -92,20 +101,39 @@ const colDefs = [
 export const workShopColDef = [
   { field: 'types', headerName: 'Workshop Name' },
   { field: 'role', headerName: 'Role' },
-  { field: 'start_date', headerName: 'Start Date' },
-  { field: 'end_date', headerName: 'End Date' },
+  {
+    field: 'start_date',
+    headerName: 'Start Date',
+    cellRenderer: dateFormatter,
+  },
+  { field: 'end_date', headerName: 'End Date', cellRenderer: dateFormatter },
 ];
 
 export const workshopColDefVolunteersPage = [
   { field: 'types', headerName: 'Workshop Name', minWidth: 180 },
   { field: 'role', headerName: 'Role', minWidth: 150 },
-  { field: 'start_date', headerName: 'Start Date', minWidth: 120 },
-  { field: 'end_date', headerName: 'End Date', minWidth: 120 },
+  {
+    field: 'start_date',
+    headerName: 'Start Date',
+    minWidth: 120,
+    cellRenderer: dateFormatter,
+  },
+  {
+    field: 'end_date',
+    headerName: 'End Date',
+    minWidth: 120,
+    cellRenderer: dateFormatter,
+  },
 ];
 
 export const meetingsColDefVolunteersPage = [
   { field: 'type', headerName: 'Meeting Type', minWidth: 180 },
-  { field: 'date', headerName: 'Date', minWidth: 120 },
+  {
+    field: 'date',
+    headerName: 'Date',
+    minWidth: 120,
+    cellRenderer: dateFormatter,
+  },
   { field: 'venue', headerName: 'Venue', minWidth: 250 },
   { field: 'venue_city', headerName: 'Venue City', minWidth: 150 },
 ];
@@ -113,7 +141,7 @@ export const meetingsColDefVolunteersPage = [
 export const meetingColDef = [
   { field: 'meeting', headerName: 'Meeting Type' },
   { field: 'workshop', headerName: 'Workshop' },
-  { field: 'date', headerName: 'Date' },
+  { field: 'date', headerName: 'Date', cellRenderer: dateFormatter },
   { field: 'volunteers', headerName: 'Volunteers' },
   { field: 'enrollments', headerName: 'Enrollments' },
 ];

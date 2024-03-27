@@ -1,12 +1,13 @@
 const dateFormatter = (params) => {
   const date = new Date(params?.value);
-  const dateNumber = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
-  let monthNumber = +date.getMonth() + 1
-  monthNumber = monthNumber < 10 ? `0${monthNumber}` : monthNumber
-  const formattedDate = dateNumber + '-' + monthNumber + '-' + date.getFullYear()
-  return formattedDate
-}
-
+  const dateNumber =
+    date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  let monthNumber = +date.getMonth() + 1;
+  monthNumber = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+  const formattedDate =
+    dateNumber + '-' + monthNumber + '-' + date.getFullYear();
+  return formattedDate;
+};
 
 const colDefs = [
   {
@@ -28,7 +29,7 @@ const colDefs = [
     editable: false,
     minWidth: 120,
     headerName: 'Start Date',
-    cellRenderer: dateFormatter
+    cellRenderer: dateFormatter,
   },
   {
     field: 'end_date',
@@ -36,7 +37,7 @@ const colDefs = [
     editable: false,
     minWidth: 120,
     headerName: 'End Date',
-    cellRenderer: dateFormatter
+    cellRenderer: dateFormatter,
   },
   {
     field: 'concluding_date',
@@ -44,7 +45,7 @@ const colDefs = [
     editable: false,
     minWidth: 200,
     headerName: 'Concluding Session Date',
-    cellRenderer: dateFormatter
+    cellRenderer: dateFormatter,
   },
   {
     field: 'venue',
@@ -111,7 +112,12 @@ export const ParticipantColDef = [
 
 export const MeetingColDef = [
   { field: 'type', headerName: 'Type', minWidth: 180 },
-  { field: 'date', headerName: 'Date', minWidth: 120 },
+  {
+    field: 'date',
+    headerName: 'Date',
+    minWidth: 120,
+    cellRenderer: dateFormatter,
+  },
   { field: 'venue', headerName: 'Venue', minWidth: 250 },
   { field: 'venue_city', headerName: 'Venue City', minWidth: 150 },
 ];

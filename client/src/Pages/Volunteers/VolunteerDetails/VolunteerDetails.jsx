@@ -88,7 +88,11 @@ function VolunteerDetails() {
   });
 
   const saveVolunteer = function () {
-    mutate({ email, isAdmin: role === 'admin' ? 'true' : 'false', key: user?.key });
+    mutate({
+      email,
+      isAdmin: role === 'admin' ? 'true' : 'false',
+      key: user?.key,
+    });
   };
 
   const [historyLeadRowData, setHistoryLeadRowData] = useState([]);
@@ -172,8 +176,8 @@ function VolunteerDetails() {
                 type === 'edit'
                   ? 'Edit Volunteer'
                   : type === 'view'
-                    ? 'View Volunteer'
-                    : ''
+                  ? 'View Volunteer'
+                  : ''
               }
               prevPage={'volunteers'}
               path={'volunteers'}
@@ -238,6 +242,7 @@ function VolunteerDetails() {
                         value={dayjs(data.user.dob)}
                         name="dob"
                         disabled={true}
+                        format="DD/MM/YYYY"
                       />
                     </LocalizationProvider>
                   </FormControl>
