@@ -65,7 +65,7 @@ export const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     height: '100%',
     [theme.breakpoints.down('sm')]: {
-      height: '100vh',
+      height: 'calc(100vh - 94px)',
     },
   },
   tableContainer: {

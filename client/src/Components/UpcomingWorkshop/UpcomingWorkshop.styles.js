@@ -5,6 +5,9 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     gap: '20px',
+    [theme.breakpoints.down("sm")]:{
+     gap:"15px",
+    },
   },
 
   card: {
@@ -23,6 +26,9 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   titleAndInfo: {
+    [theme.breakpoints.down("sm")]:{
+      width:"100%",
+    },
     '& .workshopTitle': {
       fontSize: '14px',
       fontWeight: '500',
@@ -33,11 +39,18 @@ export const useStyles = makeStyles((theme) => ({
   Info: {
     display: 'flex',
     gap: '20px',
+    [theme.breakpoints.down("sm")]:{
+      justifyContent:"space-between",
+      gap:"0px"
+    }
   },
   iconAndText: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: '5px',
+    [theme.breakpoints.down("sm")]:{
+      minWidth:"40%",
+    },
     '& svg': {
       fontSize: '17px',
       color: '#6C6C6C',

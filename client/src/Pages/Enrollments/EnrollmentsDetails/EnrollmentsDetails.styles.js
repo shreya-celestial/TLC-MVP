@@ -67,15 +67,18 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '30px',
+    marginBottom: '10px',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       gap: '20px',
+    },
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '100%',
     },
     '& p.heading': {
       fontSize: '14px',
       fontWeight: '600',
     },
-    marginBottom: '10px',
   },
   HeadingAndElementBox: {
     display: 'flex',
