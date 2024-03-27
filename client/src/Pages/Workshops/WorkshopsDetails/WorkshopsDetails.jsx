@@ -31,24 +31,24 @@ import { compareTwoArrays } from '../../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import { createWorkshop, updateWorkshop } from '../../../apis/workshops';
 import UserContext from '../../../store/userContext';
-export const workshopTypes=[
-  {id:0,type:"None"},
-  {id:1,type:"Freedom Workshop"},
-  {id:2,type:"Holy Trail"},
-  {id:3,type:"Leadership Workshop"},
-  {id:4,type:"Talk on Bhagwad Gite"},
-  {id:5,type:"Wisdom Workshop"},
-  {id:6,type:"Free to Grow, Free to Choose Workshop"},
-  {id:7,type:"Integrity, Service & Responsibility Workshop"},
-  {id:8,type:"Confidence Power & Excellence Workshop"},
-  {id:9,type:"Love, Relationship & Romance Workshop"},
-  {id:10,type:"Meditation Retreat"},
-  {id:11,type:"Parent Child - Child Parent Workshop"},
-  {id:12,type:"Krodh Workshop"},
-  {id:13,type:"Tension Workshop"},
-  {id:14,type:"Grounding Series"},
-  {id:15,type:"Enlightenment Workshop"},
-]
+export const workshopTypes = [
+  { id: 0, type: 'None' },
+  { id: 1, type: 'Freedom Workshop' },
+  { id: 2, type: 'Holy Trail' },
+  { id: 3, type: 'Leadership Workshop' },
+  { id: 4, type: 'Talk on Bhagwad Gite' },
+  { id: 5, type: 'Wisdom Workshop' },
+  { id: 6, type: 'Free to Grow, Free to Choose Workshop' },
+  { id: 7, type: 'Integrity, Service & Responsibility Workshop' },
+  { id: 8, type: 'Confidence Power & Excellence Workshop' },
+  { id: 9, type: 'Love, Relationship & Romance Workshop' },
+  { id: 10, type: 'Meditation Retreat' },
+  { id: 11, type: 'Parent Child - Child Parent Workshop' },
+  { id: 12, type: 'Krodh Workshop' },
+  { id: 13, type: 'Tension Workshop' },
+  { id: 14, type: 'Grounding Series' },
+  { id: 15, type: 'Enlightenment Workshop' },
+];
 
 function WorkshopsDetails() {
   let { id, type } = useParams();
@@ -337,41 +337,30 @@ function WorkshopsDetails() {
             <Box className={classes.mainContent}>
               {/* workshop type */}
               <Box className={classes.formElementBox}>
-                {/* <FormControl className={classes.formControl} required>
-                  <FormLabel htmlFor="worskhopType">Workshop Type</FormLabel>
-                  <TextField
-                    id="worskhopType"
-                    placeholder="Enter Workshop Type"
-                    name="worskhoptype"
-                    disabled={isView}
-                    value={workshopType}
-                    onChange={(e) => setWorkshopType(e.target.value)}
-                  />
-                </FormControl> */}
                 <FormControl className={classes.formControl} required>
-                    <FormLabel htmlFor="meetingType">Workshop Type</FormLabel>
-                    <Select
-                      id="worskhopType"
-                      name="worskhoptype"
-                      value="None"
-                      IconComponent={ExpandMoreOutlinedIcon}
-                      className={classes.selectBox}
-                      disabled={isView}
-                      MenuProps={{
-                        classes: {
-                          paper: classes.selectDropdownMenu,
-                        },
-                      }}
-                    >
-                      {
-                        workshopTypes.map((item)=>(
-                          <MenuItem key={item.id} value={item.type}>{item.type}</MenuItem>
-                        ))
-                      }
-
-                    </Select>
-                  </FormControl>
-                   </Box>
+                  <FormLabel htmlFor="worskhopType">Workshop Type</FormLabel>
+                  <Select
+                    id="worskhopType"
+                    name="worskhoptype"
+                    value={workshopType || 'None'}
+                    onChange={(e) => setWorkshopType(e.target.value)}
+                    IconComponent={ExpandMoreOutlinedIcon}
+                    className={classes.selectBox}
+                    disabled={isView}
+                    MenuProps={{
+                      classes: {
+                        paper: classes.selectDropdownMenu,
+                      },
+                    }}
+                  >
+                    {workshopTypes.map((item) => (
+                      <MenuItem key={item.id} value={item.type}>
+                        {item.type}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
               <Box className={classes.formElementBox}>
                 <FormControl className={classes.formControl} required>
                   <FormLabel htmlFor="workshopVenue">Venue</FormLabel>
