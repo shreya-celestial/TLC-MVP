@@ -211,9 +211,9 @@ function WorkshopsDetails() {
   const mutateWorkshopHandler = function () {
     setAlertKey((prev) => !prev);
 
-    const modifiedStartDate = moment(startDate).format('MM/DD/YYYY')
-    const modifiedEndDate = moment(endDate).format('MM/DD/YYYY')
-    const modifiedConcludingDate = moment(concludingDate).format('MM/DD/YYYY')
+    const modifiedStartDate = moment(startDate).format('MM/DD/YYYY');
+    const modifiedEndDate = moment(endDate).format('MM/DD/YYYY');
+    const modifiedConcludingDate = moment(concludingDate).format('MM/DD/YYYY');
 
     const body = {
       types: workshopType.trim(),
@@ -368,6 +368,7 @@ function WorkshopsDetails() {
                       disablePast={type === 'create' ? true : false}
                       value={dayjs(startDate)}
                       onChange={(date) => setStartDate(new Date(date))}
+                      format="DD/MM/YYYY"
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -385,6 +386,7 @@ function WorkshopsDetails() {
                       disablePast={type === 'create' ? true : false}
                       minDate={startDate && dayjs(startDate)}
                       onChange={(date) => setEndDate(new Date(date))}
+                      format="DD/MM/YYYY"
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -394,6 +396,7 @@ function WorkshopsDetails() {
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
                     className={classes.datepicker}
+                    adapterLocale="en-IN"
                   >
                     <DatePicker
                       name="concludingSessionDate"
@@ -404,6 +407,7 @@ function WorkshopsDetails() {
                         endDate ? dayjs(endDate) : startDate && dayjs(startDate)
                       }
                       onChange={(date) => setConcludingDate(new Date(date))}
+                      format="DD/MM/YYYY"
                     />
                   </LocalizationProvider>
                 </FormControl>
