@@ -187,6 +187,7 @@ function EditPage() {
                         dob: new Date(date),
                       }))
                     }
+                    format="DD/MM/YYYY"
                   />
                 </LocalizationProvider>
               </FormControl>

@@ -347,6 +347,7 @@ function EnrollmentsDetails() {
                         disableFuture={true}
                         value={dayjs(dob)}
                         onChange={(date) => setDob(new Date(date))}
+                        format="DD/MM/YYYY"
                       />
                     </LocalizationProvider>
                   </FormControl>

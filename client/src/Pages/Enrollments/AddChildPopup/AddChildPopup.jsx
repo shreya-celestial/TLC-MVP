@@ -24,6 +24,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { ChildTheme } from './PopupTheme';
 import AlertReact from '../../../Components/Alert/AlertReact';
+import moment from 'moment';
 
 function AddChildPopup({
   openChild,
@@ -138,9 +139,8 @@ function AddChildPopup({
                 <DatePicker
                   name="dateofbirth"
                   value={dob ? dayjs(dob) : ''}
-                  onChange={(date) =>
-                    setDob(new Date(date))
-                  }
+                  onChange={(date) => setDob(new Date(date))}
+                  format="DD/MM/YYYY"
                 />
               </LocalizationProvider>
             </FormControl>
@@ -161,12 +161,19 @@ function AddChildPopup({
           disableRipple
           onClick={() => {
             if (childData) {
-              updateChild({ name, gender, dob }, childData.id);
+              updateChild(
+                {
+                  name,
+                  gender,
+                  dob: moment(dob).format('YYYY-MM-DD'),
+                },
+                childData.id
+              );
             } else {
               createChild({
                 name,
                 gender,
-                dob,
+                dob: moment(dob).format('YYYY-MM-DD'),
                 id: Math.random(),
               });
             }
