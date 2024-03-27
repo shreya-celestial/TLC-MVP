@@ -66,7 +66,11 @@ export const useStyles = makeStyles((theme) => ({
     width: '70%',
     display: 'flex',
     flexDirection: 'column',
-    gap: '30px',
+    gap: '15px',
+    marginBottom: '10px',
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '100%',
+    },
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       gap: '20px',
@@ -75,7 +79,6 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
       fontWeight: '600',
     },
-    marginBottom: '10px',
   },
 
   formElementBox: {

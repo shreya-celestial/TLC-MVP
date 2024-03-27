@@ -74,6 +74,9 @@ export const useStyles = makeStyles((theme) => ({
       width: '100%',
       gap: '20px',
     },
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '100%',
+    },
     '& p.heading': {
       fontSize: '14px',
       fontWeight: '600',
