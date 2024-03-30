@@ -9,6 +9,11 @@ const dateFormatter = (params) => {
   return formattedDate;
 };
 
+const workshopFormat = function (params) {
+  if (params.value) return params.value;
+  else return '-';
+};
+
 const colDefs = [
   {
     headerCheckboxSelection: true,
@@ -30,6 +35,7 @@ const colDefs = [
     editable: false,
     headerName: 'Workshop',
     minWidth: 250,
+    cellRenderer: workshopFormat,
   },
   {
     field: 'date',
