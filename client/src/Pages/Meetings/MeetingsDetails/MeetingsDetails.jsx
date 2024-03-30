@@ -187,7 +187,7 @@ function MeetingsDetails() {
 
   useEffect(() => {
     if (!editingWorkshop) {
-      setWorkshopOptions([meeting?.workshop || { types: 'none' }]);
+      setWorkshopOptions([meeting?.workshop || { types: 'None' }]);
       setSelectedWorkshop(meeting?.workshop);
     }
 
@@ -201,7 +201,7 @@ function MeetingsDetails() {
 
   useEffect(() => {
     if (editingWorkshop) {
-      setWorkshopOptions(workshopsData?.data?.workshops || [{ types: 'none' }]);
+      setWorkshopOptions(workshopsData?.data?.workshops || [{ types: 'None' }]);
     }
   }, [workshopsData, isView, meeting, editingWorkshop]);
 

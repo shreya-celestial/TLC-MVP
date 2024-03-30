@@ -230,25 +230,6 @@ export const validateMeeting = function (body, isCreate = true) {
 };
 
 export const validateWorkshop = function (body, isCreate = true) {
-  if (!body.types.match(/^[a-zA-Z0-9 ]*$/)) {
-    return {
-      type: 'error',
-      message: 'Workshop type must not contain symbols',
-    };
-  }
-
-  if (body.types.length < 6)
-    return {
-      type: 'error',
-      message: 'Workshop type must be at least 6 characters long',
-    };
-
-  if (body.types.length > 60)
-    return {
-      type: 'error',
-      message: 'Workshop type must be less than 60 characters',
-    };
-
   if (!body.venue.match(/^[a-zA-Z0-9 ]*$/)) {
     return {
       type: 'error',
