@@ -36,7 +36,7 @@ export const workshopTypes = [
   { id: 1, type: 'Freedom Workshop' },
   { id: 2, type: 'Holy Trail' },
   { id: 3, type: 'Leadership Workshop' },
-  { id: 4, type: 'Talk on Bhagwad Gite' },
+  { id: 4, type: 'Talk on Bhagwad Gita' },
   { id: 5, type: 'Wisdom Workshop' },
   { id: 6, type: 'Free to Grow, Free to Choose Workshop' },
   { id: 7, type: 'Integrity, Service & Responsibility Workshop' },
