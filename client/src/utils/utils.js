@@ -230,10 +230,18 @@ export const validateMeeting = function (body, isCreate = true) {
 };
 
 export const validateWorkshop = function (body, isCreate = true) {
+  console.log(body);
+  if (body.types === '') {
+    return {
+      type: 'error',
+      message: 'Please select a workshop type',
+    };
+  }
+
   if (!body.venue.match(/^[a-zA-Z0-9 ]*$/)) {
     return {
       type: 'error',
-      message: 'venue must not contain symbols',
+      message: 'Venue must not contain symbols',
     };
   }
 
@@ -252,7 +260,7 @@ export const validateWorkshop = function (body, isCreate = true) {
   if (!body.venue_city.match(/^[a-zA-Z0-9 ]*$/)) {
     return {
       type: 'error',
-      message: 'venue city must not contain symbols',
+      message: 'Venue city must not contain symbols',
     };
   }
 
