@@ -182,11 +182,6 @@ export const validateMeeting = function (body, isCreate = true) {
       message: 'Please provide a valid date',
     };
   }
-  if (new Date(body.date) < new Date() && isCreate)
-    return {
-      type: 'error',
-      message: 'Date must be in future',
-    };
 
   if (!body.venue_city)
     return {
@@ -230,7 +225,6 @@ export const validateMeeting = function (body, isCreate = true) {
 };
 
 export const validateWorkshop = function (body, isCreate = true) {
-  console.log(body);
   if (body.types === '' || body.types === 'None') {
     return {
       type: 'error',
@@ -289,12 +283,6 @@ export const validateWorkshop = function (body, isCreate = true) {
     };
   }
 
-  if (new Date(body.start_date) < new Date() && isCreate)
-    return {
-      type: 'error',
-      message: 'Start date must be in future',
-    };
-
   if (!body.end_date || body.end_date === 'Invalid Date')
     return {
       type: 'error',
@@ -308,12 +296,6 @@ export const validateWorkshop = function (body, isCreate = true) {
     };
   }
 
-  if (new Date(body.end_date) < new Date(body.start_date))
-    return {
-      type: 'error',
-      message: 'End date must be after start date',
-    };
-
   if (!body.concluding_date || body.concluding_date === 'Invalid Date')
     return {
       type: 'error',
@@ -326,12 +308,6 @@ export const validateWorkshop = function (body, isCreate = true) {
       message: 'Please provide a valid concluding date',
     };
   }
-
-  if (new Date(body.concluding_date) < new Date(body.end_date))
-    return {
-      type: 'error',
-      message: 'Concluding date must be after end date',
-    };
 
   return true;
 };
