@@ -231,7 +231,7 @@ export const validateMeeting = function (body, isCreate = true) {
 
 export const validateWorkshop = function (body, isCreate = true) {
   console.log(body);
-  if (body.types === '') {
+  if (body.types === '' || body.types === 'None') {
     return {
       type: 'error',
       message: 'Please select a workshop type',
