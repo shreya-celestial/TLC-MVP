@@ -1,6 +1,5 @@
 import moment from 'moment';
-
-const BASEURL = 'https://tlc-mvp-server.vercel.app/workshops';
+import { BASEURL } from "./global";
 
 export const workshops = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;

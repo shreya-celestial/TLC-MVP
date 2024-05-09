@@ -36,7 +36,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
 
   const classes = useStyles();
   const years = [];
-  for (let year = '2012'; year <= currentYear; year++) {
+  for (let year = '2006'; year <= currentYear; year++) {
     years.push(year);
   }
 

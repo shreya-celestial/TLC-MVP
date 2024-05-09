@@ -1,7 +1,9 @@
+import { BASEURL } from "./global";
+
 export const dashboardDetails = async ({ user }) => {
   try {
     const response = await fetch(
-      'https://tlc-mvp-server.vercel.app/dashboard',
+      `${BASEURL}/dashboard`,
       {
         method: 'GET',
         headers: {
@@ -21,7 +23,7 @@ export const dashboardDetails = async ({ user }) => {
 export const dashboardWorkshops = async ({ user }) => {
   try {
     const response = await fetch(
-      'https://tlc-mvp-server.vercel.app/workshops?pastOrUpcoming=upcoming&sort_by=start_date',
+      `${BASEURL}/workshops?pastOrUpcoming=upcoming&sort_by=start_date`,
       {
         method: 'GET',
         headers: {

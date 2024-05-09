@@ -1,4 +1,4 @@
-const BASE_URL = 'https://tlc-mvp-server.vercel.app/enrollments';
+import { BASEURL as BASE_URL } from "./global";
 
 export const enrollments = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;
