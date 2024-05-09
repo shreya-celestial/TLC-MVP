@@ -1,4 +1,5 @@
-import { BASEURL as BASE_URL } from "./global";
+import { BASEURL } from "./global";
+const BASE_URL = `${BASEURL}/user`
 
 export const signup = async ({ body }) => {
   const url = `${BASE_URL}/signup`;

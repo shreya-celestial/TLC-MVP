@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { BASEURL as BASE_URL } from "./global";
+import { BASEURL } from "./global";
+const BASE_URL = `${BASEURL}/meetings`
 
 export const meetings = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters, mode] = queryKey;

@@ -1,4 +1,5 @@
-import { BASEURL as BASE_URL } from "./global";
+import { BASEURL } from "./global";
+const BASE_URL = `${BASEURL}/enrollments`
 
 export const enrollments = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;
