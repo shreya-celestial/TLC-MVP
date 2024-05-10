@@ -66,7 +66,7 @@ const updateLogStatus = async (req: Request, res: Response) => {
   {
     return res.status(400).json({
       status: 'error',
-      message: data?.errors[0]?.message
+      message: typeof data?.errors[0]?.message === 'string' ? data?.errors[0]?.message : 'Something went wrong. Please try again later!'
     })
   }
 
@@ -125,7 +125,7 @@ const updateLogStatus = async (req: Request, res: Response) => {
   {
     return res.status(400).json({
       status: 'error',
-      message: roleData?.errors[0]?.message
+      message: typeof roleData?.errors[0]?.message === 'string' ? roleData?.errors[0]?.message : 'Something went wrong. Please try again later!'
     })
   }
 
