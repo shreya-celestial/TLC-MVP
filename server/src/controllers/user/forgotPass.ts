@@ -4,6 +4,7 @@ import getData from "../../utils/getData";
 import { CheckAndUpdateToken } from "../../gql/user/mutations";
 import generateEmail from "../../utils/generateMail";
 import transporter from "../../utils/nodeMailer";
+import { mailing_url } from "../../utils/global";
 
 const forgotPass = async (req: Request, res: Response) => {
   const {email} = req.body;
@@ -27,7 +28,7 @@ const forgotPass = async (req: Request, res: Response) => {
       to: email,
       subject: 'Reset Password Link',
       text: '',
-      html: generateEmail(`https://tlc-mvp-server.vercel.app/user/verifyReset?token=${token}`, name, 'Reset Password', body)
+      html: generateEmail(`${mailing_url}/user/verifyReset?token=${token}`, name, 'Reset Password', body)
     };
 
     transporter.sendMail(mailOptions, (err) => {

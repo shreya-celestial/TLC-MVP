@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
+const global_1 = require("../../utils/global");
 const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { token: invite } = req === null || req === void 0 ? void 0 : req.query;
@@ -26,13 +27,13 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             isVerified: true
         });
         if (data === null || data === void 0 ? void 0 : data.errors) {
-            return res.status(400).send('Error! Please try again later. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>');
+            return res.status(400).send(`Error! Please try again later. <a href="${global_1.redirecting_url}">Go to safety!</a>`);
         }
         if (!((_b = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.update_users) === null || _b === void 0 ? void 0 : _b.affected_rows)) {
-            return res.status(400).send('It seems that your link has been used. Please login and continue. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>');
+            return res.status(400).send(`It seems that your link has been used. Please login and continue. <a href="${global_1.redirecting_url}">Go to safety!</a>`);
         }
-        return res.redirect(303, 'https://tlc-mvp-app.vercel.app/');
+        return res.redirect(303, `${global_1.redirecting_url}/`);
     }
-    return res.status(404).send('Error! Page not found. <a href="https://tlc-mvp-app.vercel.app">Go to safety!</a>');
+    return res.status(404).send(`Error! Page not found. <a href="${global_1.redirecting_url}">Go to safety!</a>`);
 });
 exports.default = verifyUser;

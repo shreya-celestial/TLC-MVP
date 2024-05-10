@@ -4,7 +4,7 @@ import getData from '../../utils/getData';
 import { DeleteUserByEmail, InsertUserMutation } from '../../gql/user/mutations';
 import generateEmail from '../../utils/generateMail';
 import transporter from '../../utils/nodeMailer';
-import { capitaliseStr, formatDate } from '../../utils/global';
+import { capitaliseStr, formatDate, mailing_url } from '../../utils/global';
 import { hash } from 'bcrypt';
 
 const signup = async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ const signup = async (req: Request, res: Response) => {
       subject: 'Verification of TLC Email',
       text: '',
       html: generateEmail(
-        `https://tlc-mvp-server.vercel.app/user/verifyUser?token=${variables.token}`,
+        `${mailing_url}/user/verifyUser?token=${variables.token}`,
         capitaliseStr(req.body.name)
       ),
     };

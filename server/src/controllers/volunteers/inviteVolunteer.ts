@@ -3,7 +3,7 @@ import getData from "../../utils/getData"
 import { checkEmailAvailability } from "../../gql/volunteers/queries"
 import CryptoJS from "crypto-js"
 import { deleteInvite, newInvite, resendInvite } from "../../gql/volunteers/mutations"
-import { capitaliseStr } from "../../utils/global"
+import { capitaliseStr, mailing_url } from "../../utils/global"
 import generateEmail from "../../utils/generateMail"
 import transporter from "../../utils/nodeMailer"
 
@@ -56,7 +56,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
         to: email,
         subject: 'TLC Invitation',
         text: '',
-        html: generateEmail(`https://tlc-mvp-server.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
+        html: generateEmail(`${mailing_url}/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
       };
 
       transporter.sendMail(mailOptions, async (err)=> {
@@ -124,7 +124,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
       to: email,
       subject: 'TLC Invitation',
       text: '',
-      html: generateEmail(`https://tlc-mvp-server.vercel.app/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
+      html: generateEmail(`${mailing_url}/volunteers/verifyInvite?invite=${token}`, name, 'Accept Invitation', body)
     };
 
     transporter.sendMail(mailOptions, async (err)=> {
