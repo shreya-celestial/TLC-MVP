@@ -14,7 +14,7 @@ export const signup = async ({ body }) => {
 };
 
 export const signupInvite = async (body) => {
-  const url = `${BASE_URL}/volunteers/inviteSignup`;
+  const url = `${BASEURL}/volunteers/inviteSignup`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {

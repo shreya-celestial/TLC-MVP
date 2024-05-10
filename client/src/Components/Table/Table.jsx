@@ -100,12 +100,15 @@ const Table = ({
 
   const isRowSelectable = useMemo(() => {
     return (params) => {
-      return !!params.data && params.data.email !== user.email;
+      if(window.location.href.includes('/volunteers'))
+        return !!params.data && params.data.email !== user.email;
+      else 
+        return true;
     };
   }, [user]);
 
   const getRowStyle = (params) => {
-    if (params.data.email === user.email) {
+    if (params.data.email === user.email && window.location.href.includes('/volunteers')) {
       return { background: '#f5f5f5', fontWeight: 'bold' }; // Apply specific styles to the row
     }
     return null; // Return null to apply default styles
