@@ -1,3 +1,5 @@
+export const BASEURL = process.env.NODE_ENV === 'production' ? 'https://tlc-mvp-server.vercel.app' : 'http://localhost:8080';
+
 export const getLocationData = async (code) => {
   const url = `https://api.postalpincode.in/pincode/${code}`;
   const response = await fetch(url)

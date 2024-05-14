@@ -91,6 +91,7 @@ export const VolunteersColDef = [
   { field: 'phoneNumber', headerName: 'Phone Number', minWidth: 150 },
   { field: 'email', headerName: 'Email ID', minWidth: 250 },
   { field: 'city', headerName: 'City', minWidth: 150 },
+  { field: 'responsibility', headerName: 'Responsibility', minWidth: 150 },
 ];
 
 export const LeadVolunteersColDef = [

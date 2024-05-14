@@ -16,7 +16,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
     const { authorization } = req === null || req === void 0 ? void 0 : req.headers;
     let token;
     if (!authorization) {
@@ -66,10 +66,10 @@ const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message
+            message: typeof ((_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message) === 'string' ? (_b = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _b === void 0 ? void 0 : _b.message : 'Something went wrong. Please try again later!'
         });
     }
-    if (!((_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.update_users) === null || _c === void 0 ? void 0 : _c.affected_rows)) {
+    if (!((_d = (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.update_users) === null || _d === void 0 ? void 0 : _d.affected_rows)) {
         return res.status(404).json({
             status: 'error',
             message: 'User not found at this moment. Please try logging in again!'
@@ -91,8 +91,8 @@ const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function
             message: 'Token expired! Please login again.'
         });
     }
-    if (((_f = (_e = (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.update_users) === null || _e === void 0 ? void 0 : _e.returning[0]) === null || _f === void 0 ? void 0 : _f.isAdmin) === (updateTokenObj === null || updateTokenObj === void 0 ? void 0 : updateTokenObj.isAdmin)) {
-        let userToSend = Object.assign(Object.assign({}, (_h = (_g = data === null || data === void 0 ? void 0 : data.data) === null || _g === void 0 ? void 0 : _g.update_users) === null || _h === void 0 ? void 0 : _h.returning[0]), { key: updatedToken });
+    if (((_g = (_f = (_e = data === null || data === void 0 ? void 0 : data.data) === null || _e === void 0 ? void 0 : _e.update_users) === null || _f === void 0 ? void 0 : _f.returning[0]) === null || _g === void 0 ? void 0 : _g.isAdmin) === (updateTokenObj === null || updateTokenObj === void 0 ? void 0 : updateTokenObj.isAdmin)) {
+        let userToSend = Object.assign(Object.assign({}, (_j = (_h = data === null || data === void 0 ? void 0 : data.data) === null || _h === void 0 ? void 0 : _h.update_users) === null || _j === void 0 ? void 0 : _j.returning[0]), { key: updatedToken });
         return res.status(200).json({
             status: 'success',
             message: 'User still logged in!',
@@ -101,7 +101,7 @@ const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     const tokenObj = {
         email: updateTokenObj === null || updateTokenObj === void 0 ? void 0 : updateTokenObj.email,
-        isAdmin: (_l = (_k = (_j = data === null || data === void 0 ? void 0 : data.data) === null || _j === void 0 ? void 0 : _j.update_users) === null || _k === void 0 ? void 0 : _k.returning[0]) === null || _l === void 0 ? void 0 : _l.isAdmin
+        isAdmin: (_m = (_l = (_k = data === null || data === void 0 ? void 0 : data.data) === null || _k === void 0 ? void 0 : _k.update_users) === null || _l === void 0 ? void 0 : _l.returning[0]) === null || _m === void 0 ? void 0 : _m.isAdmin
     };
     const updatedRoleToken = jsonwebtoken_1.default.sign(tokenObj, process.env.JWT_SECRET_KEY || '', {
         expiresIn: '24h'
@@ -112,16 +112,16 @@ const updateLogStatus = (req, res) => __awaiter(void 0, void 0, void 0, function
     if (roleData === null || roleData === void 0 ? void 0 : roleData.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_m = roleData === null || roleData === void 0 ? void 0 : roleData.errors[0]) === null || _m === void 0 ? void 0 : _m.message
+            message: typeof ((_o = roleData === null || roleData === void 0 ? void 0 : roleData.errors[0]) === null || _o === void 0 ? void 0 : _o.message) === 'string' ? (_p = roleData === null || roleData === void 0 ? void 0 : roleData.errors[0]) === null || _p === void 0 ? void 0 : _p.message : 'Something went wrong. Please try again later!'
         });
     }
-    if (!((_p = (_o = roleData === null || roleData === void 0 ? void 0 : roleData.data) === null || _o === void 0 ? void 0 : _o.update_users) === null || _p === void 0 ? void 0 : _p.affected_rows)) {
+    if (!((_r = (_q = roleData === null || roleData === void 0 ? void 0 : roleData.data) === null || _q === void 0 ? void 0 : _q.update_users) === null || _r === void 0 ? void 0 : _r.affected_rows)) {
         return res.status(404).json({
             status: 'error',
             message: 'User not found at this moment. Please try logging in again!'
         });
     }
-    let userToSend = Object.assign(Object.assign({}, (_r = (_q = roleData === null || roleData === void 0 ? void 0 : roleData.data) === null || _q === void 0 ? void 0 : _q.update_users) === null || _r === void 0 ? void 0 : _r.returning[0]), { key: updatedRoleToken });
+    let userToSend = Object.assign(Object.assign({}, (_t = (_s = roleData === null || roleData === void 0 ? void 0 : roleData.data) === null || _s === void 0 ? void 0 : _s.update_users) === null || _t === void 0 ? void 0 : _t.returning[0]), { key: updatedRoleToken });
     return res.status(200).json({
         status: 'success',
         message: 'User still logged in!',

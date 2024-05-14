@@ -90,9 +90,7 @@ function EnrollmentsDetails() {
     }
   }, [city]);
 
-  const { data, isPending, isError } = useReactQuery([id], getEnrollment, {
-    enabled: viewType !== 'create',
-  });
+  const { data, isPending, isError } = useReactQuery([id], getEnrollment);
 
   const enrollment = data?.data;
 
@@ -107,16 +105,14 @@ function EnrollmentsDetails() {
     setCity(enrollment?.city || '');
     setState(enrollment?.state || '');
 
-    if (viewType !== 'create') {
-      const { fetchWorkshops } = fetchRowDataEnrollment(enrollment);
-      setWorkshopRowData(fetchWorkshops || []);
-      setChildrenRowData(enrollment?.children || []);
-    }
+    const { fetchWorkshops } = fetchRowDataEnrollment(enrollment);
+    setWorkshopRowData(fetchWorkshops || []);
+    setChildrenRowData(enrollment?.children || []);
   }, [enrollment, viewType, isView]);
 
   const { user } = useContext(UserContext);
   const { mutate, isPending: isPendingMutation } = useMutation({
-    mutationFn: type === 'create' ? createEnrollment : updateEnrollment,
+    mutationFn: updateEnrollment,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -124,12 +120,10 @@ function EnrollmentsDetails() {
           message: data.message,
         });
       } else {
-        if (viewType === 'create') nav('/enrollments/success');
-        else
-          setAlertType({
-            type: data.status,
-            message: data.message,
-          });
+        setAlertType({
+          type: data.status,
+          message: data.message,
+        });
       }
     },
     onError: (error) => {
@@ -171,7 +165,7 @@ function EnrollmentsDetails() {
   };
 
   useEffect(() => {
-    if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
+    if (viewType !== 'edit' && viewType !== 'view') {
       nav('/enrollments');
     }
     if (viewType === 'view') {
@@ -179,7 +173,7 @@ function EnrollmentsDetails() {
     }
   }, [viewType]);
 
-  if (viewType !== 'create' && viewType !== 'edit' && viewType !== 'view') {
+  if (viewType !== 'edit' && viewType !== 'view') {
     return;
   }
 
@@ -225,12 +219,12 @@ function EnrollmentsDetails() {
       }),
     };
 
-    if (viewType === 'create') {
-      body = {
-        ...body,
-        enrolled_by: user?.email,
-      };
-    }
+    // if (viewType === 'create') {
+    //   body = {
+    //     ...body,
+    //     enrolled_by: user?.email,
+    //   };
+    // }
     const isValid = validateEnrollment(body);
     if (isValid.type) return setAlertType(isValid);
 
@@ -257,7 +251,7 @@ function EnrollmentsDetails() {
 
   return (
     <>
-      {isPending && viewType !== 'create' && (
+      {isPending && (
         <Box className={classes.loader}>
           <CircularProgress />
         </Box>
@@ -269,7 +263,7 @@ function EnrollmentsDetails() {
           </Typography>
         </Box>
       )}
-      {(viewType === 'create' || data) && (
+      {data && (
         <Box className={classes.root}>
           {alertType && (
             <AlertReact
@@ -282,11 +276,7 @@ function EnrollmentsDetails() {
           <Box className={classes.HeaderMainContent}>
             <PageHeader
               currentPage={
-                viewType === 'view'
-                  ? 'View Enrollment'
-                  : viewType === 'edit'
-                  ? 'Edit Enrollment'
-                  : 'Create Enrollment'
+                viewType === 'view' ? 'View Enrollment' : 'Edit Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}
@@ -526,21 +516,13 @@ function EnrollmentsDetails() {
               >
                 Edit
               </Button>
-            ) : viewType === 'edit' ? (
+            ) : (
               <Button
                 disableTouchRipple
                 className="saveBtn"
                 onClick={() => mutateEnrollmentHandler('edit')}
               >
                 {isPendingMutation ? 'Loading...' : 'Save'}
-              </Button>
-            ) : (
-              <Button
-                disableTouchRipple
-                className="saveBtn"
-                onClick={() => mutateEnrollmentHandler('create')}
-              >
-                {isPendingMutation ? 'Loading...' : 'Create'}
               </Button>
             )}
           </Box>

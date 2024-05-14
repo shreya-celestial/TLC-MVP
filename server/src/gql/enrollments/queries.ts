@@ -78,3 +78,30 @@ export const enrollmentByPK = `
     }
   }
 `;
+
+export const checkEnrollmentAvailability = `
+  query Query($email: String!) {
+    enrollments(where: {email: {_eq: $email}}) {
+      email
+      name
+    }
+    enrollment_invites(where: {email: {_eq: $email}}) {
+      name
+      email
+      mobile_number
+      created_at
+    }
+  }
+`;
+
+export const verifyEnrollmentsInvite = `
+  query Query($token: String!) {
+    enrollment_invites(where: {token: {_eq: $token}}) {
+      created_at
+      email
+      name
+    	mobile_number
+      invited_by
+    }
+  }
+`;

@@ -81,7 +81,7 @@ function EditPage() {
   const classes = useStyles();
   const currentYear = new Date().getFullYear();
   const years = [];
-  for (let year = '2012'; year <= currentYear; year++) {
+  for (let year = '2006'; year <= currentYear; year++) {
     years.push(year);
   }
 

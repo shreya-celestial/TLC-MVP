@@ -338,6 +338,12 @@ export const validateInvite = function (body) {
       message: 'Please provide a valid email',
     };
 
+  if(body.mobile && !validator.isMobilePhone(body.mobile))
+    return {
+      type: 'error',
+      message: 'Please provide a valid phone number',
+    };
+
   return true;
 };
 

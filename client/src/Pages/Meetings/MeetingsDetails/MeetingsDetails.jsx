@@ -257,6 +257,10 @@ function MeetingsDetails() {
     }
   };
 
+  const dateFormat = function (date) {
+    return date?.split('-').reverse().join('-');
+  };
+
   return (
     <>
       {isPending && viewType !== 'create' && (
@@ -348,7 +352,13 @@ function MeetingsDetails() {
                     value={
                       editingWorkshop
                         ? selectedWorkshop
-                        : { types: workshopOptions[0]?.types }
+                        : {
+                            types:
+                              workshopOptions[0]?.types +
+                              ` (${dateFormat(
+                                workshopOptions[0]?.start_date
+                              )})`,
+                          }
                     }
                     onChange={(event, selectedElement) => {
                       if (!selectedElement) {
@@ -379,7 +389,8 @@ function MeetingsDetails() {
                       </Typography>
                     }
                     getOptionLabel={(option) => {
-                      return `${option?.types}`;
+                      const date = dateFormat(option.start_date);
+                      return `${option?.types} ${date ? `(${date})` : ''}`;
                     }}
                   />
                 </FormControl>

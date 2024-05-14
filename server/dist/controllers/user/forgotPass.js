@@ -17,6 +17,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/user/mutations");
 const generateMail_1 = __importDefault(require("../../utils/generateMail"));
 const nodeMailer_1 = __importDefault(require("../../utils/nodeMailer"));
+const global_1 = require("../../utils/global");
 const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
     const { email } = req.body;
@@ -37,7 +38,7 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             to: email,
             subject: 'Reset Password Link',
             text: '',
-            html: (0, generateMail_1.default)(`https://tlc-mvp-server.vercel.app/user/verifyReset?token=${token}`, name, 'Reset Password', body)
+            html: (0, generateMail_1.default)(`${global_1.mailing_url}/user/verifyReset?token=${token}`, name, 'Reset Password', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => {
             if (!err) {

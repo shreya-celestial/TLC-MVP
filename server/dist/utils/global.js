@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatDate = exports.capitaliseStr = void 0;
+exports.redirecting_url = exports.mailing_url = exports.formatDate = exports.capitaliseStr = void 0;
 const capitaliseStr = (str) => {
     let s = str.trim().split('');
     let ans = '';
@@ -20,3 +20,9 @@ const formatDate = (date) => {
     return new Date(date).toISOString();
 };
 exports.formatDate = formatDate;
+// For Development Mode
+exports.mailing_url = 'http://localhost:8080';
+exports.redirecting_url = 'http://localhost:3000';
+// For Production Mode
+// export const mailing_url = 'https://tlc-mvp-server.vercel.app';
+// export const redirecting_url = 'https://tlc-mvp-app.vercel.app';

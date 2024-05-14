@@ -1,4 +1,5 @@
-const BASEURL = 'https://tlc-mvp-server.vercel.app/volunteers';
+import { BASEURL } from "./global";
+const BASE_URL = `${BASEURL}/volunteers`
 
 export const volunteers = async function ({ signal, queryKey, user }) {
   let [page, noOfRecords, filters] = queryKey;
@@ -28,7 +29,7 @@ export const volunteers = async function ({ signal, queryKey, user }) {
     : '';
 
   const res = await fetch(
-    `${BASEURL}/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}${sortParam}`,
+    `${BASE_URL}/searchAndFilter${pageParam}${noOfRecordsParam}${searchParam}${genderParam}${isAdminParam}${isAdminVerifiedParam}${sortParam}`,
     {
       method: 'GET',
       headers: {
@@ -50,7 +51,7 @@ export const volunteers = async function ({ signal, queryKey, user }) {
 };
 
 export const inviteVolunteer = async function ({ data, key }) {
-  const res = await fetch(`${BASEURL}/invite`, {
+  const res = await fetch(`${BASE_URL}/invite`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -74,7 +75,7 @@ export const getVolunteer = async function ({ signal, queryKey, user }) {
   const [email] = queryKey;
 
   const res = await fetch(
-    `${BASEURL}/${email}/details`,
+    `${BASE_URL}/${email}/details`,
     {
       method: 'GET',
       headers: {
@@ -96,7 +97,7 @@ export const getVolunteer = async function ({ signal, queryKey, user }) {
 };
 
 export const updateVolunteerRole = async function ({ email, isAdmin, key }) {
-  const res = await fetch(`${BASEURL}/updateRole`, {
+  const res = await fetch(`${BASE_URL}/updateRole`, {
     method: 'PUT',
     body: JSON.stringify({ email: email, isAdmin: isAdmin }),
     headers: {
@@ -117,7 +118,7 @@ export const updateVolunteerRole = async function ({ email, isAdmin, key }) {
 };
 
 export const deleteVolunteers = async function ({ key, data }) {
-  const res = await fetch(`${BASEURL}/`, {
+  const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ emails: data }),
     headers: {
@@ -138,7 +139,7 @@ export const deleteVolunteers = async function ({ key, data }) {
 };
 
 export const verifyVolunteer = async function ({ isAdmin, email, key }) {
-  const res = await fetch(`${BASEURL}/adminVerified`, {
+  const res = await fetch(`${BASE_URL}/adminVerified`, {
     method: 'PUT',
     body: JSON.stringify({ isAdmin, email }),
     headers: {

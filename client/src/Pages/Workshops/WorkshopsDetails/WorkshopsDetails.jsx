@@ -138,6 +138,7 @@ function WorkshopsDetails() {
 
   const closeLeadPopupAndSetRows = (data, role) => {
     setOpenLeadPopup(false);
+    console.log(data, role);
 
     if (data) {
       const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];

@@ -92,7 +92,6 @@ export const useStyles = makeStyles((theme) => ({
     },
     '& .MuiFormControlLabel-label': {
       fontSize: '14px',
-
     },
   },
 
@@ -170,5 +169,57 @@ export const useStyles = makeStyles((theme) => ({
   notFound: {
     color: '#2F2F2F',
     fontSize: '12px !important',
+  },
+  formControl: {
+    width: '100%',
+    gap: '5px',
+
+    '& label': {
+      fontWeight: '500',
+      fontSize: '14px',
+      color: '#2F2F2F !important',
+      '& .MuiFormLabel-asterisk': {
+        color: theme.palette.primaryRed,
+      },
+    },
+    '& .MuiInputBase-formControl': {
+      border: '1px solid #C6C6C6',
+      borderRadius: '5px',
+      paddingRight: '10px',
+      height: '40px',
+      backgroundColor: '#ffffff',
+      '& input': {
+        fontSize: '14px',
+        padding: '6px 10px',
+        '&:-webkit-autofill': {
+          '-webkit-box-shadow': '0 0 0 100px white inset',
+        },
+      },
+      '& fieldset': {
+        display: 'none',
+      },
+
+      '& .MuiInputAdornment-root button': {
+        padding: '0px',
+        margin: '0px',
+        '& svg': {
+          width: '20px',
+          height: '20px',
+          color: '#2F2F2F',
+        },
+        '& .MuiTouchRipple-root': {
+          display: 'none',
+        },
+      },
+      '&.Mui-disabled': {
+        background: '#E0E0E0 !important',
+        '& input.Mui-disabled': {
+          '-webkit-text-fill-color': '#696969',
+        },
+        '& .MuiInputAdornment-root button svg': {
+          color: '#696969',
+        },
+      },
+    },
   },
 }));

@@ -1,6 +1,6 @@
 import moment from 'moment';
-
-const BASEURL = 'https://tlc-mvp-server.vercel.app/workshops';
+import { BASEURL } from "./global";
+const BASE_URL = `${BASEURL}/workshops`
 
 export const workshops = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters] = queryKey;
@@ -30,7 +30,7 @@ export const workshops = async function ({ signal, queryKey, user }) {
     : '';
 
   const res = await fetch(
-    `${BASEURL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}`,
+    `${BASE_URL}/${pageParam}${noOfRecordsParam}${searchParam}${pastOrUpcomingParam}${startDateParam}${endDateParam}`,
     {
       method: 'GET',
       headers: {
@@ -54,7 +54,7 @@ export const workshops = async function ({ signal, queryKey, user }) {
 export const getWorkshop = async function ({ signal, queryKey, user }) {
   const [id] = queryKey;
   const res = await fetch(
-    `${BASEURL}/${id}/details`,
+    `${BASE_URL}/${id}/details`,
     {
       method: 'GET',
       headers: {
@@ -76,7 +76,7 @@ export const getWorkshop = async function ({ signal, queryKey, user }) {
 };
 
 export const deleteWorkshops = async function ({ data, key }) {
-  const res = await fetch(`${BASEURL}`, {
+  const res = await fetch(`${BASE_URL}`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
     headers: {
@@ -97,7 +97,7 @@ export const deleteWorkshops = async function ({ data, key }) {
 };
 
 export const createWorkshop = async function ({ body, key }) {
-  const res = await fetch(`${BASEURL}`, {
+  const res = await fetch(`${BASE_URL}`, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: {
@@ -118,7 +118,7 @@ export const createWorkshop = async function ({ body, key }) {
 };
 
 export const updateWorkshop = async function ({ body, id, key }) {
-  const res = await fetch(`${BASEURL}/${id}/update`, {
+  const res = await fetch(`${BASE_URL}/${id}/update`, {
     method: 'PUT',
     body: JSON.stringify(body),
     headers: {
