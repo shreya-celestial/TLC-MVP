@@ -22,7 +22,7 @@ app.use((0, cors_1.default)());
 app.use('/user', user_1.default);
 app.use('/volunteers', volunteers_1.default);
 app.use('/workshops', workshops_1.default);
-app.use('/enrollments', auth_1.default, enrollment_1.default);
+app.use('/enrollments', enrollment_1.default);
 app.use('/meetings', auth_1.default, meetings_1.default);
 app.use('/dashboard', auth_1.default, dashboard_1.default);
 app.listen(8080, () => {

@@ -19,10 +19,10 @@ app.use(cors())
 app.use('/user', user)
 app.use('/volunteers', volunteers)
 app.use('/workshops', workshops)
-app.use('/enrollments', auth, enrollments)
+app.use('/enrollments', enrollments)
 app.use('/meetings', auth, meetings)
 app.use('/dashboard', auth, dashboard)
 
-app.listen(8080,()=>{
+app.listen(8080, () => {
   console.log('Listening on http://localhost:8080/')
 })
