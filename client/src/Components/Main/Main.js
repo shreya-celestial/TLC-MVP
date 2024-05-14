@@ -74,7 +74,7 @@ function Main() {
       <BrowserRouter>
         <Wrapper>
           <Routes>
-            {!user && (
+            {!user && !loader && (
               <Route exact path="/enrol" element={<EnrollmentsForm />} />
             )}
             {!user && !loader && <Route exact path="/" element={<Login />} />}

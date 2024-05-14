@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -8,7 +8,6 @@ import {
   TextField,
   Typography,
   Button,
-  CircularProgress,
 } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -18,30 +17,28 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './EnrollmentsForm.styles';
 import AddChildPopup from '../AddChildPopup/AddChildPopup';
 import AccordionTable from '../../../Components/AccordionTable/AccordionTable';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { getLocationData } from '../../../apis/global';
 import { validateEnrollment } from '../../../utils/utils';
 import dayjs from 'dayjs';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { useMutation } from '@tanstack/react-query';
-import { createEnrollment, updateEnrollment } from '../../../apis/enrollments';
-import UserContext from '../../../store/userContext';
+import { createEnrollment} from '../../../apis/enrollments';
 import logo from '../../../assets/Icons/tlcLogo.png';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-
-const city = ['Bangalore', 'Dehradun', 'Noida', 'Gurgaon'];
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 
 function EnrollmentsDetails() {
-  const { type, id } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const email = queryParams.get('for');
+  const name = queryParams.get('name');
+  const phone = queryParams.get('phone');
   const classes = useStyles();
 
-  const [name, setName] = useState('');
   const [gender, setGender] = useState('male');
   const [dob, setDob] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [pincode, setPincode] = useState('');
   const [cities, setCities] = useState(null);
@@ -83,7 +80,7 @@ function EnrollmentsDetails() {
   }, [city]);
 
   const { mutate, isPending: isPendingMutation } = useMutation({
-    mutationFn: type === 'create' ? createEnrollment : updateEnrollment,
+    mutationFn: createEnrollment,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -139,9 +136,13 @@ function EnrollmentsDetails() {
     e.preventDefault();
     setAlertKey((prev) => !prev);
 
+    let token = queryParams.get('ticket');
+    token = token?.replaceAll(' ', '+');
+
     let body = {
       name: name?.trim(),
       email,
+      token,
       mobile_number: phone?.trim(),
       dob: moment(dob).format('MM/DD/YYYY'),
       gender,
@@ -176,14 +177,8 @@ function EnrollmentsDetails() {
       return;
     }
 
-    // if (viewType === 'create') {
-    //   body = {
-    //     ...body,
-    //     enrolled_by: user?.email,
-    //   };
-    // }
+    mutate({ body });
 
-    // mutate({ body, id });
   };
 
   const handleDeleteRow = function ({ email, row, id }) {
@@ -233,16 +228,32 @@ function EnrollmentsDetails() {
                     <Box className={classes.formElementBox}>
                       <FormControl className={classes.formControl} required>
                         <FormLabel htmlFor="fullNameField">Name</FormLabel>
-                        <TextField
-                          id="fullNameField"
-                          placeholder="Enter Your Full Name"
-                          name="name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                        />
+                        <Typography variant={'body2'} className={classes.borderClass}>
+                          {name}
+                        </Typography>
                       </FormControl>
                     </Box>
 
+                    {/* phone number and email address */}
+                    <Box className={classes.formElementBox}>
+                      <FormControl className={classes.formControl} required>
+                        <FormLabel htmlFor="phoneNumberField">
+                          Phone Number
+                        </FormLabel>
+                        <Typography variant={'body2'} className={classes.borderClass}>
+                          {phone}
+                        </Typography>
+                      </FormControl>
+                      <FormControl className={classes.formControl} required>
+                        <FormLabel htmlFor="emailField">
+                          Email Address
+                        </FormLabel>
+                        <Typography variant={'body2'} className={classes.borderClass}>
+                          {email}
+                        </Typography>
+                      </FormControl>
+                    </Box>
+                    
                     {/* gender and DOB */}
                     <Box className={classes.formElementBox}>
                       <FormControl className={classes.formControl} required>
@@ -278,34 +289,6 @@ function EnrollmentsDetails() {
                             format="DD/MM/YYYY"
                           />
                         </LocalizationProvider>
-                      </FormControl>
-                    </Box>
-                    {/* phone number and email address */}
-                    <Box className={classes.formElementBox}>
-                      <FormControl className={classes.formControl} required>
-                        <FormLabel htmlFor="phoneNumberField">
-                          Phone Number
-                        </FormLabel>
-                        <TextField
-                          id="phoneNumberField"
-                          placeholder="Enter Your Phone Number"
-                          name="phone"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                        />
-                      </FormControl>
-                      <FormControl className={classes.formControl} required>
-                        <FormLabel htmlFor="emailField">
-                          Email Address
-                        </FormLabel>
-                        <TextField
-                          type="email"
-                          id="emailField"
-                          placeholder="Enter Your Email Address"
-                          name="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
                       </FormControl>
                     </Box>
                   </Box>
@@ -431,7 +414,7 @@ function EnrollmentsDetails() {
                   type="submit"
                   onClick={mutateEnrollmentHandler}
                 >
-                  {false ? 'loading...' : 'Sign up'}
+                  {isPendingMutation ? 'loading...' : 'Enrol'}
                 </Button>
               </Box>
             </form>

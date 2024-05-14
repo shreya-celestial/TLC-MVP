@@ -9,25 +9,20 @@ import {
   FormControl,
   FormLabel,
   IconButton,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './InvitePopup.styles';
 import AlertReact from '../../../Components/Alert/AlertReact';
-import { inviteVolunteer } from '../../../apis/volunteers';
 import { useMutation } from '@tanstack/react-query';
 import { validateInvite } from '../../../utils/utils';
 import UserContext from '../../../store/userContext';
+import { inviteEnrollment } from '../../../apis/enrollments';
 
 function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
   const classes = useStyles();
   const [open, SetOpen] = useState(true);
-
-  const [roleDropdown, setRoleDropdown] = useState('volunteer');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -39,7 +34,7 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
 
   const { user } = useContext(UserContext);
   const { mutate, isPending } = useMutation({
-    mutationFn: inviteVolunteer,
+    mutationFn: inviteEnrollment,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -61,11 +56,12 @@ function InvitePopup({ hideInviteModal, hideInviteModalAndShowSuccess }) {
   const sendInvite = function (e) {
     e.preventDefault();
     const body = {
-      isAdmin: roleDropdown === 'admin' ? 'true' : 'false',
+      mobile: phone.trim(),
       name: fullName.trim(),
       email,
+      invitedBy: user?.email
     };
-
+    
     const isValid = validateInvite(body);
     if (isValid.type) return setAlertType(isValid);
     mutate({ data: body, key: user?.key });

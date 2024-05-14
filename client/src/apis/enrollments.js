@@ -68,13 +68,12 @@ export const getEnrollment = async function ({ signal, queryKey, user }) {
   return resData;
 };
 
-export const createEnrollment = async function ({ body, key }) {
+export const createEnrollment = async function ({ body }) {
   const res = await fetch(`${BASE_URL}`, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json'
     },
   });
 
@@ -114,6 +113,27 @@ export const deleteEnrollments = async function ({ data, key }) {
   const res = await fetch(`${BASE_URL}/`, {
     method: 'DELETE',
     body: JSON.stringify({ ids: data }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+export const inviteEnrollment = async function ({ data, key }) {
+  const res = await fetch(`${BASE_URL}/invite`, {
+    method: 'POST',
+    body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${key}`,
