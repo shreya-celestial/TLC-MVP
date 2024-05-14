@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
+  Box,
   Button,
   Chip,
   Dialog,
@@ -56,6 +57,7 @@ function LeadVolunteerPopup({
   const [volunteersList, setVolunteersList] = useState([]);
   const [selectedVolunteers, setSelectedVolunteers] = useState([]);
   const [role, setRole] = useState('volunteer');
+  const [responsibility, setResponsibility] = useState('');
 
   useEffect(() => {
     if (data) {
@@ -87,7 +89,6 @@ function LeadVolunteerPopup({
 
       <DialogContent className={classes.DiaogContent}>
         {/* autocomplete  for showing list of volunteers*/}
-
         <FormControl className={classes.formControl}>
           <FormLabel>Search Volunteers & Lead Volunteers</FormLabel>
           {isError && (
@@ -145,8 +146,17 @@ function LeadVolunteerPopup({
             }
           />
         </FormControl>
-
         {/* radio button for selecting role for workshop */}
+        <FormControl className={classes.formControl}>
+          <FormLabel htmlFor="responsibility">Responsibility</FormLabel>
+          <TextField
+            id="responsibility"
+            placeholder="Enter Responsibility"
+            name="responsibility"
+            value={responsibility}
+            onChange={(e) => setResponsibility(e.target.value)}
+          />
+        </FormControl>
         <FormControl className={classes.formControl}>
           <FormLabel id="volunteerRadioBtn">Role Type</FormLabel>
           <RadioGroup
@@ -183,7 +193,11 @@ function LeadVolunteerPopup({
 
         <Button
           onClick={() => {
-            closeLeadPopupAndSetRows(selectedVolunteers, role);
+            const updatedSelectedVolunteers = selectedVolunteers.map((sv) => {
+              if (responsibility) return { ...sv, responsibility };
+              return sv;
+            });
+            closeLeadPopupAndSetRows(updatedSelectedVolunteers, role);
             setRole('volunteer');
           }}
           className="doneBtn"
