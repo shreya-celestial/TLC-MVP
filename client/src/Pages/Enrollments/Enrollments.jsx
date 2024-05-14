@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { enrollments } from '../../apis/enrollments';
 import PaginationComp from '../../Components/Table/PaginationComp';
 
-import InvitePopup from '../Volunteers/InvitePopup/InvitePopup';
+import InvitePopup from './InvitePopup/InvitePopup';
 import DeletePopup from './../../Components/DeletePopup/DeletePopup';
 import VerifyPopup from '../Volunteers/VerifyPopup/VerifyPopup';
 
@@ -191,10 +191,10 @@ const Enrollments = () => {
               className="createEnrollBtn"
               disableRipple
               onClick={() => {
-                navigate(`/enrollments/details/create`);
+                setShowInviteModal(true);
               }}
             >
-              Create Enrollment
+              Invite
             </Button>
           )}
         </Box>

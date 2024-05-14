@@ -24,6 +24,7 @@ import { logStatus } from '../../apis/user';
 import ErrorPage from '../../Pages/ErrorPage/ErrorPage';
 import Loader from '../Loader/Loader';
 import EditPage from '../../Pages/EditPage/EditPage';
+import EnrollmentsForm from '../../Pages/Enrollments/EnrollmentForm/EnrollmentForm';
 
 let SESSIONUSER = localStorage.getItem('keys');
 SESSIONUSER = SESSIONUSER ? JSON.parse(SESSIONUSER) : null;
@@ -47,8 +48,8 @@ function Main() {
       }
       if (userData?.message?.includes('expire')) {
         localStorage.clear();
-        window.location.href = '/'
-        return
+        window.location.href = '/';
+        return;
       }
       setError(() => {
         localStorage.clear();
@@ -73,6 +74,9 @@ function Main() {
       <BrowserRouter>
         <Wrapper>
           <Routes>
+            {!user && (
+              <Route exact path="/enrol" element={<EnrollmentsForm />} />
+            )}
             {!user && !loader && <Route exact path="/" element={<Login />} />}
             {!user && !loader && (
               <Route exact path="/signup" element={<Signup />} />
@@ -83,9 +87,7 @@ function Main() {
             {!user && !loader && (
               <Route exact path="/resetPass" element={<ResetPassword />} />
             )}
-            {!user && !loader && (
-              <Route exact path="*" element={<Login />} />
-            )}
+            {!user && !loader && <Route exact path="*" element={<Login />} />}
             {loader && !error && <Route exact path="*" element={<Loader />} />}
             {loader && error && (
               <Route exact path="*" element={<ErrorPage>{error}</ErrorPage>} />
