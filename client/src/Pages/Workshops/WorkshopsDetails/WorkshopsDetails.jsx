@@ -138,7 +138,6 @@ function WorkshopsDetails() {
 
   const closeLeadPopupAndSetRows = (data, role) => {
     setOpenLeadPopup(false);
-    console.log(data, role);
 
     if (data) {
       const combinedArray = [...volunteersRowData, ...leadVolunteersRowData];
@@ -298,6 +297,30 @@ function WorkshopsDetails() {
   if (!user?.isAdmin && viewType !== 'view') {
     return;
   }
+  const updateVol = function (data, type) {
+    console.log(data, type);
+    if (type === 'vol') {
+      setVolunteersRowData((prev) => {
+        const newData = prev.map((p) => {
+          if (p.email === data.email)
+            return { ...p, responsibility: data.responsibility };
+          return p;
+        });
+        return newData;
+      });
+    }
+
+    if (type === 'leadvol') {
+      setLeadVolunteersRowData((prev) => {
+        const newData = prev.map((p) => {
+          if (p.email === data.email)
+            return { ...p, responsibility: data.responsibility };
+          return p;
+        });
+        return newData;
+      });
+    }
+  };
 
   return (
     <>
@@ -470,16 +493,20 @@ function WorkshopsDetails() {
               </Box>
               <Box className={classes.AccordionContainer}>
                 <AccordionTable
+                  type="vol"
                   rowData={volunteersRowData}
                   headingName={'Volunteers'}
                   isView={isView}
                   handleDeleteRow={handleDeleteRow}
+                  updateVol={updateVol}
                 />
                 <AccordionTable
+                  type="leadvol"
                   rowData={leadVolunteersRowData}
                   headingName={'Lead Volunteers'}
                   isView={isView}
                   handleDeleteRow={handleDeleteRow}
+                  updateVol={updateVol}
                 />
               </Box>
             </Box>
