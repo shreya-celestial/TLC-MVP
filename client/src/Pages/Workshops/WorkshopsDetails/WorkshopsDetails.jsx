@@ -242,8 +242,8 @@ function WorkshopsDetails() {
       start_date: modifiedStartDate,
       end_date: modifiedEndDate,
       concluding_date: modifiedConcludingDate,
-      vols: volunteersRowData.map((vol) => vol.email),
-      leads: leadVolunteersRowData.map((vol) => vol.email),
+      vols: volunteersRowData.map((vol) => ({user_email: vol.email, responsibility: vol.responsibility})),
+      leads: leadVolunteersRowData.map((vol) => ({user_email: vol.email, responsibility: vol.responsibility})),
       participants: participantsRowData.map((participant) => participant.id),
       meetings: meetingsRowData.map((meeting) => meeting.id),
     };
@@ -298,7 +298,7 @@ function WorkshopsDetails() {
     return;
   }
   const updateVol = function (data, type) {
-    console.log(data, type);
+    
     if (type === 'vol') {
       setVolunteersRowData((prev) => {
         const newData = prev.map((p) => {

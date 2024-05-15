@@ -4,17 +4,31 @@ import { workshopDetails } from "../../gql/workshops/queries";
 
 const singleWorkshop = async (req: Request, res: Response) => {
   const { id } = req.params;
-  
-  const data = await getData(workshopDetails,{id})
-  if(data?.errors)
-  {
+
+  const data = await getData(workshopDetails, { id })
+  if (data?.errors) {
     return res.status(400).json({
       status: 'error',
       message: data?.errors[0]?.message
     })
   }
-  if(data?.data?.workshops_by_pk)
-  {
+  if (data?.data?.workshops_by_pk) {
+    data.data.workshops_by_pk.workshop_lead_volunteers = data?.data?.workshops_by_pk?.workshop_lead_volunteers.map((lead: any) => {
+      lead.user = {
+        ...lead.user,
+        responsibility: lead.responsibility
+      };
+      delete lead["responsibility"]
+      return lead
+    })
+    data.data.workshops_by_pk.workshop_volunteers = data?.data?.workshops_by_pk?.workshop_volunteers.map((vol: any) => {
+      vol.user = {
+        ...vol.user,
+        responsibility: vol.responsibility
+      };
+      delete vol["responsibility"]
+      return vol
+    })
     return res.status(200).json({
       status: 'success',
       message: "Data fetched successfully!",

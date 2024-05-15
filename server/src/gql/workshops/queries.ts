@@ -64,6 +64,7 @@ export const workshopDetails = `
           state
           yearOfJoining
         }
+        responsibility
       }
       workshop_participants {
         enrollment {
@@ -100,6 +101,7 @@ export const workshopDetails = `
           state
           yearOfJoining
         }
+        responsibility
       }
     }
   }

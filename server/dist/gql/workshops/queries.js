@@ -66,6 +66,7 @@ exports.workshopDetails = `
           state
           yearOfJoining
         }
+        responsibility
       }
       workshop_participants {
         enrollment {
@@ -102,6 +103,7 @@ exports.workshopDetails = `
           state
           yearOfJoining
         }
+        responsibility
       }
     }
   }
