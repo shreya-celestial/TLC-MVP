@@ -30,6 +30,7 @@ function LeadVolunteerPopup({
   openLeadPopup,
   closeLeadPopup,
   closeLeadPopupAndSetRows,
+  volData,
 }) {
   const classes = useStyles();
 
@@ -59,6 +60,16 @@ function LeadVolunteerPopup({
   const [role, setRole] = useState('volunteer');
   const [responsibility, setResponsibility] = useState('');
 
+  const updateVol = function (data) {
+    closeLeadPopupAndSetRows(data);
+  };
+
+  useEffect(() => {
+    if (volData) {
+      setResponsibility(volData.responsibility);
+    }
+  }, [volData]);
+
   useEffect(() => {
     if (data) {
       const filtered = data?.data?.users?.filter((user) => {
@@ -77,7 +88,11 @@ function LeadVolunteerPopup({
   return (
     <Dialog open={openLeadPopup} className={classes.Dialog}>
       <DialogTitle className={classes.TitleAndClose}>
-        <Typography>Add Volunteers and Lead Volunteers</Typography>
+        <Typography>
+          {volData
+            ? 'Edit Responsibility'
+            : 'Add Volunteers and Lead Volunteers'}
+        </Typography>
         <IconButton
           className={classes.CloseIcon}
           disableRipple
@@ -89,64 +104,81 @@ function LeadVolunteerPopup({
 
       <DialogContent className={classes.DiaogContent}>
         {/* autocomplete  for showing list of volunteers*/}
-        <FormControl className={classes.formControl}>
-          <FormLabel>Search Volunteers & Lead Volunteers</FormLabel>
-          {isError && (
-            <Typography variant="body2" color="error">
-              Cannot fetch volunteers
-            </Typography>
-          )}
-          <Autocomplete
-            loading={isPending}
-            options={volunteersList}
-            getOptionLabel={(option) => `${option.name} (${option.email})`}
-            onChange={(event, selectedElements) => {
-              setSelectedVolunteers((prev) => selectedElements);
-            }}
-            className={classes.autocomplete}
-            renderInput={(params) => (
-              <TextField
-                className={classes.autocompleteTextField}
-                placeholder="Search to add"
-                {...params}
-                onChange={(e) => setFilters({ search: e.target.value })}
-                onBlur={(e) => {
-                  setFilters({ search: '' });
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <>
-                      <InputAdornment position="start">
-                        <SearchOutlinedIcon />
-                      </InputAdornment>
-                      {params.InputProps.startAdornment}
-                    </>
-                  ),
-                }}
-              />
-            )}
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => {
-                return <Chip label={option.name} {...getTagProps({ index })} />;
-              })
-            }
-            PaperComponent={(props) => (
-              <Paper
-                {...props}
-                className={classes.customAutocompleteDropdown}
-              />
-            )}
-            multiple
-            popupIcon={<ExpandMoreOutlinedIcon />}
-            noOptionsText={
-              <Typography className={classes.notFound}>
-                No Match Found
+        {!volData && (
+          <FormControl className={classes.formControl}>
+            <FormLabel>Search Volunteers & Lead Volunteers</FormLabel>
+            {isError && (
+              <Typography variant="body2" color="error">
+                Cannot fetch volunteers
               </Typography>
-            }
-          />
-        </FormControl>
-        {/* radio button for selecting role for workshop */}
+            )}
+            <Autocomplete
+              loading={isPending}
+              options={volunteersList}
+              getOptionLabel={(option) => `${option.name} (${option.email})`}
+              onChange={(event, selectedElements) => {
+                setSelectedVolunteers((prev) => selectedElements);
+              }}
+              className={classes.autocomplete}
+              renderInput={(params) => (
+                <TextField
+                  className={classes.autocompleteTextField}
+                  placeholder="Search to add"
+                  {...params}
+                  onChange={(e) => setFilters({ search: e.target.value })}
+                  onBlur={(e) => {
+                    setFilters({ search: '' });
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <SearchOutlinedIcon />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }}
+                />
+              )}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => {
+                  return (
+                    <Chip label={option.name} {...getTagProps({ index })} />
+                  );
+                })
+              }
+              PaperComponent={(props) => (
+                <Paper
+                  {...props}
+                  className={classes.customAutocompleteDropdown}
+                />
+              )}
+              multiple
+              popupIcon={<ExpandMoreOutlinedIcon />}
+              noOptionsText={
+                <Typography className={classes.notFound}>
+                  No Match Found
+                </Typography>
+              }
+            />
+          </FormControl>
+        )}
+        {volData && (
+          <FormControl className={classes.formControl}>
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <TextField
+              id="email"
+              placeholder=""
+              name="email"
+              value={volData?.email}
+              disabled
+            />
+          </FormControl>
+        )}
+
+        {/* text field for selecting responsibility of a volunteer */}
         <FormControl className={classes.formControl}>
           <FormLabel htmlFor="responsibility">Responsibility</FormLabel>
           <TextField
@@ -157,28 +189,30 @@ function LeadVolunteerPopup({
             onChange={(e) => setResponsibility(e.target.value)}
           />
         </FormControl>
-        <FormControl className={classes.formControl}>
-          <FormLabel id="volunteerRadioBtn">Role Type</FormLabel>
-          <RadioGroup
-            defaultValue="volunteer"
-            name="role"
-            className={classes.radioGroup}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <FormControlLabel
-              value="volunteer"
-              control={<Radio className="radioBtn" disableRipple />}
-              label="Volunteer"
-              className={classes.formControlLabel}
-            />
-            <FormControlLabel
-              value="leadvolunteer"
-              control={<Radio className="radioBtn" disableRipple />}
-              label="Lead Volunteer"
-              className={classes.formControlLabel}
-            />
-          </RadioGroup>
-        </FormControl>
+        {!volData && (
+          <FormControl className={classes.formControl}>
+            <FormLabel id="volunteerRadioBtn">Role Type</FormLabel>
+            <RadioGroup
+              defaultValue="volunteer"
+              name="role"
+              className={classes.radioGroup}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <FormControlLabel
+                value="volunteer"
+                control={<Radio className="radioBtn" disableRipple />}
+                label="Volunteer"
+                className={classes.formControlLabel}
+              />
+              <FormControlLabel
+                value="leadvolunteer"
+                control={<Radio className="radioBtn" disableRipple />}
+                label="Lead Volunteer"
+                className={classes.formControlLabel}
+              />
+            </RadioGroup>
+          </FormControl>
+        )}
       </DialogContent>
 
       {/* action buttons */}
@@ -193,12 +227,22 @@ function LeadVolunteerPopup({
 
         <Button
           onClick={() => {
-            const updatedSelectedVolunteers = selectedVolunteers.map((sv) => {
-              if (responsibility) return { ...sv, responsibility };
-              return sv;
-            });
-            closeLeadPopupAndSetRows(updatedSelectedVolunteers, role);
-            setRole('volunteer');
+            if (volData) {
+              updateVol(
+                {
+                  responsibility,
+                  email: volData.email,
+                }
+                // childData.id
+              );
+            } else {
+              const updatedSelectedVolunteers = selectedVolunteers.map((sv) => {
+                if (responsibility) return { ...sv, responsibility };
+                return sv;
+              });
+              closeLeadPopupAndSetRows(updatedSelectedVolunteers, role);
+              setRole('volunteer');
+            }
           }}
           className="doneBtn"
           disableRipple

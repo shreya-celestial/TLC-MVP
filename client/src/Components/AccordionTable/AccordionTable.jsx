@@ -24,15 +24,18 @@ import {
 
 import { ChildrenColDef } from '../../Pages/Enrollments/coldefs/coldefs';
 import AddChildPopup from '../../Pages/Enrollments/AddChildPopup/AddChildPopup';
+import LeadVolunteerPopup from '../../Pages/Workshops/LeadVolunteerPopup/LeadVolunteerPopup';
 import { workShopColDef } from '../../Pages/Volunteers/coldefs/coldefs';
 import { MeetingPageEnrollmentsColDef } from '../../Pages/Meetings/coldefs/coldefs';
 
 function AccordionTable({
+  type,
   rowData,
   headingName,
   handleDeleteRow,
   isView,
   updateChild,
+  updateVol,
   columnDefs,
 }) {
   const defaultColDef = {
@@ -105,6 +108,63 @@ function AccordionTable({
     );
   };
 
+  const DeleteEditButtonCellVol = (param) => {
+    const classes = useStyles();
+    const [volData, setVolData] = useState('');
+    const [openVol, setOpenVol] = useState(false);
+    // console.log(param.data, type);
+
+    const handleCloseOpenVol = () => {
+      setOpenVol(false);
+    };
+
+    const handleEditVol = () => {
+      setVolData({
+        responsibility: param.data.responsibility,
+        email: param.data.email,
+      });
+      setOpenVol(true);
+    };
+
+    const updateVolAndClosePopup = (data) => {
+      updateVol(data, type);
+      setOpenVol(false);
+    };
+
+    return (
+      <Box className={classes.BtnWrapper}>
+        <IconButton
+          className={`${classes.childActionBtn} childEditIcon`}
+          disableRipple
+          onClick={handleEditVol}
+        >
+          <EditIcon />
+        </IconButton>
+
+        <IconButton
+          className={`${classes.childActionBtn} childDeleteIcon`}
+          disableRipple
+          onClick={() =>
+            handleDeleteRow({
+              email: param.data.email,
+              row: headingName,
+              id: param.data.id,
+            })
+          }
+        >
+          <DeleteForeverIcon />
+        </IconButton>
+
+        <LeadVolunteerPopup
+          openLeadPopup={openVol}
+          closeLeadPopup={handleCloseOpenVol}
+          volData={volData}
+          closeLeadPopupAndSetRows={updateVolAndClosePopup}
+        />
+      </Box>
+    );
+  };
+
   const DeleteButtonCell = (param) => {
     const classes = useStyles();
 
@@ -130,7 +190,7 @@ function AccordionTable({
     !isView
       ? {
           headerName: 'Actions',
-          cellRenderer: DeleteButtonCell,
+          cellRenderer: DeleteEditButtonCellVol,
           minWidth: 100,
         }
       : undefined,
@@ -141,7 +201,7 @@ function AccordionTable({
     !isView
       ? {
           headerName: 'Actions',
-          cellRenderer: DeleteButtonCell,
+          cellRenderer: DeleteEditButtonCellVol,
           minWidth: 100,
         }
       : undefined,

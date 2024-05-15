@@ -91,7 +91,14 @@ export const VolunteersColDef = [
   { field: 'phoneNumber', headerName: 'Phone Number', minWidth: 150 },
   { field: 'email', headerName: 'Email ID', minWidth: 250 },
   { field: 'city', headerName: 'City', minWidth: 150 },
-  { field: 'responsibility', headerName: 'Responsibility', minWidth: 150 },
+  {
+    field: 'responsibility',
+    headerName: 'Responsibility',
+    minWidth: 150,
+    valueFormatter: (params) => {
+      return `${params.value ? params.value : '-'}`;
+    },
+  },
 ];
 
 export const LeadVolunteersColDef = [
@@ -100,6 +107,14 @@ export const LeadVolunteersColDef = [
   { field: 'email', headerName: 'Email ID', minWidth: 250 },
   { field: 'phoneNumber', headerName: 'Phone Number', minWidth: 150 },
   { field: 'city', headerName: 'City', minWidth: 150 },
+  {
+    field: 'responsibility',
+    headerName: 'Responsibility',
+    minWidth: 150,
+    valueFormatter: (params) => {
+      return `${params.value ? params.value : '-'}`;
+    },
+  },
 ];
 
 export const ParticipantColDef = [
