@@ -11,10 +11,12 @@ const updateWorkshop_1 = __importDefault(require("../controllers/workshops/updat
 const deleteWorkshop_1 = __importDefault(require("../controllers/workshops/deleteWorkshop"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const adminAuth_1 = __importDefault(require("../middlewares/adminAuth"));
+const dropdownWorkshops_1 = __importDefault(require("../controllers/workshops/dropdownWorkshops"));
 const router = express_1.default.Router();
 router.post('/', adminAuth_1.default, newWorkshop_1.default);
 router.get('/', auth_1.default, allPageWorkshops_1.default);
 router.get('/:id/details', auth_1.default, singleWorkshop_1.default);
 router.put('/:id/update', adminAuth_1.default, updateWorkshop_1.default);
 router.delete('/', adminAuth_1.default, deleteWorkshop_1.default);
+router.get('/dropdown', auth_1.default, dropdownWorkshops_1.default);
 exports.default = router;

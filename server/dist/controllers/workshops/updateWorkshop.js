@@ -26,15 +26,17 @@ const updateWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const vols = req.body.vols.map((vol) => {
         var _a;
         return {
-            user_email: vol,
-            workshop_id: (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id
+            user_email: vol.user_email,
+            workshop_id: (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id,
+            responsibility: vol.responsibility
         };
     });
     const leads = req.body.leads.map((lead) => {
         var _a;
         return {
-            user_email: lead,
-            workshop_id: (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id
+            user_email: lead.user_email,
+            workshop_id: (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id,
+            responsibility: lead.responsibility
         };
     });
     const participants = (_d = (_c = req === null || req === void 0 ? void 0 : req.body) === null || _c === void 0 ? void 0 : _c.participants) === null || _d === void 0 ? void 0 : _d.map((part) => {

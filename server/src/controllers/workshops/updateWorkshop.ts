@@ -4,28 +4,29 @@ import getData from "../../utils/getData"
 import { updateWorkshopById, updateWorkshopMeetings } from "../../gql/workshops/mutations"
 
 const updateWorkshop = async (req: Request, res: Response) => {
-  if(req?.body?.meetings?.length === 0)
-  {
+  if (req?.body?.meetings?.length === 0) {
     return res.status(400).json({
       status: 'error',
       message: 'Workshop meetings required!'
     })
   }
-  const vols = req.body.vols.map((vol: string)=>{
+  const vols = req.body.vols.map((vol: any) => {
     return {
-      user_email: vol,
-      workshop_id: req?.params?.id
+      user_email: vol.user_email,
+      workshop_id: req?.params?.id,
+      responsibility: vol.responsibility
     }
   })
-  const leads = req.body.leads.map((lead: string)=>{
+  const leads = req.body.leads.map((lead: any) => {
     return {
-      user_email: lead,
-      workshop_id: req?.params?.id
+      user_email: lead.user_email,
+      workshop_id: req?.params?.id,
+      responsibility: lead.responsibility
     }
   })
-  const participants = req?.body?.participants?.map((part: any)=>{
+  const participants = req?.body?.participants?.map((part: any) => {
     return {
-      enrollment_id: part, 
+      enrollment_id: part,
       workshop_id: req?.params?.id
     }
   })
@@ -38,19 +39,18 @@ const updateWorkshop = async (req: Request, res: Response) => {
     types: capitaliseStr(req.body.types),
     venue_city: capitaliseStr(req.body.venue_city),
     vols,
-    leads, 
+    leads,
     participants,
     workshop_id: null
   }
   const data = await getData(updateWorkshopById, variables)
-  if(data?.errors)
-  {
+  if (data?.errors) {
     return res.status(400).json({
       status: 'error',
       message: data?.errors[0]?.message
     })
   }
-  const meeting = req?.body?.meetings?.map((meeting: any)=>{
+  const meeting = req?.body?.meetings?.map((meeting: any) => {
     return {
       id: {
         _eq: meeting
@@ -58,18 +58,16 @@ const updateWorkshop = async (req: Request, res: Response) => {
     }
   })
   const meetingData = await getData(updateWorkshopMeetings, {
-    meeting, 
+    meeting,
     id: req?.params?.id
   })
-  if(meetingData?.errors)
-  {
+  if (meetingData?.errors) {
     return res.status(400).json({
       status: 'error',
       message: meetingData?.errors[0]?.message
     })
   }
-  if(meetingData?.data?.update_meetings?.affected_rows)
-  {
+  if (meetingData?.data?.update_meetings?.affected_rows) {
     return res.status(200).json({
       status: 'success',
       message: 'Workshop updated successfully!'

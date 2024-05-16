@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redirecting_url = exports.mailing_url = exports.formatDate = exports.capitaliseStr = void 0;
+const moment_1 = __importDefault(require("moment"));
 const capitaliseStr = (str) => {
     let s = str.trim().split('');
     let ans = '';
@@ -17,7 +21,8 @@ const capitaliseStr = (str) => {
 };
 exports.capitaliseStr = capitaliseStr;
 const formatDate = (date) => {
-    return new Date(date).toISOString();
+    // return new Date(date).toISOString()
+    return (0, moment_1.default)(new Date(date)).format('YYYY-MM-DD');
 };
 exports.formatDate = formatDate;
 // For Development Mode
