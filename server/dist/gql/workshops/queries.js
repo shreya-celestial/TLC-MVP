@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.workshopDetails = exports.getPageWorkshops = void 0;
+exports.workshopsDD = exports.workshopDetails = exports.getPageWorkshops = void 0;
 exports.getPageWorkshops = `
   query AllWorkshops($offset: Int!, $limit: Int!, $order_by: [workshops_order_by!], $where: workshops_bool_exp) {
     workshops(offset: $offset, limit: $limit, order_by: $order_by, where: $where) {
@@ -105,6 +105,20 @@ exports.workshopDetails = `
         }
         responsibility
       }
+    }
+  }
+`;
+exports.workshopsDD = `
+  query MyQuery($limit: Int) {
+    upcoming: workshops(where: {start_date: {_gte: "now()"}}, order_by: {start_date: asc}, limit: 20) {
+      start_date
+      types
+      id
+    }
+    past: workshops(where: {start_date: {_lt: "now()"}}, order_by: {start_date: desc}, limit: $limit) {
+      start_date
+      types
+      id
     }
   }
 `;

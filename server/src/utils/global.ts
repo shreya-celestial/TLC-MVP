@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const capitaliseStr = (str: string) => {
   let s = str.trim().split('');
   let ans = '';
@@ -17,7 +19,8 @@ export const capitaliseStr = (str: string) => {
 }
 
 export const formatDate = (date: string) => {
-  return new Date(date).toISOString()
+  // return new Date(date).toISOString()
+  return moment(new Date(date)).format('YYYY-MM-DD')
 }
 
 // For Development Mode

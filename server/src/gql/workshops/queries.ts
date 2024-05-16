@@ -107,3 +107,17 @@ export const workshopDetails = `
   }
 `;
 
+export const workshopsDD = `
+  query MyQuery($limit: Int) {
+    upcoming: workshops(where: {start_date: {_gte: "now()"}}, order_by: {start_date: asc}, limit: 20) {
+      start_date
+      types
+      id
+    }
+    past: workshops(where: {start_date: {_lt: "now()"}}, order_by: {start_date: desc}, limit: $limit) {
+      start_date
+      types
+      id
+    }
+  }
+`;

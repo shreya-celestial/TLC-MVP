@@ -6,6 +6,7 @@ import updateWorkshop from "../controllers/workshops/updateWorkshop";
 import deleteWorkshop from "../controllers/workshops/deleteWorkshop";
 import auth from "../middlewares/auth";
 import adminAuth from "../middlewares/adminAuth";
+import dropdownWorkshops from "../controllers/workshops/dropdownWorkshops";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.get('/', auth, allPageWorkshops)
 router.get('/:id/details', auth, singleWorkshop)
 router.put('/:id/update', adminAuth, updateWorkshop)
 router.delete('/', adminAuth, deleteWorkshop)
+router.get('/dropdown', auth, dropdownWorkshops)
 
 export default router
