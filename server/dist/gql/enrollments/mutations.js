@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resendEnrollmentInvite = exports.deleteEnrollmentInvite = exports.newEnrollmentInvite = exports.deleteEnrollmentsById = exports.editEnrollment = exports.addEnrollment = void 0;
+exports.resendEnrollmentInvite = exports.deleteEnrollmentInvite = exports.newEnrollmentInvite = exports.deleteEnrollmentsById = exports.editEnrollment = exports.addEnrollment = exports.addVolunteerEnrollment = void 0;
+exports.addVolunteerEnrollment = `
+  mutation AddEnrollment($address: String!, $city: String!, $dob: date!, $email: String!, $gender: String!, $mobile_number: String!, $name: String!, $pincode: Int!, $state: String!, $children: [children_insert_input!] = [], $enrolled_by: String) {
+    insert_enrollments(objects: {address: $address, city: $city, dob: $dob, email: $email, gender: $gender, mobile_number: $mobile_number, name: $name, pincode: $pincode, state: $state, children: {data: $children}, enrolled_by: $enrolled_by}) {
+      affected_rows
+    }
+  }
+`;
 exports.addEnrollment = `
   mutation AddEnrollment($address: String!, $city: String!, $dob: date!, $email: String!, $gender: String!, $mobile_number: String!, $name: String!, $pincode: Int!, $state: String!, $children: [children_insert_input!] = [], $enrolled_by: String, $token: String!) {
     insert_enrollments(objects: {address: $address, city: $city, dob: $dob, email: $email, gender: $gender, mobile_number: $mobile_number, name: $name, pincode: $pincode, state: $state, children: {data: $children}, enrolled_by: $enrolled_by}) {

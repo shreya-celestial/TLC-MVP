@@ -16,13 +16,7 @@ const global_1 = require("../../utils/global");
 const getData_1 = __importDefault(require("../../utils/getData"));
 const mutations_1 = require("../../gql/workshops/mutations");
 const updateWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-    if (((_b = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.meetings) === null || _b === void 0 ? void 0 : _b.length) === 0) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Workshop meetings required!'
-        });
-    }
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const vols = req.body.vols.map((vol) => {
         var _a;
         return {
@@ -39,7 +33,7 @@ const updateWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function*
             responsibility: lead.responsibility
         };
     });
-    const participants = (_d = (_c = req === null || req === void 0 ? void 0 : req.body) === null || _c === void 0 ? void 0 : _c.participants) === null || _d === void 0 ? void 0 : _d.map((part) => {
+    const participants = (_b = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.participants) === null || _b === void 0 ? void 0 : _b.map((part) => {
         var _a;
         return {
             enrollment_id: part,
@@ -63,10 +57,10 @@ const updateWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (data === null || data === void 0 ? void 0 : data.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_e = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _e === void 0 ? void 0 : _e.message
+            message: (_c = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _c === void 0 ? void 0 : _c.message
         });
     }
-    const meeting = (_g = (_f = req === null || req === void 0 ? void 0 : req.body) === null || _f === void 0 ? void 0 : _f.meetings) === null || _g === void 0 ? void 0 : _g.map((meeting) => {
+    const meeting = (_e = (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.meetings) === null || _e === void 0 ? void 0 : _e.map((meeting) => {
         return {
             id: {
                 _eq: meeting
@@ -75,15 +69,15 @@ const updateWorkshop = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
     const meetingData = yield (0, getData_1.default)(mutations_1.updateWorkshopMeetings, {
         meeting,
-        id: (_h = req === null || req === void 0 ? void 0 : req.params) === null || _h === void 0 ? void 0 : _h.id
+        id: (_f = req === null || req === void 0 ? void 0 : req.params) === null || _f === void 0 ? void 0 : _f.id
     });
     if (meetingData === null || meetingData === void 0 ? void 0 : meetingData.errors) {
         return res.status(400).json({
             status: 'error',
-            message: (_j = meetingData === null || meetingData === void 0 ? void 0 : meetingData.errors[0]) === null || _j === void 0 ? void 0 : _j.message
+            message: (_g = meetingData === null || meetingData === void 0 ? void 0 : meetingData.errors[0]) === null || _g === void 0 ? void 0 : _g.message
         });
     }
-    if ((_l = (_k = meetingData === null || meetingData === void 0 ? void 0 : meetingData.data) === null || _k === void 0 ? void 0 : _k.update_meetings) === null || _l === void 0 ? void 0 : _l.affected_rows) {
+    if ((_j = (_h = meetingData === null || meetingData === void 0 ? void 0 : meetingData.data) === null || _h === void 0 ? void 0 : _h.update_meetings) === null || _j === void 0 ? void 0 : _j.affected_rows) {
         return res.status(200).json({
             status: 'success',
             message: 'Workshop updated successfully!'

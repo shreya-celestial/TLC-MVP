@@ -68,6 +68,27 @@ export const getEnrollment = async function ({ signal, queryKey, user }) {
   return resData;
 };
 
+export const createVolunteerEnrollment = async function ({ body, key }) {
+  const res = await fetch(`${BASE_URL}/volunteerbased`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
 export const createEnrollment = async function ({ body }) {
   const res = await fetch(`${BASE_URL}`, {
     method: 'POST',

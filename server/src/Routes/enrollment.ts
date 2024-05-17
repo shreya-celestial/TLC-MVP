@@ -7,12 +7,14 @@ import deleteEnrollments from "../controllers/enrollments/deleteEnrollments";
 import inviteEnrollment from "../controllers/enrollments/inviteEnrollment";
 import auth from "../middlewares/auth";
 import verifyEnrollmentInvite from "../controllers/enrollments/verifyEnrollmentInvite";
+import newVolunteerEnrollment from "../controllers/enrollments/newVolunteerEnrollment";
 
 const router = express.Router();
 
 router.post('/invite', auth, inviteEnrollment)
 router.get('/verifyInvite', verifyEnrollmentInvite)
 router.post('/', newEnrollment)
+router.post('/volunteerbased', auth, newVolunteerEnrollment)
 router.get('/', auth, allPageEnrollments)
 router.get('/:id/details', auth, singleEnrollment)
 router.put('/:id/edit', auth, updateEnrollment)

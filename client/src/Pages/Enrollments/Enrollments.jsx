@@ -191,6 +191,17 @@ const Enrollments = () => {
               className="createEnrollBtn"
               disableRipple
               onClick={() => {
+                navigate(`/enrollments/details/create`);
+              }}
+            >
+              Create Enrollment
+            </Button>
+          )}
+          {selectedRows.length === 0 && (
+            <Button
+              className="createEnrollBtn"
+              disableRipple
+              onClick={() => {
                 setShowInviteModal(true);
               }}
             >
