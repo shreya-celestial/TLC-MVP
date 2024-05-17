@@ -79,7 +79,11 @@ export const MeetingPageVolunteersColDef = [
   { field: 'name', headerName: 'Name' },
   { field: 'gender', headerName: 'Gender' },
   { field: 'phonenumber', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
+  {
+    field: 'email',
+    headerName: 'Email ID',
+    cellStyle: { textTransform: 'lowercase' },
+  },
   { field: 'city', headerName: 'City' },
 ];
 
@@ -88,7 +92,12 @@ export const MeetingPageEnrollmentsColDef = [
   { field: 'gender', headerName: 'Gender', minWidth: 100 },
   { field: 'children', headerName: 'Children', minWidth: 100 },
   { field: 'mobile_number', headerName: 'Phone Number', minWidth: 150 },
-  { field: 'email', headerName: 'Email ID', minWidth: 250 },
+  {
+    field: 'email',
+    headerName: 'Email ID',
+    minWidth: 250,
+    cellStyle: { textTransform: 'lowercase' },
+  },
   { field: 'city', headerName: 'City', minWidth: 150 },
 ];
 
@@ -96,7 +105,11 @@ export const VolunteersPopupMeetingColDef = [
   { field: 'name', headerName: 'Name' },
   { field: 'gender', headerName: 'Gender' },
   { field: 'phoneNumber', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
+  {
+    field: 'email',
+    headerName: 'Email ID',
+    cellStyle: { textTransform: 'lowercase' },
+  },
   { field: 'city', headerName: 'City' },
 ];
 
@@ -109,7 +122,11 @@ export const MeetingPopupEnrollmentsColDef = [
   { field: 'gender', headerName: 'Gender' },
   { field: 'children', headerName: 'Children', cellRenderer: RenderChildren },
   { field: 'mobile_number', headerName: 'Phone Number' },
-  { field: 'email', headerName: 'Email ID' },
+  {
+    field: 'email',
+    headerName: 'Email ID',
+    cellStyle: { textTransform: 'lowercase' },
+  },
   { field: 'city', headerName: 'City' },
 ];
 

@@ -29,6 +29,8 @@ import AddChildPopup from '../../Pages/Enrollments/AddChildPopup/AddChildPopup';
 import LeadVolunteerPopup from '../../Pages/Workshops/LeadVolunteerPopup/LeadVolunteerPopup';
 import { workShopColDef } from '../../Pages/Volunteers/coldefs/coldefs';
 import { MeetingPageEnrollmentsColDef } from '../../Pages/Meetings/coldefs/coldefs';
+import { updateMeeting } from '../../apis/meetings';
+import { useMutation } from '@tanstack/react-query';
 
 function AccordionTable({
   type,
@@ -168,20 +170,52 @@ function AccordionTable({
     );
   };
 
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: updateMeeting,
+    onSuccess: (data) => {
+      if (data.status === 'error') {
+        alert(data.message);
+        // setAlertType({
+        //   type: data.status,
+        //   message: data.message,
+        // });
+      } else {
+        alert(data.message);
+        // setAlertType({
+        //   type: data.status,
+        //   message: data.message,
+        // });
+      }
+    },
+    onError: (error) => {
+      alert(error?.info?.message || 'Something Went Wrong');
+      // setAlertType({
+      //   type: 'error',
+      //   message: msg || error?.info?.message || 'Something Went Wrong',
+      // });
+    },
+  });
+
   const DeleteButtonCell = (param) => {
     const classes = useStyles();
-
+    if (headingName === 'Meeting') {
+      console.log(param);
+    }
     return (
       <IconButton
         className={classes.DeletBtn}
         disableRipple
-        onClick={() =>
-          handleDeleteRow({
-            email: param.data.email,
-            row: headingName,
-            id: param.data.id,
-          })
-        }
+        onClick={() => {
+          console.log(headingName);
+          if (headingName === 'Meetings') {
+            console.log(param.data);
+          }
+          // handleDeleteRow({
+          //   email: param.data.email,
+          //   row: headingName,
+          //   id: param.data.id,
+          // });
+        }}
       >
         <DeleteForeverIcon />
       </IconButton>

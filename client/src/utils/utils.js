@@ -34,9 +34,9 @@ export const compareTwoArrays = function (existingRows, newRows, by) {
 
 export const fetchRowDataMeeting = function (meeting) {
   const fetchVolunteers = meeting?.meetings_volunteers?.map((w) => w.user);
-  const fetchEnrollments = meeting?.meetings_enrollments?.map(
-    (w) => w.enrollment
-  );
+  const fetchEnrollments = meeting?.meetings_enrollments?.map((w) => {
+    return { ...w.enrollment, children: w.enrollment.children.length };
+  });
 
   return { fetchVolunteers, fetchEnrollments };
 };
@@ -338,7 +338,7 @@ export const validateInvite = function (body) {
       message: 'Please provide a valid email',
     };
 
-  if(body.mobile && !validator.isMobilePhone(body.mobile))
+  if (body.mobile && !validator.isMobilePhone(body.mobile))
     return {
       type: 'error',
       message: 'Please provide a valid phone number',
