@@ -18,7 +18,9 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {
   MeetingColDef,
   VolunteersColDef,
+  VolunteersResponsibilityColDef,
   LeadVolunteersColDef,
+  LeadVolunteersResponsibilityColDef,
   ParticipantColDef,
 } from '../../Pages/Workshops/coldefs/coldefs';
 
@@ -27,11 +29,14 @@ import AddChildPopup from '../../Pages/Enrollments/AddChildPopup/AddChildPopup';
 import LeadVolunteerPopup from '../../Pages/Workshops/LeadVolunteerPopup/LeadVolunteerPopup';
 import { workShopColDef } from '../../Pages/Volunteers/coldefs/coldefs';
 import { MeetingPageEnrollmentsColDef } from '../../Pages/Meetings/coldefs/coldefs';
+import { updateMeeting } from '../../apis/meetings';
+import { useMutation } from '@tanstack/react-query';
 
 function AccordionTable({
   type,
   rowData,
   headingName,
+  volunteerMode,
   handleDeleteRow,
   isView,
   updateChild,
@@ -165,20 +170,52 @@ function AccordionTable({
     );
   };
 
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: updateMeeting,
+    onSuccess: (data) => {
+      if (data.status === 'error') {
+        alert(data.message);
+        // setAlertType({
+        //   type: data.status,
+        //   message: data.message,
+        // });
+      } else {
+        alert(data.message);
+        // setAlertType({
+        //   type: data.status,
+        //   message: data.message,
+        // });
+      }
+    },
+    onError: (error) => {
+      alert(error?.info?.message || 'Something Went Wrong');
+      // setAlertType({
+      //   type: 'error',
+      //   message: msg || error?.info?.message || 'Something Went Wrong',
+      // });
+    },
+  });
+
   const DeleteButtonCell = (param) => {
     const classes = useStyles();
-
+    if (headingName === 'Meeting') {
+      console.log(param);
+    }
     return (
       <IconButton
         className={classes.DeletBtn}
         disableRipple
-        onClick={() =>
-          handleDeleteRow({
-            email: param.data.email,
-            row: headingName,
-            id: param.data.id,
-          })
-        }
+        onClick={() => {
+          console.log(headingName);
+          if (headingName === 'Meetings') {
+            console.log(param.data);
+          }
+          // handleDeleteRow({
+          //   email: param.data.email,
+          //   row: headingName,
+          //   id: param.data.id,
+          // });
+        }}
       >
         <DeleteForeverIcon />
       </IconButton>
@@ -190,6 +227,17 @@ function AccordionTable({
     !isView
       ? {
           headerName: 'Actions',
+          cellRenderer: DeleteButtonCell,
+          minWidth: 100,
+        }
+      : undefined,
+  ].filter(Boolean);
+
+  const volunteerResponsibilityCustomDef = [
+    ...VolunteersResponsibilityColDef,
+    !isView
+      ? {
+          headerName: 'Actions',
           cellRenderer: DeleteEditButtonCellVol,
           minWidth: 100,
         }
@@ -198,6 +246,17 @@ function AccordionTable({
 
   const LeadvolunteerCustomDef = [
     ...LeadVolunteersColDef,
+    !isView
+      ? {
+          headerName: 'Actions',
+          cellRenderer: DeleteEditButtonCellVol,
+          minWidth: 100,
+        }
+      : undefined,
+  ].filter(Boolean);
+
+  const leadVolunteerResponsibilityCustomDef = [
+    ...LeadVolunteersResponsibilityColDef,
     !isView
       ? {
           headerName: 'Actions',
@@ -248,8 +307,13 @@ function AccordionTable({
   ].filter(Boolean);
 
   const modifiedColumnDefs =
-    headingName === 'Volunteers'
+    headingName === 'Volunteers' && volunteerMode === 'responsibilities'
+      ? volunteerResponsibilityCustomDef
+      : headingName === 'Volunteers'
       ? volunteerCustomDef
+      : headingName === 'Lead Volunteers' &&
+        volunteerMode === 'responsibilities'
+      ? leadVolunteerResponsibilityCustomDef
       : headingName === 'Lead Volunteers'
       ? LeadvolunteerCustomDef
       : headingName === 'Participants'

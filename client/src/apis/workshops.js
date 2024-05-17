@@ -51,6 +51,34 @@ export const workshops = async function ({ signal, queryKey, user }) {
   return resData;
 };
 
+
+export const workshopsDropdown = async function ({ signal, queryKey, user }) {
+
+  let searchParam = queryKey[0].search ? `&search=${queryKey[0].search}` : ``;
+  const res = await fetch(
+    `${BASE_URL}/dropdown?past=2${searchParam}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    },
+    signal
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+
+
 export const getWorkshop = async function ({ signal, queryKey, user }) {
   const [id] = queryKey;
   const res = await fetch(
