@@ -33,3 +33,11 @@ export const deleteMeetingsByPKs = `
     }
   }
 `;
+
+export const updateMeetingWorkshopId = `
+  mutation MyMutation($id: Int!, $workshop_id: Int) {
+    update_meetings_by_pk(pk_columns: {id: $id}, _set: {workshop_id: $workshop_id}) {
+      id
+    }
+  }
+`;
