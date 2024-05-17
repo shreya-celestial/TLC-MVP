@@ -496,6 +496,7 @@ function WorkshopsDetails() {
                   type="vol"
                   rowData={volunteersRowData}
                   headingName={'Volunteers'}
+                  volunteerMode={'responsibilities'}
                   isView={isView}
                   handleDeleteRow={handleDeleteRow}
                   updateVol={updateVol}
@@ -504,6 +505,7 @@ function WorkshopsDetails() {
                   type="leadvol"
                   rowData={leadVolunteersRowData}
                   headingName={'Lead Volunteers'}
+                  volunteerMode={'responsibilities'}  
                   isView={isView}
                   handleDeleteRow={handleDeleteRow}
                   updateVol={updateVol}

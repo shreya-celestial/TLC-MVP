@@ -18,7 +18,9 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {
   MeetingColDef,
   VolunteersColDef,
+  VolunteersResponsibilityColDef,
   LeadVolunteersColDef,
+  LeadVolunteersResponsibilityColDef,
   ParticipantColDef,
 } from '../../Pages/Workshops/coldefs/coldefs';
 
@@ -32,6 +34,7 @@ function AccordionTable({
   type,
   rowData,
   headingName,
+  volunteerMode,
   handleDeleteRow,
   isView,
   updateChild,
@@ -190,6 +193,17 @@ function AccordionTable({
     !isView
       ? {
           headerName: 'Actions',
+          cellRenderer: DeleteButtonCell,
+          minWidth: 100,
+        }
+      : undefined,
+  ].filter(Boolean);
+
+  const volunteerResponsibilityCustomDef = [
+    ...VolunteersResponsibilityColDef,
+    !isView
+      ? {
+          headerName: 'Actions',
           cellRenderer: DeleteEditButtonCellVol,
           minWidth: 100,
         }
@@ -198,6 +212,17 @@ function AccordionTable({
 
   const LeadvolunteerCustomDef = [
     ...LeadVolunteersColDef,
+    !isView
+      ? {
+          headerName: 'Actions',
+          cellRenderer: DeleteEditButtonCellVol,
+          minWidth: 100,
+        }
+      : undefined,
+  ].filter(Boolean);
+
+  const leadVolunteerResponsibilityCustomDef = [
+    ...LeadVolunteersResponsibilityColDef,
     !isView
       ? {
           headerName: 'Actions',
@@ -248,8 +273,13 @@ function AccordionTable({
   ].filter(Boolean);
 
   const modifiedColumnDefs =
-    headingName === 'Volunteers'
+    headingName === 'Volunteers' && volunteerMode === 'responsibilities'
+      ? volunteerResponsibilityCustomDef
+      : headingName === 'Volunteers'
       ? volunteerCustomDef
+      : headingName === 'Lead Volunteers' &&
+        volunteerMode === 'responsibilities'
+      ? leadVolunteerResponsibilityCustomDef
       : headingName === 'Lead Volunteers'
       ? LeadvolunteerCustomDef
       : headingName === 'Participants'

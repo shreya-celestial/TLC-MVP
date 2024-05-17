@@ -30,6 +30,7 @@ import dayjs from 'dayjs';
 import { compareTwoArrays } from '../../../utils/utils';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { workshops } from '../../../apis/workshops';
+import { workshopsDropdown } from '../../../apis/workshops';
 import { createMeeting, updateMeeting } from '../../../apis/meetings';
 
 import { useMutation } from '@tanstack/react-query';
@@ -63,7 +64,7 @@ function MeetingsDetails() {
   const [enrollmentsRowData, setEnrollmentsRowData] = useState([]);
   const [workshopOptions, setWorkshopOptions] = useState([]);
 
-  const [meetingType, setMeetingType] = useState('None');
+  const [meetingTitle, setMeetingTitle] = useState('');
   const [date, setDate] = useState('');
   const [venue, setVenue] = useState('');
   const [venueCity, setVenueCity] = useState('');
@@ -82,8 +83,7 @@ function MeetingsDetails() {
     data: workshopsData,
     isPending: isPendingWorkshops,
     isError: isErrorWorkshops,
-  } = useReactQuery([1, 10, { ...debouncedFilters }], workshops, {
-    // enabled: debouncedFilters?.search !== undefined,
+  } = useReactQuery([{ ...debouncedFilters }], workshopsDropdown, {
   });
 
   const { user } = useContext(UserContext);
@@ -179,7 +179,7 @@ function MeetingsDetails() {
   const [editingWorkshop, setEditingWorkshop] = useState(false);
 
   useEffect(() => {
-    setMeetingType(meeting?.type?.trim() || 'None');
+    setMeetingTitle(meeting?.type?.trim() || '');
     setVenue(meeting?.venue || '');
     setVenueCity(meeting?.venue_city || '');
     setDate(meeting?.date || '');
@@ -201,7 +201,12 @@ function MeetingsDetails() {
 
   useEffect(() => {
     if (editingWorkshop) {
-      setWorkshopOptions(workshopsData?.data?.workshops || [{ types: 'None' }]);
+      let data;
+      if (workshopsData?.data.workshops) {
+        data= [...workshopsData?.data.workshops.past,...workshopsData?.data.workshops.upcoming]
+      }
+      
+      setWorkshopOptions(data || [{ types: 'None' }]);
     }
   }, [workshopsData, isView, meeting, editingWorkshop]);
 
@@ -211,7 +216,7 @@ function MeetingsDetails() {
 
     const body = {
       date: modifiedDate,
-      type: meetingType,
+      type: meetingTitle,
       venue: venue.trim(),
       venue_city: venueCity.trim(),
       workshop_id: selectedWorkshop?.id,
@@ -261,6 +266,10 @@ function MeetingsDetails() {
     return date?.split('-').reverse().join('-');
   };
 
+  const finalDate = workshopOptions[0]?.start_date
+    ? dateFormat(workshopOptions[0]?.start_date)
+    : '';
+
   return (
     <>
       {isPending && viewType !== 'create' && (
@@ -300,42 +309,18 @@ function MeetingsDetails() {
             <Box className={classes.mainContent}>
               {/* meeting type and workshop autocomplete  */}
               <Box className={classes.formElementBox}>
-                {!isView ? (
+                
                   <FormControl className={classes.formControl} required>
-                    <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
-                    <Select
-                      id="meetingType"
-                      name="meetingType"
-                      value={meetingType}
-                      onChange={(e) => setMeetingType(e.target.value)}
-                      IconComponent={ExpandMoreOutlinedIcon}
-                      className={classes.selectBox}
-                      disabled={isView}
-                      MenuProps={{
-                        classes: {
-                          paper: classes.selectDropdownMenu,
-                        },
-                      }}
-                    >
-                      <MenuItem value="None">None</MenuItem>
-                      <MenuItem value="Meeting Type 1">Meeting Type 1</MenuItem>
-                      <MenuItem value="Meeting Type 2">Meeting Type 2</MenuItem>
-                      <MenuItem value="Meeting Type 3">Meeting Type 3</MenuItem>
-                      <MenuItem value="Meeting Type 4">Meeting Type 4</MenuItem>
-                    </Select>
-                  </FormControl>
-                ) : (
-                  <FormControl className={classes.formControl} required>
-                    <FormLabel htmlFor="meetingType">Meeting Type</FormLabel>
+                    <FormLabel htmlFor="meetingTitle">Meeting Title</FormLabel>
                     <TextField
                       id="meetingType"
-                      placeholder="Meeting"
+                      placeholder="Meeting Title"
                       name="meeting"
                       disabled={isView}
-                      value={meetingType}
+                      value={meetingTitle}
+                      onChange={(e) => setMeetingTitle(e.target.value)}
                     />
                   </FormControl>
-                )}
 
                 {/* workshop autocomplete */}
 
@@ -347,17 +332,15 @@ function MeetingsDetails() {
                   )}
                   <FormLabel>Workshop</FormLabel>
                   <Autocomplete
+                    onBlur={()=> setFilters({search:''})}
                     loading={isPendingWorkshops}
                     options={workshopOptions}
                     value={
                       editingWorkshop
                         ? selectedWorkshop
                         : {
-                            types:
-                              workshopOptions[0]?.types +
-                              ` (${dateFormat(
-                                workshopOptions[0]?.start_date
-                              )})`,
+                          types: workshopOptions[0]?.types==='None' ? workshopOptions[0]?.types :
+                          workshopOptions[0]?.types+' '+ `(${finalDate})`,
                           }
                     }
                     onChange={(event, selectedElement) => {
