@@ -194,9 +194,9 @@ function AccordionTable({
         className={classes.DeletBtn}
         disableRipple
         onClick={() => {
-          if (headingName === 'Meetings') {
-            mutate({ workshop_id: null, id: param.data.id, key: user?.key });
-          }
+          // if (headingName === 'Meetings') {
+          //   mutate({ workshop_id: null, id: param.data.id, key: user?.key });
+          // }
           handleDeleteRow({
             email: param.data.email,
             row: headingName,

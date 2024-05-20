@@ -54,7 +54,7 @@ const Table = ({
           <Button
             className={classes.pending}
             onClick={
-              user?.isAdmin ? () => handleClickInColumn(params) : () => { }
+              user?.isAdmin ? () => handleClickInColumn(params) : () => {}
             }
             sx={{
               cursor: user?.isAdmin ? 'pointer' : 'default',
@@ -100,19 +100,22 @@ const Table = ({
 
   const isRowSelectable = useMemo(() => {
     return (params) => {
-      if(window.location.href.includes('/volunteers'))
+      if (window.location.href.includes('/volunteers'))
         return !!params.data && params.data.email !== user.email;
-      else 
-        return true;
+      else return true;
     };
   }, [user]);
 
   const getRowStyle = (params) => {
-    if (params.data.email === user.email && window.location.href.includes('/volunteers')) {
+    if (
+      params.data.email === user.email &&
+      window.location.href.includes('/volunteers')
+    ) {
       return { background: '#f5f5f5', fontWeight: 'bold' }; // Apply specific styles to the row
     }
     return null; // Return null to apply default styles
   };
+  console.log(modifiedColumnDefs);
 
   return (
     <Box className={`ag-theme-quartz ${classes.gridContainer}`}>

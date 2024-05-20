@@ -24,10 +24,10 @@ import { validateEnrollment } from '../../../utils/utils';
 import dayjs from 'dayjs';
 import AlertReact from '../../../Components/Alert/AlertReact';
 import { useMutation } from '@tanstack/react-query';
-import { createEnrollment} from '../../../apis/enrollments';
+import { createEnrollment } from '../../../apis/enrollments';
 import logo from '../../../assets/Icons/tlcLogo.png';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 
 function EnrollmentsDetails() {
   const location = useLocation();
@@ -212,7 +212,7 @@ function EnrollmentsDetails() {
         )}
         <Box className={classes.mainWrapper}>
           <img className={classes.logo} src={logo} alt="The Last Center Logo" />
-          <Typography className={classes.header}>Create an account</Typography>
+          <Typography className={classes.header}>Enrol Yourself</Typography>
           <Box className={classes.createEnrollmentWrapper}>
             <form className={classes.form}>
               <Box>
@@ -228,7 +228,10 @@ function EnrollmentsDetails() {
                     <Box className={classes.formElementBox}>
                       <FormControl className={classes.formControl} required>
                         <FormLabel htmlFor="fullNameField">Name</FormLabel>
-                        <Typography variant={'body2'} className={classes.borderClass}>
+                        <Typography
+                          variant={'body2'}
+                          className={classes.borderClass}
+                        >
                           {name}
                         </Typography>
                       </FormControl>
@@ -240,7 +243,10 @@ function EnrollmentsDetails() {
                         <FormLabel htmlFor="phoneNumberField">
                           Phone Number
                         </FormLabel>
-                        <Typography variant={'body2'} className={classes.borderClass}>
+                        <Typography
+                          variant={'body2'}
+                          className={classes.borderClass}
+                        >
                           {phone}
                         </Typography>
                       </FormControl>
@@ -248,12 +254,15 @@ function EnrollmentsDetails() {
                         <FormLabel htmlFor="emailField">
                           Email Address
                         </FormLabel>
-                        <Typography variant={'body2'} className={classes.borderClass}>
+                        <Typography
+                          variant={'body2'}
+                          className={classes.borderClass}
+                        >
                           {email}
                         </Typography>
                       </FormControl>
                     </Box>
-                    
+
                     {/* gender and DOB */}
                     <Box className={classes.formElementBox}>
                       <FormControl className={classes.formControl} required>
@@ -282,6 +291,7 @@ function EnrollmentsDetails() {
                           className={classes.datepicker}
                         >
                           <DatePicker
+                            defaultValue={dayjs(new Date('10 jan 2001'))}
                             name="dob"
                             disableFuture={true}
                             value={dayjs(dob)}
@@ -414,7 +424,7 @@ function EnrollmentsDetails() {
                   type="submit"
                   onClick={mutateEnrollmentHandler}
                 >
-                  {isPendingMutation ? 'loading...' : 'Enrol'}
+                  {isPendingMutation ? 'loading...' : 'Enrol Yourself'}
                 </Button>
               </Box>
             </form>

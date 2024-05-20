@@ -105,6 +105,8 @@ function InfoTable({ hideInfoTable, clickedCountDetails, type }) {
       ? ChildrenPopupColdef
       : VolunteersPopupColDef;
 
+  console.log(modifiedColumnDefs);
+
   return (
     <Dialog open className={classes.Dialog}>
       <DialogTitle className={classes.TitleAndClose}>
