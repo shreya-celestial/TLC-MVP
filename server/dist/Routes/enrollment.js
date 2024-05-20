@@ -12,10 +12,12 @@ const deleteEnrollments_1 = __importDefault(require("../controllers/enrollments/
 const inviteEnrollment_1 = __importDefault(require("../controllers/enrollments/inviteEnrollment"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const verifyEnrollmentInvite_1 = __importDefault(require("../controllers/enrollments/verifyEnrollmentInvite"));
+const newVolunteerEnrollment_1 = __importDefault(require("../controllers/enrollments/newVolunteerEnrollment"));
 const router = express_1.default.Router();
 router.post('/invite', auth_1.default, inviteEnrollment_1.default);
 router.get('/verifyInvite', verifyEnrollmentInvite_1.default);
 router.post('/', newEnrollment_1.default);
+router.post('/volunteerbased', auth_1.default, newVolunteerEnrollment_1.default);
 router.get('/', auth_1.default, allPageEnrollments_1.default);
 router.get('/:id/details', auth_1.default, singleEnrollment_1.default);
 router.put('/:id/edit', auth_1.default, updateEnrollment_1.default);
