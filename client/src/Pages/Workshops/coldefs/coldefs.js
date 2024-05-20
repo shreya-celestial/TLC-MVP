@@ -189,6 +189,13 @@ export const LeadVolunteersPopupColDef = [
   },
   { field: 'phoneNumber', headerName: 'Phone Number' },
   { field: 'city', headerName: 'City' },
+  {
+    field: 'responsibility',
+    headerName: 'Responsibility',
+    valueFormatter: (params) => {
+      return `${params.value ? params.value : '-'}`;
+    },
+  },
 ];
 
 export const ParticipantsPopupColDef = [
@@ -213,6 +220,13 @@ export const VolunteersPopupColDef = [
   },
   { field: 'phoneNumber', headerName: 'Phone Number' },
   { field: 'city', headerName: 'City' },
+  {
+    field: 'responsibility',
+    headerName: 'Responsibility',
+    valueFormatter: (params) => {
+      return `${params.value ? params.value : '-'}`;
+    },
+  },
 ];
 
 export default colDefs;

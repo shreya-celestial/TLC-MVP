@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { BASEURL } from "./global";
-const BASE_URL = `${BASEURL}/meetings`
+import { BASEURL } from './global';
+const BASE_URL = `${BASEURL}/meetings`;
 
 export const meetings = async function ({ signal, queryKey, user }) {
   const [page, noOfRecords, filters, mode] = queryKey;
@@ -88,6 +88,28 @@ export const updateMeeting = async function ({ body, id, key }) {
   const res = await fetch(`${BASE_URL}/${id}/edit`, {
     method: 'PUT',
     body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+export const updateWorkshopMeeting = async function ({ workshop_id, id, key }) {
+  console.log(workshop_id, id, key);
+  const res = await fetch(`${BASE_URL}/${id}/updateWkid`, {
+    method: 'PUT',
+    body: JSON.stringify({ workshop_id }),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${key}`,

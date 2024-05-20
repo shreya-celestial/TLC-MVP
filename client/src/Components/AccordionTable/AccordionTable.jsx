@@ -5,7 +5,7 @@ import {
   Box,
   IconButton,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
@@ -29,8 +29,9 @@ import AddChildPopup from '../../Pages/Enrollments/AddChildPopup/AddChildPopup';
 import LeadVolunteerPopup from '../../Pages/Workshops/LeadVolunteerPopup/LeadVolunteerPopup';
 import { workShopColDef } from '../../Pages/Volunteers/coldefs/coldefs';
 import { MeetingPageEnrollmentsColDef } from '../../Pages/Meetings/coldefs/coldefs';
-import { updateMeeting } from '../../apis/meetings';
+import { updateMeeting, updateWorkshopMeeting } from '../../apis/meetings';
 import { useMutation } from '@tanstack/react-query';
+import UserContext from '../../store/userContext';
 
 function AccordionTable({
   type,
@@ -43,6 +44,8 @@ function AccordionTable({
   updateVol,
   columnDefs,
 }) {
+  const { user } = useContext(UserContext);
+
   const defaultColDef = {
     sortable: false,
     flex: 1,
@@ -171,50 +174,34 @@ function AccordionTable({
   };
 
   const { mutate, isPending, isError } = useMutation({
-    mutationFn: updateMeeting,
+    mutationFn: updateWorkshopMeeting,
     onSuccess: (data) => {
       if (data.status === 'error') {
         alert(data.message);
-        // setAlertType({
-        //   type: data.status,
-        //   message: data.message,
-        // });
       } else {
-        alert(data.message);
-        // setAlertType({
-        //   type: data.status,
-        //   message: data.message,
-        // });
+        alert('meeting removed');
       }
     },
     onError: (error) => {
       alert(error?.info?.message || 'Something Went Wrong');
-      // setAlertType({
-      //   type: 'error',
-      //   message: msg || error?.info?.message || 'Something Went Wrong',
-      // });
     },
   });
 
   const DeleteButtonCell = (param) => {
     const classes = useStyles();
-    if (headingName === 'Meeting') {
-      console.log(param);
-    }
     return (
       <IconButton
         className={classes.DeletBtn}
         disableRipple
         onClick={() => {
-          console.log(headingName);
-          if (headingName === 'Meetings') {
-            console.log(param.data);
-          }
-          // handleDeleteRow({
-          //   email: param.data.email,
-          //   row: headingName,
-          //   id: param.data.id,
-          // });
+          // if (headingName === 'Meetings') {
+          //   mutate({ workshop_id: null, id: param.data.id, key: user?.key });
+          // }
+          handleDeleteRow({
+            email: param.data.email,
+            row: headingName,
+            id: param.data.id,
+          });
         }}
       >
         <DeleteForeverIcon />
