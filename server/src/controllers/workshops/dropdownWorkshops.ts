@@ -43,13 +43,20 @@ const dropdownWorkshops = async (req: Request, res: Response) => {
       message: data?.errors[0]?.message
     })
   }
+  let pastwkshps = [];
+  if(data?.data?.past?.length)
+  {
+    while (data?.data?.past?.length) {
+      pastwkshps.push(data?.data?.past?.pop());
+    }
+  }
 
   return res.status(200).json({
     status: "success",
     message: "Data fetched successfully!",
     data: {
       workshops: {
-        past: data?.data?.past?.toReversed(),
+        past: pastwkshps,
         upcoming: data?.data?.upcoming
       }
     }

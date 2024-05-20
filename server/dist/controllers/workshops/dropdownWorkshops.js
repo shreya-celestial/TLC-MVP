@@ -16,7 +16,7 @@ const getData_1 = __importDefault(require("../../utils/getData"));
 const queries_1 = require("../../gql/workshops/queries");
 const global_1 = require("../../utils/global");
 const dropdownWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const { past, search } = req === null || req === void 0 ? void 0 : req.query;
     let variables = {};
     if (past && +past >= 0) {
@@ -40,13 +40,19 @@ const dropdownWorkshops = (req, res) => __awaiter(void 0, void 0, void 0, functi
             message: (_a = data === null || data === void 0 ? void 0 : data.errors[0]) === null || _a === void 0 ? void 0 : _a.message
         });
     }
+    let pastwkshps = [];
+    if ((_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.past) === null || _c === void 0 ? void 0 : _c.length) {
+        while ((_e = (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.past) === null || _e === void 0 ? void 0 : _e.length) {
+            pastwkshps.push((_g = (_f = data === null || data === void 0 ? void 0 : data.data) === null || _f === void 0 ? void 0 : _f.past) === null || _g === void 0 ? void 0 : _g.pop());
+        }
+    }
     return res.status(200).json({
         status: "success",
         message: "Data fetched successfully!",
         data: {
             workshops: {
-                past: (_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.past) === null || _c === void 0 ? void 0 : _c.toReversed(),
-                upcoming: (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.upcoming
+                past: pastwkshps,
+                upcoming: (_h = data === null || data === void 0 ? void 0 : data.data) === null || _h === void 0 ? void 0 : _h.upcoming
             }
         }
     });
