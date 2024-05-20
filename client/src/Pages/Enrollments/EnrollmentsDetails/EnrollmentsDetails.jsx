@@ -96,7 +96,7 @@ function EnrollmentsDetails() {
   useEffect(() => {
     setName(enrollment?.name || '');
     setGender(enrollment?.gender || 'male');
-    setDob(enrollment?.dob || new Date('10 jan 2000'));
+    setDob(enrollment?.dob || new Date('1 jan 2000'));
     setPhone(enrollment?.mobile_number || '');
     setEmail(enrollment?.email || '');
     setAddress(enrollment?.address || '');
