@@ -106,7 +106,7 @@ export const updateMeeting = async function ({ body, id, key }) {
 };
 
 export const updateWorkshopMeeting = async function ({ workshop_id, id, key }) {
-  console.log(workshop_id, id, key);
+  
   const res = await fetch(`${BASE_URL}/${id}/updateWkid`, {
     method: 'PUT',
     body: JSON.stringify({ workshop_id }),

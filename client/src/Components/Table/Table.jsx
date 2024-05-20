@@ -115,7 +115,6 @@ const Table = ({
     }
     return null; // Return null to apply default styles
   };
-  console.log(modifiedColumnDefs);
 
   return (
     <Box className={`ag-theme-quartz ${classes.gridContainer}`}>

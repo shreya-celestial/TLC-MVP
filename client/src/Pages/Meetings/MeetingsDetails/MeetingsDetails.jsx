@@ -193,7 +193,6 @@ function MeetingsDetails() {
     if (viewType !== 'create') {
       const { fetchVolunteers, fetchEnrollments } =
         fetchRowDataMeeting(meeting);
-      console.log(fetchEnrollments);
       setVolunteersRowData(fetchVolunteers || []);
       setEnrollmentsRowData(fetchEnrollments || []);
     }
@@ -273,7 +272,6 @@ function MeetingsDetails() {
     ? dateFormat(workshopOptions[0]?.start_date)
     : '';
 
-  console.log(enrollmentsRowData);
 
   return (
     <>

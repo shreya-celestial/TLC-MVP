@@ -120,7 +120,6 @@ function AccordionTable({
     const classes = useStyles();
     const [volData, setVolData] = useState('');
     const [openVol, setOpenVol] = useState(false);
-    // console.log(param.data, type);
 
     const handleCloseOpenVol = () => {
       setOpenVol(false);
