@@ -96,7 +96,7 @@ function EnrollmentsDetails() {
   useEffect(() => {
     setName(enrollment?.name || '');
     setGender(enrollment?.gender || 'male');
-    setDob(enrollment?.dob || '');
+    setDob(enrollment?.dob || new Date('10 jan 2000'));
     setPhone(enrollment?.mobile_number || '');
     setEmail(enrollment?.email || '');
     setAddress(enrollment?.address || '');
@@ -282,8 +282,8 @@ function EnrollmentsDetails() {
                 viewType === 'view'
                   ? 'View Enrollment'
                   : viewType === 'edit'
-                  ? 'Edit Enrollment'
-                  : 'Create Enrollment'
+                    ? 'Edit Enrollment'
+                    : 'Create Enrollment'
               }
               prevPage={'Enrollments'}
               path={'enrollments'}
@@ -343,7 +343,9 @@ function EnrollmentsDetails() {
                         disabled={isView}
                         disableFuture={true}
                         value={dayjs(dob)}
-                        onChange={(date) => setDob(new Date(date))}
+                        onChange={(date) => {
+                          setDob(new Date(date))
+                        }}
                         format="DD/MM/YYYY"
                       />
                     </LocalizationProvider>
