@@ -21,6 +21,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useStyles } from './VolunteerForm.styles';
 import { getLocationData } from '../../apis/global';
+import dayjs from 'dayjs';
 
 function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
   const currentYear = new Date().getFullYear();
@@ -184,7 +185,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
               dateAdapter={AdapterDayjs}
               className={classes.datepicker}
             >
-              <DatePicker name="dob" required disableFuture={true} />
+              <DatePicker name="dob" required disableFuture={true} defaultValue={dayjs(new Date('1 jan 2000'))} format="DD/MM/YYYY"/>
             </LocalizationProvider>
           </FormControl>
         </Box>

@@ -37,7 +37,7 @@ function AddChildPopup({
 
   const [name, setName] = useState();
   const [gender, setGender] = useState('male');
-  const [dob, setDob] = useState('');
+  const [dob, setDob] = useState(new Date('1 jan 2020'));
 
   useEffect(() => {
     if (childData) {

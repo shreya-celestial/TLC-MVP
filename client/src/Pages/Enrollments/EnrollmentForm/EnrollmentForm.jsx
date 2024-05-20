@@ -38,7 +38,7 @@ function EnrollmentsDetails() {
   const classes = useStyles();
 
   const [gender, setGender] = useState('male');
-  const [dob, setDob] = useState('');
+  const [dob, setDob] = useState(new Date('1 jan 2000'));
   const [address, setAddress] = useState('');
   const [pincode, setPincode] = useState('');
   const [cities, setCities] = useState(null);
