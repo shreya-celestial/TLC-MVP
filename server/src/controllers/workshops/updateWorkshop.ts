@@ -44,6 +44,13 @@ const updateWorkshop = async (req: Request, res: Response) => {
       message: data?.errors[0]?.message
     })
   }
+  if(!req?.body?.meetings?.length)
+  {
+    return res.status(200).json({
+      status: 'success',
+      message: 'Workshop updated successfully!'
+    })
+  }
   const meeting = req?.body?.meetings?.map((meeting: any) => {
     return {
       id: {
