@@ -185,7 +185,7 @@ function VolunteerForm({ submit, isRole = false, isPending, isEmail }) {
               dateAdapter={AdapterDayjs}
               className={classes.datepicker}
             >
-              <DatePicker name="dob" required disableFuture={true} defaultValue={dayjs(new Date('1 jan 2000'))} format="DD/MM/YYYY"/>
+              <DatePicker name="dob" required disableFuture={true} defaultValue={dayjs(new Date('1 jan 2000'))}/>
             </LocalizationProvider>
           </FormControl>
         </Box>
