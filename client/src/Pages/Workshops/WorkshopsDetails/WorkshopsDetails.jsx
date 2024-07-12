@@ -48,6 +48,7 @@ export const workshopTypes = [
   { id: 13, type: 'Tension Workshop' },
   { id: 14, type: 'Grounding Series' },
   { id: 15, type: 'Enlightenment Workshop' },
+  { id: 16, type: 'Love, Relationship, Romance and Meditations' }
 ];
 
 function WorkshopsDetails() {
