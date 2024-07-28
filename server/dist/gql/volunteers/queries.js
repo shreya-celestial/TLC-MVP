@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyVolunteerInvite = exports.checkEmailAvailability = exports.VolunteerByEmail = exports.searchAndFilterVolunteers = exports.filterVolunteersQuery = exports.getVolunteers = void 0;
+exports.verifyRequestedLink = exports.verifyVolunteerInvite = exports.checkEmailAvailability = exports.VolunteerByEmail = exports.searchAndFilterVolunteers = exports.filterVolunteersQuery = exports.getVolunteers = void 0;
 exports.getVolunteers = `
   query Volunteers($offset: Int!, $limit: Int!) {
     users(offset: $offset, limit: $limit, where: {isVerified: {_eq: true}}, order_by: {id: desc}) {
@@ -139,6 +139,15 @@ exports.verifyVolunteerInvite = `
       created_at
       email
       isAdmin
+    }
+  }
+`;
+exports.verifyRequestedLink = `
+  query MyQuery($created_at: timestamptz!, $ticket_id: uuid!) {
+    link_tickets(where: {created_at: {_eq: $created_at}, ticket_id: {_eq: $ticket_id}}) {
+      created_at
+      ticket_id
+      id
     }
   }
 `;

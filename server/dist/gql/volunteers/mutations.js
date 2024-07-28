@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signupInvitation = exports.resendInvite = exports.deleteInvite = exports.newInvite = exports.updateAdminVerification = exports.DeleteVolunteersByEmail = exports.UpdateVolunteerRoleByEmail = void 0;
+exports.signupFromLink = exports.createNewLinkId = exports.signupInvitation = exports.resendInvite = exports.deleteInvite = exports.newInvite = exports.updateAdminVerification = exports.DeleteVolunteersByEmail = exports.UpdateVolunteerRoleByEmail = void 0;
 exports.UpdateVolunteerRoleByEmail = `
   mutation UpdateByEmail($email: String!, $isAdmin: Boolean!) {
     update_users(where: {email: {_eq: $email}, isAdminVerified: {_eq: true}, isVerified: {_eq: true}}, _set: {isAdmin: $isAdmin}) {
@@ -52,6 +52,24 @@ exports.signupInvitation = `
       affected_rows
     }
     insert_users(objects: {city: $city, dob: $dob, email: $email, gender: $gender, isAdmin: $isAdmin, isAdminVerified: $isAdminVerified, isVerified: $isVerified, location: $location, name: $name, password: $password, phoneNumber: $phoneNumber, pincode: $pincode, state: $state, token: $token, yearOfJoining: $yearOfJoining}) {
+      affected_rows
+    }
+  }
+`;
+exports.createNewLinkId = `
+  mutation MyMutation($ticket_id: uuid!) {
+    insert_link_tickets_one(object: {ticket_id: $ticket_id}) {
+      created_at
+      ticket_id
+    }
+  }
+`;
+exports.signupFromLink = `
+  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!, $phoneNumber: String!, $yearOfJoining: Int!, $location: String!, $city: String!, $state: String!, $pincode: Int!, $isAdmin: Boolean!, $isAdminVerified: Boolean!, $created_at: timestamptz!, $ticket_id: uuid!) {
+    insert_users(objects: {name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token, dob: $dob, gender: $gender, phoneNumber: $phoneNumber, yearOfJoining: $yearOfJoining, location: $location, city: $city, state: $state, pincode: $pincode, isAdmin: $isAdmin, isAdminVerified: $isAdminVerified}) {
+      affected_rows
+    }
+    delete_link_tickets(where: {created_at: {_eq: $created_at}, ticket_id: {_eq: $ticket_id}}) {
       affected_rows
     }
   }
