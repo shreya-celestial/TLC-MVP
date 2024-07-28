@@ -14,6 +14,9 @@ const verifyInvite_1 = __importDefault(require("../controllers/volunteers/verify
 const inviteSignup_1 = __importDefault(require("../controllers/volunteers/inviteSignup"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const adminAuth_1 = __importDefault(require("../middlewares/adminAuth"));
+const newLink_1 = __importDefault(require("../controllers/volunteers/newLink"));
+const verifyLink_1 = __importDefault(require("../controllers/volunteers/verifyLink"));
+const linkSignup_1 = __importDefault(require("../controllers/volunteers/linkSignup"));
 const router = express_1.default.Router();
 // router.get('/', getAllVolunteers)
 // router.get('/filters', getFilteredVolunteers)
@@ -23,6 +26,9 @@ router.put('/updateRole', adminAuth_1.default, updateRole_1.default);
 router.delete('/', adminAuth_1.default, deleteVolunteer_1.default);
 router.put('/adminVerified', adminAuth_1.default, adminVerified_1.default);
 router.post('/invite', adminAuth_1.default, inviteVolunteer_1.default);
+router.get('/link', adminAuth_1.default, newLink_1.default);
+router.post('/linkSignup', linkSignup_1.default);
+router.get('/verifyLink', verifyLink_1.default);
 router.get('/verifyInvite', verifyInvite_1.default);
 router.post('/inviteSignup', inviteSignup_1.default);
 exports.default = router;

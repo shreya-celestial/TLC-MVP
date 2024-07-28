@@ -24,9 +24,9 @@ export const formatDate = (date: string) => {
 }
 
 // For Development Mode
-// export const mailing_url = 'http://localhost:8080';
-// export const redirecting_url = 'http://localhost:3000';
+export const mailing_url = 'http://localhost:8080';
+export const redirecting_url = 'http://localhost:3000';
 
 // For Production Mode
-export const mailing_url = 'https://tlc-mvp-server.vercel.app';
-export const redirecting_url = 'https://tlc-mvp-app.vercel.app';
+// export const mailing_url = 'https://tlc-mvp-server.vercel.app';
+// export const redirecting_url = 'https://tlc-mvp-app.vercel.app';

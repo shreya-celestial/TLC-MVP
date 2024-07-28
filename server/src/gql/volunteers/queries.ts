@@ -144,3 +144,13 @@ export const verifyVolunteerInvite = `
     }
   }
 `;
+
+export const verifyRequestedLink = `
+  query MyQuery($created_at: timestamptz!, $ticket_id: uuid!) {
+    link_tickets(where: {created_at: {_eq: $created_at}, ticket_id: {_eq: $ticket_id}}) {
+      created_at
+      ticket_id
+      id
+    }
+  }
+`;
