@@ -195,4 +195,14 @@ export const useStyles = makeStyles((theme) => ({
       border: '1px solid #6C6C6C',
     },
   },
+  copyUrl: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '5px',
+    '& .copyUrlLabel': {
+      fontSize:'13px',
+      fontWeight:'500'
+    },
+  },
 }));

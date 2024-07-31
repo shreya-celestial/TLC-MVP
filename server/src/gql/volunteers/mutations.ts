@@ -70,11 +70,8 @@ export const createNewLinkId = `
 `;
 
 export const signupFromLink = `
-  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!, $phoneNumber: String!, $yearOfJoining: Int!, $location: String!, $city: String!, $state: String!, $pincode: Int!, $isAdmin: Boolean!, $isAdminVerified: Boolean!, $created_at: timestamptz!, $ticket_id: uuid!) {
+  mutation InsertUser($name: String!, $email: String!, $password: String!, $isVerified: Boolean!, $token: String!, $dob: date!, $gender: String!, $phoneNumber: String!, $yearOfJoining: Int!, $location: String!, $city: String!, $state: String!, $pincode: Int!, $isAdmin: Boolean!, $isAdminVerified: Boolean!) {
     insert_users(objects: {name: $name, email: $email, password: $password, isVerified: $isVerified, token: $token, dob: $dob, gender: $gender, phoneNumber: $phoneNumber, yearOfJoining: $yearOfJoining, location: $location, city: $city, state: $state, pincode: $pincode, isAdmin: $isAdmin, isAdminVerified: $isAdminVerified}) {
-      affected_rows
-    }
-    delete_link_tickets(where: {created_at: {_eq: $created_at}, ticket_id: {_eq: $ticket_id}}) {
       affected_rows
     }
   }

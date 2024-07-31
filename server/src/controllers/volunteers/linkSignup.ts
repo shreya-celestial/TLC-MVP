@@ -41,7 +41,7 @@ const linkSignup = async (req: Request, res: Response) => {
     const now = new Date()
     const diffTime = now.getTime() - created.getTime()
     const diffDays = Math.round(diffTime/(24*3600*1000))
-    if(diffDays>=5)
+    if(diffDays>=1)
     {
       return res.status(400).json({
         status: 'error',
@@ -65,8 +65,6 @@ const linkSignup = async (req: Request, res: Response) => {
       isVerified: false,
       isAdminVerified: true,
       isAdmin: false,
-      created_at: ticketData?.created_at,
-      ticket_id: ticketData?.ticket_id,
       token,
     };
   

@@ -63,6 +63,13 @@ export function useAlerts(queryKey, fetchFn) {
     setRowChanged((prev) => !prev);
   };
 
+  const defineAlertType = function(type, message){
+    setAlertType({
+      type,
+      message,
+    })
+  }
+
   return {
     removeAlertType,
     hideInviteModal,
@@ -82,5 +89,6 @@ export function useAlerts(queryKey, fetchFn) {
     selectedUser,
     setShowDeleteModal,
     setShowInviteModal,
+    defineAlertType
   };
 }

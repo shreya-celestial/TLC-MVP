@@ -26,7 +26,7 @@ const verifyLink = async (req: Request, res: Response) => {
       const diffTime = now.getTime() - created.getTime()
       const diffDays = Math.round(diffTime/(24*3600*1000))
 
-      if(diffDays>=5)
+      if(diffDays>=1)
       {
         return res.status(400).send(`Invitation link expired! <a href="${redirecting_url}">Go to safety!</a>`)
       }

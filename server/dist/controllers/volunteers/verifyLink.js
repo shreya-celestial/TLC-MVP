@@ -36,7 +36,7 @@ const verifyLink = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             const now = new Date();
             const diffTime = now.getTime() - created.getTime();
             const diffDays = Math.round(diffTime / (24 * 3600 * 1000));
-            if (diffDays >= 5) {
+            if (diffDays >= 1) {
                 return res.status(400).send(`Invitation link expired! <a href="${global_1.redirecting_url}">Go to safety!</a>`);
             }
             return res.redirect(303, `${global_1.redirecting_url}/signup?verify=${ticket}`);

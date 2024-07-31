@@ -158,3 +158,51 @@ export const verifyVolunteer = async function ({ isAdmin, email, key }) {
   const resData = await res.json();
   return resData;
 };
+
+
+export const getLink = async function ({ user }) {
+  const res = await fetch(
+    `${BASE_URL}/link`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+
+export const linkSignup = async function ( body ) {
+  console.log(body)
+  const res = await fetch(
+    `${BASE_URL}/linkSignup`,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};

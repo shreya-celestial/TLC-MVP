@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStyles } from './Signup.styles';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import VolunteerForm from '../../Components/VolunteerForm/VolunteerForm';
 
@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import logo from '../../assets/Icons/tlcLogo.png';
 import validator from 'validator';
 import moment from 'moment';
+import { linkSignup } from '../../apis/volunteers';
 
 function Signup() {
   const location = useLocation();
@@ -28,7 +29,7 @@ function Signup() {
   const [alertKey, setAlertKey] = useState(true);
 
   const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: signupType === 'normal' ? signup : signupInvite,
+    mutationFn: signupType === 'normal' ? signup : signupType === 'link' ? linkSignup : signupInvite,
     onSuccess: (data) => {
       let msg;
       if (data?.message.includes('Uniqueness violation')) {
@@ -61,6 +62,9 @@ function Signup() {
     let token = queryParams.get('ticket');
     token = token?.replaceAll(' ', '+');
     const email = queryParams.get('for');
+
+    const verify = queryParams.get('verify');
+    const decodedVerify = verify ? decodeURIComponent(verify).replace(/ /g, '+') : null;
 
     const isValid = validateSignup(e.target.elements);
     if (isValid.type) return setAlertType(isValid);
@@ -98,7 +102,11 @@ function Signup() {
     if (token) {
       setSignupType('invite');
       mutate({ ...body, token, email });
-    } else {
+    } else if(decodedVerify){
+      setSignupType('link');
+      mutate({ ...body, verify: decodedVerify });
+    }
+    else {
       setSignupType('normal');
       mutate({ body });
     }

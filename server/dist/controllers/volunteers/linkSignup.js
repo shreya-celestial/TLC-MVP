@@ -52,7 +52,7 @@ const linkSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const now = new Date();
         const diffTime = now.getTime() - created.getTime();
         const diffDays = Math.round(diffTime / (24 * 3600 * 1000));
-        if (diffDays >= 5) {
+        if (diffDays >= 1) {
             return res.status(400).json({
                 status: 'error',
                 message: 'Ticket sent is expired. Please request admin for another link!',
@@ -62,7 +62,7 @@ const linkSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const encryptPass = yield (0, bcrypt_1.hash)(req.body.password, 12);
         let token = crypto_js_1.default.AES.encrypt((_g = req === null || req === void 0 ? void 0 : req.body) === null || _g === void 0 ? void 0 : _g.email, process.env.CRYPTO_TICKET || '');
         token = token.toString();
-        const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass, isVerified: false, isAdminVerified: true, isAdmin: false, created_at: ticketData === null || ticketData === void 0 ? void 0 : ticketData.created_at, ticket_id: ticketData === null || ticketData === void 0 ? void 0 : ticketData.ticket_id, token });
+        const variables = Object.assign(Object.assign({}, req.body), { name: (0, global_1.capitaliseStr)(req.body.name), state: (0, global_1.capitaliseStr)(req.body.state), location: (0, global_1.capitaliseStr)(req.body.location), city: (0, global_1.capitaliseStr)(req.body.city), email: (req.body.email).toLowerCase(), dob: (0, global_1.formatDate)(req.body.dob), password: encryptPass, isVerified: false, isAdminVerified: true, isAdmin: false, token });
         const data = yield (0, getData_1.default)(mutation, variables);
         if (!data.errors) {
             const mailOptions = {

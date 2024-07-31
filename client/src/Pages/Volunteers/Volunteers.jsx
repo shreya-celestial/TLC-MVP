@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormLabel,
   IconButton,
@@ -10,12 +11,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import LinkIcon from '@mui/icons-material/Link';
 import { useStyles } from './Volunteers.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { useContext, useEffect, useState } from 'react';
 
-import { volunteers } from '../../apis/volunteers';
+import { volunteers, getLink } from '../../apis/volunteers';
 import PaginationComp from '../../Components/Table/PaginationComp';
 
 import InvitePopup from './InvitePopup/InvitePopup';
@@ -30,6 +32,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
 import UserContext from '../../store/userContext';
+import { useMutation } from '@tanstack/react-query';
 
 const Volunteers = () => {
   const classes = useStyles();
@@ -61,6 +64,7 @@ const Volunteers = () => {
     selectedUser,
     setShowInviteModal,
     setShowDeleteModal,
+    defineAlertType
   } = useAlerts();
 
   const updateCurrentPage = (val) => {
@@ -97,6 +101,29 @@ const Volunteers = () => {
     volunteers
   );
 
+  const { mutate, isPending: isPendingMutation } = useMutation({
+    mutationFn: getLink,
+    onSuccess: (data) => {
+      if (data.status === 'error') {
+        alert(data.message);
+      } else {
+        copyToClipboard(data.data.link)
+        .then(() => {
+          defineAlertType('success', 'Link copied successfully!')
+          console.log("Link copied successfully!");
+        })
+        .catch(err => {
+          defineAlertType('error', 'Failed to copy link')
+          console.error("Failed to copy text:", err);
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error)
+      alert(error?.info?.message || 'Something Went Wrong');
+    },
+  });
+
   useEffect(() => {
     let timer;
     timer = setTimeout(() => {
@@ -129,6 +156,17 @@ const Volunteers = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearch, statusDropdown, roleDropdown, genderDropdown]);
+
+  function copyToClipboard(text) {
+    if (!navigator.clipboard) {
+      throw new Error("Clipboard API not supported!");
+    }
+    return navigator.clipboard.writeText(text);
+  }
+
+  const copyInvitationUrl = function () {
+    mutate({ user });
+  }
 
   // const updateSort = function (data) {
   //   setSort(data);
@@ -178,6 +216,16 @@ const Volunteers = () => {
             </>
           )}
           {user?.isAdmin && selectedRows.length === 0 && (
+            <>
+            <Button
+              className="inviteBtn"
+              disableRipple
+              onClick={() => {
+                copyInvitationUrl();
+              }}
+            >
+              {isPendingMutation ? 'Loading...' : 'Copy Invite URL'}
+            </Button>
             <Button
               className="inviteBtn"
               disableRipple
@@ -187,6 +235,7 @@ const Volunteers = () => {
             >
               Invite
             </Button>
+            </>
           )}
         </Box>
       </Box>
