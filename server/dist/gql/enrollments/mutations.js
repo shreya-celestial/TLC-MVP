@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resendEnrollmentInvite = exports.deleteEnrollmentInvite = exports.newEnrollmentInvite = exports.deleteEnrollmentsById = exports.editEnrollment = exports.addEnrollment = exports.addVolunteerEnrollment = void 0;
+exports.generateNewLinkId = exports.resendEnrollmentInvite = exports.deleteEnrollmentInvite = exports.newEnrollmentInvite = exports.deleteEnrollmentsById = exports.editEnrollment = exports.addEnrollment = exports.addVolunteerEnrollment = void 0;
 exports.addVolunteerEnrollment = `
   mutation AddEnrollment($address: String!, $city: String!, $dob: date!, $email: String!, $gender: String!, $mobile_number: String!, $name: String!, $pincode: Int!, $state: String!, $children: [children_insert_input!] = [], $enrolled_by: String) {
     insert_enrollments(objects: {address: $address, city: $city, dob: $dob, email: $email, gender: $gender, mobile_number: $mobile_number, name: $name, pincode: $pincode, state: $state, children: {data: $children}, enrolled_by: $enrolled_by}) {
@@ -56,6 +56,14 @@ exports.resendEnrollmentInvite = `
   mutation Mutation($email: String!, $created_at: timestamptz = "now()", $token: String!) {
     update_enrollment_invites(where: {email: {_eq: $email}}, _set: {created_at: $created_at, token: $token}) {
       affected_rows
+    }
+  }
+`;
+exports.generateNewLinkId = `
+  mutation MyMutation($invited_by: String!, $ticket_id: uuid!) {
+    insert_enrollment_link_tickets_one(object: {invited_by: $invited_by, ticket_id: $ticket_id}) {
+      created_at
+      ticket_id
     }
   }
 `;

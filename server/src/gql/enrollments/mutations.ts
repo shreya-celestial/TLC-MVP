@@ -62,3 +62,12 @@ export const resendEnrollmentInvite = `
     }
   }
 `;
+
+export const generateNewLinkId = `
+  mutation MyMutation($invited_by: String!, $ticket_id: uuid!) {
+    insert_enrollment_link_tickets_one(object: {invited_by: $invited_by, ticket_id: $ticket_id}) {
+      created_at
+      ticket_id
+    }
+  }
+`;

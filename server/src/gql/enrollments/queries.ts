@@ -105,3 +105,14 @@ export const verifyEnrollmentsInvite = `
     }
   }
 `;
+
+export const verifyWithGeneratedLink = `
+  query MyQuery($ticket_id: uuid!, $created_at: timestamptz!) {
+    enrollment_link_tickets(where: {ticket_id: {_eq: $ticket_id}, created_at: {_eq: $created_at}}) {
+      created_at
+      id
+      invited_by
+      ticket_id
+    }
+  }
+`;

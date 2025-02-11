@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEnrollmentsInvite = exports.checkEnrollmentAvailability = exports.enrollmentByPK = exports.allEnrollments = void 0;
+exports.verifyWithGeneratedLink = exports.verifyEnrollmentsInvite = exports.checkEnrollmentAvailability = exports.enrollmentByPK = exports.allEnrollments = void 0;
 exports.allEnrollments = `
   query MyQuery($limit: Int!, $offset: Int!, $order_by: [enrollments_order_by!], $where: enrollments_bool_exp) {
     enrollments(where: $where, limit: $limit, offset: $offset, order_by: $order_by) {
@@ -102,6 +102,16 @@ exports.verifyEnrollmentsInvite = `
       name
     	mobile_number
       invited_by
+    }
+  }
+`;
+exports.verifyWithGeneratedLink = `
+  query MyQuery($ticket_id: uuid!, $created_at: timestamptz!) {
+    enrollment_link_tickets(where: {ticket_id: {_eq: $ticket_id}, created_at: {_eq: $created_at}}) {
+      created_at
+      id
+      invited_by
+      ticket_id
     }
   }
 `;

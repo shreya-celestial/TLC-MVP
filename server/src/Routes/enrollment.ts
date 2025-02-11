@@ -8,10 +8,16 @@ import inviteEnrollment from "../controllers/enrollments/inviteEnrollment";
 import auth from "../middlewares/auth";
 import verifyEnrollmentInvite from "../controllers/enrollments/verifyEnrollmentInvite";
 import newVolunteerEnrollment from "../controllers/enrollments/newVolunteerEnrollment";
+import newEnrolLink from "../controllers/enrollments/newEnrolLink";
+import linkEnrollment from "../controllers/enrollments/linkEnrollment";
+import verifyEnrolLink from "../controllers/enrollments/verifyEnrolLink";
 
 const router = express.Router();
 
 router.post('/invite', auth, inviteEnrollment)
+router.get('/newEnrolLink', auth, newEnrolLink)
+router.post('/linkEnrol', linkEnrollment)
+router.get('/verifyEnrolLink', verifyEnrolLink)
 router.get('/verifyInvite', verifyEnrollmentInvite)
 router.post('/', newEnrollment)
 router.post('/volunteerbased', auth, newVolunteerEnrollment)

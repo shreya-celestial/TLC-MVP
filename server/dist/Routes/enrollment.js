@@ -13,8 +13,14 @@ const inviteEnrollment_1 = __importDefault(require("../controllers/enrollments/i
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const verifyEnrollmentInvite_1 = __importDefault(require("../controllers/enrollments/verifyEnrollmentInvite"));
 const newVolunteerEnrollment_1 = __importDefault(require("../controllers/enrollments/newVolunteerEnrollment"));
+const newEnrolLink_1 = __importDefault(require("../controllers/enrollments/newEnrolLink"));
+const linkEnrollment_1 = __importDefault(require("../controllers/enrollments/linkEnrollment"));
+const verifyEnrolLink_1 = __importDefault(require("../controllers/enrollments/verifyEnrolLink"));
 const router = express_1.default.Router();
 router.post('/invite', auth_1.default, inviteEnrollment_1.default);
+router.get('/newEnrolLink', auth_1.default, newEnrolLink_1.default);
+router.post('/linkEnrol', linkEnrollment_1.default);
+router.get('/verifyEnrolLink', verifyEnrolLink_1.default);
 router.get('/verifyInvite', verifyEnrollmentInvite_1.default);
 router.post('/', newEnrollment_1.default);
 router.post('/volunteerbased', auth_1.default, newVolunteerEnrollment_1.default);
