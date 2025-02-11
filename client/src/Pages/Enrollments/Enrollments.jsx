@@ -13,7 +13,7 @@ import {
 import { useStyles } from './Enrollments.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { enrollments } from '../../apis/enrollments';
 import PaginationComp from '../../Components/Table/PaginationComp';
@@ -30,11 +30,16 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import colDefs from './coldefs/coldefs';
 import InfoTable from '../../Components/InfoTable/InfoTable';
+import UserContext from '../../store/userContext';
+import { useMutation } from '@tanstack/react-query';
+import { getLinkForEnrollInvite } from '../../apis/enrollments';
 
 const Enrollments = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { createSuccess } = useParams();
+
+  const { user } = useContext(UserContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(12);
@@ -60,6 +65,7 @@ const Enrollments = () => {
     selectedUser,
     setShowInviteModal,
     setShowDeleteModal,
+    defineAlertType
   } = useAlerts();
 
   const updateCurrentPage = (val) => {
@@ -89,6 +95,40 @@ const Enrollments = () => {
     ],
     enrollments
   );
+
+  const { mutate, isPending: isPendingMutation } = useMutation({
+    mutationFn: getLinkForEnrollInvite,
+    onSuccess: (data) => {
+      if (data.status === 'error') {
+        alert(data.message);
+      } else {
+        copyToClipboard(data.data.link)
+        .then(() => {
+          defineAlertType('success', 'Link copied successfully!')
+          console.log("Link copied successfully!");
+        })
+        .catch(err => {
+          defineAlertType('error', 'Failed to copy link')
+          console.error("Failed to copy text:", err);
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error)
+      alert(error?.info?.message || 'Something Went Wrong');
+    },
+  });
+
+  function copyToClipboard(text) {
+    if (!navigator.clipboard) {
+      throw new Error("Clipboard API not supported!");
+    }
+    return navigator.clipboard.writeText(text);
+  }
+
+  const copyInvitationUrl = function () {
+    mutate({ user });
+  }
 
   useEffect(() => {
     let timer;
@@ -139,7 +179,7 @@ const Enrollments = () => {
       const url = window.location.pathname.replace('/success', '');
       window.history.replaceState({}, document.title, url);
     }
-  }, [createSuccess]);
+  }, [createSuccess, setAlertType]);
 
   return (
     <Box className={classes.root}>
@@ -196,6 +236,19 @@ const Enrollments = () => {
             >
               Create Enrollment
             </Button>
+          )}
+          {user?.isAdmin && selectedRows.length === 0 && (
+            <>
+            <Button
+              className="inviteBtn"
+              disableRipple
+              onClick={() => {
+                copyInvitationUrl();
+              }}
+            >
+              {isPendingMutation ? 'Loading...' : 'Copy Invite URL'}
+            </Button>
+            </>
           )}
           {selectedRows.length === 0 && (
             <Button
