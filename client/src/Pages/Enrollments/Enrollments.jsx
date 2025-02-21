@@ -181,6 +181,10 @@ const Enrollments = () => {
     }
   }, [createSuccess, setAlertType]);
 
+  const showDeleteModalFunction = function (data) {
+    setShowDeleteModal(true);
+  };
+
   return (
     <Box className={classes.root}>
       {alertType && (
@@ -393,6 +397,7 @@ const Enrollments = () => {
             showVerifyStatus={showVerifyStatus}
             showDetails={showDetails}
             isError={isError}
+            showDeleteModalFunction={showDeleteModalFunction}
           />
         </Box>
         <PaginationComp

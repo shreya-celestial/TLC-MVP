@@ -54,7 +54,6 @@ function VolunteerDetails() {
 
   const { data, isPending, isError } = useReactQuery([email], getVolunteer);
   const [role, setRole] = useState(null);
-  // console.log(data?.user?.isAdmin === true)
 
   const [alertType, setAlertType] = useState();
 

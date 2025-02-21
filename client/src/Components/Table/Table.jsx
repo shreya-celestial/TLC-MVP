@@ -6,6 +6,7 @@ import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useCallback, useContext, useMemo } from 'react';
 import UserContext from '../../store/userContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Table = ({
   data,
@@ -14,8 +15,8 @@ const Table = ({
   showVerifyStatus,
   colDefs,
   showDetails,
-  selectedRows,
   isError,
+  showDeleteModalFunction
 }) => {
   let rowData;
   if (data) rowData = data;
@@ -77,7 +78,7 @@ const Table = ({
   const InfoTable = (params) => {
     return (
       <>
-        <p className='count' info-table='true' onClick={(e) => {
+        <p className='count' info-table='true' onClick={() => {
             showDetails(params);
           }}>
           {params.value}
@@ -86,10 +87,16 @@ const Table = ({
     );
   };
 
+  const DeleteComp = () => {
+    return <DeleteIcon onClick={showDeleteModalFunction}/>
+  };
+  
   const modifiedColumnDefs = colDefs.map((colDef) => {
     if (colDef.field === 'isAdminVerified') {
       colDef.cellRenderer = IsAdminVerifiedComp;
     }
+    if(colDef.field === 'Delete') colDef.cellRenderer = DeleteComp;
+
     if (colDef.field === 'lead_volunteers_count')
       colDef.cellRenderer = InfoTable;
 
@@ -123,8 +130,7 @@ const Table = ({
   };
 
   const onRowClicked = useCallback((params) => {
-    if(Boolean(params.event.target.getAttribute('info-table'))) return;
-
+    if(Boolean(params.event.target.getAttribute('info-table')) || params.event.target.tagName === 'path') return;
     switch (location.pathname) {
       case '/volunteers':
         navigate(`/volunteers/detail/${params.data.email}/view`);

@@ -166,9 +166,9 @@ const Volunteers = () => {
     mutate({ user });
   }
 
-  // const updateSort = function (data) {
-  //   setSort(data);
-  // };
+  const showDeleteModalFunction = function (data) {
+    setShowDeleteModal(true);
+  };
 
   return (
     <Box className={classes.root}>
@@ -379,6 +379,7 @@ const Volunteers = () => {
             isPending={isPending}
             isError={isError}
             showVerifyStatus={showVerifyStatus}
+            showDeleteModalFunction={showDeleteModalFunction}
           />
         </Box>
         <PaginationComp

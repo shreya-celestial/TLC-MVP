@@ -73,6 +73,20 @@ const colDefs = [
     minWidth: 120,
     headerName: 'Enrollments',
   },
+  {
+    field: 'Delete',
+    filter: false,
+    editable: false,
+    headerName: 'Action',
+    cellStyle: {
+      display: 'flex',
+      alignItems: 'center',
+      textAlign:'center'
+    },
+    width: 100,
+    pinned: 'right',
+    resizable: false,
+  },
 ];
 
 export const MeetingPageVolunteersColDef = [
