@@ -92,6 +92,20 @@ function EnrollmentsDetails() {
           message: data.message,
         });
       } else {
+        if(!name && !phone && !email){
+          setGender('male');
+          setDob(new Date('1 jan 2000'));
+          setAddress('');
+          setPincode('');
+          setCityFocus(false);
+          setCities(null);
+          setCity(null);
+          setState('');
+          setFormName('');
+          setFormPhone('');
+          setFormEmail('');
+          setChildrenRowData([]);
+        }
         setAlertType({
           type: data.status,
           message: data.message,
