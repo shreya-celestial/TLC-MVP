@@ -171,3 +171,51 @@ export const inviteEnrollment = async function ({ data, key }) {
   const resData = await res.json();
   return resData;
 };
+
+
+export const getLinkForEnrollInvite = async function ({ user }) {
+  const res = await fetch(
+    `${BASE_URL}/newEnrolLink?linkBy=${user.email}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${user.key}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};
+
+
+export const linkEnrol = async function ({ body }) {
+  console.log(body)
+  const res = await fetch(
+    `${BASE_URL}/linkEnrol`,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const error = new Error('An error occured while fetching the data');
+    error.code = res.status;
+    error.info = await res.json();
+    throw error;
+  }
+
+  const resData = await res.json();
+  return resData;
+};

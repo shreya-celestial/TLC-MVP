@@ -142,6 +142,10 @@ const Meetings = () => {
     }
   }, [createSuccess]);
 
+  const showDeleteModalFunction = function (data) {
+    setShowDeleteModal(true);
+  };
+
   return (
     <Box className={classes.root}>
       {alertType && (
@@ -316,6 +320,7 @@ const Meetings = () => {
             showVerifyStatus={showVerifyStatus}
             showDetails={showDetails}
             isError={isError}
+            showDeleteModalFunction={showDeleteModalFunction}
           />
         </Box>
         <PaginationComp

@@ -69,6 +69,20 @@ const colDefs = [
     cellStyle: { textTransform: 'lowercase' },
     headerName: 'Enrolled By',
   },
+  {
+    field: 'Delete',
+    filter: false,
+    editable: false,
+    headerName: 'Action',
+    cellStyle: {
+      display: 'flex',
+      alignItems: 'center',
+      textAlign:'center'
+    },
+    width: 100,
+    pinned: 'right',
+    resizable: false,
+  }
 ];
 
 export const ChildrenColDef = [

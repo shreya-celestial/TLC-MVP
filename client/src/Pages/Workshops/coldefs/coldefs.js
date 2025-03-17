@@ -83,6 +83,20 @@ const colDefs = [
     headerName: 'Participants',
     minWidth: 120,
   },
+  {
+    field: 'Delete',
+    filter: false,
+    editable: false,
+    headerName: 'Action',
+    cellStyle: {
+      display: 'flex',
+      alignItems: 'center',
+      textAlign:'center'
+    },
+    width: 100,
+    pinned: 'right',
+    resizable: false,
+  },
 ];
 
 export const VolunteersColDef = [

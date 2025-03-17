@@ -28,6 +28,7 @@ import { createEnrollment } from '../../../apis/enrollments';
 import logo from '../../../assets/Icons/tlcLogo.png';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import { linkEnrol } from '../../../apis/enrollments';
 
 function EnrollmentsDetails() {
   const location = useLocation();
@@ -44,6 +45,9 @@ function EnrollmentsDetails() {
   const [cities, setCities] = useState(null);
   const [city, setCity] = useState(null);
   const [state, setState] = useState('');
+  const [formName, setFormName] = useState(name);
+  const [formPhone, setFormPhone] = useState(phone);
+  const [formEmail, setFormEmail] = useState(email);
 
   const [childrenRowData, setChildrenRowData] = useState([]);
 
@@ -80,7 +84,7 @@ function EnrollmentsDetails() {
   }, [city]);
 
   const { mutate, isPending: isPendingMutation } = useMutation({
-    mutationFn: createEnrollment,
+    mutationFn: (name && phone && email) ? createEnrollment : linkEnrol,
     onSuccess: (data) => {
       if (data.status === 'error') {
         setAlertType({
@@ -88,6 +92,20 @@ function EnrollmentsDetails() {
           message: data.message,
         });
       } else {
+        if(!name && !phone && !email){
+          setGender('male');
+          setDob(new Date('1 jan 2000'));
+          setAddress('');
+          setPincode('');
+          setCityFocus(false);
+          setCities(null);
+          setCity(null);
+          setState('');
+          setFormName('');
+          setFormPhone('');
+          setFormEmail('');
+          setChildrenRowData([]);
+        }
         setAlertType({
           type: data.status,
           message: data.message,
@@ -138,12 +156,17 @@ function EnrollmentsDetails() {
 
     let token = queryParams.get('ticket');
     token = token?.replaceAll(' ', '+');
+    let verify;
 
+    if(!token){
+      verify = queryParams.get('verify')?.replaceAll(' ','+');
+    }
     let body = {
-      name: name?.trim(),
-      email,
+      name: name ? name?.trim(): formName,
+      email: email ? email : formEmail,
       token,
-      mobile_number: phone?.trim(),
+      verify,
+      mobile_number: phone? phone?.trim() : formPhone,
       dob: moment(dob).format('MM/DD/YYYY'),
       gender,
       address: address?.trim(),
@@ -224,43 +247,41 @@ function EnrollmentsDetails() {
                       <Typography>Personal Information</Typography>
                     </Box>
 
-                    {/* name */}
-                    <Box className={classes.formElementBox}>
-                      <FormControl className={classes.formControl} required>
-                        <FormLabel htmlFor="fullNameField">Name</FormLabel>
-                        <Typography
-                          variant={'body2'}
-                          className={classes.borderClass}
-                        >
-                          {name}
-                        </Typography>
-                      </FormControl>
-                    </Box>
+                    <FormControl className={classes.formControl} required>
+                      <FormLabel htmlFor="nameField">Name</FormLabel>
+                      <TextField
+                        id="nameField"
+                        placeholder="Enter Your Name"
+                        name="name"
+                        value={formName}
+                        onChange={(e) => setFormName(e.target.value)}
+                        disabled={name}
+                      />
+                    </FormControl>
 
-                    {/* phone number and email address */}
                     <Box className={classes.formElementBox}>
-                      <FormControl className={classes.formControl} required>
-                        <FormLabel htmlFor="phoneNumberField">
-                          Phone Number
-                        </FormLabel>
-                        <Typography
-                          variant={'body2'}
-                          className={classes.borderClass}
-                        >
-                          {phone}
-                        </Typography>
-                      </FormControl>
-                      <FormControl className={classes.formControl} required>
-                        <FormLabel htmlFor="emailField">
-                          Email Address
-                        </FormLabel>
-                        <Typography
-                          variant={'body2'}
-                          className={classes.borderClass}
-                        >
-                          {email}
-                        </Typography>
-                      </FormControl>
+                    <FormControl className={classes.formControl} required>
+                      <FormLabel htmlFor="phoneField">Phone Number</FormLabel>
+                      <TextField
+                        id="phoneField"
+                        placeholder="Enter Your Phone Number"
+                        name="phone"
+                        value={formPhone}
+                        onChange={(e) => setFormPhone(e.target.value)}
+                        disabled={phone}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl} required>
+                      <FormLabel htmlFor="email">Email</FormLabel>
+                      <TextField
+                        id="email"
+                        placeholder="Enter Your Email Address"
+                        name="email"
+                        value={formEmail}
+                        onChange={(e) => setFormEmail(e.target.value)}
+                        disabled={email}
+                      />
+                    </FormControl>
                     </Box>
 
                     {/* gender and DOB */}

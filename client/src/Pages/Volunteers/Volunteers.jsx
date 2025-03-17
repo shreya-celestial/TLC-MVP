@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   FormControl,
   FormLabel,
   IconButton,
@@ -11,7 +10,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import LinkIcon from '@mui/icons-material/Link';
 import { useStyles } from './Volunteers.styles';
 import Table from '../../Components/Table/Table';
 import { useReactQuery } from '../../hooks/useReactQuery';
@@ -168,9 +166,9 @@ const Volunteers = () => {
     mutate({ user });
   }
 
-  // const updateSort = function (data) {
-  //   setSort(data);
-  // };
+  const showDeleteModalFunction = function (data) {
+    setShowDeleteModal(true);
+  };
 
   return (
     <Box className={classes.root}>
@@ -381,6 +379,7 @@ const Volunteers = () => {
             isPending={isPending}
             isError={isError}
             showVerifyStatus={showVerifyStatus}
+            showDeleteModalFunction={showDeleteModalFunction}
           />
         </Box>
         <PaginationComp

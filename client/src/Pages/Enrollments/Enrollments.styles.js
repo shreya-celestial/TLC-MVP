@@ -57,6 +57,9 @@ export const useStyles = makeStyles((theme) => ({
     '& button.createEnrollBtn': {
       background: `${theme.palette.primaryGreen}`,
     },
+    '& button.inviteBtn': {
+      background: `${theme.palette.primaryGreen}`,
+    },
   },
   headerTablePagination: {
     boxShadow: '0px 4px 10px 0px rgba(109, 109, 109, 0.25)',

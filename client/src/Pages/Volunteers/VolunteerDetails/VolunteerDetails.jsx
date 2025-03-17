@@ -53,10 +53,7 @@ function VolunteerDetails() {
   }, [type]);
 
   const { data, isPending, isError } = useReactQuery([email], getVolunteer);
-
-  const [role, setRole] = useState(
-    data?.user?.isAdmin === true ? 'admin' : 'volunteer'
-  );
+  const [role, setRole] = useState(null);
 
   const [alertType, setAlertType] = useState();
 
@@ -100,7 +97,7 @@ function VolunteerDetails() {
   const [MeetingHistoryRowData, setMeetingHistoryRowData] = useState([]);
 
   useEffect(() => {
-    setRole(data?.user?.isAdmin === true ? 'admin' : 'volunteer');
+    setRole(!data?.user?.isAdminVerified ? '-' : data?.user?.isAdmin === true ? 'admin' : 'volunteer');
   }, [data]);
 
   useEffect(() => {
@@ -131,13 +128,13 @@ function VolunteerDetails() {
     if (type === 'view') {
       setIsView(true);
     }
-  }, [type]);
+  }, [type, nav]);
 
   useEffect(() => {
     if (!user?.isAdmin && type !== 'view') {
       nav('/volunteers');
     }
-  }, [user, type]);
+  }, [user, type, nav]);
 
   if (type !== 'edit' && type !== 'view') {
     return;
@@ -285,6 +282,7 @@ function VolunteerDetails() {
                         },
                       }}
                     >
+                      {!data?.user?.isAdminVerified && <MenuItem value="-">Role Pending</MenuItem>}
                       <MenuItem value="volunteer">Volunteer</MenuItem>
                       <MenuItem value="admin">Admin</MenuItem>
                     </Select>

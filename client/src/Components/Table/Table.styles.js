@@ -65,7 +65,10 @@ export const useStyles = makeStyles((theme) => ({
     '& .ag-row': {
       borderColor: '#C6C6C6',
     },
-
+    '& .ag-row:hover': {
+      cursor: 'pointer'
+      // background-color: #f0f0f0 !important;
+    },
     '& .ag-cell': {
       fontSize: '12px',
       color: '#6C6C6C',
@@ -97,10 +100,10 @@ export const useStyles = makeStyles((theme) => ({
     '& .ag-pinned-right-cols-container': {
       borderLeft: '1px solid #C6C6C6',
     },
-  },
-  count: {
-    color: '#4e73be',
-    cursor: 'pointer',
+    '& .count': {
+      color: '#4e73be',
+      cursor: 'pointer',
+    },
   },
 
   errorMessage: {
@@ -108,10 +111,4 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: '12px',
     fontWeight: '500',
   },
-
-  // customHeaderText: {
-  //   fontSize: '12px',
-  //   color: '#2F2F2F',
-  //   fontFamily: '"Inter", sans-serif',
-  // },
 }));
