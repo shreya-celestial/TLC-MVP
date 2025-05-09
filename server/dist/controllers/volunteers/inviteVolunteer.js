@@ -54,7 +54,7 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
         if ((_h = (_g = data === null || data === void 0 ? void 0 : data.data) === null || _g === void 0 ? void 0 : _g.insert_Invitations) === null || _h === void 0 ? void 0 : _h.affected_rows) {
             const body = "TLC invites you to be a volunteer for TLC.";
             const mailOptions = {
-                from: 'infotech@thelastcentre.com',
+                from: 'thelastcentre.techinfo@gmail.com',
                 to: email,
                 subject: 'TLC Invitation',
                 text: '',
@@ -110,7 +110,7 @@ const inviteVolunteer = (req, res) => __awaiter(void 0, void 0, void 0, function
     if ((_o = (_m = data === null || data === void 0 ? void 0 : data.data) === null || _m === void 0 ? void 0 : _m.update_Invitations) === null || _o === void 0 ? void 0 : _o.affected_rows) {
         const body = "TLC invites you to be a volunteer for TLC.";
         const mailOptions = {
-            from: 'infotech@thelastcentre.com',
+            from: 'thelastcentre.techinfo@gmail.com',
             to: email,
             subject: 'TLC Invitation',
             text: '',

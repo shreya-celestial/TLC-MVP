@@ -55,7 +55,7 @@ const inviteEnrollment = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if ((_h = (_g = data === null || data === void 0 ? void 0 : data.data) === null || _g === void 0 ? void 0 : _g.insert_enrollment_invites) === null || _h === void 0 ? void 0 : _h.affected_rows) {
             const body = "TLC invites you to enrol at TLC.";
             const mailOptions = {
-                from: 'infotech@thelastcentre.com',
+                from: 'thelastcentre.techinfo@gmail.com',
                 to: email,
                 subject: 'TLC Enrollment Invitation',
                 text: '',
@@ -111,7 +111,7 @@ const inviteEnrollment = (req, res) => __awaiter(void 0, void 0, void 0, functio
     if ((_o = (_m = data === null || data === void 0 ? void 0 : data.data) === null || _m === void 0 ? void 0 : _m.update_enrollment_invites) === null || _o === void 0 ? void 0 : _o.affected_rows) {
         const body = "TLC invites you to enrol at TLC.";
         const mailOptions = {
-            from: 'infotech@thelastcentre.com',
+            from: 'thelastcentre.techinfo@gmail.com',
             to: email,
             subject: 'TLC Enrollment Invitation',
             text: '',

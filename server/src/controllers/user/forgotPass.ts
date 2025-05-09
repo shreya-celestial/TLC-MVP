@@ -24,7 +24,7 @@ const forgotPass = async (req: Request, res: Response) => {
     const name = data?.data?.update_users?.returning[0]?.name
     const body = "Please click on this link below to reset your password."
     const mailOptions = {
-      from: 'infotech@thelastcentre.com',
+      from: 'thelastcentre.techinfo@gmail.com',
       to: email,
       subject: 'Reset Password Link',
       text: '',
@@ -32,6 +32,7 @@ const forgotPass = async (req: Request, res: Response) => {
     };
 
     transporter.sendMail(mailOptions, (err) => {
+      console.log(err,'inforgot pass')
       if(!err)
       {
         return res.status(200).json({

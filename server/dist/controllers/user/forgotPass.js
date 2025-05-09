@@ -34,13 +34,14 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const name = (_e = (_d = (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.update_users) === null || _d === void 0 ? void 0 : _d.returning[0]) === null || _e === void 0 ? void 0 : _e.name;
         const body = "Please click on this link below to reset your password.";
         const mailOptions = {
-            from: 'infotech@thelastcentre.com',
+            from: 'thelastcentre.techinfo@gmail.com',
             to: email,
             subject: 'Reset Password Link',
             text: '',
             html: (0, generateMail_1.default)(`${global_1.mailing_url}/user/verifyReset?token=${token}`, name, 'Reset Password', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => {
+            console.log(err, 'inforgot pass');
             if (!err) {
                 return res.status(200).json({
                     status: 'success',

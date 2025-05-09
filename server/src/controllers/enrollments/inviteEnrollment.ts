@@ -48,7 +48,7 @@ const inviteEnrollment = async (req: Request, res: Response) => {
 		if (data?.data?.insert_enrollment_invites?.affected_rows) {
 			const body = "TLC invites you to enrol at TLC."
 			const mailOptions = {
-				from: 'infotech@thelastcentre.com',
+				from: 'thelastcentre.techinfo@gmail.com',
 				to: email,
 				subject: 'TLC Enrollment Invitation',
 				text: '',
@@ -111,7 +111,7 @@ const inviteEnrollment = async (req: Request, res: Response) => {
 	if (data?.data?.update_enrollment_invites?.affected_rows) {
 		const body = "TLC invites you to enrol at TLC."
 		const mailOptions = {
-			from: 'infotech@thelastcentre.com',
+			from: 'thelastcentre.techinfo@gmail.com',
 			to: email,
 			subject: 'TLC Enrollment Invitation',
 			text: '',
