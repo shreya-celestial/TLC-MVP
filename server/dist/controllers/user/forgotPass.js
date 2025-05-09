@@ -41,7 +41,6 @@ const forgotPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             html: (0, generateMail_1.default)(`${global_1.mailing_url}/user/verifyReset?token=${token}`, name, 'Reset Password', body)
         };
         nodeMailer_1.default.sendMail(mailOptions, (err) => {
-            console.log(err, 'inforgot pass');
             if (!err) {
                 return res.status(200).json({
                     status: 'success',

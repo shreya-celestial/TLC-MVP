@@ -32,7 +32,6 @@ const forgotPass = async (req: Request, res: Response) => {
     };
 
     transporter.sendMail(mailOptions, (err) => {
-      console.log(err,'inforgot pass')
       if(!err)
       {
         return res.status(200).json({
