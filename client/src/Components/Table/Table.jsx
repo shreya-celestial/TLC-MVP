@@ -133,16 +133,23 @@ const Table = ({
     if(Boolean(params.event.target.getAttribute('info-table')) || params.event.target.tagName === 'path') return;
     switch (location.pathname) {
       case '/volunteers':
+      case '/volunteers/success':
         navigate(`/volunteers/detail/${params.data.email}/view`);
         break;
       case '/workshops':
+      case '/workshops/success':
         navigate(`/workshops/detail/${params.data.id}/view`)
         break;
       case '/meetings':
+      case '/meetings/success':
         navigate(`/meetings/details/${params.data.id}/view`)
         break;
+      case '/enrollments':
+      case '/enrollments/success':
+        navigate(`/enrollments/details/${params.data.id}/view`)
+        break;
       default:
-        navigate(`/enrollments/details/${params.data.id}/view`);
+        break;
     }
   }, [navigate,location.pathname]);
 
