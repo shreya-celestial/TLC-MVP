@@ -71,7 +71,7 @@ const linkSignup = async (req: Request, res: Response) => {
     const data = await getData(mutation, variables);
     if (!data.errors) {
       const mailOptions = {
-        from: 'infotech@thelastcentre.com',
+        from: 'thelastcentre.techinfo@gmail.com',
         to: req.body.email,
         subject: 'Verification of TLC Email',
         text: '',

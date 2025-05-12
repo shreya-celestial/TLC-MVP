@@ -1,4 +1,4 @@
-export const BASEURL = process.env.NODE_ENV === 'production' ? 'https://tlc-mvp-server.vercel.app' : 'http://localhost:8080';
+export const BASEURL = process.env.NODE_ENV === 'production' ? 'https://tlc-server.vercel.app' : 'http://localhost:8080';
 
 export const getLocationData = async (code) => {
   try

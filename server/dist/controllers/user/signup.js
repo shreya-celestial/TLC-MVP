@@ -29,7 +29,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield (0, getData_1.default)(mutation, variables);
     if (!data.errors) {
         const mailOptions = {
-            from: 'infotech@thelastcentre.com',
+            from: 'thelastcentre.techinfo@gmail.com',
             to: req.body.email,
             subject: 'Verification of TLC Email',
             text: '',

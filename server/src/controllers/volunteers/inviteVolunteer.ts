@@ -52,7 +52,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
     {
       const body = "TLC invites you to be a volunteer for TLC."
       const mailOptions = {
-        from: 'infotech@thelastcentre.com',
+        from: 'thelastcentre.techinfo@gmail.com',
         to: email,
         subject: 'TLC Invitation',
         text: '',
@@ -120,7 +120,7 @@ const inviteVolunteer = async (req: Request, res: Response) => {
   {
     const body = "TLC invites you to be a volunteer for TLC."
     const mailOptions = {
-      from: 'infotech@thelastcentre.com',
+      from: 'thelastcentre.techinfo@gmail.com',
       to: email,
       subject: 'TLC Invitation',
       text: '',
