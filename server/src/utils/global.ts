@@ -29,4 +29,4 @@ export const formatDate = (date: string) => {
 
 // For Production Mode
 export const mailing_url = 'https://tlc-server.vercel.app';
-export const redirecting_url = 'https://tlc-blush.vercel.app';
+export const redirecting_url = 'https://tlc-tech.vercel.app';

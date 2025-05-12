@@ -30,4 +30,4 @@ exports.formatDate = formatDate;
 // export const redirecting_url = 'http://localhost:3000';
 // For Production Mode
 exports.mailing_url = 'https://tlc-server.vercel.app';
-exports.redirecting_url = 'https://tlc-blush.vercel.app';
+exports.redirecting_url = 'https://tlc-tech.vercel.app';
