@@ -241,7 +241,7 @@ const Enrollments = () => {
               Create Enrollment
             </Button>
           )}
-          {user?.isAdmin && selectedRows.length === 0 && (
+          {selectedRows.length === 0 && (
             <>
             <Button
               className="inviteBtn"
